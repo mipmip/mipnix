@@ -68,11 +68,11 @@ in
                   icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
                   definedAliases = [ "@np" ];
                 };
-                "Wikipedia (en)".metaData.alias = "@wiki";
-                "Google".metaData.hidden = true;
-                "Amazon.com".metaData.hidden = true;
-                "Bing".metaData.hidden = true;
-                "eBay".metaData.hidden = true;
+                "wikipedia".metaData.alias = "@wiki";
+                "google".metaData.hidden = true;
+                "amazondotcom-us".metaData.hidden = true;
+                "bing".metaData.hidden = true;
+                "ebay".metaData.hidden = true;
               };
             };
 
