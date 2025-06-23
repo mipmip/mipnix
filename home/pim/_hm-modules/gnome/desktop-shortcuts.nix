@@ -125,7 +125,7 @@ in
 
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom10" = {
         binding = "<Super>space";
-        command = "wofi --show=drun -show-icons --allow-images --no-actions --gtk-dark --lines 6";
+        command = "wrofi";
         name = "wofi";
       };
 

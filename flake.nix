@@ -271,7 +271,7 @@
         hostname = "rodin";
         config = {
           nixos.ai.enable = true;
-          nixos.aiLocal.enable = true;
+          nixos.aiLocal.enable = false;
           nixos.dev.enable = true;
           nixos.desktop.enable = true;
           nixos.desktopHyprland.enable = true;

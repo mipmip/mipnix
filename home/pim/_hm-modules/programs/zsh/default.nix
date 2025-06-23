@@ -83,8 +83,7 @@ in
             custom = "$HOME/.ohmyzsh-pim";
             plugins=["git terraform aws mix"];
           };
-
-          initExtra = ''
+          initContent = ''
             if [[ -n "$IN_NIX_SHELL" ]]; then
               label="nix-shell"
               if [[ "$name" != "$label" ]]; then
