@@ -241,6 +241,7 @@
         secondbrain = true;
         awscontrol = true;
         desktop = true;
+        swapAltWin = true;
       };
 
       homeConfigurations."pim@lego2" = makeHomeConf {
@@ -306,7 +307,7 @@
           nixos.desktop.enable = true;
           nixos.desktopHyprland.enable = true;
           nixos.nixUtils.enable = true;
-          nixos.nixRemoteBuilds.enable = true;
+          nixos.nixRemoteBuilds.enable = false;
           nixos.tex.enable = true;
           nixos.trusted.enable = true;
           nixos.hardware.keychron.enable = true;
