@@ -115,6 +115,7 @@
         config.allowUnfree = true;
       };
 
+
       makeHomeConf = {
         nixpkgs-channel ? nixpkgs,
         username ? "pim",
@@ -394,5 +395,15 @@
         pkgs = import nixpkgs { system = "aarch64-linux"; };
         modules = [ ./hosts/nix-on-droid/configuration.nix ];
       };
+
+      templates = {
+        default = {
+          path = ./templates/devshell;
+          description = ''
+            A minimal flake using flake-parts.
+          '';
+        };
+      };
+
     };
 }
