@@ -331,7 +331,7 @@
           nixos.nixRemoteBuilds.enable = false;
           nixos.tex.enable = true;
           nixos.trusted.enable = true;
-          nixos.hardware.keychron.enable = true;
+          nixos.hardware.keychron.enable = false;
         };
       };
 

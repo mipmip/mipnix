@@ -102,6 +102,9 @@ technative-weare:
     - source: wearetechnative/terraform-aws-ec2-asg
     - source: wearetechnative/terraform-aws-iam-role
     - source: wearetechnative/terraform-null-url-parser
+    - source: wearetechnative/awesome-technative
+    - source: wearetechnative/awesome-finops
+    - source: wearetechnative/awesome-flake-parts
 
 technative:
   base_dir: ~/tcTechNative
