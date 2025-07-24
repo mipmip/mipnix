@@ -42,6 +42,7 @@
     pkgs.gcc
     pkgs.pkg-config
     pkgs.smug
+    pkgs.awscli2
     pkgs.typescript-language-server
 
     pkgs.nil
