@@ -55,6 +55,24 @@
     #media-session.enable = true;
   };
 
+  services.postgresql.enable = true;
+
+  #  services.hydra = {
+  #    enable = true;
+  #    hydraURL = "http://localhost:3000";
+  #    notificationSender = "hydra@localhost";
+  #    buildMachinesFiles = [];
+  #    useSubstitutes = true;
+  #    extraConfig = ''
+  #      <dynamicruncommand>
+  #        enable = 1
+  #      </dynamicruncommand>
+  #      <git-input>
+  #        timeout = 3600
+  #      </git-input>
+  #    '';
+  #  };
+
   # Enable networking
   networking.hostName = "lego2";
   networking.networkmanager.enable = true;

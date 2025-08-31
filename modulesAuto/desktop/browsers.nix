@@ -1,8 +1,8 @@
-{ config, lib, pkgs, ... }:{
+{ config, lib, unstable,pkgs, ... }:{
 
   config = lib.mkIf config.nixos.desktop.enable {
     environment.systemPackages = with pkgs; [
-      firefox
+      unstable.firefox
       librewolf
       ungoogled-chromium
     ];

@@ -328,7 +328,7 @@
           nixos.ai.enable = true;
           nixos.dev.enable = true;
           nixos.desktop.enable = true;
-          nixos.desktopHyprland.enable = true;
+          nixos.desktopHyprland.enable = false;
           nixos.nixUtils.enable = true;
           nixos.nixRemoteBuilds.enable = false;
           nixos.tex.enable = true;
