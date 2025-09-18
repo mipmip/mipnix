@@ -73,6 +73,33 @@
   #    '';
   #  };
 
+  #   services.grafana = {
+  #     enable = true;
+  #     settings = {
+  #
+  # # In your custom.ini file
+  #
+  #       feature_toggles = {
+  #         provisioning = true;
+  #         #kubernetesClientDashboardsFolders = true
+  #         #kubernetesDashboards = true ; use k8s from browser
+  #
+  #       };
+  #
+  #       # If you want easy kubectl setup development mode
+  #       #grafanaAPIServerEnsureKubectlAccess = true
+  #
+  #       server = {
+  #         # Listening Address
+  #         http_addr = "127.0.0.1";
+  #         # and Port
+  #         http_port = 3004;
+  #         # Grafana needs to know on which domain and URL it's running
+  #         domain = "your.domain";
+  #       };
+  #     };
+  #   };
+
   # Enable networking
   networking.hostName = "lego2";
   networking.networkmanager.enable = true;

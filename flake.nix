@@ -112,6 +112,10 @@
           alacritty-theme.overlays.default
         ];
         inherit system;
+        config.permittedInsecurePackages = [
+          "libsoup-2.74.3"
+        ];
+
         config.allowUnfree = true;
       };
 
@@ -328,7 +332,9 @@
           nixos.ai.enable = true;
           nixos.dev.enable = true;
           nixos.desktop.enable = true;
-          nixos.desktopHyprland.enable = false;
+          nixos.virtualization.enable = true;
+          nixos.bambulabs.enable = true;
+          nixos.desktopHyprland.enable = true;
           nixos.nixUtils.enable = true;
           nixos.nixRemoteBuilds.enable = false;
           nixos.tex.enable = true;

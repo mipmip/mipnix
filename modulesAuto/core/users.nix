@@ -1,10 +1,15 @@
 { config, lib, pkgs, ... }:
 
 {
-  programs.zsh.enable = true;
 
-  users.defaultUserShell = pkgs.zsh;
-  environment.shells = with pkgs; [ zsh ];
+  services.openssh.enable = true;
+  services.cron.enable = true;
+  services.journald.extraConfig = "SystemMaxUse=100M";
+
+  programs.zsh.enable = true;
+  programs.fish.enable = true;
+  environment.shells = with pkgs; [ zsh fish bash ];
+
   programs.ssh.startAgent = true;
 
   security.sudo = {
@@ -12,7 +17,10 @@
     wheelNeedsPassword = false;
   };
 
+  users.defaultUserShell = pkgs.fish;
+
   users.users.pim = {
+    shell = pkgs.fish;
     isNormalUser = true;
     extraGroups = [ "wheel" "docker" "networkmanager" "disk"];
   };

@@ -36,6 +36,9 @@ in
     desktopConf.librewolf.enable = true;
     desktopConf.obs.enable = true;
 
+    zsh.enable = true;
+    fish.enable = true;
+
     desktopConf.fonts.enable = true;
     desktopConf.gnome.enable = true;
   };
