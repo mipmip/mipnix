@@ -96,11 +96,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1757317641,
-        "narHash": "sha256-3hhgz+YxeGivlcs1l5N05MqVf/A6TnLCVE3FIs1vxRg=",
+        "lastModified": 1758619393,
+        "narHash": "sha256-BHIQUEcpX0fIqy2z0S9eCqS78R5XOlv9wsze8wC/YUI=",
         "owner": "wearetechnative",
         "repo": "bmc",
-        "rev": "b87df2055f547f6d63b272a68107f20f20a0eb3b",
+        "rev": "f5389756bef388c22f009aa3fd6820a11ef182ac",
         "type": "github"
       },
       "original": {

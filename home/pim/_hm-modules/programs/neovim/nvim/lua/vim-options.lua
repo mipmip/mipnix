@@ -15,6 +15,10 @@ if f~=nil then
 
 end
 
+-- PENCIL
+-- vim.g.pencil.textwidth = 74
+-- vim.g["pencil#wrapModeDefault"] = "soft"
+
 
 vim.filetype.add({
   extension = {

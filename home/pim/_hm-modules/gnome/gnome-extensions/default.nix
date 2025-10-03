@@ -14,6 +14,7 @@ let
     pkgs.gnomeExtensions.appindicator
     pkgs.gnomeExtensions.spotify-tray
     pkgs.gnomeExtensions.wayland-or-x11
+    pkgs.gnomeExtensions.clipboard-indicator
     #pkgs.gnomeExtensions.tailscale-status
   ];
 

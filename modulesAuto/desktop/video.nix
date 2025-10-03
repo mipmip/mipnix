@@ -8,6 +8,9 @@
       vlc
       vhs
 
+      stremio
+      remote-touchpad
+
       (pkgs.wrapOBS {
         plugins = with pkgs.obs-studio-plugins; [
           wlrobs

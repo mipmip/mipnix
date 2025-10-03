@@ -42,13 +42,21 @@
     pkgs.gcc
     pkgs.pkg-config
     pkgs.smug
-    pkgs.typescript-language-server
 
-    pkgs.nil
-    pkgs.terraform-ls
     pkgs.silver-searcher
     pkgs.fzf
     pkgs.ripgrep
+
+    pkgs.typescript-language-server
+    pkgs.nil
+    pkgs.terraform-ls
+    pkgs.bash-language-server
+    pkgs.crystalline
+    pkgs.vscode-langservers-extracted
+    pkgs.rust-analyzer
+    pkgs.haskell-language-server
+    pkgs.gopls
+
   ];
 }
 

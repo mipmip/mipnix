@@ -1,6 +1,7 @@
 return {
   -- Git related plugins
 
+  'preservim/vim-pencil',
   'theRealCarneiro/hyprland-vim-syntax',
   'vimpostor/vim-lumen',
   'tpope/vim-fugitive',
