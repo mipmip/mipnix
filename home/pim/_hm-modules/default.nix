@@ -15,6 +15,8 @@ in
   ++
     map (n: "${./programs}/${n}") (builtins.attrNames (builtins.readDir ./programs))
   ++
+    map (n: "${./shared}/${n}") (builtins.attrNames (builtins.readDir ./shared))
+  ++
     map (n: "${../../_roles}/${n}") (builtins.attrNames (builtins.readDir ./../../_roles));
 
     #  options.roles.desktop = {

@@ -3,7 +3,8 @@
 {
   nix = {
     extraOptions = ''
-    experimental-features = nix-command flakes
+      experimental-features = nix-command flakes
+      keep-failed = true
     '';
 
     package = pkgs.nixVersions.stable;
