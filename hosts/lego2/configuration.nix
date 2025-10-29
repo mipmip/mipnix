@@ -37,6 +37,27 @@
   services.fwupd.enable = true;
 
   # Enable CUPS to print documents.
+
+  services.grafana = {
+    enable = true;
+    settings = {
+      server = {
+        # Listening Address
+        http_addr = "127.0.0.1";
+        # and Port
+        http_port = 3000;
+        # Grafana needs to know on which domain and URL it's running
+        domain = "localhost";
+        root_url = "http://localhost/"; # Not needed if it is `https://your.domain/`
+        serve_from_sub_path = false;
+      };
+    };
+  };
+
+  #services.prometheus.exporters.node-cert
+
+
+
   services.printing.enable = true;
 
   # Enable sound with pipewire.
