@@ -20,6 +20,20 @@
   };
 
   home.file = {
+    ".config/ashell" = {
+      source = ./ashell;
+      recursive = true;
+    };
+  };
+
+  home.file = {
+    ".config/walker" = {
+      source = ./walker;
+      recursive = true;
+    };
+  };
+
+  home.file = {
     ".config/waybar" = {
       source = ./waybar;
       recursive = true;
