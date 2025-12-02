@@ -1,4 +1,9 @@
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.desktopConf.smug;
@@ -7,7 +12,7 @@ let
     nixos = {
       base_dir = "~/nixos";
       repos = [
-        { source = "mipmip/nixos";}
+        { source = "mipmip/nixos"; }
       ];
 
       windows = {
@@ -30,9 +35,9 @@ let
       base_dir = "~/cGnome";
       repos = [
         { source = "mipmip/gnome-hotkeys.cr"; }
-        { source = "mipmip/gnome-shell-extensions-highlight-focus";}
-        { source = "mipmip/gnome-shell-extensions-hotkeys-popup";}
-        { source = "mipmip/gnome-shell-extensions-useless-gaps";}
+        { source = "mipmip/gnome-shell-extensions-highlight-focus"; }
+        { source = "mipmip/gnome-shell-extensions-hotkeys-popup"; }
+        { source = "mipmip/gnome-shell-extensions-useless-gaps"; }
       ];
     };
 
@@ -129,9 +134,6 @@ in
 
         };
       };
-
-
-
 
     };
   };

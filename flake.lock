@@ -517,6 +517,21 @@
         "type": "github"
       }
     },
+    "import-tree_2": {
+      "locked": {
+        "lastModified": 1763762820,
+        "narHash": "sha256-ZvYKbFib3AEwiNMLsejb/CWs/OL/srFQ8AogkebEPF0=",
+        "owner": "vic",
+        "repo": "import-tree",
+        "rev": "3c23749d8013ec6daa1d7255057590e9ca726646",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vic",
+        "repo": "import-tree",
+        "type": "github"
+      }
+    },
     "ixx": {
       "inputs": {
         "flake-utils": [
@@ -586,16 +601,17 @@
     "mipnixvim": {
       "inputs": {
         "flake-parts": "flake-parts",
+        "import-tree": "import-tree_2",
         "nixpkgs": "nixpkgs_7",
         "nixvim": "nixvim",
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1763587176,
-        "narHash": "sha256-jqsLHnnRD/grluF5g3j7nwnsY/PcV0ZsBEKTw6ORAks=",
+        "lastModified": 1764692009,
+        "narHash": "sha256-afJi+tLtzcw9S9QizSwnPp9PG9LXmVqdhZ48VxrTwy4=",
         "owner": "mipmip",
         "repo": "mipnixvim",
-        "rev": "db237cd052a7465b2572885802231050ac561579",
+        "rev": "7cebe61025acf85a1752fc3db5b741c82dde81db",
         "type": "github"
       },
       "original": {
