@@ -41,7 +41,9 @@
     ## OTHER
     agenix.url = "github:ryantm/agenix";
 
-    nixified-ai = { url = "github:nixified-ai/flake"; };
+    nixified-ai = {
+      url = "github:nixified-ai/flake";
+    };
 
     #alacritty-theme.url = "github:alexghr/alacritty-theme.nix";
 
@@ -72,75 +74,87 @@
 
   };
 
-  outputs = inputs@{
+  outputs =
+    inputs@{
 
-    self,
+      self,
 
-    nixpkgs,
-    nixpkgs-mama,
-    nixpkgs-2211,
-    nixpkgs-2311,
-    nixpkgs-2405,
-    nixpkgs-2411,
-    nixpkgs-2505,
-    nixpkgs-inkscape13,
-    unstable,
+      nixpkgs,
+      nixpkgs-mama,
+      nixpkgs-2211,
+      nixpkgs-2311,
+      nixpkgs-2405,
+      nixpkgs-2411,
+      nixpkgs-2505,
+      nixpkgs-inkscape13,
+      unstable,
 
-    import-tree,
+      import-tree,
 
-    #nix-darwin,
-    home-manager,
-    hm-ricing-mode,
-    agenix,
+      #nix-darwin,
+      home-manager,
+      hm-ricing-mode,
+      agenix,
 
-    mipnixvim,
+      mipnixvim,
 
-    #alacritty-theme,
+      #alacritty-theme,
 
-    nixos-hardware,
-    nixos-hardware-t2,
+      nixos-hardware,
+      nixos-hardware-t2,
 
-    nixified-ai,
+      nixified-ai,
 
-    nix-index-database,
+      nix-index-database,
 
-    nixos-boot,
+      nixos-boot,
 
-    jsonify-aws-dotfiles, dirtygit, bmc, race, shellstuff, skull, myhotkeys, mip,
-    #ghostty,
+      jsonify-aws-dotfiles,
+      dirtygit,
+      bmc,
+      race,
+      shellstuff,
+      skull,
+      myhotkeys,
+      mip,
+      #ghostty,
 
-    nixpkgs-pine64, mobile-nixos, home-manager-pine64,
+      nixpkgs-pine64,
+      mobile-nixos,
+      home-manager-pine64,
 
-    nix-on-droid
-    } :
+      nix-on-droid,
+    }:
 
     let
 
-      importFromChannelForSystem = system: channel: import channel {
-        overlays = [
-          (import ./overlays)
-          #alacritty-theme.overlays.default
-        ];
-        inherit system;
-        config.permittedInsecurePackages = [
-          "libsoup-2.74.3"
-        ];
+      importFromChannelForSystem =
+        system: channel:
+        import channel {
+          overlays = [
+            (import ./overlays)
+            #alacritty-theme.overlays.default
+          ];
+          inherit system;
+          config.permittedInsecurePackages = [
+            "libsoup-2.74.3"
+          ];
 
-        config.allowUnfree = true;
-      };
+          config.allowUnfree = true;
+        };
 
-
-      makeHomeConf = {
-        nixpkgs-channel ? nixpkgs,
-        username ? "pim",
-        hostname,
-        homedir ? "/home/pim",
-        system ? "x86_64-linux",
-        secondbrain ? false,
-        awscontrol ? false,
-        desktop ? false,
-        swapAltWin ? false,
-        ...
+      makeHomeConf =
+        {
+          nixpkgs-channel ? nixpkgs,
+          username ? "pim",
+          hostname,
+          homedir ? "/home/pim",
+          system ? "x86_64-linux",
+          secondbrain ? false,
+          awscontrol ? false,
+          desktop ? false,
+          swapAltWin ? false,
+          ...
         }:
         home-manager.lib.homeManagerConfiguration {
           modules = [
@@ -166,24 +180,27 @@
           };
         };
 
-      makeNixosConf = {
-        nixpkgs-channel ? nixpkgs,
-        hostname,
-        system ? "x86_64-linux",
-        config ? {},
-        extraModules ? [],
-        ...
+      makeNixosConf =
+        {
+          nixpkgs-channel ? nixpkgs,
+          hostname,
+          system ? "x86_64-linux",
+          config ? { },
+          extraModules ? [ ],
+          ...
         }:
 
         nixpkgs-channel.lib.nixosSystem {
           modules =
             let
-              defaults = { pkgs, ... }: {
-                nixpkgs.overlays = [(import ./overlays)];
-                _module.args.inputs = inputs;
-                _module.args.unstable = importFromChannelForSystem system unstable;
-                _module.args.pkgs-2211 = importFromChannelForSystem system nixpkgs-2211;
-              };
+              defaults =
+                { pkgs, ... }:
+                {
+                  nixpkgs.overlays = [ (import ./overlays) ];
+                  _module.args.inputs = inputs;
+                  _module.args.unstable = importFromChannelForSystem system unstable;
+                  _module.args.pkgs-2211 = importFromChannelForSystem system nixpkgs-2211;
+                };
 
               extraPkgs = {
                 environment.systemPackages = [
@@ -192,31 +209,33 @@
                   skull.packages."${system}".skull
                   mipnixvim.packages."${system}".default
                 ];
+
               };
 
-            in [
-                defaults
-                (./hosts + "/${hostname}/configuration.nix")
+            in
+            [
+              defaults
+              (./hosts + "/${hostname}/configuration.nix")
 
-                (inputs.import-tree ./modulesAuto)
-                config
+              (inputs.import-tree ./modulesAuto)
+              config
 
-                nix-index-database.nixosModules.nix-index
-                nixos-boot.nixosModules.default
-                agenix.nixosModules.default
-                home-manager.nixosModules.home-manager
-                {
-                  home-manager.useGlobalPkgs = true;
-                }
+              nix-index-database.nixosModules.nix-index
+              nixos-boot.nixosModules.default
+              agenix.nixosModules.default
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+              }
 
-                extraPkgs
+              extraPkgs
 
-              ] ++
-            extraModules;
+            ]
+            ++ extraModules;
         };
 
     in
-      rec {
+    rec {
 
       formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-classic;
 
@@ -392,16 +411,20 @@
         hostname = "billquick";
       };
 
-      nixosConfigurations.pinephone = (nixpkgs-pine64.lib.nixosSystem {
-        system = "aarch64-linux";
-        specialArgs = { home-manager = home-manager-pine64; };
-        modules = [
-          (import "${mobile-nixos}/lib/configuration.nix" {
-            device = "pine64-pinephone";
-          })
-          ./hosts/pesto/default.nix
-        ];
-      });
+      nixosConfigurations.pinephone = (
+        nixpkgs-pine64.lib.nixosSystem {
+          system = "aarch64-linux";
+          specialArgs = {
+            home-manager = home-manager-pine64;
+          };
+          modules = [
+            (import "${mobile-nixos}/lib/configuration.nix" {
+              device = "pine64-pinephone";
+            })
+            ./hosts/pesto/default.nix
+          ];
+        }
+      );
       pinephone-img = nixosConfigurations.pinephone.config.mobile.outputs.u-boot.disk-image;
 
       #      darwinConfigurations."MacBook-Pro-van-pim" = nix-darwin.lib.darwinSystem {

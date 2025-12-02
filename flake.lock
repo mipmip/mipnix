@@ -607,11 +607,11 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1764692009,
-        "narHash": "sha256-afJi+tLtzcw9S9QizSwnPp9PG9LXmVqdhZ48VxrTwy4=",
+        "lastModified": 1764694278,
+        "narHash": "sha256-de+qulO7f0NAukCreB0YD4d34lPkbnyDZ3hZhO3TnFk=",
         "owner": "mipmip",
         "repo": "mipnixvim",
-        "rev": "7cebe61025acf85a1752fc3db5b741c82dde81db",
+        "rev": "1487cbfa85117cb8ef2b698d2d4506475d13e781",
         "type": "github"
       },
       "original": {
