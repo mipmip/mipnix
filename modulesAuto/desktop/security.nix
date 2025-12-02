@@ -2,7 +2,7 @@
 
   config = lib.mkIf config.nixos.desktop.enable {
     environment.systemPackages = with pkgs; [
-      bitwarden
+      bitwarden-desktop
       lynis
     ];
   };

@@ -4,7 +4,7 @@
     environment.systemPackages = with pkgs; [
       unstable.firefox
       librewolf
-      ungoogled-chromium
+      #ungoogled-chromium
     ];
 
     #  environment.sessionVariables = {

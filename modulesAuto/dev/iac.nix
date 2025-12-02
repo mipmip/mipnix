@@ -21,8 +21,6 @@
 
       # PASSWORDS
       gnupg
-      pinentry
-      pinentry-gtk2
       pass
 
       #    unstable.nickel

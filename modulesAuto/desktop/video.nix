@@ -8,7 +8,7 @@
       vlc
       vhs
 
-      stremio
+      #stremio
       remote-touchpad
 
       (pkgs.wrapOBS {

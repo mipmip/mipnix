@@ -4,7 +4,7 @@
     environment.systemPackages = with pkgs; [
 
       uv
-      python3Full
+      python3Minimal
       python3Packages.pip
       python3Packages.setuptools
       python3Packages.requests

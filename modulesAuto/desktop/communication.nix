@@ -1,4 +1,11 @@
-{ config, lib, pkgs, unstable, ... }:{
+{
+  config,
+  lib,
+  pkgs,
+  unstable,
+  ...
+}:
+{
 
   config = lib.mkIf config.nixos.desktop.enable {
     environment.systemPackages = with pkgs; [
@@ -9,7 +16,7 @@
       unstable.signal-desktop
       unstable.flare-signal
 
-      tdesktop
+      #tdesktop
       v4l-utils
 
       zoom-us
@@ -20,11 +27,9 @@
       unstable.tuba # Mastodon
 
       discord
-
-
+      vesktop
 
       unstable.himalaya
     ];
   };
 }
-

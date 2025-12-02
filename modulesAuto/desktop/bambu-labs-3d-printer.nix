@@ -6,7 +6,7 @@
     ];
 
     environment.systemPackages = with pkgs; [
-      bambu-studio
+      #bambu-studio
     ];
   };
 }

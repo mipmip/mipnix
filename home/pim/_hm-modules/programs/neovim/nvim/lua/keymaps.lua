@@ -76,6 +76,14 @@ commander.add({
     keys = { "x", "<leader>X" },
     cat = "mychatgpt",
   },
+  {
+    desc = "Set PencilSoft",
+    cmd = function()
+      vim.cmd("PencilSoft")
+    end,
+    keys = { {"n"}, "<leader>sp" },
+    cat = "markdown",
+  },
 
 
 })

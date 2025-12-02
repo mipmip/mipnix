@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }:{
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
 
   config = lib.mkIf config.nixos.desktopHyprland.enable {
 
@@ -27,14 +33,29 @@
 
     environment.systemPackages = with pkgs; [
       waybar
+      pamixer
+
+      rofi
       hyprland
+      hyprlock
+      hyprshot
+      hyprnome
+
+      ashell
+      walker
+
+      cliphist
+      wl-clipboard
+
       wofi
       swww # for wallpapers
       xdg-desktop-portal-gtk
       xdg-desktop-portal-hyprland
       xwayland
+      hyprshell
+      hyprmon
+      hyprviz
     ];
-
 
   };
 }

@@ -17,3 +17,8 @@ windows:
         commands:
           - nix develop
           - NODE_OPTIONS=--openssl-legacy-provider npm run _react-dev
+  - name: NG
+    root: ~/cQuiqr/quiqr-desktop-ng
+    commands:
+      - nix develop
+      - npm run dev

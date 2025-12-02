@@ -10,7 +10,7 @@
   programs.fish.enable = true;
   environment.shells = with pkgs; [ zsh fish bash ];
 
-  programs.ssh.startAgent = true;
+  #programs.ssh.startAgent = true;
 
   security.sudo = {
     enable = true;

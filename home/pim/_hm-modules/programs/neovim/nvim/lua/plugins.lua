@@ -1,6 +1,7 @@
 return {
   -- Git related plugins
 
+  'hyprland-vim-syntax',
   'preservim/vim-pencil',
   'theRealCarneiro/hyprland-vim-syntax',
   'vimpostor/vim-lumen',

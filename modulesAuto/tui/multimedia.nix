@@ -10,7 +10,7 @@
     pngquant
 
     ffmpegthumbnailer # video thumbnails
-    poppler_utils # pdf thumbnails
+    poppler-utils # pdf thumbnails
     catimg
   ];
 }

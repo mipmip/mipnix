@@ -1,1 +1,2 @@
-suggest-shell-commands: true
+suggest-shell-commands: false
+editor: nvim --clean --cmd "colorscheme murphy"

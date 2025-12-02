@@ -35,67 +35,25 @@
   #boot.plymouth.theme = "breeze";
 
   services.fwupd.enable = true;
+  programs.cdemu.enable = true;
 
   # Enable CUPS to print documents.
 
-  services.grafana = {
-    enable = true;
-    settings = {
-      server = {
-        # Listening Address
-        http_addr = "127.0.0.1";
-        # and Port
-        http_port = 3000;
-        # Grafana needs to know on which domain and URL it's running
-        domain = "localhost";
-        root_url = "http://localhost/"; # Not needed if it is `https://your.domain/`
-        serve_from_sub_path = false;
-      };
-    };
-  };
-
-  services.prometheus.exporters.ssl = {
-    enable = true;
-    openFirewall = false;  # Since Grafana is running locally
-    port = 9219;  # Default port for ssl_exporter
-    extraFlags = [
-      "--config.file=${pkgs.writeText "ssl-exporter.yml" ''
-        modules:
-          technative:
-            prober: https
-            source: technative.eu
-            timeout: 5s
-      ''}"
-    ];
-  };
-
-  services.prometheus = {
-    enable = true;
-    port = 9090;
-    scrapeConfigs = [
-      {
-        job_name = "ssl";
-        static_configs = [{
-          targets = [ "localhost:9219" ];
-        }];
-        metrics_path = "/probe";
-        params = {
-          module = [ "technative" ];
-        };
-        relabel_configs = [
-          {
-            source_labels = [ "__address__" ];
-            target_label = "__param_target";
-          }
-          {
-            source_labels = [ "__param_target" ];
-            target_label = "instance";
-          }
-        ];
-      }
-    ];
-  };
-
+  #  services.grafana = {
+  #    enable = true;
+  #    settings = {
+  #      server = {
+  #        # Listening Address
+  #        http_addr = "127.0.0.1";
+  #        # and Port
+  #        http_port = 3000;
+  #        # Grafana needs to know on which domain and URL it's running
+  #        domain = "localhost";
+  #        root_url = "http://localhost/"; # Not needed if it is `https://your.domain/`
+  #        serve_from_sub_path = false;
+  #      };
+  #    };
+  #  };
 
   services.printing.enable = true;
 
