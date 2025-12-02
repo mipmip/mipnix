@@ -1,4 +1,10 @@
-{ config, inputs, system, pkgs, ... }:
+{
+  config,
+  inputs,
+  system,
+  pkgs,
+  ...
+}:
 
 {
   imports = [
@@ -14,7 +20,11 @@
 
   boot = {
     kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
-    initrd.availableKernelModules = [ "xhci_pci" "usbhid" "usb_storage" ];
+    initrd.availableKernelModules = [
+      "xhci_pci"
+      "usbhid"
+      "usb_storage"
+    ];
     loader = {
       grub.enable = false;
       generic-extlinux-compatible.enable = true;
@@ -38,7 +48,6 @@
     };
   };
 
-
   networking = {
     networkmanager.enable = false;
     firewall.enable = false;
@@ -49,6 +58,73 @@
       networks."ZyXEL11767C".pskRaw = "ext:ZyXEL11767C";
       interfaces = [ "wlan0" ];
     };
+  };
+
+  environment.systemPackages = with pkgs; [ nebula ];
+  age = {
+    secrets = {
+      "nebula-hurry-key" = {
+        file = ../../secrets/nebula-hurry.key.age;
+        path = "/var/lib/nebula/nebula-hurry.key";
+        owner = "nebula-mesh";
+        group = "root";
+        mode = "600";
+      };
+      "nebula-hurry-cert" = {
+        file = ../../secrets/nebula-hurry.crt.age;
+        path = "/var/lib/nebula/nebula-hurry.crt";
+        owner = "nebula-mesh";
+        group = "root";
+        mode = "600";
+      };
+      "nebula-ca-cert" = {
+        file = ../../secrets/nebula-ca.crt.age;
+        path = "/var/lib/nebula/nebula-ca.crt";
+        owner = "nebula-mesh";
+        group = "root";
+        mode = "600";
+      };
+      "nebula-sshd-hostkey" = {
+        file = ../../secrets/nebula-sshd-hostkey.age;
+        path = "/var/lib/nebula/nebula-sshd-hostkey.crt";
+        owner = "nebula-mesh";
+        group = "root";
+        mode = "600";
+      };
+    };
+  };
+
+  services.nebula.networks.mesh = {
+    enable = true;
+    isLighthouse = false;
+    lighthouses = [ "192.168.100.1" ];
+    settings = {
+      cipher = "aes";
+    };
+
+    cert = config.age.secrets.nebula-hurry-cert.path;
+    key = config.age.secrets.nebula-hurry-key.path;
+    ca = config.age.secrets.nebula-ca-cert.path;
+
+    staticHostMap = {
+      "192.168.100.1" = [
+        "3.120.251.46:4242"
+      ];
+    };
+    firewall.outbound = [
+      {
+        host = "any";
+        port = "any";
+        proto = "any";
+      }
+    ];
+    firewall.inbound = [
+      {
+        host = "any";
+        port = "any";
+        proto = "any";
+      }
+    ];
   };
 
   environment.systemPackages = with pkgs; [
@@ -66,7 +142,6 @@
   services.openssh.enable = true;
   #services.tailscale.enable = true;
 
-
   users = {
     mutableUsers = true;
     users.pim = {
@@ -77,7 +152,6 @@
 
   hardware.enableRedistributableFirmware = true;
   system.stateVersion = "23.11";
-
 
   nix = {
     package = pkgs.nixVersions.stable;
