@@ -6,10 +6,10 @@
     ./cloudflared.nix
     ./vaultwarden.nix
     ./home-assistant
-    ../../modules/base-core.nix
-    ../../modules/base-hardware.nix
-    ../../modules/nix-common.nix
-    ../../modules/nix-home-manager-global.nix
+    #    ../../modules/base-core.nix
+    # ../../modules/base-hardware.nix
+    #../../modules/nix-common.nix
+    #../../modules/nix-home-manager-global.nix
   ];
 
   boot = {
@@ -40,6 +40,7 @@
 
 
   networking = {
+    networkmanager.enable = false;
     firewall.enable = false;
     hostName = "hurry";
     wireless = {
@@ -63,7 +64,7 @@
   ];
 
   services.openssh.enable = true;
-  services.tailscale.enable = true;
+  #services.tailscale.enable = true;
 
 
   users = {

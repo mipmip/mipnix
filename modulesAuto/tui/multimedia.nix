@@ -1,17 +1,19 @@
 { config, lib, pkgs, ... }:
 
 {
-  environment.systemPackages = with pkgs; [
+  config = lib.mkIf config.nixos.full.enable {
+    environment.systemPackages = with pkgs; [
 
-    # GRAPHIC
-    imagemagick
-    imgp
-    oxipng
-    pngquant
+      # GRAPHIC
+      imagemagick
+      imgp
+      oxipng
+      pngquant
 
-    ffmpegthumbnailer # video thumbnails
-    poppler-utils # pdf thumbnails
-    catimg
-  ];
+      ffmpegthumbnailer # video thumbnails
+      poppler-utils # pdf thumbnails
+      catimg
+    ];
+  };
 }
 

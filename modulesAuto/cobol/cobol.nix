@@ -1,7 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, lib, config, ... }:
 
 {
-  environment.systemPackages = with pkgs; [
-    pkgs.jdk17
-  ];
+  config = lib.mkIf config.nixos.full.enable {
+    environment.systemPackages = with pkgs; [
+      jdk17
+    ];
+  };
 }
