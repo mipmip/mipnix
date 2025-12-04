@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.desktopConf.ghostty;
@@ -23,6 +28,10 @@ in
         cursor-invert-fg-bg = true;
         mouse-hide-while-typing = true;
         gtk-tabs-location = "hidden";
+        keybind = [
+          "ctrl+shift+c=copy_to_clipboard"
+          "ctrl+shift+v=paste_from_clipboard"
+        ];
       };
     };
   };
