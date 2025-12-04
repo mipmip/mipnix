@@ -71,6 +71,7 @@
       bind-key -n Home send Escape "OH"
       bind-key -n End send Escape "OF"
 
+      bind-key a send Escape "OH"
       set -q -g status-utf8 on                  # expect UTF-8 (tmux < 2.2)
       setw -q -g utf8 on
 
@@ -82,7 +83,9 @@
       if '[ -f ~/.tmux/gpakosz.cf ]' 'source ~/.tmux/gpakosz.cf'
       run 'cat ~/.tmux/gpakosz.sh | sh -s _apply_configuration'
 
-
+      ######### THEME  ##########
+      set-window-option -g window-active-style bg=black
+      set-window-option -g window-style bg=terminal
     '';
   };
 }

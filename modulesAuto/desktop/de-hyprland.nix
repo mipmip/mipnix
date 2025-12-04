@@ -40,9 +40,13 @@
       hyprlock
       hyprshot
       hyprnome
+      nwg-displays
+      libinput
 
       ashell
       walker
+
+      swayidle
 
       cliphist
       wl-clipboard
