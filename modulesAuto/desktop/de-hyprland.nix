@@ -43,6 +43,11 @@
       nwg-displays
       libinput
 
+      wpaperd
+
+      hyprcursor
+      rose-pine-hyprcursor
+
       ashell
       walker
 

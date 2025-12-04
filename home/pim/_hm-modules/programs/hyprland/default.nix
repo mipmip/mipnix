@@ -34,6 +34,13 @@
   };
 
   home.file = {
+    ".config/wpaperd" = {
+      source = ./wpaperd;
+      recursive = true;
+    };
+  };
+
+  home.file = {
     ".config/waybar" = {
       source = ./waybar;
       recursive = true;
