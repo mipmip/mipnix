@@ -30,6 +30,7 @@
     ".config/walker" = {
       source = ./walker;
       recursive = true;
+      force = true;
     };
   };
 
