@@ -18,7 +18,7 @@
       experimental-features = nix-command flakes
     '';
   };
-  services.tailscale.enable = true;
+  #services.tailscale.enable = true;
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

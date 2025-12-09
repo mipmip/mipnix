@@ -26,6 +26,10 @@
       ];
     };
 
+    services.input-remapper = {
+      enable = true;
+    };
+
     # Hint Electon apps to use wayland
     #  environment.sessionVariables = {
     #    NIXOS_OZONE_WL = "1";
@@ -42,14 +46,16 @@
       hyprnome
       nwg-displays
       libinput
+      swaynotificationcenter
 
       wpaperd
+      wl-clipboard
 
       hyprcursor
       rose-pine-hyprcursor
 
       ashell
-      walker
+      #walker
 
       swayidle
 

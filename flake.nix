@@ -25,6 +25,12 @@
     #nixos-hardware-t2.url = "github:nixos/nixos-hardware/863e3ca9988f34c370bd660a5efc3e20eb7ad38b";
     nixos-hardware-t2.url = "github:nixos/nixos-hardware";
 
+    elephant.url = "github:abenz1267/elephant";
+
+    walker = {
+      url = "github:abenz1267/walker";
+      inputs.elephant.follows = "elephant";
+    };
     # DARWIN
     #nix-darwin.url = "github:LnL7/nix-darwin/nix-darwin-24.11";
     #nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
@@ -90,6 +96,9 @@
       unstable,
 
       import-tree,
+
+      elephant,
+      walker,
 
       #nix-darwin,
       home-manager,
@@ -160,6 +169,7 @@
           modules = [
 
             hm-ricing-mode.homeManagerModules.hm-ricing-mode
+            walker.homeManagerModules.default
 
             (import ./home/${username})
             {
@@ -175,6 +185,7 @@
           pkgs = importFromChannelForSystem system nixpkgs-channel;
           extraSpecialArgs = {
             inputs = inputs;
+            system = system;
             unstable = importFromChannelForSystem system unstable;
             #swapAltWin = swapAltWin;
           };
