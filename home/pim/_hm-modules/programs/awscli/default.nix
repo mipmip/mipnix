@@ -47,7 +47,7 @@ let
     "556019936812" = "pastbook_stefano_cutello";
   };
 
-  normalize_string = instring : __concatStringsSep "_" (builtins.filter (x: builtins.typeOf x == "string") (__split " " (lib.strings.toLower instring)));
+  normalize_string = instring : builtins.concatStringsSep "_" (builtins.filter (x: builtins.typeOf x == "string") (builtins.split " " (lib.strings.toLower instring)));
 
   account_name = account :
     if builtins.hasAttr account.account_id alternative_names then
