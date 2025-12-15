@@ -626,11 +626,11 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1765273365,
-        "narHash": "sha256-imUy/OrDhtnEEHNhW3dceofrKaqkv/R4CKL25JkymZo=",
+        "lastModified": 1765483816,
+        "narHash": "sha256-hta7w0NMdFgK74nXAhhG6fKcve8fZ1/6/LbB5kz2sYM=",
         "owner": "mipmip",
         "repo": "mipnixvim",
-        "rev": "49f601348ed0bd5a67033a977b21ba6bc9acc3bf",
+        "rev": "63d98bbe3a62911e300aec1b23eaa309b062af45",
         "type": "github"
       },
       "original": {
@@ -1402,11 +1402,11 @@
         "nixpkgs": "nixpkgs_14"
       },
       "locked": {
-        "lastModified": 1754467506,
-        "narHash": "sha256-i36UOVazzjuSVmzTfko+cLz7YhzKpcVBOnDIKJnWwq4=",
+        "lastModified": 1765321256,
+        "narHash": "sha256-NEtJN5FaebwFKawF5QcdzdVmkcCxYko+DtDNtsuo5VY=",
         "owner": "wearetechnative",
         "repo": "race",
-        "rev": "013ae67059292a53c61948226d0477ad0d8d3b47",
+        "rev": "5fa73b5b196e6c50a95804acbe0f807daea98d78",
         "type": "github"
       },
       "original": {
