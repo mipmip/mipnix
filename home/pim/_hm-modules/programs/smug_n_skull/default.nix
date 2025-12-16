@@ -25,7 +25,7 @@ let
   makeSimpleProject = name: root: {
     root = root;
     windows = [{
-      name = "fish ${builtins.toString (numberFromName name)}";
+      name = "fish";
       layout = "main-vertical";
       commands = [ (makeBanner name) ];
     }];
