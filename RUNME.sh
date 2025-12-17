@@ -2,6 +2,9 @@
 #(C)2019-2022 Pim Snel - https://github.com/mipmip/RUNME.sh
 ALLARGS=("$@");CMDS=();DESC=();NARGS=$#;ARG1=$1;make_command(){ CMDS+=($1);DESC+=("$2");};usage(){ printf "\nUsage: %s [command]\n\nCommands:\n" $0;line="              ";for((i=0;i<=$(( ${#CMDS[*]} -1));i++));do printf "  %s %s ${DESC[$i]}\n" ${CMDS[$i]} "${line:${#CMDS[$i]}}";done;echo;};runme(){ if test $NARGS -gt 0;then eval "$ARG1"||usage;else usage;fi;}
 
+
+EXTRA_ARG=$2
+
 make_command "nixclean" "Run nix garbage collector"
 nixclean(){
   sudo nix-collect-garbage -d
@@ -34,6 +37,14 @@ make_command "pcirescan" "Rescan for devices that don't wake up"
 pcirescan(){
   sudo echo "1" /sys/bus/pci/rescan
 }
+
+make_command "git_sync_machine" "Commit latest version with hostname tag"
+commit_tag_and_push_machine(){
+  git commit -m "$EXTRA_ARG" -a
+  git tag "$(hostname)-$(date --iso-8601)"
+  git push --tags
+}
+
 
 make_command "up_home" "Add latest home-manager updates"
 up_home(){

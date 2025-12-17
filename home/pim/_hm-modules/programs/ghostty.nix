@@ -27,6 +27,7 @@ in
         window-padding-y = 3;
         cursor-invert-fg-bg = true;
         mouse-hide-while-typing = true;
+        copy-on-select = "clipboard";
         gtk-tabs-location = "hidden";
         keybind = [
           "ctrl+shift+c=copy_to_clipboard"

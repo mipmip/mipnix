@@ -373,9 +373,11 @@
           ];
           nixos.ai.enable = true;
           nixos.dev.enable = true;
+          nixos.full.enable = true;
           nixos.desktop.enable = true;
           nixos.virtualization.enable = true;
           nixos.bambulabs.enable = true;
+          nixos.litellm.enable = true;
           nixos.desktopHyprland.enable = true;
           nixos.nixUtils.enable = true;
           nixos.nixpkgsDev.enable = true;
