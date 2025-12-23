@@ -45,7 +45,6 @@ commit_tag_and_push_machine(){
   git push --tags
 }
 
-
 make_command "up_home" "Add latest home-manager updates"
 up_home(){
   RICING=$(hmrice status | grep RICING | wc -l)

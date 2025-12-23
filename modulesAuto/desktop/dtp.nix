@@ -4,7 +4,7 @@
     environment.systemPackages = with pkgs; [
 
       # PDF
-      #zathura
+      zathura
       pdftk
       pdfarranger
       ghostscript
