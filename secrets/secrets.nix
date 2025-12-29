@@ -58,6 +58,16 @@ in
     rodin
     lego2
   ];
+
+  "env-for-litellm.age".publicKeys = [
+    pim
+    ojs
+    lego1
+    rodin
+    lego2
+  ];
+
+
   "bedrock-keys-for-avante-env.age".publicKeys = [
     pim
     ojs

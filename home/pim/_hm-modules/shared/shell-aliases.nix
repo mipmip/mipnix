@@ -20,6 +20,7 @@
     {
       shared.shellAliases = {
         open = "xdg-open";
+        vim = "nvim";
         signal = ''signal-desktop --password-store="gnome-libsecret"'';
 
         t = lib.mkDefault "tmux a || smug start lobby && smug start sudo && smug start nixos && smug start tekst";
