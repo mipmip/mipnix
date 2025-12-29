@@ -1,7 +1,7 @@
 {
 
   programs.vim = {
-    enable = true;
+    enable = false;
 
     extraConfig = ''
 

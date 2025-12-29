@@ -186,6 +186,7 @@
           extraSpecialArgs = {
             inputs = inputs;
             system = system;
+            mipnixvim = mipnixvim;
             unstable = importFromChannelForSystem system unstable;
             #swapAltWin = swapAltWin;
           };
