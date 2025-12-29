@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }:{
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
 
   config = lib.mkIf config.nixos.dev.enable {
     environment.systemPackages = with pkgs; [
@@ -8,7 +14,7 @@
       git-lfs
       gitFull
       bfg-repo-cleaner
+      lazygit
     ];
   };
 }
-

@@ -24,16 +24,6 @@ in
         trim-items = true;
       };
 
-
-      #      "org/gnome/desktop/background" = {
-      #        color-shading-type = "solid";
-      #        picture-options = "zoom";
-      #        picture-uri = "file:///home/pim/Nextcloud/Wallpapers/johannes-plenio-6lDhQ7fCtYc-unsplash.jpg";
-      #        picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/gnome/blobs-d.svg";
-      #        primary-color = "#000000000000";
-      #        secondary-color = "#000000000000";
-      #      };
-
       "org/gnome/desktop/calendar" = {
         show-weekdate = true;
       };

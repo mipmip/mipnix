@@ -9,7 +9,7 @@
       marksman
       terraform-ls
       nodePackages.bash-language-server
-      sumneko-lua-language-server
+      lua-language-server
 
       #unstable.neovim
       unstable.nil

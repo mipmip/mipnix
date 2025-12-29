@@ -15,7 +15,7 @@ let
     liberation_ttf
     #nerdfonts
     #inconsolata-nerdfont
-    ubuntu_font_family
+    ubuntu-classic
   ];
 in
   {

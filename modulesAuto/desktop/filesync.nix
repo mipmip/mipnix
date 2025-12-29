@@ -3,7 +3,7 @@
   config = lib.mkIf config.nixos.desktop.enable {
     environment.systemPackages = with pkgs; [
       #nextcloud-client
-      seafile-client
+      #seafile-client
       #syncthing
     ];
   };

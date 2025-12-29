@@ -7,6 +7,8 @@
       patchelf
       nix-tree
 
+      nix-search-tv
+
     ];
   };
 }

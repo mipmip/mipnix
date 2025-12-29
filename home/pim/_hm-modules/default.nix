@@ -15,6 +15,8 @@ in
   ++
     map (n: "${./programs}/${n}") (builtins.attrNames (builtins.readDir ./programs))
   ++
+    map (n: "${./shared}/${n}") (builtins.attrNames (builtins.readDir ./shared))
+  ++
     map (n: "${../../_roles}/${n}") (builtins.attrNames (builtins.readDir ./../../_roles));
 
     #  options.roles.desktop = {
@@ -35,6 +37,9 @@ in
     desktopConf.firefox.enable = true;
     desktopConf.librewolf.enable = true;
     desktopConf.obs.enable = true;
+
+    zsh.enable = true;
+    fish.enable = true;
 
     desktopConf.fonts.enable = true;
     desktopConf.gnome.enable = true;

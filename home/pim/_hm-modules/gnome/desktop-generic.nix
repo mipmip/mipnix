@@ -28,7 +28,8 @@ in
       "org/gnome/desktop/background" = {
         color-shading-type = "solid";
         picture-options = "zoom";
-        picture-uri = "file:///home/pim/.Wallpapers/johannes-plenio-6lDhQ7fCtYc-unsplash.jpg";
+        #picture-uri = "file:///home/pim/.Wallpapers/johannes-plenio-6lDhQ7fCtYc-unsplash.jpg";
+        picture-uri = "file:///run/current-system/sw/share/backgrounds/gnome/amber-l.jxl";
         picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/gnome/blobs-d.svg";
         primary-color = "#000000000000";
         secondary-color = "#000000000000";

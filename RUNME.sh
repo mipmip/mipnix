@@ -41,7 +41,7 @@ up_home(){
   if [ $RICING -gt 0 ]; then
     echo "Unrise first (hmrice unrice), then run again"
   else
-    home-manager switch --impure --flake .\#$USER@$(hostname)
+    home-manager switch --impure --flake .\#$USER@$(hostname) -b backup
   fi
 }
 

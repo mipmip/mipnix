@@ -2,7 +2,11 @@
 
 {
   nix = {
-    extraOptions = ''experimental-features = nix-command flakes'';
+    extraOptions = ''
+      experimental-features = nix-command flakes
+      keep-failed = true
+    '';
+
     package = pkgs.nixVersions.stable;
 
     #    settings.trusted-substituters = [

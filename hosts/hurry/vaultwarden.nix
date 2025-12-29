@@ -13,7 +13,7 @@
   services.vaultwarden.backupDir = "/var/lib/backups/vaultwarden";
   services.vaultwarden.environmentFile = "/run/secrets/vaultwarden.env";
   services.vaultwarden.config = {
-	  signupsAllowed = true;
+	  signupsAllowed = false;
 	  invitationsAllowed = false;
 	  domain = "https://hurry.koi-ionian.ts.net";
 	  rocketPort = 8000;

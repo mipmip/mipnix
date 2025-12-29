@@ -44,6 +44,7 @@ in
     buildPhase = ''
       bash ./install.sh zip
       unzip highlight-focus@pimsnel.com.shell-extension.zip -d build
+      cd build && 
     '';
 
     installPhase = ''

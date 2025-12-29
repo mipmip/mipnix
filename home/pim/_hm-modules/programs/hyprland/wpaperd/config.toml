@@ -1,0 +1,5 @@
+
+[default]
+path = "/home/pim/nixos/resources/wallpapers/"
+duration = "30m"
+sorting = "ascending"

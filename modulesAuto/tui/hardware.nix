@@ -5,7 +5,7 @@
   environment.systemPackages = with pkgs; [
     dmidecode
     pciutils
-    glxinfo
+    #glxinfo
     lm_sensors
     usbutils
     linux-firmware

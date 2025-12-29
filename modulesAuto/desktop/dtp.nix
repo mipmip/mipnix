@@ -13,7 +13,7 @@
       gimp
       unstable.gimp3-with-plugins
       unstable.inkscape-with-extensions
-      krita
+      #krita
 
       #nixpkgs-inkscape13.inkscape
       feh

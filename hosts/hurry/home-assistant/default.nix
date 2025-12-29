@@ -11,7 +11,7 @@
       ps.pyatv
       ps.aiohue
       ps.gtts
-      ps.pytado
+      #ps.pytado
       ps.tuyaha
       ps.python-otbr-api
       ps.tinytuya
