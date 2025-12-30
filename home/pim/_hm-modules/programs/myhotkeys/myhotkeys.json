@@ -269,6 +269,24 @@
         ]
     },
     {
+        "name": "Fish",
+        "shortcuts": [
+            {
+                "key": "<ALT>e",
+                "description": "Open prompt in $EDITOR"
+            }
+        ]
+    },
+    {
+        "name": "Claude Code",
+        "shortcuts": [
+            {
+                "key": "<CTRL>g",
+                "description": "Open prompt in $EDITOR"
+            }
+        ]
+    },
+    {
         "name": "Gimp",
         "shortcuts": [
             {

@@ -141,7 +141,7 @@
 
     staticHostMap = {
       "192.168.100.1" = [
-        "3.120.251.46:4242"
+        "vaultwarden.tools.technative.cloud:4242"
       ];
     };
     firewall.outbound = [
