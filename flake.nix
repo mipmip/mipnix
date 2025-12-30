@@ -219,9 +219,7 @@
                   agenix.packages."${system}".default
                   myhotkeys.packages."${system}".myhotkeys
                   skull.packages."${system}".skull
-                  mipnixvim.packages."${system}".default
                 ];
-
               };
 
             in

@@ -1,10 +1,71 @@
 [
     {
-        "name": "Gnome Extra",
+        "name": "MyHotKeys",
         "shortcuts": [
             {
-                "key": "<ALT>grave",
-                "description": "Cycle windows within same Application"
+                "key": "<CTRL>f",
+                "description": "search for key binding"
+            },
+            {
+                "key": "<ALT>1",
+                "description": "Page 1 (idem for page 2-n)"
+            }
+        ]
+    },
+    {
+        "name": "Hyprland",
+        "shortcuts": [
+            {
+                "key": "<CTRL><SHIFT>Right",
+                "description": "Swap active window with right window"
+            },
+            {
+                "key": "<CTRL><SHIFT>Left",
+                "description": "Swap active window with left window"
+            },
+            {
+                "key": "<SUPER>P",
+                "description": "PSEUDO"
+            },
+            {
+                "key": "<SUPER>D",
+                "description": "Set darkmode"
+            },
+            {
+                "key": "<SHIFT><SUPER>D",
+                "description": "Set lightmode"
+            },
+            {
+                "key": "<ALT>Space",
+                "description": "Show clipboard history"
+            },
+            {
+                "key": "<SUPER>J",
+                "description": "Toggle Split"
+            },
+            {
+                "key": "<SUPER>L",
+                "description": "Lock screen"
+            },
+            {
+                "key": "<SHIFT><SUPER>L",
+                "description": "Lock screen and suspend"
+            },
+            {
+                "key": "<SUPER>Q",
+                "description": "Kill Active"
+            },
+            {
+                "key": "<SUPER><SHIFT>M",
+                "description": "Exit Hyprland"
+            },
+            {
+                "key": "<SUPER>W",
+                "description": "Toggle Floating"
+            },
+            {
+                "key": "<SHIFT><SUPER>1",
+                "description": "Move active window to space 1 (idem for 2-9)"
             }
         ]
     },
@@ -33,28 +94,20 @@
                 "description": "Firefox"
             },
             {
+                "key": "<SHIFT><SUPER>S",
+                "description": "Signal"
+            },
+            {
                 "key": "<SHIFT><SUPER>F",
                 "description": "Files"
             },
             {
-                "key": "<SHIFT><SUPER>1",
-                "description": "Trajno"
+                "key": "<CTRL><SHIFT>R",
+                "description": "Screenshot of region"
             },
             {
-                "key": "<CTRL><SUPER>2",
-                "description": "KeePass"
-            },
-            {
-                "key": "<CTRL><SUPER>4",
-                "description": "Screenshot Area"
-            },
-            {
-                "key": "<CTRL><SUPER>5",
-                "description": "Screenshot Interactive"
-            },
-            {
-                "key": "<CTRL><SUPER>6",
-                "description": "Slack"
+                "key": "<CTRL><SHIFT>W",
+                "description": "Screenshot of window"
             }
         ]
     },
@@ -166,47 +219,6 @@
             {
                 "command": ":fsum",
                 "description": "sum all above"
-            }
-        ]
-    },
-    {
-        "name": "st",
-        "shortcuts": [
-            {
-                "key": "<SHIFT><CTRL>j",
-                "description": "Scale fonts"
-            },
-            {
-                "key": "<SHIFT><CTRL>k",
-                "description": "Scale fonts"
-            },
-            {
-                "key": "<SHIFT><CTRL>F1",
-                "description": "Set Color Black"
-            },
-            {
-                "key": "<SHIFT><CTRL>F2",
-                "description": "Set Color Sol.Light"
-            },
-            {
-                "key": "<SHIFT><CTRL>F3",
-                "description": "Set Color Sol.Dark"
-            },
-            {
-                "key": "<SHIFT><CTRL>F4",
-                "description": "Set Color White"
-            },
-            {
-                "key": "<SHIFT><CTRL>S",
-                "description": "Cycle fonts (Lib-Mono/DeJaVu-Sans)"
-            },
-            {
-                "key": "<SHIFT><CTRL>S",
-                "description": "Cycle fonts (Lib-Mono/DeJaVu-Sans)"
-            },
-            {
-                "key": "<SHIFT><CTRL>V",
-                "description": "Paste"
             }
         ]
     },
