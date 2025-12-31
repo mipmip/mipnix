@@ -4,15 +4,15 @@
   age = {
     secrets = {
       "nebula-harry-key" = {
-        file = ../../secrets/nebula-hurry.key.age;
-        path = "/var/lib/nebula/nebula-hurry.key";
+        file = ../../secrets/nebula-harry.key.age;
+        path = "/var/lib/nebula/nebula-harry.key";
         owner = "nebula-mesh";
         group = "root";
         mode = "600";
       };
       "nebula-harry-cert" = {
-        file = ../../secrets/nebula-hurry.crt.age;
-        path = "/var/lib/nebula/nebula-hurry.crt";
+        file = ../../secrets/nebula-harry.crt.age;
+        path = "/var/lib/nebula/nebula-harry.crt";
         owner = "nebula-mesh";
         group = "root";
         mode = "600";
@@ -42,8 +42,8 @@
       cipher = "aes";
     };
 
-    cert = config.age.secrets.nebula-hurry-cert.path;
-    key = config.age.secrets.nebula-hurry-key.path;
+    cert = config.age.secrets.nebula-harry-cert.path;
+    key = config.age.secrets.nebula-harry-key.path;
     ca = config.age.secrets.nebula-ca-cert.path;
 
     staticHostMap = {

@@ -4,7 +4,7 @@
   imports = [
     ./hardware-configuration.nix
     #./nextcloud.nix
-    ./seafile.nix
+    #./seafile.nix
     #./matrix.nix
     ./nebula.nix
     #    ./cloudflared.nix
