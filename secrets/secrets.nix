@@ -143,5 +143,10 @@ in
   "nebula-hurry.crt.age".publicKeys = users ++ systems;
   "nebula-hurry.key.age".publicKeys = users ++ systems;
   "nebula-sshd-hostkey.age".publicKeys = users ++ systems;
+  "nebula-harry.crt.age".publicKeys = users ++ systems;
+  "nebula-harry.key.age".publicKeys = users ++ systems;
+  "nebula-passieflora.crt.age".publicKeys = users ++ systems;
+  "nebula-passieflora.key.age".publicKeys = users ++ systems;
+
 
 }

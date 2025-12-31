@@ -6,7 +6,7 @@
     #./nextcloud.nix
     ./seafile.nix
     ./matrix.nix
-    ./cloudflared.nix
+    #    ./cloudflared.nix
     ../../modules/base-core.nix
     ../../modules/base-hardware.nix
     ../../modules/nix-common.nix
@@ -48,12 +48,12 @@
     git
     htop
     libraspberrypi
-    cloudflared
+    #    cloudflared
     raspberrypi-eeprom
   ];
 
   services.openssh.enable = true;
-  services.tailscale.enable = true;
+  #services.tailscale.enable = true;
 
 
   users = {

@@ -401,24 +401,6 @@
         hostname = "ojs";
       };
 
-      nixosConfigurations.gnome-45 = makeNixosConf {
-        hostname = "gnome-45";
-        extraModules = [
-          {
-            nixpkgs.config.pkgs = import nixpkgs-2311 { system = "x86_64-linux"; };
-          }
-        ];
-      };
-
-      nixosConfigurations.grannyos = makeNixosConf {
-        hostname = "grannyos";
-        extraModules = [
-          {
-            nixpkgs.config.pkgs = import nixpkgs-2311 { system = "x86_64-linux"; };
-          }
-        ];
-      };
-
       nixosConfigurations.billquick = makeNixosConf {
         hostname = "billquick";
       };
@@ -438,12 +420,6 @@
         }
       );
       pinephone-img = nixosConfigurations.pinephone.config.mobile.outputs.u-boot.disk-image;
-
-      #      darwinConfigurations."MacBook-Pro-van-pim" = nix-darwin.lib.darwinSystem {
-      #      	modules = [
-      #      	  ./hosts/somemac/configuration.nix
-      #        ];
-      #      };
 
       nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
         pkgs = import nixpkgs { system = "aarch64-linux"; };
