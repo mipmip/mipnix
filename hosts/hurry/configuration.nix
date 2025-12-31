@@ -1,7 +1,5 @@
 {
   config,
-  inputs,
-  system,
   pkgs,
   ...
 }:
@@ -11,7 +9,7 @@
     ./hardware-configuration.nix
     ./cloudflared.nix
     ./vaultwarden.nix
-    ./home-assistant
+    #./home-assistant
     #    ../../modules/base-core.nix
     # ../../modules/base-hardware.nix
     #../../modules/nix-common.nix
@@ -55,12 +53,11 @@
     wireless = {
       secretsFile = "/run/secrets/wifi";
       enable = true;
-      networks."ZyXEL11767C".pskRaw = "ext:ZyXEL11767C";
+      networks."japi".pskRaw = "ext:japi";
       interfaces = [ "wlan0" ];
     };
   };
 
-  environment.systemPackages = with pkgs; [ nebula ];
   age = {
     secrets = {
       "nebula-hurry-key" = {
@@ -109,6 +106,7 @@
     staticHostMap = {
       "192.168.100.1" = [
         "3.120.251.46:4242"
+        "vaultwarden.tools.technative.cloud:4242"
       ];
     };
     firewall.outbound = [
@@ -128,19 +126,17 @@
   };
 
   environment.systemPackages = with pkgs; [
+    nebula
     home-manager
-    cloudflared
     vim
     tmux
     git
     htop
     libraspberrypi
-    cloudflared
     raspberrypi-eeprom
   ];
 
   services.openssh.enable = true;
-  #services.tailscale.enable = true;
 
   users = {
     mutableUsers = true;
