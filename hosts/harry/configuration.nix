@@ -5,13 +5,14 @@
     ./hardware-configuration.nix
     #./nextcloud.nix
     ./seafile.nix
-    ./matrix.nix
+    #./matrix.nix
+    ./nebula.nix
     #    ./cloudflared.nix
-    ../../modules/base-core.nix
-    ../../modules/base-hardware.nix
-    ../../modules/nix-common.nix
+    #../../modules/base-core.nix
+    #../../modules/base-hardware.nix
+    #    ../../modules/nix-common.nix
     ../../modules/network-nfs-piet.nix
-    ../../modules/nix-home-manager-global.nix
+    #../../modules/nix-home-manager-global.nix
   ];
 
   boot = {
