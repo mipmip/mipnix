@@ -149,4 +149,7 @@ in
   "nebula-passieflora.key.age".publicKeys = users ++ systems;
 
 
+  "nebula-fairphonepim.crt.age".publicKeys = users ++ systems;
+  "nebula-fairphonepim.key.age".publicKeys = users ++ systems;
+
 }
