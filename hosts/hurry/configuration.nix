@@ -46,6 +46,13 @@
     };
   };
 
+
+  services.uptime-kuma.enable = true;
+  services.uptime-kuma.settings = {
+    UPTIME_KUMA_HOST="0.0.0.0";
+    UPTIME_KUMA_PORT="8080";
+  };
+
   networking = {
     networkmanager.enable = false;
     firewall.enable = false;
