@@ -133,6 +133,150 @@ copy_privkey_to_remote(){
   echo "Making last SSH connection"
   ssh -o PubkeyAuthentication=no -o PreferredAuthentications=password ${ALLARGS[1]} "chmod 600 ~/.ssh/id_ed25519"
 }
+
+make_command "new_nebula_node" "Create new nebula node certificates"
+new_nebula_node(){
+  # Check required tools
+  if ! command -v gum &> /dev/null; then
+    echo "Error: gum is not installed"
+    exit 1
+  fi
+  if ! command -v nebula-cert &> /dev/null; then
+    echo "Error: nebula-cert is not installed"
+    exit 1
+  fi
+  if ! command -v age &> /dev/null; then
+    echo "Error: age is not installed"
+    exit 1
+  fi
+  if ! command -v agenix &> /dev/null; then
+    echo "Error: agenix is not installed"
+    exit 1
+  fi
+
+  # Interactive questions using gum
+  NODE_NAME=$(gum input --placeholder "Enter node name (e.g., harry, lego2)")
+  if [[ -z "$NODE_NAME" ]]; then
+    echo "Error: Node name is required"
+    exit 1
+  fi
+
+  # Check if node already exists
+  if [[ -f "./secrets/nebula-$NODE_NAME.crt.age" ]] || [[ -f "./secrets/nebula-$NODE_NAME.key.age" ]]; then
+    echo "Error: Certificates for node '$NODE_NAME' already exist"
+    exit 1
+  fi
+
+  NODE_IP=$(gum input --placeholder "Enter nebula IP in CIDR notation (e.g., 192.168.100.5/24)")
+  if [[ -z "$NODE_IP" ]]; then
+    echo "Error: IP address is required"
+    exit 1
+  fi
+
+  # Validate CIDR notation
+  if ! [[ "$NODE_IP" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/[0-9]+$ ]]; then
+    echo "Error: Invalid CIDR notation. Expected format: 192.168.100.5/24"
+    exit 1
+  fi
+
+  NODE_GROUPS=$(gum input --placeholder "Enter groups (comma-separated, or leave empty)")
+
+  # Confirmation
+  gum style --border normal --padding "1 2" --border-foreground 33 \
+    "Creating nebula certificate for:" \
+    "  Node: $NODE_NAME" \
+    "  IP: $NODE_IP" \
+    "  Groups: ${NODE_GROUPS:-none}"
+
+  if ! gum confirm "Proceed with certificate creation?"; then
+    echo "Cancelled"
+    exit 0
+  fi
+
+  # Create secure temporary directory
+  TMPDIR=$(mktemp -d -t nebula-XXXXXXXXXX)
+  chmod 700 "$TMPDIR"
+
+  # Trap to ensure cleanup on exit
+  trap "shred -u \"$TMPDIR\"/* 2>/dev/null; rm -rf \"$TMPDIR\"" EXIT
+
+  echo
+  echo "Decrypting CA certificates..."
+
+  # Decrypt CA key and certificate
+  if ! age --decrypt -i ~/.ssh/id_ed25519 ./secrets/nebula-ca.key.age > "$TMPDIR/ca.key"; then
+    echo "Error: Failed to decrypt CA key"
+    exit 1
+  fi
+  chmod 600 "$TMPDIR/ca.key"
+
+  if ! age --decrypt -i ~/.ssh/id_ed25519 ./secrets/nebula-ca.crt.age > "$TMPDIR/ca.crt"; then
+    echo "Error: Failed to decrypt CA certificate"
+    exit 1
+  fi
+  chmod 600 "$TMPDIR/ca.crt"
+
+  echo "Generating node certificates..."
+
+  # Generate certificate
+  SIGN_CMD="nebula-cert sign -ca-crt \"$TMPDIR/ca.crt\" -ca-key \"$TMPDIR/ca.key\" -name \"$NODE_NAME\" -ip \"$NODE_IP\" -out-crt \"$TMPDIR/$NODE_NAME.crt\" -out-key \"$TMPDIR/$NODE_NAME.key\""
+
+  if [[ -n "$NODE_GROUPS" ]]; then
+    SIGN_CMD="$SIGN_CMD -groups \"$NODE_GROUPS\""
+  fi
+
+  if ! eval "$SIGN_CMD"; then
+    echo "Error: Failed to generate certificates"
+    exit 1
+  fi
+
+  echo "Encrypting certificates..."
+
+  # Encrypt the new certificate files
+  if ! age --encrypt -R ~/.ssh/id_ed25519.pub < "$TMPDIR/$NODE_NAME.crt" > "./secrets/nebula-$NODE_NAME.crt.age"; then
+    echo "Error: Failed to encrypt certificate"
+    exit 1
+  fi
+  chmod 600 "./secrets/nebula-$NODE_NAME.crt.age"
+
+  if ! age --encrypt -R ~/.ssh/id_ed25519.pub < "$TMPDIR/$NODE_NAME.key" > "./secrets/nebula-$NODE_NAME.key.age"; then
+    echo "Error: Failed to encrypt key"
+    exit 1
+  fi
+  chmod 600 "./secrets/nebula-$NODE_NAME.key.age"
+
+  echo "Updating secrets.nix..."
+
+  # Add entries to secrets.nix before the closing brace
+  sed -i "/^}$/i \  \"nebula-$NODE_NAME.crt.age\".publicKeys = users ++ systems;\n  \"nebula-$NODE_NAME.key.age\".publicKeys = users ++ systems;\n" ./secrets/secrets.nix
+
+#  echo "Rekeying secrets with agenix..."
+
+#  # Rekey secrets
+#  if ! (cd secrets && agenix --rekey); then
+#    echo "Error: Failed to rekey secrets"
+#    exit 1
+#  fi
+
+  # Success message
+  echo
+  gum style --border normal --padding "1 2" --border-foreground 212 \
+    "✓ Created nebula certificates for $NODE_NAME" \
+    "" \
+    "Files created:" \
+    "  • secrets/nebula-$NODE_NAME.key.age" \
+    "  • secrets/nebula-$NODE_NAME.crt.age" \
+    "  • Updated secrets/secrets.nix" \
+    "" \
+    "✓ Secrets rekeyed with agenix for all authorized systems" \
+    "" \
+    "Next steps:" \
+    "  1. Add age.secrets configuration in hosts/$NODE_NAME/nebula.nix" \
+    "  2. Configure services.nebula.networks.mesh in the same file" \
+    "  3. Commit changes to git" \
+    "  4. Rebuild the system configuration"
+  echo
+}
 #make_command "disable_mac_trackpad" "disable trackpad when it acts funny"
 #disable_mac_trackpad(){
 #  xinput set-prop 13 "Device Enabled" 0
