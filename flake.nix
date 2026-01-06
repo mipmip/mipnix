@@ -125,7 +125,7 @@
           ];
           inherit system;
           config.permittedInsecurePackages = [
-            "libsoup-2.74.3"
+            #"libsoup-2.74.3"
           ];
 
           config.allowUnfree = true;

@@ -92,7 +92,6 @@ call hotpop#init()
 
 " PORTED TO NEOVIM
 "call HotpopMap('map',      '',         ',,',         ':call OpenCurrentInNerdTree()<CR>',  'File',          'Open directory of current file in NERDTree')
-call HotpopMap('map',      '',         ',,',         ':NnnExplorer %:p:h<CR>',             'File',          'Open directory of current file in NNN')
 call HotpopMap('map',      '',         ',b',         ':Buffers<cr>',                       'FZF',           'FZF with open buffers')
 call HotpopMap('map',      '',         ',f',         ':Files<cr>',                         'FZF',           'FZF with files in current directory')
 call HotpopMap('nmap',     '',         '<leader>?',  ':call HotpopShow()<CR>',             'Hotmap',        'Open this popup...')

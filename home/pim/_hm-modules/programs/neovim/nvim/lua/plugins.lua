@@ -8,7 +8,6 @@ return {
 	"tpope/vim-fugitive",
 	"tpope/vim-eunuch",
 	"tpope/vim-rhubarb",
-	"mcchrish/nnn.vim",
 	-- 'skywind3000/vim-keysound',
 	"ntpeters/vim-better-whitespace",
 	"junegunn/vim-easy-align",
