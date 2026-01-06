@@ -2,12 +2,11 @@
 
   inputs = {
 
-
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11"; # GNOME 48
     nixpkgs-mama.url = "github:NixOS/nixpkgs/nixos-24.11"; # GNOME 47
 
-    nix-index-database.url = "github:nix-community/nix-index-database"; 
-    nix-index-database.inputs.nixpkgs.follows = "nixpkgs"; 
+    nix-index-database.url = "github:nix-community/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-boot.url = "github:mipmip/nixos-boot-grannyos";
@@ -34,10 +33,6 @@
     nixpkgs-2505.url = "github:NixOS/nixpkgs/nixos-25.05";
 
     agenix.url = "github:ryantm/agenix";
-
-    nixified-ai = {
-      url = "github:nixified-ai/flake";
-    };
 
     bmc.url = "github:wearetechnative/bmc";
     race.url = "github:wearetechnative/race";
@@ -73,11 +68,8 @@
 
       # Import all flake-parts modules
       imports = [
-        ./flake-modules/channels.nix
-        ./flake-modules/helpers.nix
-        ./flake-modules/nixos-systems.nix
-        ./flake-modules/home-configurations.nix
-        ./flake-modules/nix-on-droid.nix
+        inputs.flake-parts.flakeModules.modules
+        (inputs.import-tree ./modules)
       ];
 
       # Define supported systems

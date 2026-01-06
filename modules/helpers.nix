@@ -75,8 +75,12 @@
           in
           [
             defaults
+
+            inputs.self.modules.nixos.${hostname}
+
             (../hosts + "/${hostname}/configuration.nix")
             (inputs.import-tree ../modulesAuto)
+
             config
             inputs.nix-index-database.nixosModules.nix-index
             inputs.nixos-boot.nixosModules.default

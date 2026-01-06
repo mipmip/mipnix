@@ -1,10 +1,27 @@
 { inputs, self, ... }:
+
+let
+  hostname = "lego2";
+in
+
 {
+  flake.homeConfigurations = {
+
+    "pim@lego2" = self.lib.makeHomeConf {
+      inherit hostname;
+      secondbrain = true;
+      awscontrol = true;
+      desktop = true;
+    };
+  };
+
   flake.nixosConfigurations = {
 
     lego2 = self.lib.makeNixosConf rec {
-      hostname = "lego2";
+      inherit hostname;
+
       system = "x86_64-linux";
+
       config = {
         imports = [
           inputs.nixos-hardware.nixosModules.framework-13-7040-amd
@@ -29,39 +46,6 @@
         nixos.hardware.keychron.enable = false;
       };
     };
-
-    passieflora = self.lib.makeNixosConf {
-      hostname = "passieflora";
-      extraModules = [
-        ../hosts/passieflora/nix/substituter.nix
-        inputs.nixos-hardware-t2.nixosModules.apple-t2
-      ];
-    };
-
-    hurry = self.lib.makeNixosConf {
-      hostname = "hurry";
-      system = "aarch64-linux";
-    };
-
-    harry = self.lib.makeNixosConf {
-      hostname = "harry";
-      system = "aarch64-linux";
-    };
-
-    pinephone = inputs.nixpkgs-pine64.lib.nixosSystem {
-      system = "aarch64-linux";
-      specialArgs = {
-        home-manager = inputs.home-manager-pine64;
-      };
-      modules = [
-        (import "${inputs.mobile-nixos}/lib/configuration.nix" {
-          device = "pine64-pinephone";
-        })
-        ../hosts/pesto/default.nix
-      ];
-    };
   };
 
-  flake.pinephone-img =
-    self.nixosConfigurations.pinephone.config.mobile.outputs.u-boot.disk-image;
 }

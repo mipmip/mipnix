@@ -2,13 +2,6 @@
 {
   flake.homeConfigurations = {
 
-    "pim@lego2" = self.lib.makeHomeConf {
-      hostname = "lego2";
-      secondbrain = true;
-      awscontrol = true;
-      desktop = true;
-    };
-
     "pim@passieflora" = self.lib.makeHomeConf {
       hostname = "passieflora";
       desktop = true;
