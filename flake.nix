@@ -3,11 +3,6 @@
   inputs = {
 
     ## MAIN NIXPKGS
-    #nixpkgs-2211.url = "github:NixOS/nixpkgs/nixos-22.11"; # GNOME 43.2
-    #nixpkgs-2305.url = "github:NixOS/nixpkgs/nixos-23.05"; # GNOME 44.2?
-    #nixpkgs-2311.url = "github:NixOS/nixpkgs/nixos-23.11"; # GNOME 45.2
-    #nixpkgs-2405.url = "github:NixOS/nixpkgs/nixos-24.05"; # GNOME 46
-    #nixpkgs-2411.url = "github:NixOS/nixpkgs/nixos-24.11"; # GNOME 47
     nixpkgs-2505.url = "github:NixOS/nixpkgs/nixos-25.05"; # GNOME 48
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11"; # GNOME 48
@@ -22,7 +17,6 @@
     nixpkgs-inkscape13.url = "github:leiserfg/nixpkgs?ref=staging";
 
     nixos-hardware.url = "github:nixos/nixos-hardware";
-    #nixos-hardware-t2.url = "github:nixos/nixos-hardware/863e3ca9988f34c370bd660a5efc3e20eb7ad38b";
     nixos-hardware-t2.url = "github:nixos/nixos-hardware";
 
     elephant.url = "github:abenz1267/elephant";
@@ -31,9 +25,6 @@
       url = "github:abenz1267/walker";
       inputs.elephant.follows = "elephant";
     };
-    # DARWIN
-    #nix-darwin.url = "github:LnL7/nix-darwin/nix-darwin-24.11";
-    #nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     ## HOME MANAGER
     home-manager.url = "github:nix-community/home-manager/release-25.11";
@@ -44,14 +35,11 @@
     hm-ricing-mode.url = "github:mipmip/hm-ricing-mode";
     hm-ricing-mode.inputs.nixpkgs.follows = "nixpkgs-2505";
 
-    ## OTHER
     agenix.url = "github:ryantm/agenix";
 
     nixified-ai = {
       url = "github:nixified-ai/flake";
     };
-
-    #alacritty-theme.url = "github:alexghr/alacritty-theme.nix";
 
     bmc.url = "github:wearetechnative/bmc";
     race.url = "github:wearetechnative/race";
@@ -60,7 +48,6 @@
     myhotkeys.url = "github:mipmip/gnome-hotkeys.cr/0.2.7";
     shellstuff.url = "github:mipmip/nix-shellstuff";
     dirtygit.url = "github:mipmip/dirtygit";
-    #ghostty.url = "github:ghostty-org/ghostty";
     skull.url = "github:mipmip/skull";
     mip.url = "github:mipmip/mip.rs";
 
@@ -87,10 +74,6 @@
 
       nixpkgs,
       nixpkgs-mama,
-    #nixpkgs-2211,
-    #  nixpkgs-2311,
-    #  nixpkgs-2405,
-    # nixpkgs-2411,
       nixpkgs-2505,
       nixpkgs-inkscape13,
       unstable,
@@ -100,14 +83,11 @@
       elephant,
       walker,
 
-      #nix-darwin,
       home-manager,
       hm-ricing-mode,
       agenix,
 
       mipnixvim,
-
-      #alacritty-theme,
 
       nixos-hardware,
       nixos-hardware-t2,
@@ -126,7 +106,6 @@
       skull,
       myhotkeys,
       mip,
-      #ghostty,
 
       nixpkgs-pine64,
       mobile-nixos,
@@ -211,7 +190,6 @@
                   nixpkgs.overlays = [ (import ./overlays) ];
                   _module.args.inputs = inputs;
                   _module.args.unstable = importFromChannelForSystem system unstable;
-                  #_module.args.pkgs-2211 = importFromChannelForSystem system nixpkgs-2211;
                 };
 
               extraPkgs = {
@@ -247,7 +225,7 @@
     in
     rec {
 
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-classic;
+      #formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-classic;
 
       homeConfigurations."pim@hurry" = makeHomeConf {
         hostname = "hurry";
@@ -258,47 +236,15 @@
         hostname = "arcana-one";
       };
 
-      #      homeConfigurations."pim@somemac" = makeHomeConf {
-      #        hostname = "MacBook-Pro-van-pim";
-      #        system = "x86_64-darwin";
-      #        homedir = "/Users/pim";
-      #      };
-
       homeConfigurations."pim@harry" = makeHomeConf {
         hostname = "harry";
         system = "aarch64-linux";
       };
 
-      homeConfigurations."pim@tn-nixhost" = makeHomeConf {
-        hostname = "tn-nixhost";
-        awscontrol = true;
-      };
-
-      homeConfigurations."pim@rodin" = makeHomeConf {
-        hostname = "rodin";
-        secondbrain = true;
-        awscontrol = true;
-        desktop = true;
-        swapAltWin = true;
-      };
-
-      homeConfigurations."pim@lego1" = makeHomeConf {
-        hostname = "lego1";
-        secondbrain = true;
-        awscontrol = true;
-        desktop = true;
-        swapAltWin = true;
-      };
-
       homeConfigurations."pim@lego2" = makeHomeConf {
-        hostname = "lego1";
+        hostname = "lego2";
         secondbrain = true;
         awscontrol = true;
-        desktop = true;
-      };
-
-      homeConfigurations."pim@ojs" = makeHomeConf {
-        hostname = "ojs";
         desktop = true;
       };
 
@@ -314,50 +260,12 @@
         desktop = true;
       };
 
-      nixosConfigurations.rodin = makeNixosConf rec {
-        hostname = "rodin";
-        config = {
-          nixos.ai.enable = true;
-          nixos.aiLocal.enable = false;
-          nixos.dev.enable = true;
-          nixos.desktop.enable = true;
-          nixos.desktopHyprland.enable = true;
-          nixos.nixUtils.enable = true;
-          nixos.nixRemoteBuilds.enable = false;
-          nixos.trusted.enable = true;
-          nixos.tex.enable = true;
-          nixos.hardware.keychron.enable = true;
-        };
-      };
-
       nixosConfigurations.passieflora = makeNixosConf {
         hostname = "passieflora";
         extraModules = [
           ./hosts/passieflora/nix/substituter.nix
           nixos-hardware-t2.nixosModules.apple-t2
         ];
-      };
-
-      nixosConfigurations.lego1 = makeNixosConf rec {
-        hostname = "lego1";
-        system = "x86_64-linux";
-        config = {
-          imports = [
-            nixos-hardware.nixosModules.framework-12th-gen-intel
-          ];
-          environment.systemPackages = [
-            myhotkeys.packages."${system}".myhotkeys
-          ];
-          nixos.ai.enable = true;
-          nixos.dev.enable = true;
-          nixos.desktop.enable = true;
-          nixos.desktopHyprland.enable = true;
-          nixos.nixUtils.enable = true;
-          nixos.nixRemoteBuilds.enable = false;
-          nixos.tex.enable = true;
-          nixos.trusted.enable = true;
-          nixos.hardware.keychron.enable = true;
-        };
       };
 
       nixosConfigurations.lego2 = makeNixosConf rec {
@@ -396,14 +304,6 @@
       nixosConfigurations.harry = makeNixosConf {
         hostname = "harry";
         system = "aarch64-linux";
-      };
-
-      nixosConfigurations.ojs = makeNixosConf {
-        hostname = "ojs";
-      };
-
-      nixosConfigurations.billquick = makeNixosConf {
-        hostname = "billquick";
       };
 
       nixosConfigurations.pinephone = (
