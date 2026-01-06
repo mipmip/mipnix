@@ -33,7 +33,7 @@
     }
     {
       name = "lobby";
-      root = "~/tcTNxDocs";
+      root = "~/";
     }
     {
       name = "nixdev";

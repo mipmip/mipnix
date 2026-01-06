@@ -14,7 +14,7 @@
       unstable.newelle
       unstable.sillytavern
       unstable.chatbox
-      unstable.claude-code
+
     ];
   };
 }

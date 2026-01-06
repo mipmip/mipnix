@@ -6,7 +6,7 @@ let
 
     #32bit
     callPackage_i686                      = pkgs.lib.callPackageWith (pkgs.pkgsi686Linux // self);
-    hl4150cdn                             = callPackage_i686 ./drivers/hl4150cdn                            { };
+    #hl4150cdn                             = callPackage_i686 ./drivers/hl4150cdn                            { };
 
     #64bit
     #    crelease                              = pkgs.callPackage ./utils/crelease                               { };

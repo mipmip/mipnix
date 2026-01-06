@@ -10,6 +10,11 @@
 
       unstable.plandex
       unstable.plandex-server
+      unstable.claude-code
+
+      opencode
+      goose
+      #crush
 
       mods
     ];

@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  unstable,
   ...
 }:
 {
@@ -67,7 +68,7 @@
       xdg-desktop-portal-gtk
       xdg-desktop-portal-hyprland
       xwayland
-      hyprshell
+      unstable.hyprshell
       hyprmon
       hyprviz
     ];

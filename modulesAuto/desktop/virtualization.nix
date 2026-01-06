@@ -9,6 +9,7 @@
     virtualisation.libvirtd.allowedBridges = [];
 
     environment.systemPackages = with pkgs; [
+      quickemu
     ];
   };
 }

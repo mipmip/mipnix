@@ -1,4 +1,4 @@
-{ config, lib, pkgs, unstable, pkgs-2211,  ... }:{
+{ config, lib, pkgs, unstable,  ... }:{
 
   config = lib.mkIf config.nixos.dev.enable {
     environment.systemPackages = with pkgs; [
@@ -50,7 +50,7 @@
       terraformer
       tflint
 
-      pkgs-2211.terraform
+      terraform
       notify # Notify allows sending the output from any tool to Slack, Discord and Telegram
       ssl-cert-check
 

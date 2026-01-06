@@ -3,11 +3,11 @@
   inputs = {
 
     ## MAIN NIXPKGS
-    nixpkgs-2211.url = "github:NixOS/nixpkgs/nixos-22.11"; # GNOME 43.2
+    #nixpkgs-2211.url = "github:NixOS/nixpkgs/nixos-22.11"; # GNOME 43.2
     #nixpkgs-2305.url = "github:NixOS/nixpkgs/nixos-23.05"; # GNOME 44.2?
-    nixpkgs-2311.url = "github:NixOS/nixpkgs/nixos-23.11"; # GNOME 45.2
-    nixpkgs-2405.url = "github:NixOS/nixpkgs/nixos-24.05"; # GNOME 46
-    nixpkgs-2411.url = "github:NixOS/nixpkgs/nixos-24.11"; # GNOME 47
+    #nixpkgs-2311.url = "github:NixOS/nixpkgs/nixos-23.11"; # GNOME 45.2
+    #nixpkgs-2405.url = "github:NixOS/nixpkgs/nixos-24.05"; # GNOME 46
+    #nixpkgs-2411.url = "github:NixOS/nixpkgs/nixos-24.11"; # GNOME 47
     nixpkgs-2505.url = "github:NixOS/nixpkgs/nixos-25.05"; # GNOME 48
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11"; # GNOME 48
@@ -87,10 +87,10 @@
 
       nixpkgs,
       nixpkgs-mama,
-      nixpkgs-2211,
-      nixpkgs-2311,
-      nixpkgs-2405,
-      nixpkgs-2411,
+    #nixpkgs-2211,
+    #  nixpkgs-2311,
+    #  nixpkgs-2405,
+    # nixpkgs-2411,
       nixpkgs-2505,
       nixpkgs-inkscape13,
       unstable,
@@ -211,7 +211,7 @@
                   nixpkgs.overlays = [ (import ./overlays) ];
                   _module.args.inputs = inputs;
                   _module.args.unstable = importFromChannelForSystem system unstable;
-                  _module.args.pkgs-2211 = importFromChannelForSystem system nixpkgs-2211;
+                  #_module.args.pkgs-2211 = importFromChannelForSystem system nixpkgs-2211;
                 };
 
               extraPkgs = {
@@ -377,6 +377,7 @@
           nixos.virtualization.enable = true;
           nixos.bambulabs.enable = true;
           nixos.litellm.enable = true;
+          nixos.server.samba.enable = true;
           nixos.desktopHyprland.enable = true;
           nixos.nixUtils.enable = true;
           nixos.nixpkgsDev.enable = true;
