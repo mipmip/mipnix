@@ -2,19 +2,18 @@
   config,
   lib,
   pkgs,
-  unstable,
   ...
 }:
 {
 
   config = lib.mkIf config.nixos.desktop.enable {
     environment.systemPackages = with pkgs; [
-      unstable.slack
+      pkgs.unstable.slack
 
       #msmtp
       #    unstable.whatsapp-for-linux
-      unstable.signal-desktop
-      unstable.flare-signal
+      pkgs.unstable.signal-desktop
+      pkgs.unstable.flare-signal
 
       #tdesktop
       v4l-utils
@@ -24,12 +23,12 @@
       # teams
 
       #    unstable.srain #IRC
-      unstable.tuba # Mastodon
+      pkgs.unstable.tuba # Mastodon
 
       discord
       vesktop
 
-      unstable.himalaya
+      pkgs.unstable.himalaya
     ];
   };
 }

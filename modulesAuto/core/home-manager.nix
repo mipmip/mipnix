@@ -1,11 +1,7 @@
 { config, pkgs, ...}:
 
 {
-  environment.systemPackages = with pkgs; [
-    home-manager
-  ];
-
-  home-manager.useGlobalPkgs = true;
+  #home-manager.useGlobalPkgs = true;
 
   #  home-manager.users.root = {
   #    home.stateVersion = "22.05";

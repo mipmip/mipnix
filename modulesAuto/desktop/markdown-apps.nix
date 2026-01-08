@@ -3,7 +3,7 @@
   config = lib.mkIf config.nixos.desktop.enable {
     environment.systemPackages = with pkgs; [
 
-      inputs.mip.packages."${ pkgs.system }".default
+      inputs.mip.packages."${ pkgs.stdenv.hostPlatform.system }".default
     ];
   };
 }

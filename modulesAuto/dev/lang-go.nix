@@ -1,8 +1,8 @@
-{ config, lib, pkgs, unstable, ... }:{
+{ config, lib, pkgs, ... }:{
 
   config = lib.mkIf config.nixos.dev.enable {
     environment.systemPackages = with pkgs; [
-      unstable.go
+      go
       gox
       goreleaser
 

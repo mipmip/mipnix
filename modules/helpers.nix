@@ -1,6 +1,19 @@
-{ inputs, ... }:
+{ inputs, lib, ... }:
 {
   flake.lib = {
+
+    mkNixos = system: name: {
+      ${name} = inputs.nixpkgs.lib.nixosSystem {
+        modules = [
+
+          (inputs.import-tree ../modulesAuto)
+
+          inputs.self.modules.nixos.${name}
+          { nixpkgs.hostPlatform = lib.mkDefault system; }
+        ];
+      };
+    };
+
     makeHomeConf = {
       nixpkgs-channel ? inputs.nixpkgs,
       username ? "pim",
@@ -12,7 +25,7 @@
       desktop ? false,
       swapAltWin ? false,
       ...
-    }:
+      }:
       inputs.home-manager.lib.homeManagerConfiguration {
         modules = [
 
@@ -47,52 +60,34 @@
         };
       };
 
+
+
     makeNixosConf = {
       nixpkgs-channel ? inputs.nixpkgs,
       hostname,
       system ? "x86_64-linux",
-      config ? {},
-      extraModules ? [],
       ...
-    }:
+      }:
       nixpkgs-channel.lib.nixosSystem {
         modules =
           let
+
             defaults = { pkgs, ... }: {
               nixpkgs.overlays = [ (import ../overlays) ];
               _module.args.inputs = inputs;
-              _module.args.unstable = import inputs.unstable {
-                inherit system;
-                overlays = [ (import ../overlays) ];
-                config.allowUnfree = true;
-              };
             };
 
-            extraPkgs = {
-              environment.systemPackages = [
-                inputs.agenix.packages."${system}".default
-                inputs.myhotkeys.packages."${system}".myhotkeys
-                inputs.skull.packages."${system}".skull
-              ];
-            };
           in
-          [
+            [
             defaults
 
             inputs.self.modules.nixos.${hostname}
-
             (../hosts + "/${hostname}/configuration.nix")
+            { nixpkgs.hostPlatform = system; }
+
             (inputs.import-tree ../modulesAuto)
 
-            config
-            inputs.nix-index-database.nixosModules.nix-index
-            inputs.nixos-boot.nixosModules.default
-            inputs.agenix.nixosModules.default
-            inputs.home-manager.nixosModules.home-manager
-            { home-manager.useGlobalPkgs = true; }
-            extraPkgs
-          ]
-          ++ extraModules;
+          ];
       };
   };
 }

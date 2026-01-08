@@ -700,7 +700,7 @@
         "type": "github"
       }
     },
-    "nixos-boot": {
+    "nixos-boot-grannyos": {
       "locked": {
         "lastModified": 1739124605,
         "narHash": "sha256-Fzbutu6fjd2gbZfRcSiUbXm+Btqn2Ks+upf3MaNdYaY=",
@@ -1325,7 +1325,7 @@
         "myhotkeys": "myhotkeys",
         "nix-index-database": "nix-index-database",
         "nix-on-droid": "nix-on-droid",
-        "nixos-boot": "nixos-boot",
+        "nixos-boot-grannyos": "nixos-boot-grannyos",
         "nixos-hardware": "nixos-hardware",
         "nixos-hardware-t2": "nixos-hardware-t2",
         "nixpkgs": "nixpkgs_12",

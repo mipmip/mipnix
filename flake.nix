@@ -9,7 +9,7 @@
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixos-boot.url = "github:mipmip/nixos-boot-grannyos";
+    nixos-boot-grannyos.url = "github:mipmip/nixos-boot-grannyos";
 
     nixpkgs-inkscape13.url = "github:leiserfg/nixpkgs?ref=staging";
 

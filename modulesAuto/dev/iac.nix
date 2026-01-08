@@ -1,4 +1,4 @@
-{ config, lib, pkgs, unstable,  ... }:{
+{ config, lib, pkgs,  ... }:{
 
   config = lib.mkIf config.nixos.dev.enable {
     environment.systemPackages = with pkgs; [
@@ -23,19 +23,16 @@
       gnupg
       pass
 
-      #    unstable.nickel
-      #    dhall
 
       attic-client
 
-      #    unstable.dbgate
 
       # AWS
       cw # cloudwatch in the terminal
       aws-mfa
       awsweeper
 
-      unstable.awscli2
+      pkgs.unstable.awscli2
       ssm-session-manager-plugin
       aws-vault
       ssmsh
