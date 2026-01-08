@@ -20,12 +20,16 @@ in
     lego2 = self.lib.makeNixosConf rec {
       inherit hostname;
 
+
       system = "x86_64-linux";
 
       config = {
-        imports = [
+
+        imports = with inputs.self.modules.nixos; [
+          vibecoding-main
           inputs.nixos-hardware.nixosModules.framework-13-7040-amd
         ];
+
         environment.systemPackages = [
           inputs.myhotkeys.packages."${system}".myhotkeys
         ];

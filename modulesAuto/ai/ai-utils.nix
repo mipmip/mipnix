@@ -10,7 +10,7 @@
 
       unstable.plandex
       unstable.plandex-server
-      unstable.claude-code
+      #      unstable.claude-code
 
       opencode
       goose
