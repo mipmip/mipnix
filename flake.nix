@@ -43,6 +43,7 @@
     dirtygit.url = "github:mipmip/dirtygit";
     skull.url = "github:mipmip/skull";
     mip.url = "github:mipmip/mip.rs";
+    openspec.url = "github:mipmip/OpenSpec";
 
     nixpkgs-pine64.url = "nixpkgs/dfd82985c273aac6eced03625f454b334daae2e8";
     mobile-nixos = {
@@ -69,6 +70,7 @@
       # Import all flake-parts modules
       imports = [
         inputs.flake-parts.flakeModules.modules
+        inputs.home-manager.flakeModules.home-manager
         (inputs.import-tree ./modules)
       ];
 

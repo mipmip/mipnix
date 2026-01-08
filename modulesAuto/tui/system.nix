@@ -12,5 +12,6 @@
     psmisc
     file
     neofetch
+    fastfetch
   ];
 }

@@ -1,5 +1,23 @@
 [
     {
+        "name": "Zathura",
+        "shortcuts": [
+            {
+                "key": "Tab",
+                "description": "Show paragraph outline"
+            }
+        ]
+    },
+    {
+        "name": "Neo-tree",
+        "shortcuts": [
+            {
+                "key": "<Shift>Y",
+                "description": "Copy file paths to clipboard"
+            }
+        ]
+    },
+    {
         "name": "MyHotKeys",
         "shortcuts": [
             {

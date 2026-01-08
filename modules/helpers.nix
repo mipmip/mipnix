@@ -15,8 +15,11 @@
     }:
       inputs.home-manager.lib.homeManagerConfiguration {
         modules = [
+
           inputs.hm-ricing-mode.homeManagerModules.hm-ricing-mode
+
           inputs.walker.homeManagerModules.default
+
           (../home + "/${username}")
           {
             home.stateVersion = "24.11";
