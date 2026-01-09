@@ -4,6 +4,12 @@
       inputs.nix-index-database.nixosModules.nix-index
     ];
 
+    environment.systemPackages = with pkgs; [
+      nix-index
+      patchelf
+      nix-tree
+      nix-search-tv
+    ];
   };
 }
 
