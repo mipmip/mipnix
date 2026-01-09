@@ -2,18 +2,6 @@
 {
   flake.lib = {
 
-    mkNixos = system: name: {
-      ${name} = inputs.nixpkgs.lib.nixosSystem {
-        modules = [
-
-          (inputs.import-tree ../modulesAuto)
-
-          inputs.self.modules.nixos.${name}
-          { nixpkgs.hostPlatform = lib.mkDefault system; }
-        ];
-      };
-    };
-
     makeHomeConf = {
       nixpkgs-channel ? inputs.nixpkgs,
       username ? "pim",
@@ -33,7 +21,7 @@
 
           inputs.walker.homeManagerModules.default
 
-          (../home + "/${username}")
+          (../../home + "/${username}")
           {
             home.stateVersion = "24.11";
             home.username = username;
@@ -46,7 +34,7 @@
         ];
         pkgs = import nixpkgs-channel {
           inherit system;
-          overlays = [ (import ../overlays) ];
+          #overlays = [ (import ../overlays) ];
           config.allowUnfree = true;
         };
         extraSpecialArgs = {
@@ -54,38 +42,37 @@
           inherit (inputs) mipnixvim;
           unstable = import inputs.unstable {
             inherit system;
-            overlays = [ (import ../overlays) ];
+            #overlays = [ (import ../overlays) ];
             config.allowUnfree = true;
           };
         };
       };
 
-
-
-    makeNixosConf = {
-      nixpkgs-channel ? inputs.nixpkgs,
+    makeNixos = {
       hostname,
+      channel ? inputs.nixpkgs,
       system ? "x86_64-linux",
       ...
       }:
-      nixpkgs-channel.lib.nixosSystem {
+
+      channel.lib.nixosSystem {
         modules =
           let
-
             defaults = { pkgs, ... }: {
-              nixpkgs.overlays = [ (import ../overlays) ];
               _module.args.inputs = inputs;
+              nixpkgs.hostPlatform = system;
             };
-
           in
-            [
+          [
+
+            # TODO why is this nessecary? shouldn't flake-parts do this
             defaults
 
             inputs.self.modules.nixos.${hostname}
-            (../hosts + "/${hostname}/configuration.nix")
-            { nixpkgs.hostPlatform = system; }
 
-            (inputs.import-tree ../modulesAuto)
+            ### TODO REMOVE
+            (../../hosts + "/${hostname}/configuration.nix")
+            (inputs.import-tree ../../modulesAuto)
 
           ];
       };

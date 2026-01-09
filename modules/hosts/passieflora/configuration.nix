@@ -2,8 +2,9 @@
 
 {
   flake.nixosConfigurations = {
-    passieflora = self.lib.makeNixosConf {
+    passieflora = self.lib.makeNixos {
       hostname = "passieflora";
+      channel = inputs.nixpkgs-mama;
     };
   };
 

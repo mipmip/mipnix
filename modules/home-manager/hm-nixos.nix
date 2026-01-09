@@ -1,5 +1,5 @@
 { inputs, ... } : {
-  flake.modules.nixos.hm-nixos = { pkgs, unstable, ... }: {
+  flake.modules.nixos.hm-nixos = { pkgs, ... }: {
     imports = [
       inputs.home-manager.nixosModules.home-manager
     ];

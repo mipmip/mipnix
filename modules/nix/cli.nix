@@ -1,7 +1,6 @@
 { inputs, ... } : {
   flake.modules.nixos.nix-cli = { config, pkgs, ... }: {
 
-
     nix = {
       package = pkgs.nixVersions.stable;
       extraOptions = ''

@@ -2,12 +2,12 @@
 {
   flake.nixosConfigurations = {
 
-    hurry = self.lib.makeNixosConf {
+    hurry = self.lib.makeNixos {
       hostname = "hurry";
       system = "aarch64-linux";
     };
 
-    harry = self.lib.makeNixosConf {
+    harry = self.lib.makeNixos {
       hostname = "harry";
       system = "aarch64-linux";
     };

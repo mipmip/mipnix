@@ -17,7 +17,7 @@ in
 
       flake.nixosConfigurations = {
 
-        lego2 = self.lib.makeNixosConf {
+        lego2 = self.lib.makeNixos {
           inherit hostname;
           system = "x86_64-linux";
         };
@@ -34,6 +34,7 @@ in
 
       inputs.nixos-hardware.nixosModules.framework-13-7040-amd
 
+      hm-nixos
       hardware-keychron
 
       desktop-myhotkeys
