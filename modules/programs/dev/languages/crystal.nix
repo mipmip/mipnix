@@ -4,7 +4,6 @@
       crystal
       shards
       crystal2nix
-      #mipmip_pkg.crelease replace is needed
     ];
   };
 }

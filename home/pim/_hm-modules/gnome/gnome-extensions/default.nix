@@ -3,19 +3,15 @@
 let
   cfg = config.desktopConf.gnome;
 
-  mipmip_pkg = import (./pkgs){inherit pkgs;};
 
   gnomeExtensionsWithOutConf = [
-    #mipmip_pkg.gnomeExtensions.custom-menu-panel
     pkgs.gnomeExtensions.emoji-copy
     pkgs.gnomeExtensions.caffeine
-    #pkgs.gnomeExtensions.espresso
     pkgs.gnomeExtensions.show-favorite-apps
     pkgs.gnomeExtensions.appindicator
     pkgs.gnomeExtensions.spotify-tray
     pkgs.gnomeExtensions.wayland-or-x11
     pkgs.gnomeExtensions.clipboard-indicator
-    #pkgs.gnomeExtensions.tailscale-status
   ];
 
   gnomeExtensions = map (ext: { extpkg = ext; } ) gnomeExtensionsWithOutConf ++ [
@@ -25,8 +21,6 @@ let
     (import ./shell-ext-dash-to-panel.nix { pkgs = pkgs; })
     (import ./shell-ext-useless-gaps.nix { unstable = unstable; })
     (import ./shell-ext-highlight-focus.nix { inherit unstable; })
-    #    (import ./shell-ext-search-light.nix { lib = lib; mipmip_pkg = mipmip_pkg; inherit unstable; })
-
   ];
 
   dconfEnabledExtensions = {

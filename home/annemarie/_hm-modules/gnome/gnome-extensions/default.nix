@@ -12,15 +12,6 @@ let
   ];
 
   gnomeExtensions = map (ext: { extpkg = ext; } ) gnomeExtensionsWithOutConf ++ [
-
-    #(import ./shell-ext-tray-icons-reloaded.nix { pkgs = pkgs; })
-    #(import ./shell-ext-favorites-menu.nix { unstable = unstable; })
-    #(import ./shell-ext-gs-git.nix { mipmip_pkg = mipmip_pkg; })
-    #(import ./shell-ext-hotkeys-popup.nix { unstable = unstable; })
-
-    #(import ./shell-ext-color-picker.nix { pkgs = pkgs; })
-    #(import ./shell-ext-search-light.nix { lib = lib; mipmip_pkg = mipmip_pkg; })
-
   ];
 
   dconfEnabledExtensions = {

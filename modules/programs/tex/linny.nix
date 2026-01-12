@@ -1,7 +1,7 @@
 { inputs, ... } : {
   flake.modules.nixos.tex-linny = { config, pkgs, ... }: {
     environment.systemPackages = with pkgs; [
-      mipmip_pkg.fred # needed for linny
+      inputs.fred.packages."${pkgs.stdenv.hostPlatform.system}".fred
       ruby # for Linny
       sc-im
       pkgs.unstable.hugo

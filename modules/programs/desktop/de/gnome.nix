@@ -57,7 +57,6 @@
 
       # IMAGE
       #gnome.gnome-screenshot
-      #mipmip_pkg.gnome-screenshot
       #gthumb
 
       #DEV
