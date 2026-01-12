@@ -14,7 +14,7 @@
     htop
     #diffutils
     which
-  
+
     neovim
     tmux
     zsh
