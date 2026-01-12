@@ -39,7 +39,7 @@ pcirescan(){
 }
 
 make_command "git_sync_machine" "Commit latest version with hostname tag"
-commit_tag_and_push_machine(){
+git_sync_machine(){
   git commit -m "$EXTRA_ARG" -a
   git tag "$(hostname)-$(date --iso-8601)"
   git push --tags
