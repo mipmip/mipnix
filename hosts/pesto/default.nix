@@ -2,10 +2,10 @@
 {
   imports = [
     ./hardware.nix
-    ../../modules/pine-home-manager.nix
-    ../../modules/pine-phosh.nix
-    ../../modules/pine-users.nix
-    ../../modules/pine-apps.nix
+    ./pine-home-manager.nix
+    ./pine-phosh.nix
+    ./pine-users.nix
+    ./pine-apps.nix
   ];
 
   system.stateVersion = "22.05";
