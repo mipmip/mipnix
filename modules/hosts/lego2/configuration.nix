@@ -43,7 +43,6 @@ in
       nix-cli
       nix-age
       nix-utils
-      nix-nixpkgs-config
       nix-nixpkgs-dev
 
       users-core
