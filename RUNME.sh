@@ -68,9 +68,18 @@ up_home(){
   else
     check_untracked
     home-manager switch --impure --flake .\#$USER@$(hostname) -b backup
+  fi
+
+  # Only sync if home-manager succeeded
+  if [ $? -eq 0 ]; then
     EXTRA_ARG="auto run after home-manager switch"
     git_sync_machine
+  else
+    echo "home-manager switch failed, skipping git sync"
+    exit 1
   fi
+
+
 }
 
 make_command "up_machine" "Add latest home-manager updates"
