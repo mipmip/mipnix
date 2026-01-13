@@ -30,9 +30,9 @@
             home.stateVersion = "24.11";
             home.username = username;
             home.homeDirectory = homedir;
-            roles.secondbrain.enable = secondbrain;
-            roles.awscontrol.enable = awscontrol;
-            roles.desktop.enable = desktop;
+            #roles.secondbrain.enable = secondbrain;
+            #roles.awscontrol.enable = awscontrol;
+            #roles.desktop.enable = desktop;
             #desktopConf.gnome.swapAltWin = swapAltWin;
           }
         ];
