@@ -32,7 +32,7 @@
             roles.secondbrain.enable = secondbrain;
             roles.awscontrol.enable = awscontrol;
             roles.desktop.enable = desktop;
-            desktopConf.gnome.swapAltWin = swapAltWin;
+            #desktopConf.gnome.swapAltWin = swapAltWin;
           }
         ];
         pkgs = import nixpkgs-channel {
