@@ -3,10 +3,21 @@ lib,
 inputs,
 ...
 }:
+
+let
+  hostname = "hurry";
+in
 {
+  flake.modules.nixos.networking-nebula = {...} : {
+    networking.extraHosts =
+      ''
+        192.168.100.6 ${hostname}
+      '';
+  }
+
   flake.modules.nixos.hurry = { config, pkgs, ... } : {
 
-    networking.hostName = "hurry";
+    networking.hostName = hostname;
     networking.firewall.enable = false;
 
     # WiFi configuration
@@ -39,27 +50,11 @@ inputs,
         group = "root";
         mode = "600";
       };
-      "nebula-ca-cert" = {
-        file = ../../../secrets/nebula-ca.crt.age;
-        path = "/var/lib/nebula/nebula-ca.crt";
-        owner = "nebula-mesh";
-        group = "root";
-        mode = "600";
-      };
-      "nebula-sshd-hostkey" = {
-        file = ../../../secrets/nebula-sshd-hostkey.age;
-        path = "/var/lib/nebula/nebula-sshd-hostkey.crt";
-        owner = "nebula-mesh";
-        group = "root";
-        mode = "600";
-      };
     };
 
     services.nebula.networks.mesh = {
       cert = config.age.secrets.nebula-hurry-cert.path;
       key = config.age.secrets.nebula-hurry-key.path;
-      ca = config.age.secrets.nebula-ca-cert.path;
-
     };
   };
 }
