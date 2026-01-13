@@ -24,6 +24,8 @@
 
   flake.modules.homeManager.pim = {
 
+    programs.hm-ricing-mode.enable = true;
+
     imports = with inputs.self.modules.homeManager; [
       pim-git
       pim-direnv
