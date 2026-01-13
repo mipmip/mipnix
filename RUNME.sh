@@ -63,6 +63,13 @@ up_home(){
 
 make_command "up_machine" "Add latest home-manager updates"
 up_machine(){
+  # Check for untracked files only
+  if [[ -n $(git status --porcelain | grep '^??') ]]; then
+    echo "Error: There are untracked files. Please add or remove them first."
+    git status --short | grep '^??'
+    exit 1
+  fi
+
   HOSTNAME=$(hostname)
   # List of hostnames that need resource limitations
   LIMITED_HOSTS="harry hurry"
