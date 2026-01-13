@@ -5,7 +5,7 @@
 
     # IF TRUE WAYLAND WILL BE USED
     services.displayManager.gdm.enable = true;
-    services.displayManager.defaultSession = "gnome";
+    services.displayManager.defaultSession = "hyprland";
 
     services.flatpak.enable = true;
 

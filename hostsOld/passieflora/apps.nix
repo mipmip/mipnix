@@ -33,7 +33,6 @@
     alacritty
 
     gnome-tweaks
-    gdm-settings
     gpaste
 
     seafile-client
