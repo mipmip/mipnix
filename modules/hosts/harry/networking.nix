@@ -1,11 +1,4 @@
 {
-<<<<<<< HEAD
-  ...
-  }:
-  {
-=======
-lib,
-inputs,
 ...
 }:
 let
@@ -19,7 +12,6 @@ in
       '';
   };
 
->>>>>>> a26e069af4ea326de351eb6b9b563a31e50cc57f
   flake.modules.nixos.harry = { config, pkgs, ... } : {
 
     networking.hostName = hostname;
