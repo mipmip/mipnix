@@ -1,23 +1,27 @@
-# Change: Migrate pim's Home Manager modules to dendritic auto-import pattern
+# Change: Migrate pim's Home Manager modules to dendritic flake-parts pattern
 
 ## Why
-The current Home Manager module location at `home/pim/_hm-modules/` is inconsistent with the project's dendritic flake-parts module organization. The dendritic pattern auto-imports all files from `modules/`, eliminating the need for explicit file import management.
+The current Home Manager module location at `home/pim/_hm-modules/` is inconsistent with the project's dendritic flake-parts module organization. The dendritic pattern uses flake-parts module classes (`flake.modules.homeManager.*`) which are auto-discovered by import-tree, providing centralized organization under `modules/users/pim/`.
 
 ## What Changes
-- Move all Home Manager module files from `home/pim/_hm-modules/` to `modules/users/pim/hm-modules/`
-- by moving modules to `./modules` they are automatically imported with the import-tree flake.
+- Convert Home Manager modules from direct config to flake-parts module structure: `flake.modules.homeManager.pim-<name> = { ... }`
+- Move modules from `home/pim/_hm-modules/<category>/` to `modules/users/pim/<category>/` (programs, fonts, gnome, shared)
+- Add each migrated module to imports list in `modules/users/pim/home-manager.nix`
+- Rename old module files to `.moved` to prevent duplicate imports while transitioning
+- **Critical**: Stage all new files in git (nix flakes only see tracked files)
 - Remove the deprecated `_roles` import (roles are deprecated)
-- Align with dendritic flake-parts conventions: all files in target directory are automatically discovered and imported
 - This change affects **only user 'pim'** - user 'annemarie' is not included in this migration
 
 ## Impact
 - Affected specs: `home-manager-config`
 - Affected code:
-  - `home/pim/_hm-modules/` → `modules/users/pim/hm-modules/` (directory move, flatten structure)
-  - `home/pim/_hm-modules/default.nix` (delete - replaced by auto-import in home/pim/default.nix)
-  - `home/pim/default.nix` (rewrite to use readDir auto-import pattern)
-  - Individual module files (structure unchanged - remain as Home Manager modules)
-  - `modules/nix/helpers.nix` (no changes - still imports from `../../home + "/${username}"`)
-- Breaking changes: None - the module import chain remains functional, just more automatic
-- Pattern shift: Manual import list → auto-discovery via readDir
+  - `home/pim/_hm-modules/<category>/*.nix` → `modules/users/pim/<category>/*.nix` (file-by-file migration)
+  - Each module wrapped in `flake.modules.homeManager.pim-<name> = { ... }` structure
+  - `modules/users/pim/home-manager.nix` (add imports for each migrated module)
+  - Old files renamed to `*.moved` during transition
+  - `home/pim/default.nix` remains unchanged (still imports from `_hm-modules` during transition)
+  - After all modules migrated, can remove `home/pim/_hm-modules/` entirely
+- Breaking changes: None - incremental migration allows testing each module
+- Pattern shift: Direct Home Manager config → flake-parts module classes
 - Users: Only affects 'pim' user configuration
+- Test machine: lego2-laptop (current machine)

@@ -1,0 +1,324 @@
+[
+    {
+        "name": "Zathura",
+        "shortcuts": [
+            {
+                "key": "Tab",
+                "description": "Show paragraph outline"
+            }
+        ]
+    },
+    {
+        "name": "Neo-tree",
+        "shortcuts": [
+            {
+                "key": "<Shift>Y",
+                "description": "Copy file paths to clipboard"
+            }
+        ]
+    },
+    {
+        "name": "MyHotKeys",
+        "shortcuts": [
+            {
+                "key": "<CTRL>f",
+                "description": "search for key binding"
+            },
+            {
+                "key": "<ALT>1",
+                "description": "Page 1 (idem for page 2-n)"
+            }
+        ]
+    },
+    {
+        "name": "Hyprland",
+        "shortcuts": [
+            {
+                "key": "<CTRL><SHIFT>Right",
+                "description": "Swap active window with right window"
+            },
+            {
+                "key": "<CTRL><SHIFT>Left",
+                "description": "Swap active window with left window"
+            },
+            {
+                "key": "<SUPER>P",
+                "description": "PSEUDO"
+            },
+            {
+                "key": "<SUPER>D",
+                "description": "Set darkmode"
+            },
+            {
+                "key": "<SHIFT><SUPER>D",
+                "description": "Set lightmode"
+            },
+            {
+                "key": "<ALT>Space",
+                "description": "Show clipboard history"
+            },
+            {
+                "key": "<SUPER>J",
+                "description": "Toggle Split"
+            },
+            {
+                "key": "<SUPER>L",
+                "description": "Lock screen"
+            },
+            {
+                "key": "<SHIFT><SUPER>L",
+                "description": "Lock screen and suspend"
+            },
+            {
+                "key": "<SUPER>Q",
+                "description": "Kill Active"
+            },
+            {
+                "key": "<SUPER><SHIFT>M",
+                "description": "Exit Hyprland"
+            },
+            {
+                "key": "<SUPER>W",
+                "description": "Toggle Floating"
+            },
+            {
+                "key": "<SHIFT><SUPER>1",
+                "description": "Move active window to space 1 (idem for 2-9)"
+            }
+        ]
+    },
+    {
+        "name": "Firefox",
+        "shortcuts": [
+            {
+                "key": "<CTRL>k",
+                "description": "Focus address bar"
+            }
+        ]
+    },
+    {
+        "name": "Launchers",
+        "shortcuts": [
+            {
+                "key": "<SUPER>S",
+                "description": "My Hotkeys (your looking at it)"
+            },
+            {
+                "key": "<SUPER>Return",
+                "description": "Terminal"
+            },
+            {
+                "key": "<SHIFT><SUPER>B",
+                "description": "Firefox"
+            },
+            {
+                "key": "<SHIFT><SUPER>S",
+                "description": "Signal"
+            },
+            {
+                "key": "<SHIFT><SUPER>F",
+                "description": "Files"
+            },
+            {
+                "key": "<CTRL><SHIFT>R",
+                "description": "Screenshot of region"
+            },
+            {
+                "key": "<CTRL><SHIFT>W",
+                "description": "Screenshot of window"
+            }
+        ]
+    },
+    {
+        "name": "Inkscape Shortcuts",
+        "shortcuts": [
+            {
+                "key": "S",
+                "description": "Select object"
+            },
+            {
+                "key": "N",
+                "description": "Select nodes"
+            },
+            {
+                "key": "<SHIFT><CTRL>D",
+                "description": "Document Properties"
+            },
+            {
+                "key": "<SHIFT><CTRL>E",
+                "description": "Export to PNG"
+            },
+            {
+                "key": "<SHIFT><CTRL>N",
+                "description": "New layer"
+            },
+            {
+                "key": "<CTRL>M",
+                "description": "Move selection to layer"
+            }
+        ]
+    },
+    {
+        "name": "git",
+        "shortcuts": [
+            {
+                "command": "ga",
+                "description": "git add"
+            },
+            {
+                "command": "gcl",
+                "description": "git clone --recurse-submodules"
+            },
+            {
+                "command": "gco",
+                "description": "git checkout"
+            },
+            {
+                "command": "gsb",
+                "description": "git status"
+            },
+            {
+                "command": "gd",
+                "description": "git diff"
+            },
+            {
+                "command": "gc",
+                "description": "git commit"
+            },
+            {
+                "command": "gp",
+                "description": "git push"
+            },
+            {
+                "command": "gl",
+                "description": "git pull"
+            },
+            {
+                "command": "gf",
+                "description": "git fetch"
+            },
+            {
+                "command": "gb",
+                "description": "git branch"
+            },
+            {
+                "command": "gm",
+                "description": "git merge"
+            }
+        ]
+    },
+    {
+        "name": "sc-im",
+        "shortcuts": [
+            {
+                "key": "y+y",
+                "description": "Yank Cell"
+            },
+            {
+                "key": "p",
+                "description": "Simple paste"
+            },
+            {
+                "key": "P+c",
+                "description": "Paste, refs are adjusted"
+            },
+            {
+                "key": "braceleft braceright",
+                "description": "Left align / Right align"
+            },
+            {
+                "key": "a+a",
+                "description": "Resize column to fit content"
+            },
+            {
+                "key": "d+r",
+                "description": "Delete row"
+            },
+            {
+                "command": ":fsum",
+                "description": "sum all above"
+            }
+        ]
+    },
+    {
+        "name": "Readline",
+        "shortcuts": [
+            {
+                "key": "<ALT>b <ALT>f",
+                "description": "Move backward/forward by word"
+            },
+            {
+                "key": "<ALT>w <ALT>d",
+                "description": "Kill word backward/forward"
+            },
+            {
+                "key": "<CTRL>k <CTRL>u",
+                "description": "Kill to end of line/beginning of line"
+            },
+            {
+                "key": "<CTRL>y",
+                "description": "Yank from kill ring"
+            },
+            {
+                "key": "<ALT>y",
+                "description": "Cycle through kill ring history (after &lt;CTRL&gt;-y)"
+            },
+            {
+                "key": "<ALT>t",
+                "description": "Transpose word"
+            },
+            {
+                "key": "<ALT>t",
+                "description": "Upper forward word"
+            },
+            {
+                "key": "<CTRL>slash",
+                "description": "Cycle through the undo list"
+            }
+        ]
+    },
+    {
+        "name": "Tmux",
+        "shortcuts": [
+            {
+                "key": "<CTRL>a+u",
+                "description": "Urlview"
+            }
+        ]
+    },
+    {
+        "name": "Fish",
+        "shortcuts": [
+            {
+                "key": "<ALT>e",
+                "description": "Open prompt in $EDITOR"
+            }
+        ]
+    },
+    {
+        "name": "Claude Code",
+        "shortcuts": [
+            {
+                "key": "<CTRL>g",
+                "description": "Open prompt in $EDITOR"
+            }
+        ]
+    },
+    {
+        "name": "Gimp",
+        "shortcuts": [
+            {
+                "key": "R",
+                "description": "Select rectangle"
+            },
+            {
+                "key": "U",
+                "description": "Magic selection"
+            },
+            {
+                "key": "<SHIFT>c",
+                "description": "Crop tool"
+            }
+        ]
+    }
+]

@@ -26,6 +26,44 @@
 
     imports = with inputs.self.modules.homeManager; [
       pim-git
+      pim-direnv
+      pim-fzf
+      pim-atuin
+      pim-obs
+      pim-shellstuff
+      pim-alacritty
+      pim-kitty
+      pim-ghostty
+      pim-firefox
+      pim-librewolf
+      pim-wrofi
+      pim-awscli
+      pim-aider
+      pim-dirtygit
+      pim-nix
+      pim-npm
+      pim-wtf
+      pim-gimp
+      pim-myhotkeys
+      pim-thunderbird
+      pim-fish
+      pim-zsh
+      pim-bmc
+      pim-awscli-dir
+      pim-smug-skull
+      pim-freedesktop
+      pim-pandoc
+      pim-sc-im
+      pim-vim
+      pim-tmux
+      pim-neovim
+      pim-hyprland
+      pim-shared-shell-aliases
+      pim-fonts
+      pim-gnome-desktop-generic
+      pim-gnome-desktop-input-sources
+      pim-gnome-desktop-shortcuts
+      pim-gnome-extensions
     ];
 
     nixpkgs.config.allowUnfree = true;

@@ -7,17 +7,17 @@ in
 {
   imports = []
   ++
-    map (n: "${../../_generic-for-contribution}/${n}") (builtins.attrNames (builtins.readDir ./../../_generic-for-contribution))
+    map (n: "${../../_generic-for-contribution}/${n}") (lib.filter (n: lib.hasSuffix ".nix" n && !(lib.hasSuffix ".moved" n)) (builtins.attrNames (builtins.readDir ./../../_generic-for-contribution)))
    ++
-    map (n: "${./fonts}/${n}") (builtins.attrNames (builtins.readDir ./fonts))
+    map (n: "${./fonts}/${n}") (lib.filter (n: (lib.hasSuffix ".nix" n && !(lib.hasSuffix ".moved" n)) || (builtins.readDir ./fonts).${n} == "directory") (builtins.attrNames (builtins.readDir ./fonts)))
   ++
-    map (n: "${./gnome}/${n}") (builtins.attrNames (builtins.readDir ./gnome))
+    map (n: "${./gnome}/${n}") (lib.filter (n: (lib.hasSuffix ".nix" n && !(lib.hasSuffix ".moved" n)) || (builtins.readDir ./gnome).${n} == "directory") (builtins.attrNames (builtins.readDir ./gnome)))
   ++
-    map (n: "${./programs}/${n}") (builtins.attrNames (builtins.readDir ./programs))
+    map (n: "${./programs}/${n}") (lib.filter (n: (lib.hasSuffix ".nix" n && !(lib.hasSuffix ".moved" n)) || (builtins.readDir ./programs).${n} == "directory") (builtins.attrNames (builtins.readDir ./programs)))
   ++
-    map (n: "${./shared}/${n}") (builtins.attrNames (builtins.readDir ./shared))
+    map (n: "${./shared}/${n}") (lib.filter (n: (lib.hasSuffix ".nix" n && !(lib.hasSuffix ".moved" n)) || (builtins.readDir ./shared).${n} == "directory") (builtins.attrNames (builtins.readDir ./shared)))
   ++
-    map (n: "${../../_roles}/${n}") (builtins.attrNames (builtins.readDir ./../../_roles));
+    map (n: "${../../_roles}/${n}") (lib.filter (n: lib.hasSuffix ".nix" n && !(lib.hasSuffix ".moved" n)) (builtins.attrNames (builtins.readDir ./../../_roles)));
 
     #  options.roles.desktop = {
     #    enable = lib.mkEnableOption "Configure as desktop computer";
