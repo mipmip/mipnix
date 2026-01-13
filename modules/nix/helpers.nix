@@ -23,8 +23,8 @@
 
           inputs.walker.homeManagerModules.default
 
+          #(../../home + "/${username}")
 
-          (../../home + "/${username}")
           {
             home.stateVersion = "24.11";
             home.username = username;
