@@ -28,11 +28,6 @@ reload_tmux(){
   tmux source ~/.config/tmux/tmux.conf
 }
 
-#make_command "macbrew" "Run brew bundle"
-#macbrew(){
-#  cd ~ && brew bundle
-#}
-#
 make_command "pcirescan" "Rescan for devices that don't wake up"
 pcirescan(){
   sudo echo "1" /sys/bus/pci/rescan
@@ -284,6 +279,5 @@ new_nebula_node(){
     "  4. Rebuild the system configuration"
   echo
 }
-
 
 runme
