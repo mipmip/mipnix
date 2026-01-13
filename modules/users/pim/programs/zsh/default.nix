@@ -25,7 +25,7 @@ inputs,
         NODE_PATH="''$HOME/.npm-packages/lib/node_modules";
       };
 
-      shellAliases = config.shared.shellAliases;
+      #shellAliases = config.shared.shellAliases;
       plugins = [
         {
           name = "zsh-nix-shell";

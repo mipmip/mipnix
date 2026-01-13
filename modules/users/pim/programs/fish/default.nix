@@ -16,7 +16,7 @@ inputs,
       #            NODE_PATH="''$HOME/.npm-packages/lib/node_modules";
       #          };
 
-      shellAliases = config.shared.shellAliases;
+      #shellAliases = config.shared.shellAliases;
 
       plugins = with pkgs; [
         { name = "fzf-fish"; src = pkgs.fishPlugins.fzf-fish.src; }
