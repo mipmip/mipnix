@@ -80,8 +80,14 @@ up_machine(){
     sudo nixos-rebuild switch --flake .#$HOSTNAME
   fi
 
-  EXTRA_ARG="auto run after nixos-rebuild switch"
-  git_sync_machine
+  # Only sync if nixos-rebuild succeeded
+  if [ $? -eq 0 ]; then
+    EXTRA_ARG="auto run after nixos-rebuild switch"
+    git_sync_machine
+  else
+    echo "nixos-rebuild failed, skipping git sync"
+    exit 1
+  fi
 }
 
 # MACHINE BOOTSTRAP COMMAND

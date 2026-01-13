@@ -1,7 +1,7 @@
 { inputs, lib, self, ... }:
 {
-  flake.lib = {
 
+  flake.lib = {
     makeHomeConf = {
       nixpkgs-channel ? inputs.nixpkgs,
       username ? "pim",
@@ -48,6 +48,7 @@
         };
       };
 
+
     makeNixos = {
       hostname,
       channel ? inputs.nixpkgs,
@@ -65,16 +66,9 @@
             };
           in
           [
-
-            # TODO why is this nessecary? shouldn't flake-parts do this
             defaults
 
             inputs.self.modules.nixos.${hostname}
-
-            ### TODO REMOVE
-            (../../hostsOld + "/${hostname}/configuration.nix")
-            # (inputs.import-tree ../../modulesAuto)  # Removed during dendritic migration
-
           ];
       };
   };

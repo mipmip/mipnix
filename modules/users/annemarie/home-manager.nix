@@ -1,4 +1,4 @@
- inputs, self, ... }:
+{ inputs, self, ... }:
 {
   flake.homeConfigurations = {
 
