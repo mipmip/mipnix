@@ -33,6 +33,17 @@ pcirescan(){
   sudo echo "1" /sys/bus/pci/rescan
 }
 
+check_untracked(){
+
+  # Check for untracked files only
+  if [[ -n $(git status --porcelain | grep '^??') ]]; then
+    echo "Error: There are untracked files. Please add or remove them first."
+    git status --short | grep '^??'
+    exit 1
+  fi
+
+}
+
 make_command "git_sync_machine" "Commit latest version with hostname tag"
 git_sync_machine(){
   if [[ -z "$EXTRA_ARG" ]]; then
@@ -55,6 +66,7 @@ up_home(){
   if [ $RICING -gt 0 ]; then
     echo "Unrise first (hmrice unrice), then run again"
   else
+    check_untracked
     home-manager switch --impure --flake .\#$USER@$(hostname) -b backup
     EXTRA_ARG="auto run after home-manager switch"
     git_sync_machine
@@ -63,12 +75,8 @@ up_home(){
 
 make_command "up_machine" "Add latest home-manager updates"
 up_machine(){
-  # Check for untracked files only
-  if [[ -n $(git status --porcelain | grep '^??') ]]; then
-    echo "Error: There are untracked files. Please add or remove them first."
-    git status --short | grep '^??'
-    exit 1
-  fi
+
+  check_untracked
 
   HOSTNAME=$(hostname)
   # List of hostnames that need resource limitations
