@@ -1,4 +1,4 @@
-{ inputs, lib, ... }:
+{ inputs, lib, self, ... }:
 {
   flake.lib = {
 
@@ -61,6 +61,7 @@
             defaults = { pkgs, ... }: {
               _module.args.inputs = inputs;
               nixpkgs.hostPlatform = system;
+              nixpkgs.config.allowUnfree = true;
             };
           in
           [

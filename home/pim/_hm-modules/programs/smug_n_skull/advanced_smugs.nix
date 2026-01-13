@@ -10,21 +10,16 @@
   };
 
   nixos = {
-    root = "~/nixos";
+    root = "~/mipnix";
     windows = [
       {
-        name = "nixos";
+        name = "mipnix";
         layout = "main-vertical";
         commands = [ (makeBanner "nixos") ];
       }
       {
-        name = "switch";
-        layout = "main-vertical";
-        commands = [ (makeBanner "nixos switch") ];
-      }
-      {
         name = "secrets";
-        root = "~/nixos/secrets";
+        root = "~/mipnix/secrets";
         layout = "main-vertical";
         commands = [ (makeBanner "nixos secrets") ];
       }

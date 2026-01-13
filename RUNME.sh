@@ -40,8 +40,17 @@ pcirescan(){
 
 make_command "git_sync_machine" "Commit latest version with hostname tag"
 git_sync_machine(){
+  if [[ -z "$EXTRA_ARG" ]]; then
+    echo "Please enter a small commit message"
+    exit 1
+  fi
   git commit -m "$EXTRA_ARG" -a
-  git tag "$(hostname)-$(date --iso-8601)"
+  TAG_NAME="$(hostname)-$(date --iso-8601)"
+  # Remove existing tag locally and remotely if it exists
+  git tag -d "$TAG_NAME" 2>/dev/null || true
+  git push origin --delete "$TAG_NAME" 2>/dev/null || true
+  # Create new tag and push
+  git tag "$TAG_NAME"
   git push --tags
 }
 
@@ -52,27 +61,25 @@ up_home(){
     echo "Unrise first (hmrice unrice), then run again"
   else
     home-manager switch --impure --flake .\#$USER@$(hostname) -b backup
+    EXTRA_ARG="auto run after home-manager switch"
+    git_sync_machine
   fi
 }
 
-make_command "missing_modules" "List missing modules in configuration"
-missing_modules(){
-  files=(modules/*.nix)
-  hosts=(hosts/*)
+make_command "up_machine" "Add latest home-manager updates"
+up_machine(){
+  HOSTNAME=$(hostname)
+  # List of hostnames that need resource limitations
+  LIMITED_HOSTS="harry hurry"
 
-  for hostdir in "${hosts[@]}"
-  do
-    host=`basename $hostdir`
-    echo Missing modules for $host
+  if echo "$LIMITED_HOSTS" | grep -wq "$HOSTNAME"; then
+    sudo nixos-rebuild switch --flake .#$HOSTNAME --max-jobs 1 -j 1 --cores 1
+  else
+    sudo nixos-rebuild switch --flake .#$HOSTNAME
+  fi
 
-    for filename in "${files[@]}"
-    do
-      grep -q $filename hosts/$host/configuration.nix || echo ../../${filename}
-    done
-
-    echo
-
-  done
+  EXTRA_ARG="auto run after nixos-rebuild switch"
+  git_sync_machine
 }
 
 # MACHINE BOOTSTRAP COMMAND
@@ -277,25 +284,6 @@ new_nebula_node(){
     "  4. Rebuild the system configuration"
   echo
 }
-#make_command "disable_mac_trackpad" "disable trackpad when it acts funny"
-#disable_mac_trackpad(){
-#  xinput set-prop 13 "Device Enabled" 0
-#}
-#
-#make_command "fixmacnixpath" "set nix path on the mac"
-#fixmacnixpath(){
-#  set -a
-#  . /nix/var/nix/profiles/default/etc/profile.d/nix.sh
-#  . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-#  . ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-#
-#  export NIX_PROFILES
-#  export NIX_SSL_CERT_FILE
-#  export MANPATH="$NIX_LINK/share/man:$MANPATH"
-#  export PATH=$PATH
-#  echo $PATH
-#  export  __HM_SESS_VARS_SOURCED
-#}
-#
-#
+
+
 runme
