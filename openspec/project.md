@@ -77,9 +77,60 @@ flake.nix (root)
 
 #### Module Organization
 - **System modules**: Located in `modules/` and organized by function
-- **Home Manager modules**: Located in `home/<user>/_hm-modules/`
+- **Home Manager modules**: Located in `modules/users/<username>/` using dendritic flake-parts pattern
 - **Role-based configuration**: Use `roles.desktop` and `roles.secondbrain` for feature grouping (deprecated)
 - **Host-specific**: `modules/hosts/<hostname>/configuration.nix` imports relevant modules
+
+#### User Home Manager Module Pattern (Dendritic)
+
+**Location and Structure**:
+- Modules: `modules/users/<username>/programs/`, `modules/users/<username>/fonts/`, etc.
+- Root module: `modules/users/<username>/home-manager.nix` contains imports list
+- Module format: `flake.modules.homeManager.<username>-<module-name> = { ... }`
+- Auto-discovery: Via import-tree at flake root (finds all .nix files in modules/)
+
+**Example structure for user 'pim'**:
+```nix
+# modules/users/pim/programs/fish/default.nix
+{
+inputs,
+...
+}:
+{
+  flake.modules.homeManager.pim-fish = { config, pkgs, ... }: {
+    imports = [ inputs.self.modules.homeManager.pim-shared-shell-aliases ];
+
+    programs.fish = {
+      enable = true;
+      # ... configuration
+    };
+  };
+}
+```
+
+**Activation Control**:
+- Users control which modules are active via manual imports in `modules/users/<username>/home-manager.nix`
+- Modules should NOT define self-referential enable options (e.g., `desktopConf.alacritty.enable`)
+- If imported, the module is active; if not imported, it's inactive
+
+**Cross-Module Dependencies**:
+- Modules can import other modules: `imports = [ inputs.self.modules.homeManager.pim-<dependency> ];`
+- Example: fish and zsh directly import shell-aliases module
+- Avoid transitive imports through root module when direct dependency exists
+
+**Preserved Options**:
+- Keep options used for cross-module communication (e.g., `shared.shellAliases`)
+- Keep configuration options that control behavior (e.g., `desktopConf.gnome.swapAltWin`)
+- Keep cross-module mkIf conditions (e.g., `lib.mkIf config.roles.secondbrain.enable`)
+
+**Module Parameters**:
+- Parameters like `config`, `lib`, `pkgs` declared at inner module level, not outer flake-parts level
+- Structure: `flake.modules.homeManager.pim-foo = { config, lib, pkgs, ... }: { ... }`
+
+**Git Staging Requirement**:
+- Nix flakes only see tracked files (staged or committed)
+- Always stage new files before testing: `git add <file>`
+- Critical for incremental migration workflows
 
 #### Custom Library Functions
 - `self.lib.makeNixos`: Creates NixOS configurations
