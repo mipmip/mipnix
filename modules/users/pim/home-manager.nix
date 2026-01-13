@@ -59,10 +59,10 @@
       pim-neovim
       pim-hyprland
       pim-fonts
-      pim-gnome-desktop-generic
-      pim-gnome-desktop-input-sources
-      pim-gnome-desktop-shortcuts
-      pim-gnome-extensions
+#      pim-gnome-desktop-generic
+#      pim-gnome-desktop-input-sources
+#      pim-gnome-desktop-shortcuts
+#      pim-gnome-extensions
     ];
 
     nixpkgs.config.allowUnfree = true;
