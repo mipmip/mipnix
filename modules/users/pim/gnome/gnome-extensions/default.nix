@@ -3,11 +3,9 @@ inputs,
 ...
 }:
 {
-  flake.modules.homeManager.pim-gnome-extensions = { config, lib, pkgs, unstable, ... }:
+  flake.modules.homeManager.pim-gnome-extensions = { lib, pkgs, unstable, ... }:
 
 let
-  cfg = config.desktopConf.gnome;
-
 
   gnomeExtensionsWithOutConf = [
     pkgs.gnomeExtensions.emoji-copy
@@ -70,11 +68,8 @@ let
 in
   {
 
-  config = lib.mkIf cfg.enable {
-    home.packages = map (ext: ext.extpkg) gnomeExtensions;
-    dconf.settings = recursiveMerge [dconfEnabledExtensions dconfExtConfs];
+  home.packages = map (ext: ext.extpkg) gnomeExtensions;
+  dconf.settings = recursiveMerge [dconfEnabledExtensions dconfExtConfs];
 
-
-  };
   };
 }

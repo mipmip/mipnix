@@ -3,16 +3,10 @@ inputs,
 ...
 }:
 {
-  flake.modules.homeManager.pim-awscli-dir = { config, lib, pkgs, unstable, ... }: {
-    options.roles.awscontrol = {
-       enable = lib.mkEnableOption "enable aws conf stuff";
-    };
-
-    config =
+  flake.modules.homeManager.pim-awscli-dir = { lib, pkgs, unstable, ... }:
 
   let
 
-    cfg = config.roles.awscontrol;
     technative_profiles = /home/pim/.aws/managed_service_accounts.json;
     other_profiles = /home/pim/.aws/other_accounts.json;
 
@@ -106,46 +100,45 @@ inputs,
       };
   in
 
-     lib.mkIf cfg.enable {
+  {
 
-       home.packages = [
-          inputs.jsonify-aws-dotfiles.packages."${pkgs.system}".jsonify-aws-dotfiles
-          inputs.bmc.packages."${pkgs.system}".bmc
-          inputs.race.packages."${pkgs.system}".race
-          pkgs.granted
-          pkgs.gum
-       ];
+    home.packages = [
+       inputs.jsonify-aws-dotfiles.packages."${pkgs.system}".jsonify-aws-dotfiles
+       inputs.bmc.packages."${pkgs.system}".bmc
+       inputs.race.packages."${pkgs.system}".race
+       pkgs.granted
+       pkgs.gum
+    ];
 
-       programs.smug = {
-          enable = true;
-          projects = {
-          }
-          // builtins.listToAttrs (builtins.map (account: rec {
-             name = "aws-${normalize_string account.customer_name}";
-             value = make_smug_project name;
-          }) (builtins.filter (account: (show_account account "hide" && show_account account "hide_smug")) aws_accounts));
-        };
+    programs.smug = {
+       enable = true;
+       projects = {
+       }
+       // builtins.listToAttrs (builtins.map (account: rec {
+          name = "aws-${normalize_string account.customer_name}";
+          value = make_smug_project name;
+       }) (builtins.filter (account: (show_account account "hide" && show_account account "hide_smug")) aws_accounts));
+     };
 
-        programs.awscli = {
-        package = unstable.awscli2;
-        enable = true;
-        settings = {
+     programs.awscli = {
+     package = unstable.awscli2;
+     enable = true;
+     settings = {
 
-          "technative" = {
-            aws_account_id = "technativebv";
-            account_id = "technativebv";
-            region = "eu-central-1";
-            output = "table";
-            group = "Technative";
-          };
-        }
-        // builtins.listToAttrs (builtins.map (account: {
-           name = "profile ${normalize_string account.customer_name}-${normalize_string (account_name account)}";
-           value = make_profile { account = account; group = account.customer_name; };
-        }) (builtins.filter ((account: show_account account "hide" && show_account account "hide_aws")) aws_accounts));
+       "technative" = {
+         aws_account_id = "technativebv";
+         account_id = "technativebv";
+         region = "eu-central-1";
+         output = "table";
+         group = "Technative";
+       };
+     }
+     // builtins.listToAttrs (builtins.map (account: {
+        name = "profile ${normalize_string account.customer_name}-${normalize_string (account_name account)}";
+        value = make_profile { account = account; group = account.customer_name; };
+     }) (builtins.filter ((account: show_account account "hide" && show_account account "hide_aws")) aws_accounts));
 
-      };
+   };
 
-    };
   };
 }

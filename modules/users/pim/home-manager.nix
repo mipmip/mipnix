@@ -58,7 +58,6 @@
       pim-tmux
       pim-neovim
       pim-hyprland
-      pim-shared-shell-aliases
       pim-fonts
       pim-gnome-desktop-generic
       pim-gnome-desktop-input-sources

@@ -3,73 +3,67 @@ inputs,
 ...
 }:
 {
-  flake.modules.homeManager.pim-smug-skull = { lib, config, pkgs, ... }: {
-    options.desktopConf.smug = { enable = lib.mkEnableOption "Configure smug"; };
+  flake.modules.homeManager.pim-smug-skull = { lib, pkgs, ... }:
+  let
+    figletFonts = [ "poison" "doh" "starwars" "broadway" "cyberlarge" "doom" ];
 
-    config =
-    let
-      cfg = config.desktopConf.smug;
+    numberFromName = name:
+      pkgs.lib.fromHexString
+      (builtins.substring 0 15 (builtins.hashString "md5" name));
 
-      figletFonts = [ "poison" "doh" "starwars" "broadway" "cyberlarge" "doom" ];
+    # Implement modulo since builtins.mod doesn't exist
+    mod = a: b: a - (b * (a / b));
 
-      numberFromName = name:
-        pkgs.lib.fromHexString
-        (builtins.substring 0 15 (builtins.hashString "md5" name));
+    # Generating large Pseugo Random integers uniformly distributed over an range
+    integerInRange = largeNumber: upperBound: mod largeNumber upperBound;
 
-      # Implement modulo since builtins.mod doesn't exist
-      mod = a: b: a - (b * (a / b));
+    makeBanner = text:
+      let
+        itemIndex =
+          integerInRange (numberFromName text) (builtins.length figletFonts);
+        pseudoRandomFont = builtins.elemAt figletFonts itemIndex;
+      in "figlet -f ${pseudoRandomFont} '${text}' -w 200 | lolcat";
 
-      # Generating large Pseugo Random integers uniformly distributed over an range
-      integerInRange = largeNumber: upperBound: mod largeNumber upperBound;
+    makeSimpleProject = name: root: {
+      root = root;
+      windows = [{
+        name = "fish";
+        layout = "main-vertical";
+        commands = [ (makeBanner name) ];
+      }];
+    };
 
-      makeBanner = text:
-        let
-          itemIndex =
-            integerInRange (numberFromName text) (builtins.length figletFonts);
-          pseudoRandomFont = builtins.elemAt figletFonts itemIndex;
-        in "figlet -f ${pseudoRandomFont} '${text}' -w 200 | lolcat";
+    simpleProjects = import ./simple_projects.nix.data;
 
-      makeSimpleProject = name: root: {
-        root = root;
-        windows = [{
-          name = "fish";
-          layout = "main-vertical";
-          commands = [ (makeBanner name) ];
-        }];
+    skullProjects = builtins.listToAttrs (lib.remove null (builtins.map (item:
+      if builtins.hasAttr "repos" item then {
+        name = item.name;
+        value = {
+          repos = item.repos;
+          base_dir = item.root;
+        };
+      } else
+        null) simpleProjects)) // import ./extra_skulls.nix.data;
+
+  in {
+
+    home.packages = [ pkgs.figlet pkgs.lolcat ];
+
+    programs = {
+      skull = {
+        enable = true;
+        projects = skullProjects;
       };
 
-      simpleProjects = import ./simple_projects.nix.data;
-
-      skullProjects = builtins.listToAttrs (lib.remove null (builtins.map (item:
-        if builtins.hasAttr "repos" item then {
-          name = item.name;
-          value = {
-            repos = item.repos;
-            base_dir = item.root;
-          };
-        } else
-          null) simpleProjects)) // import ./extra_skulls.nix.data;
-
-    in lib.mkIf cfg.enable {
-
-      home.packages = [ pkgs.figlet pkgs.lolcat ];
-
-      programs = {
-        skull = {
-          enable = true;
-          projects = skullProjects;
-        };
-
-        smug = {
-          enable = true;
-          projects = (import ./advanced_smugs.nix.data { inherit makeBanner; })
-            // builtins.listToAttrs (builtins.map (item: {
-              name = item.name;
-              value = makeSimpleProject item.name item.root;
-            }) simpleProjects);
-        };
-
+      smug = {
+        enable = true;
+        projects = (import ./advanced_smugs.nix.data { inherit makeBanner; })
+          // builtins.listToAttrs (builtins.map (item: {
+            name = item.name;
+            value = makeSimpleProject item.name item.root;
+          }) simpleProjects);
       };
+
     };
   };
 }

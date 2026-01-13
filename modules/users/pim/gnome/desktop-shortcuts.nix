@@ -3,11 +3,9 @@ inputs,
 ...
 }:
 {
-  flake.modules.homeManager.pim-gnome-desktop-shortcuts = { config, lib, pkgs, ... }: {
+  flake.modules.homeManager.pim-gnome-desktop-shortcuts = {
 
-    config = lib.mkIf config.desktopConf.gnome.enable {
-
-      dconf.settings = {
+    dconf.settings = {
 
         "org/gnome/desktop/wm/keybindings" = {
           close                        = [ "<Super>q" ];
@@ -128,6 +126,5 @@ inputs,
         };
 
       };
-    };
   };
 }

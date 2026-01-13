@@ -3,15 +3,9 @@ inputs,
 ...
 }:
 {
-  flake.modules.homeManager.pim-gnome-desktop-generic = { config, lib, ... }: {
+  flake.modules.homeManager.pim-gnome-desktop-generic = {
 
-    options.desktopConf.gnome = {
-      enable = lib.mkEnableOption "Configure gnome";
-    };
-
-    config = lib.mkIf config.desktopConf.gnome.enable {
-
-      dconf.settings = {
+    dconf.settings = {
 
         "org/gnome/GPaste" = {
           history-name = "history";
@@ -80,6 +74,5 @@ inputs,
           experimental-features = ["scale-monitor-framebuffer"];
         };
       };
-    };
   };
 }
