@@ -1,12 +1,20 @@
 {
-lib,
-inputs,
 ...
 }:
+let
+  hostname = "lego2";
+in
 {
+  flake.modules.nixos.networking-nebula = {...} : {
+    networking.extraHosts =
+      ''
+        192.168.100.5 ${hostname}
+      '';
+  };
+
   flake.modules.nixos.lego2 = { config, pkgs, ... } : {
 
-    networking.hostName = "lego2";
+    networking.hostName = hostname;
     networking.networkmanager.enable = true;
     networking.firewall.enable = false;
 
@@ -28,6 +36,13 @@ inputs,
         };
       };
     };
+
+networking.extraHosts =
+  ''
+    127.0.0.2 other-localhost
+    10.0.0.1 server
+  '';
+
 
     services.nebula.networks.mesh = {
       cert = config.age.secrets.nebula-lego2-cert.path;

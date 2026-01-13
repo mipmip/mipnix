@@ -1,10 +1,28 @@
 {
+<<<<<<< HEAD
   ...
   }:
   {
+=======
+lib,
+inputs,
+...
+}:
+let
+  hostname = "harry";
+in
+{
+  flake.modules.nixos.networking-nebula = {...} : {
+    networking.extraHosts =
+      ''
+        192.168.100.7 ${hostname}
+      '';
+  };
+
+>>>>>>> a26e069af4ea326de351eb6b9b563a31e50cc57f
   flake.modules.nixos.harry = { config, pkgs, ... } : {
 
-    networking.hostName = "harry";
+    networking.hostName = hostname;
     networking.firewall.enable = false;
 
     age = {
