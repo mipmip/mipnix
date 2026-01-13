@@ -21,5 +21,15 @@
       hostname = "arcana-one";
     };
   };
+
+  flake.modules.homeManager.pim-git = {
+
+    imports = with inputs.self.modules.homeManager; [
+      pim-git
+    ];
+
+    nixpkgs.config.allowUnfree = true;
+  };
+
 }
 

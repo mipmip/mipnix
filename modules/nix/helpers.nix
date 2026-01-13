@@ -17,9 +17,12 @@
       inputs.home-manager.lib.homeManagerConfiguration {
         modules = [
 
+          inputs.self.modules.homeManager.${username}
+
           inputs.hm-ricing-mode.homeManagerModules.hm-ricing-mode
 
           inputs.walker.homeManagerModules.default
+
 
           (../../home + "/${username}")
           {
