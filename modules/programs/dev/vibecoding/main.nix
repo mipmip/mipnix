@@ -5,6 +5,9 @@
       pkgs.unstable.beads
 
       inputs.openspec.packages."${pkgs.stdenv.hostPlatform.system}".default
+
+      ## util programs used by agents
+      tree
     ];
   };
 }
