@@ -10,7 +10,9 @@
 
   flake.modules.nixos.passieflora = { config, pkgs, ... } : {
     imports = [
-      ../hosts/passieflora/nix/substituter.nix
+      ../hostsOld/passieflora/nix/substituter.nix
+      ../hostsOld/passieflora/nix/configuration.nix
+
       inputs.nixos-hardware-t2.nixosModules.apple-t2
     ];
   };

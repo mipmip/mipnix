@@ -72,7 +72,7 @@
             inputs.self.modules.nixos.${hostname}
 
             ### TODO REMOVE
-            (../../hosts + "/${hostname}/configuration.nix")
+            (../../hostsOld + "/${hostname}/configuration.nix")
             # (inputs.import-tree ../../modulesAuto)  # Removed during dendritic migration
 
           ];
