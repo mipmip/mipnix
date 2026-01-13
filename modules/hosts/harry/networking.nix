@@ -12,7 +12,7 @@ in
       ''
         192.168.100.7 ${hostname}
       '';
-  }
+  };
 
   flake.modules.nixos.harry = { config, pkgs, ... } : {
 

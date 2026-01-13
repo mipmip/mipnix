@@ -1,6 +1,4 @@
 {
-lib,
-inputs,
 ...
 }:
 
@@ -13,7 +11,7 @@ in
       ''
         192.168.100.6 ${hostname}
       '';
-  }
+  };
 
   flake.modules.nixos.hurry = { config, pkgs, ... } : {
 

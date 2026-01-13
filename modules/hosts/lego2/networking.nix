@@ -1,6 +1,4 @@
 {
-lib,
-inputs,
 ...
 }:
 let
@@ -12,8 +10,7 @@ in
       ''
         192.168.100.5 ${hostname}
       '';
-  }
-
+  };
 
   flake.modules.nixos.lego2 = { config, pkgs, ... } : {
 
