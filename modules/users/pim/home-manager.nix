@@ -22,7 +22,7 @@
     };
   };
 
-  flake.modules.homeManager.pim-git = {
+  flake.modules.homeManager.pim = {
 
     imports = with inputs.self.modules.homeManager; [
       pim-git
