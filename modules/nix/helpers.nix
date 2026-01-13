@@ -23,6 +23,7 @@
 
           inputs.walker.homeManagerModules.default
 
+          (inputs.import-tree ../../home/_generic-for-contribution)
           #(../../home + "/${username}")
 
           {
