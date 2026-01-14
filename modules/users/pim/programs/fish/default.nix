@@ -4,7 +4,7 @@ inputs,
 }:
 {
   flake.modules.homeManager.pim-fish = { config, pkgs, ... }: {
-    imports = [ inputs.self.modules.homeManager.pim-shared-shell-aliases ];
+    #imports = [ inputs.self.modules.homeManager.pim-shared-shell-aliases ];
 
     programs.fish = {
       enable = true;
@@ -16,7 +16,7 @@ inputs,
       #            NODE_PATH="''$HOME/.npm-packages/lib/node_modules";
       #          };
 
-      #shellAliases = config.shared.shellAliases;
+      shellAliases = config.shared.shellAliases;
 
       plugins = with pkgs; [
         { name = "fzf-fish"; src = pkgs.fishPlugins.fzf-fish.src; }
