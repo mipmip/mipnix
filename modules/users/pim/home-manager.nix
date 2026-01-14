@@ -27,10 +27,14 @@
     programs.hm-ricing-mode.enable = true;
 
     imports = with inputs.self.modules.homeManager; [
+
+      pim-homeWith-options
+
       pim-git
       pim-direnv
       pim-fzf
       pim-atuin
+      pim-yazi
       pim-obs
       pim-shellstuff
       pim-alacritty

@@ -6,6 +6,7 @@
       nixpkgs-channel ? inputs.nixpkgs,
       username ? "pim",
       hostname,
+      imports ? [],
       homedir ? "/home/pim",
       system ? "x86_64-linux",
       secondbrain ? false,
@@ -15,6 +16,7 @@
       ...
       }:
       inputs.home-manager.lib.homeManagerConfiguration {
+
         modules = [
 
           inputs.self.modules.homeManager.${username}
@@ -35,7 +37,8 @@
             #roles.desktop.enable = desktop;
             #desktopConf.gnome.swapAltWin = swapAltWin;
           }
-        ];
+        ] ++ imports;
+
         pkgs = import nixpkgs-channel {
           inherit system;
           #overlays = [ (import ../overlays) ];

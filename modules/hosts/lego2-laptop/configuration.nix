@@ -5,23 +5,29 @@ let
 in
 
   {
+
   flake.homeConfigurations = {
 
     "pim@lego2" = self.lib.makeHomeConf {
       inherit hostname;
-      secondbrain = true;
-      awscontrol = true;
-      desktop = true;
+      #secondbrain = true;
+      #awscontrol = true;
+      #desktop = true;
+      imports = with inputs.self.modules.homeManager; [
+        pim-with-desktop
+        pim-with-secondbrain
+      ];
+
     };
   };
 
-      flake.nixosConfigurations = {
+  flake.nixosConfigurations = {
 
-        lego2 = self.lib.makeNixos {
-          inherit hostname;
-          system = "x86_64-linux";
-        };
-      };
+    lego2 = self.lib.makeNixos {
+      inherit hostname;
+      system = "x86_64-linux";
+    };
+  };
 
   #flake.nixosConfigurations = inputs.self.lib.mkNixos "x86_64-linux" hostname;
 

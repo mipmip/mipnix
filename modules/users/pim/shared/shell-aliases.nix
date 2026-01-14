@@ -82,7 +82,7 @@ inputs,
         };
       }
 
-      (lib.mkIf config.roles.secondbrain.enable {
+      (lib.mkIf config.homeWith.secondbrain.enable {
 
         shared.shellAliases = {
           t = "tmux a || smug start lobby && smug start doen && smug start sudo && smug start nixos && smug start tekst";
