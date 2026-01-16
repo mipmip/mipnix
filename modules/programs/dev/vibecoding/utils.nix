@@ -11,7 +11,7 @@
       plandex-server
       #      unstable.claude-code
 
-      opencode
+      #opencode
       goose
       #crush
 

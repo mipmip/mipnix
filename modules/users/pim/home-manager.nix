@@ -28,8 +28,9 @@
 
     imports = with inputs.self.modules.homeManager; [
 
-      pim-homeWith-options
+      vibecoding-opencode
 
+      pim-homeWith-options
       pim-git
       pim-direnv
       pim-fzf

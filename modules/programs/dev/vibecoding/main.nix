@@ -10,4 +10,31 @@
       tree
     ];
   };
+
+  flake.modules.homeManager.vibecoding-opencode = { lib, config, unstable, ... }: {
+    programs.opencode = {
+      enable = true;
+      package = unstable.opencode;
+      agents   = {};
+      commands = {};
+      settings = {
+        theme = "opencode";
+        autoshare = false;
+        autoupdate = true;
+        provider = {
+          amazon-bedrock = {
+            options = {
+              region = "eu-central-1";
+              profile = "technative_pg-playground_pim";
+            };
+          };
+        };
+      };
+      themes = {};
+    };
+
+  };
+
+
+
 }
