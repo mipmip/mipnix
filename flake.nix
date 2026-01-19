@@ -26,7 +26,9 @@
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    mipnixvim.url = "github:mipmip/mipnixvim";
+    # Local packages
+    mipvim.url = "path:./packages/mipvim";
+    mipvim.inputs.nixpkgs.follows = "unstable";
 
     hm-ricing-mode.url = "github:mipmip/hm-ricing-mode";
     hm-ricing-mode.inputs.nixpkgs.follows = "nixpkgs-2505";

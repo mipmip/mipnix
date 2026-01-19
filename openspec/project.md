@@ -13,7 +13,7 @@ with integrated Home Manager for user environment management.
 - **agenix** for encrypted secrets management
 - **Nebula VPN** for mesh networking between machines
 - **Hyprland** as primary desktop environment.
-- **Neovim** (heavily customized via mipnixvim)
+- **Neovim** (heavily customized via mipvim, integrated in monorepo at `packages/mipvim/`)
 - **Terminal emulators**: 
     - ghostty (primary), 
     - kitty, 
@@ -251,7 +251,8 @@ Custom bash framework for common tasks:
 - **nixos/nixpkgs**: Main package source (multiple channels)
 - **nix-community/home-manager**: User environment management
 - **ryantm/agenix**: Secrets encryption
-- **mipmip/***: Personal packages (mipnixvim, skull, myhotkeys, etc.)
+- **mipmip/***: Personal packages (skull, myhotkeys, etc.)
+  - **mipvim**: Integrated in monorepo at `packages/mipvim/` (formerly external mipnixvim)
 - **wearetechnative/***: Work-related tools (bmc, race)
 - **nixos/nixos-hardware**: Hardware-specific configs
 - **mobile-nixos**: PinePhone support

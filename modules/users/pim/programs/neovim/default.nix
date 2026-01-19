@@ -3,7 +3,7 @@ inputs,
 ...
 }:
 {
-  flake.modules.homeManager.pim-neovim = { pkgs, system, mipnixvim, ... }: {
+  flake.modules.homeManager.pim-neovim = { pkgs, system, mipvim, ... }: {
     #  programs.neovim = {
     #    enable = true;
     #    package = unstable.neovim-unwrapped;
@@ -38,7 +38,7 @@ inputs,
     #  };
 
     home.packages = [
-      mipnixvim.packages."${system}".default
+      mipvim.packages."${system}".default
     ];
   };
 }
