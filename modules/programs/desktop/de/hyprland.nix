@@ -29,7 +29,7 @@
     #  };
 
     environment.systemPackages = with pkgs; [
-      waybar
+      #waybar
       pamixer
 
       rofi
@@ -59,7 +59,7 @@
       swww # for wallpapers
       xdg-desktop-portal-gtk
       xdg-desktop-portal-hyprland
-      xwayland
+      #xwayland
       pkgs.unstable.hyprshell
       hyprmon
       hyprviz
