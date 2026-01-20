@@ -13,6 +13,7 @@ inputs,
       settings = {
         window-padding-x = 3;
         window-padding-y = 3;
+        theme = "dark:Gruvbox Material,light:Gruvbox Material Light";
         cursor-invert-fg-bg = true;
         mouse-hide-while-typing = true;
         copy-on-select = "clipboard";
