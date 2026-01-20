@@ -43,6 +43,9 @@ in
 
       hm-nixos
       hardware-keychron
+      framework-fingerprint
+      framework-misc
+     networking-wifi
 
       desktop-myhotkeys
 

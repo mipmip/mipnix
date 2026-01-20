@@ -3,6 +3,7 @@
     environment.systemPackages = with pkgs; [
 
       #SYSTEM
+      lsof
       htop
       util-linux
       sysstat
