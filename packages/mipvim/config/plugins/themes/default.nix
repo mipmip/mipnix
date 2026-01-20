@@ -1,14 +1,14 @@
 {
   colorschemes = {
     gruvbox = {
-      enable = true;
+      enable = false;
     };
     gruvbox-baby = {
-      enable = true;
+      enable = false;
     };
     tokyonight = {
       enable = true;
-      setting = {
+      settings = {
         day_brightness = 0.3;
         dim_inactive = true;
         hide_inactive_statusline = false;
@@ -40,7 +40,7 @@
       };
     };
     catppuccin = {
-      enable = true;
+      enable = false;
       settings = {
         background = {
           light = "macchiato";
