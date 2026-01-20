@@ -23,8 +23,6 @@
 
           inputs.hm-ricing-mode.homeManagerModules.hm-ricing-mode
 
-          inputs.walker.homeManagerModules.default
-
           (inputs.import-tree ../../home/_generic-for-contribution)
           #(../../home + "/${username}")
 

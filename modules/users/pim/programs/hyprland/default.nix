@@ -24,34 +24,68 @@ inputs,
       };
     };
 
+    imports = [
+      #inputs.elephant.homeManagerModules.default
+      inputs.walker.homeManagerModules.default
+    ];
+
+    programs.elephant = {
+      enable = true;
+      debug = false;
+
+      # Select specific providers
+      providers = [
+        #"files"
+        "desktopapplications"
+        "calc"
+        "runner"
+        "clipboard"
+        "symbols"
+        "websearch"
+        "menus"
+        "providerlist"
+      ];
+
+      # Custom elephant configuration
+      settings = {
+        providers = {
+          files = {
+            min_score = 50;
+            icon = "folder";
+          };
+          desktopapplications = {
+            launch_prefix = "uwsm app --";
+            min_score = 60;
+          };
+          calc = {
+            icon = "accessories-calculator";
+          };
+        };
+      };
+    };
 
 
     programs.walker = {
       enable = true;
       runAsService = true;
-      elephant = {
-        providers = [
-          "calc"
-          "clipboard"
-          "desktopapplications"
-          # "files" # files provider starts very slowly
-          "menus"
-          "providerlist"
-          "runner"
-          "symbols"
-          "todo"
-          "unicode"
-          "websearch"
-        ];
-      };
+      #      elephant = {
+      #        providers = [
+      #          "calc"
+      #          "clipboard"
+      #          "desktopapplications"
+      #          # "files" # files provider starts very slowly
+      #          "menus"
+      #          "providerlist"
+      #          "runner"
+      #          "symbols"
+      #          "todo"
+      #          "unicode"
+      #          "websearch"
+      #        ];
+      #      };
     };
 
     home.packages = [ inputs.walker.packages.${pkgs.stdenv.hostPlatform.system}.default ];
-    #    programs.walker = {
-    #      enable = true;
-    #      runAsService = true; # Note: this option isn't supported in the NixOS module only in the home-manager module
-    #
-    #    };
 
     home.file = {
       ".config/wpaperd" = {
