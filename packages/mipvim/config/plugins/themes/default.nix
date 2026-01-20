@@ -36,7 +36,7 @@
           variables = { };
         };
         terminal_colors = true;
-        transparent = false;
+        transparent = true;
       };
     };
     catppuccin = {
