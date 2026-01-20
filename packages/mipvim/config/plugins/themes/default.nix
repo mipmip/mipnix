@@ -2,11 +2,15 @@
   colorschemes = {
 
     gruvbox = {
-      enable = false;
+      enable = true;
+      settings = {
+        transparent_mode = true;
+        dim_inactive = true;
+      };
     };
 
     gruvbox-baby = {
-      enable = true;
+      enable = false;
       settings =     {
         #        function_style = "NONE";
         #        highlights = {
