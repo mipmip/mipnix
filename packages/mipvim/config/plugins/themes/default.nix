@@ -1,13 +1,29 @@
 {
   colorschemes = {
+
     gruvbox = {
       enable = false;
     };
+
     gruvbox-baby = {
-      enable = false;
-    };
-    tokyonight = {
       enable = true;
+      settings =     {
+        function_style = "NONE";
+        highlights = {
+          Normal = {
+            bg = "NONE";
+            fg = "#123123";
+            style = "underline";
+          };
+        };
+        keyword_style = "italic";
+        telescope_theme = 1;
+        transparent_mode = 1;
+      };
+    };
+
+    tokyonight = {
+      enable = false;
       settings = {
         day_brightness = 0.3;
         dim_inactive = true;
