@@ -10,7 +10,7 @@
         "git_status"
         "document_symbols"
       ];
-      
+
       add_blank_line_at_top = false;
 
       filesystem = {

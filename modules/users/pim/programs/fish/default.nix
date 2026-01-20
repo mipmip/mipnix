@@ -113,6 +113,7 @@ inputs,
         bass source /tmp/bedrock-keys-for-avante-env
 
         set -gx EDITOR nvim
+        set -gx ELECTRON_OZONE_PLATFORM_HINT wayland
 
 
         #bass export PATH=~/.npm-packages/bin:$PATH
