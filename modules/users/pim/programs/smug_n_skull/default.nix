@@ -33,7 +33,7 @@ inputs,
       }];
     };
 
-    simpleProjects = import ./simple_projects.nix.data;
+    simpleProjects = import ./_simple_projects.nix;
 
     skullProjects = builtins.listToAttrs (lib.remove null (builtins.map (item:
       if builtins.hasAttr "repos" item then {
@@ -43,7 +43,7 @@ inputs,
           base_dir = item.root;
         };
       } else
-        null) simpleProjects)) // import ./extra_skulls.nix.data;
+        null) simpleProjects)) // import ./_extra_skulls.nix;
 
   in {
 
@@ -57,7 +57,7 @@ inputs,
 
       smug = {
         enable = true;
-        projects = (import ./advanced_smugs.nix.data { inherit makeBanner; })
+        projects = (import ./_advanced_smugs.nix { inherit makeBanner; })
           // builtins.listToAttrs (builtins.map (item: {
             name = item.name;
             value = makeSimpleProject item.name item.root;

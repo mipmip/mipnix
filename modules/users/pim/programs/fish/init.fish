@@ -18,4 +18,3 @@ bass source /tmp/bedrockpim-api-keys-env
 bass source /tmp/bedrock-keys-for-avante-env
 
 bass export PATH=~/.npm-packages/bin:$PATH
-

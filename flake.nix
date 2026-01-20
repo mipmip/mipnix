@@ -16,12 +16,12 @@
     nixos-hardware.url = "github:nixos/nixos-hardware";
     nixos-hardware-t2.url = "github:nixos/nixos-hardware";
 
-    elephant.url = "github:abenz1267/elephant";
 
     walker = {
       url = "github:abenz1267/walker";
       inputs.elephant.follows = "elephant";
     };
+    elephant.url = "github:abenz1267/elephant";
 
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";

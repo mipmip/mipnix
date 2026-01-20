@@ -24,10 +24,10 @@
         commands = [ (makeBanner "nixos secrets") ];
       }
       {
-        name = "mipvim";
-        root = "~/mipnix/packages/mipvim";
+        name = "mipnix";
+        root = "~/mipnix";
         layout = "main-vertical";
-        commands = [ (makeBanner "mipvim") ];
+        commands = [ (makeBanner "mipnix") ];
       }
     ];
   };
