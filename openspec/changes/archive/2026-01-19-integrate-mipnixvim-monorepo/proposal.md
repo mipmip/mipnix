@@ -11,24 +11,31 @@ Currently, mipnixvim is maintained as a separate GitHub repository and reference
 Integrating mipnixvim directly into the monorepo (renamed to mipvim) will streamline development, enable atomic changes across both neovim configuration and system configuration, and simplify the overall build process.
 
 ## What Changes
-- Move the entire mipnixvim repository code into `packages/mipvim/` within the mipnix monorepo (renamed from mipnixvim to mipvim)
-- Update flake.nix to expose mipvim as a local package output instead of an external input
-- Update all references to `inputs.mipnixvim` to use the local mipvim package
-- Remove the external mipnixvim flake input from flake.nix
-- Update flake.lock to remove the mipnixvim dependency
-- Update smug/skull configurations that reference the external mipnixvim repository
-- Preserve the package's ability to be built independently (keep its flake.nix)
-- Update project documentation to reflect the new monorepo structure and mipvim naming
+- Move the mipvim configuration from the external mipnixvim repository into `packages/mipvim/config/` within the mipnix monorepo
+- Add nixvim and pre-commit-hooks as direct inputs to the root flake.nix
+- Build mipvim package directly in root flake's perSystem using nixvim's makeNixvimWithModule
+- Configure mipvim to use unstable nixpkgs channel to match nixvim version requirements
+- Update all references to `inputs.mipnixvim` to use `inputs.self.packages.${system}.mipvim`
+- Remove the external mipvim flake input from flake.nix
+- Remove the standalone flake.nix from packages/mipvim (integrated directly into root flake)
+- Update flake.lock to remove the mipvim dependency and add nixvim/pre-commit-hooks
+- Remove mipvim from extraSpecialArgs in helpers.nix
+- Update project documentation to reflect the new monorepo structure
 
 ## Impact
 - **Affected specs**: flake-structure (new), package-management (new)
 - **Affected code**: 
-  - `flake.nix` (inputs and package outputs)
-  - `flake.lock` (dependency removal)
+  - `flake.nix` (inputs, perSystem package definition)
+  - `flake.lock` (dependency updates: removed mipvim, added nixvim/pre-commit-hooks)
   - `modules/users/pim/programs/neovim/default.nix` (package reference)
-  - `modules/users/pim/programs/smug_n_skull/` (working copy configuration)
-  - `modules/nix/helpers.nix` (special arguments)
+  - `modules/nix/helpers.nix` (removed mipvim from extraSpecialArgs)
+  - `packages/mipvim/config/` (configuration files migrated from external repo)
+  - `packages/mipvim/config/plugins/editor/treesitter.nix` (fixed deprecation warnings)
+  - `packages/mipvim/config/plugins/editor/neo-tree.nix` (migrated to settings structure)
   - `openspec/project.md` (documentation)
-- **External dependencies**: The GitHub repository github:mipmip/mipnixvim will remain but become read-only/archived (decision deferred to deployment)
+- **External dependencies**: 
+  - Added: nixvim (from nix-community)
+  - Added: pre-commit-hooks
+  - Removed: mipvim local flake reference
 - **Breaking changes**: None for end users; internal flake structure changes only
-- **Package renaming**: mipnixvim → mipvim (shorter, cleaner name for the integrated package)
+- **Package integration**: mipvim built directly in root flake using nixvim, not as separate flake

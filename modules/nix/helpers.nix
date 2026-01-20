@@ -46,7 +46,6 @@
         };
         extraSpecialArgs = {
           inherit inputs system;
-          inherit (inputs) mipvim;
           unstable = import inputs.unstable {
             inherit system;
             #overlays = [ (import ../overlays) ];

@@ -6,37 +6,57 @@ Defines how packages are built, referenced, and consumed within the NixOS config
 ## ADDED Requirements
 
 ### Requirement: Local Package References
-The system SHALL enable modules to reference locally-defined packages using `inputs.self.packages.${system}.<package-name>` syntax.
+The system SHALL enable modules to reference locally-built packages using `inputs.self.packages.${system}.<package-name>` syntax.
 
-#### Scenario: Module consuming local package
-- **WHEN** a Home Manager or NixOS module needs to install a local package
+#### Scenario: Module consuming locally-built package
+- **WHEN** a Home Manager or NixOS module needs to install a locally-built package
 - **THEN** it SHALL reference the package using `inputs.self.packages.${system}.<package-name>`
 - **AND** the module SHALL receive `system` and `inputs` as parameters
 - **AND** the package SHALL be added to `home.packages` or `environment.systemPackages` as appropriate
 
-### Requirement: Package Independence
-The system SHALL ensure that local packages can be built and tested independently of the main system configuration.
+### Requirement: Configuration-based Package Building
+The system SHALL support building packages directly from configuration files when appropriate, without requiring each package to be a standalone buildable unit.
 
-#### Scenario: Standalone package build
-- **WHEN** a package exists in `packages/<package-name>/`
-- **THEN** it SHALL be buildable using `nix build ./packages/<package-name>`
-- **AND** it SHALL maintain its own flake.nix with appropriate inputs and outputs
-- **AND** it SHALL NOT depend on the parent monorepo for build-time dependencies
+#### Scenario: Configuration-based package
+- **WHEN** a package consists primarily of configuration for an external tool
+- **THEN** it MAY be built directly in root flake's perSystem
+- **AND** it SHALL store configuration in `packages/<package-name>/config/`
+- **AND** it SHALL use the appropriate builder tool as a library
+- **AND** it SHALL NOT require its own flake.nix
 
 ### Requirement: Package Parameter Passing
-The system SHALL pass necessary build parameters (pkgs, system, lib) to local packages through their import or flake interface.
+The system SHALL pass necessary build parameters (pkgs, system, lib) to package builders through their documented API.
 
-#### Scenario: Package receiving build parameters
-- **WHEN** a local package is imported in perSystem
-- **THEN** it SHALL receive at minimum `pkgs` and `system` parameters
-- **AND** additional parameters MAY be passed based on package requirements
-- **AND** the package SHALL use these parameters for architecture-specific builds
+#### Scenario: Package built with builder tool
+- **WHEN** a package is built using an external builder (e.g., nixvim)
+- **THEN** it SHALL receive appropriate pkgs parameter for the target nixpkgs version
+- **AND** it SHALL receive system parameter for architecture-specific builds
+- **AND** additional parameters MAY be passed based on builder requirements
+- **AND** the builder's makeXXXWithModule pattern SHALL be used when available
 
-### Requirement: Cross-Package Consistency
-The system SHALL use consistent nixpkgs versions across all local packages and system configuration to avoid version conflicts.
+### Requirement: Per-Package Nixpkgs Version Selection
+The system SHALL allow packages to use different nixpkgs versions when required by their builder tools to avoid version compatibility issues.
 
-#### Scenario: Shared nixpkgs version
-- **WHEN** multiple packages are built within the monorepo
-- **THEN** they SHALL use the same nixpkgs input version
-- **AND** package flake.nix files MAY define their own nixpkgs input for standalone builds
-- **AND** the parent flake SHALL override package nixpkgs when building integrated packages
+#### Scenario: Package requiring specific nixpkgs version
+- **WHEN** a package builder (e.g., nixvim) requires a specific nixpkgs version
+- **THEN** the package build SHALL import the required nixpkgs version
+- **AND** this SHALL be isolated from the system's base nixpkgs version
+- **AND** the package SHALL NOT produce version mismatch warnings
+- **AND** appropriate nixpkgs channel (stable/unstable) SHALL be selected based on builder requirements
+
+#### Example: Using unstable for nixvim
+```nix
+perSystem = { system, ... }:
+  let
+    pkgs-unstable = import inputs.unstable {
+      inherit system;
+      config.allowUnfree = true;
+    };
+  in
+  {
+    packages.mipvim = nixvim'.makeNixvimWithModule {
+      pkgs = pkgs-unstable;  # Use unstable to match nixvim version
+      # ...
+    };
+  };
+```

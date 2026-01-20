@@ -1,152 +1,183 @@
 # Design: Integrate mipnixvim into Monorepo
 
 ## Overview
-This change moves mipnixvim from an external GitHub-based flake input to an integrated package within the mipnix monorepo, renamed to mipvim. The integration preserves the package's independence while enabling seamless local development.
+This change moves mipvim from an external GitHub-based flake input to a directly integrated package within the mipnix monorepo. The configuration is built using nixvim directly in the root flake's perSystem, eliminating the need for a separate flake.nix within the package.
 
 ## Architectural Decisions
 
-### 1. Package Location and Naming
-**Decision**: Place mipnixvim code in `packages/mipvim/` with the package renamed from mipnixvim to mipvim
+### 1. Package Location and Structure
+**Decision**: Place mipvim configuration in `packages/mipvim/config/` without a standalone flake.nix
 
 **Rationale**:
-- Follows common monorepo conventions for packaging separate components
-- Separates packages from system configuration modules
-- Shorter name (mipvim) is cleaner and easier to type while remaining clear
-- Package maintains its own flake.nix and remains buildable independently
-- Creates a clear location for future package additions (skull, myhotkeys, etc. could follow)
+- Configuration files only, no separate flake needed
+- Built directly by root flake using nixvim's makeNixvimWithModule
+- Separates package configuration from system configuration modules
+- Simpler maintenance - one flake.nix instead of two
+- Uses nixvim as a library rather than as an external package
 
 **Alternatives considered**:
-- `packages/mipnixvim/` - Rejected: Name is longer than necessary
-- `modules/packages/mipvim/` - Rejected: Mixing packages with NixOS/HM modules violates separation of concerns
-- `pkgs/mipvim/` - Rejected: Too similar to nixpkgs convention, might cause confusion
+- Keep standalone flake.nix - Rejected: Adds complexity, duplicate input management
+- Place in modules/ - Rejected: Not a NixOS/HM module, it's a package configuration
+- Use as git submodule - Rejected: Still requires external repo, adds complexity
 
 ### 2. Flake Integration Strategy
-**Decision**: Use flake-parts `perSystem` to expose mipvim as a local package output
+**Decision**: Build mipvim directly in root flake's perSystem using nixvim as a library
 
 **Rationale**:
 - Aligns with existing flake-parts architecture
 - Provides clean `packages.${system}.mipvim` output
-- Maintains compatibility with existing module references
-- Allows the package to keep its own flake.nix for standalone builds
+- Uses import-tree to load configuration from `packages/mipvim/config/`
+- Nixvim becomes a direct dependency, eliminating flake indirection
+- Simpler to maintain - single source of truth for inputs
 
 **Implementation approach**:
 ```nix
-perSystem = { system, pkgs, ... }: {
-  packages.mipvim = import ./packages/mipvim { inherit pkgs system; };
-};
+perSystem = { system, pkgs, ... }:
+  let
+    pkgs-unstable = import inputs.unstable {
+      inherit system;
+      config.allowUnfree = true;
+    };
+    
+    nixvimLib = inputs.nixvim.lib.${system};
+    nixvim' = inputs.nixvim.legacyPackages.${system};
+    nixvimModule = {
+      pkgs = pkgs-unstable;
+      module = {
+        imports = [
+          (inputs.import-tree ./packages/mipvim/config)
+        ];
+      };
+      extraSpecialArgs = { };
+    };
+  in
+  {
+    packages.mipvim = nixvim'.makeNixvimWithModule nixvimModule;
+    checks.mipvim = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
+  };
 ```
 
+**Key points**:
+- Uses unstable nixpkgs for mipvim to match nixvim version requirements
+- Leverages import-tree for modular configuration loading
+- Provides both package and check outputs
+
 **Alternatives considered**:
-- Direct inline definition - Rejected: Would lose mipnixvim's standalone buildability
-- Git submodule - Rejected: Adds complexity without benefits, still requires external repo
+- Keep separate flake.nix - Rejected: Duplicates input management, adds complexity
+- Import as external input - Rejected: The problem we're solving
+- Git submodule - Rejected: Adds complexity without benefits
 
 ### 3. Reference Update Strategy
-**Decision**: Replace `inputs.mipnixvim` with `inputs.self` throughout codebase
+**Decision**: Replace `inputs.mipvim` (from local flake) with `inputs.self.packages.${system}.mipvim`
 
 **Rationale**:
-- Minimal code changes: `mipnixvim.packages` → `self.packages`
+- Standard pattern for referencing packages from same flake
 - Leverages existing flake-parts special arguments mechanism
-- Maintains backward compatibility with module structure
+- Clear and explicit package reference
 
 **Impact points**:
-- `modules/users/pim/programs/neovim/default.nix`: Change package reference
-- `modules/nix/helpers.nix`: Remove mipnixvim from specialArgs (if present)
-- `flake.nix`: Remove input, add package output
+- `modules/users/pim/programs/neovim/default.nix`: Updated to use `inputs.self.packages."${system}".mipvim`
+- `modules/nix/helpers.nix`: Removed mipvim from extraSpecialArgs
+- `flake.nix`: Removed local path input, added nixvim/pre-commit-hooks inputs, defined package in perSystem
 
-### 4. Development Workflow
-**Decision**: Support both monorepo and standalone development modes
-
-**Rationale**:
-- Monorepo mode: Direct edits in `packages/mipnixvim/`, instant rebuilds
-- Standalone mode: mipnixvim retains its flake.nix for independent testing
-- Maintains flexibility for potential future extraction if needed
-
-**Git workflow**:
-- Skull/smug configuration updated to point to `packages/mipvim/` instead of separate git clone
-- Existing `~/mipnixvim` working copies remain valid but become redundant
-
-### 5. Version Management
-**Decision**: mipvim versions follow monorepo versioning
+### 4. Nixpkgs Version Management
+**Decision**: Use unstable nixpkgs specifically for mipvim build
 
 **Rationale**:
-- Simplifies dependency management
-- Enables atomic updates across system and neovim configuration
-- Removes flake.lock update friction
+- Nixvim from unstable requires matching nixpkgs version
+- Eliminates version mismatch warnings between nixvim and package dependencies
+- Root system uses stable (25.11), mipvim uses unstable - isolated appropriately
+- Follows existing pattern in channels.nix for unstable overlay
 
-**External GitHub repository**:
-- Decision deferred to deployment phase
-- Options: Archive, mark read-only, continue mirroring, or delete
-- No immediate action required for this change
+**Implementation**:
+```nix
+let
+  pkgs-unstable = import inputs.unstable {
+    inherit system;
+    config.allowUnfree = true;
+  };
+in
+{
+  packages.mipvim = nixvim'.makeNixvimWithModule {
+    pkgs = pkgs-unstable;
+    # ...
+  };
+}
+```
+
+**Benefits**:
+- No version mismatch warnings
+- Latest neovim features from unstable
+- Isolated from system stability requirements
+
+### 5. Configuration Migration and Updates
+**Decision**: Migrate configuration files and fix nixvim API deprecations
+
+**Rationale**:
+- Newer nixvim version requires updated configuration syntax
+- Move to `settings.*` structure for most plugin options
+- Fix deprecation warnings proactively
+
+**Changes made**:
+- `treesitter.nix`: Changed `folding = false` to `folding.enable = false`
+- `neo-tree.nix`: Moved all top-level options to `settings.*` structure
+- `neo-tree.nix`: Changed camelCase to snake_case for upstream consistency
+
+**Remaining deprecations**:
+- treesitter-textobjects options still using old API (non-breaking warnings)
+- Can be updated incrementally as needed
 
 ## Migration Path
 
-### Phase 1: Structure Setup
-1. Create `packages/` directory
-2. Merge mipnixvim repository into `packages/mipvim/` preserving git history with contributor filtering
-3. Verify mipvim builds independently: `nix build ./packages/mipvim`
+### Phase 1: Add Nixvim Dependencies
+1. Add nixvim and pre-commit-hooks inputs to root flake.nix
+2. Remove local mipvim flake input
+3. Update flake.lock
 
-#### Git History Integration Strategy
-**Decision**: Use git subtree to preserve complete history while filtering out bot contributors
+### Phase 2: Create Package Configuration
+1. Keep existing `packages/mipvim/config/` directory structure
+2. Remove standalone flake.nix, flake.lock, and related files from packages/mipvim/
+3. Build package directly in root flake's perSystem
 
-**Approach**:
-1. Clone mipnixvim to temporary location
-2. Filter out bot contributors using git filter-repo:
-   - renovate-bot
-   - github-actions[bot]
-   - renovate[bot]
-3. Use git subtree add to merge filtered history into `packages/mipvim/`
+### Phase 3: Fix Configuration Issues
+1. Update treesitter folding syntax
+2. Move neo-tree options to settings structure
+3. Test build and resolve any remaining issues
 
-**Rationale**:
-- Preserves meaningful commit history and authorship
-- Removes automated bot commits that don't add value to monorepo history
-- Maintains clean git blame and git log output
-- Allows future git bisect operations across full history
+### Phase 4: Update References
+1. Update neovim module to reference `inputs.self.packages`
+2. Remove mipvim from helpers.nix extraSpecialArgs
+3. Verify all references updated
 
-**Tools required**: git-filter-repo (available in nixpkgs)
-
-### Phase 2: Flake Integration
-1. Add package output in perSystem
-2. Remove external input from inputs section
-3. Update flake.lock: `nix flake update`
-
-### Phase 3: Reference Updates
-1. Update neovim module to reference self.packages
-2. Update helpers.nix if needed
-3. Update skull/smug configurations
-
-### Phase 4: Validation
-1. Test build: `nix flake check`
-2. Test neovim installation: `./RUNME.sh up_home`
-3. Verify neovim launches and functions correctly
+### Phase 5: Validation
+1. Test build: `nix build .#mipvim`
+2. Verify no version mismatch warnings
+3. Test neovim launches and functions correctly
 
 ## Risks and Mitigations
 
 ### Risk: Build breakage
-**Mitigation**: Keep external input temporarily during testing, switch atomically
+**Mitigation**: Test build after each phase, verify package output exists
 
-### Risk: Lost git history
-**Mitigation**: Preserve complete git history using git subtree with contributor filtering; all human commits retained
+### Risk: Version mismatch warnings
+**Mitigation**: Use unstable nixpkgs for mipvim build to match nixvim version
 
-### Risk: Git history pollution from bots
-**Mitigation**: Filter out bot contributors (renovate-bot, github-actions[bot], renovate[bot]) before merging to keep history clean
+### Risk: Configuration incompatibility
+**Mitigation**: Update configuration to new nixvim API, fix deprecations proactively
 
-### Risk: Circular dependencies
-**Mitigation**: mipvim's flake.nix should not depend on mipnix; keep it standalone-compatible
-
-### Risk: Large repository size
-**Mitigation**: Acceptable - mipvim is primarily Lua/Nix text files, minimal size impact
+### Risk: Module reference errors
+**Mitigation**: Update all references atomically, test with `nix flake check`
 
 ## Future Considerations
 
-### Potential follow-on integrations
-Similar pattern could be applied to:
-- skull (git working copy manager)
-- myhotkeys (GTK hotkeys manager)
-- mip.rs (markdown viewer)
-- dirtygit (git status tool)
+### Direct nixvim integration pattern
+This integration establishes a pattern for using nixvim as a library:
+- Configuration in `packages/<name>/config/`
+- Built directly in root flake perSystem
+- No standalone flake needed
+- Can be applied to other nixvim-based configurations
 
-### Multi-package monorepo structure
-If multiple packages are integrated, consider:
-- Shared CI/CD workflows
-- Package-specific versioning metadata
-- Cross-package dependency management
+### Potential configuration improvements
+- Update remaining treesitter-textobjects to new API
+- Migrate more plugins to settings.* structure as nixvim evolves
+- Consider splitting large plugin configurations into smaller files

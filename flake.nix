@@ -26,9 +26,11 @@
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Local packages
-    mipvim.url = "path:./packages/mipvim";
-    mipvim.inputs.nixpkgs.follows = "unstable";
+    nixvim.url = "github:nix-community/nixvim";
+    nixvim.inputs.nixpkgs.follows = "unstable";
+
+    pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
+    pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
 
     hm-ricing-mode.url = "github:mipmip/hm-ricing-mode";
     hm-ricing-mode.inputs.nixpkgs.follows = "nixpkgs-2505";
@@ -94,8 +96,29 @@
       };
 
       # Optional: per-system outputs (formatter, devShells, etc.)
-      perSystem = { system, pkgs, ... }: {
-        # formatter = pkgs.nixfmt-classic;
-      };
+      perSystem = { system, pkgs, ... }:
+        let
+          # Import unstable nixpkgs for nixvim
+          pkgs-unstable = import inputs.unstable {
+            inherit system;
+            config.allowUnfree = true;
+          };
+
+          nixvimLib = inputs.nixvim.lib.${system};
+          nixvim' = inputs.nixvim.legacyPackages.${system};
+          nixvimModule = {
+            pkgs = pkgs-unstable;
+            module = {
+              imports = [
+                (inputs.import-tree ./packages/mipvim/config)
+              ];
+            };
+            extraSpecialArgs = { };
+          };
+        in
+        {
+          packages.mipvim = nixvim'.makeNixvimWithModule nixvimModule;
+          checks.mipvim = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
+        };
     };
 }

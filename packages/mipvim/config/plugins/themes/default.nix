@@ -1,10 +1,46 @@
 {
   colorschemes = {
+    gruvbox = {
+      enable = true;
+    };
     gruvbox-baby = {
       enable = true;
     };
+    tokyonight = {
+      enable = true;
+      setting = {
+        day_brightness = 0.3;
+        dim_inactive = true;
+        hide_inactive_statusline = false;
+        light_style = "day";
+        lualine_bold = false;
+        on_colors = "function(colors) end";
+        on_highlights = "function(highlights, colors) end";
+        sidebars = [
+          "qf"
+          "vista_kind"
+          "terminal"
+          "packer"
+        ];
+        style = "storm";
+        styles = {
+          comments = {
+            italic = true;
+          };
+          floats = "dark";
+          functions = { };
+          keywords = {
+            italic = true;
+          };
+          sidebars = "dark";
+          variables = { };
+        };
+        terminal_colors = true;
+        transparent = false;
+      };
+    };
     catppuccin = {
-      enable = false;
+      enable = true;
       settings = {
         background = {
           light = "macchiato";
