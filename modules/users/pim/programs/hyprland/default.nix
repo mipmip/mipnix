@@ -68,21 +68,6 @@ inputs,
     programs.walker = {
       enable = true;
       runAsService = true;
-      #      elephant = {
-      #        providers = [
-      #          "calc"
-      #          "clipboard"
-      #          "desktopapplications"
-      #          # "files" # files provider starts very slowly
-      #          "menus"
-      #          "providerlist"
-      #          "runner"
-      #          "symbols"
-      #          "todo"
-      #          "unicode"
-      #          "websearch"
-      #        ];
-      #      };
     };
 
     home.packages = [ inputs.walker.packages.${pkgs.stdenv.hostPlatform.system}.default ];

@@ -16,7 +16,6 @@
     nixos-hardware.url = "github:nixos/nixos-hardware";
     nixos-hardware-t2.url = "github:nixos/nixos-hardware";
 
-
     walker = {
       url = "github:abenz1267/walker";
       inputs.elephant.follows = "elephant";
