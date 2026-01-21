@@ -108,6 +108,10 @@
                 "description": "Terminal"
             },
             {
+                "key": "<SHIFT><SUPER>Return",
+                "description": "Terminal DarkMode"
+            },
+            {
                 "key": "<SHIFT><SUPER>B",
                 "description": "Firefox"
             },
