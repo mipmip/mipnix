@@ -1,6 +1,6 @@
 [
     {
-      root = "~/tcUniversity";
+      root = "~/tcWearetechnative";
       name = "technative-we-are";
       repos = [
 
