@@ -21,7 +21,10 @@
         theme = "opencode";
         autoshare = false;
         autoupdate = true;
-        plugin = ["@tarquinen/opencode-dcp@latest"];
+        plugin = [
+          "@tarquinen/opencode-dcp@latest"
+          "@mohak34/opencode-notifier@latest"
+        ];
         provider = {
           amazon-bedrock = {
             options = {

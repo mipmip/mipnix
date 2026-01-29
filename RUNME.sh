@@ -72,6 +72,13 @@ up_home(){
 
   # Only sync if home-manager succeeded
   if [ $? -eq 0 ]; then
+    # Install opencode plugins
+    echo "Installing opencode plugins..."
+    if [ -d ~/.config/opencode ]; then
+      cd ~/.config/opencode && npm install
+      cd -
+    fi
+    
     EXTRA_ARG="auto run after home-manager switch"
     git_sync_machine
   else
