@@ -45,7 +45,7 @@ in
       hardware-keychron
       framework-fingerprint
       framework-misc
-     networking-wifi
+      networking-wifi
 
       desktop-myhotkeys
 
