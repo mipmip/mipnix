@@ -89,7 +89,7 @@ inputs,
 
         ######### THEME  ##########
         set-window-option -g window-active-style bg=black
-        set-window-option -g window-style bg=terminal
+        set-window-option -g window-style bg=white
       '';
     };
   };
