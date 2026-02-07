@@ -62,13 +62,21 @@ git_sync_machine(){
 
 make_command "up_home" "Add latest home-manager updates"
 up_home(){
-  RICING=$(hmrice status | grep RICING | wc -l)
-  if [ $RICING -gt 0 ]; then
-    echo "Unrise first (hmrice unrice), then run again"
-  else
+
+  if ! command -v hmrice >/dev/null 2>&1
+  then
     check_untracked
     home-manager switch --impure --flake .\#$USER@$(hostname) -b backup
+  else
+    RICING=$(hmrice status | grep RICING | wc -l)
+    if [ $RICING -gt 0 ]; then
+      echo "Unrise first (hmrice unrice), then run again"
+    else
+      check_untracked
+      home-manager switch --impure --flake .\#$USER@$(hostname) -b backup
+    fi
   fi
+
 
   # Only sync if home-manager succeeded
   if [ $? -eq 0 ]; then

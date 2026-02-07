@@ -3,7 +3,7 @@
   inputs = {
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11"; # GNOME 49
-    nixpkgs-mama.url = "github:NixOS/nixpkgs/nixos-24.11"; # GNOME 47
+    nixpkgs-mama.url = "github:NixOS/nixpkgs/nixos-24.11"; # GNOME 49
 
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
