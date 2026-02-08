@@ -34,6 +34,7 @@ in
 
       desktop-myhotkeys
 
+      plymouth-grannyos
       granny
 
       hm-nixos
