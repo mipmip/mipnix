@@ -12,8 +12,6 @@ in
       '';
   };
 
-
-
   flake.modules.nixos.lavendel = { config, pkgs, ... } : {
 
     networking.hostName = hostname;

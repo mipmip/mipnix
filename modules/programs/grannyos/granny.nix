@@ -11,6 +11,7 @@
       wget
 
       firefox
+      thunderbird
 
       pkgs.unstable.newelle
       pkgs.unstable.signal-desktop

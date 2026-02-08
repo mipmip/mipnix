@@ -1,9 +1,10 @@
 # TODO Lavendel
 
-- [ ] python
+- [x] copy files
 - [ ] mail + vertaal
 - [ ] libreoffice + mailknopje
 - [ ] libreoffice + vertaal
 - [ ] newelle
 - [ ] bedrock keys
-- [ ] copy files
+- [ ] mac opstart icoontje
+- [ ] fingerprint
