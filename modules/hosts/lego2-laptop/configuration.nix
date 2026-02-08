@@ -45,7 +45,7 @@ in
       hardware-keychron
       framework-fingerprint
       framework-misc
-     networking-wifi
+      networking-wifi
 
       desktop-myhotkeys
 
@@ -54,12 +54,13 @@ in
       nix-utils
       nix-nixpkgs-dev
 
-      users-core
+      nixos-pim
 
       system-luks
       system-trusted-agenix
 
       services-samba
+      services-core
 
       # Development tools - Languages
       dev-lang-c
@@ -152,6 +153,9 @@ in
       db-psql
 
       networking-nebula
+      services-core
+      shell-core
+      user-pim
 
     ];
 

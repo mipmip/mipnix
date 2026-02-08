@@ -1,6 +1,5 @@
 { inputs, ... } : {
   flake.modules.nixos.desktop-system-services = { config, pkgs, ... }: {
-    #services.xserver.enable = true;
     services.desktopManager.gnome.enable = true;
 
     # IF TRUE WAYLAND WILL BE USED

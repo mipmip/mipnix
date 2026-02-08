@@ -61,9 +61,9 @@
 
   time.timeZone = "Europe/Amsterdam";
 
-  services.xserver.enable = true;
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  #services.xserver.enable = true;
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome.enable = true;
   services.printing.enable = true;
 
   programs.zsh.enable = true;
