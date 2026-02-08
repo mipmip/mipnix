@@ -12,6 +12,7 @@ inputs,
     boot.initrd.kernelModules = [ "pinctrl_tigerlake" ];
     boot.kernelModules = [ "kvm-intel" "iwlwifi" ];
     boot.extraModulePackages = [ ];
+    boot.kernelPackages = pkgs.linuxPackages_6_18;
 
     fileSystems."/" =
       { device = "/dev/mapper/luks-dac50d22-7f60-49d2-b6b1-7c4c5f0da5f7";
