@@ -1,0 +1,69 @@
+[
+    {
+        "name": "MyHotKeys",
+        "shortcuts": [
+            {
+                "key": "<CTRL>f",
+                "description": "search for key binding"
+            },
+            {
+                "key": "<ALT>1",
+                "description": "Page 1 (idem for page 2-n)"
+            }
+        ]
+    },
+    {
+        "name": "Launchers",
+        "shortcuts": [
+            {
+                "key": "<SUPER>S",
+                "description": "My Hotkeys (your looking at it)"
+            },
+            {
+                "key": "<SUPER>Return",
+                "description": "Terminal"
+            },
+            {
+                "key": "<SHIFT><SUPER>Return",
+                "description": "Terminal DarkMode"
+            },
+            {
+                "key": "<SHIFT><SUPER>B",
+                "description": "Firefox"
+            },
+            {
+                "key": "<SHIFT><SUPER>S",
+                "description": "Signal"
+            },
+            {
+                "key": "<SHIFT><SUPER>F",
+                "description": "Files"
+            },
+            {
+                "key": "<CTRL><SHIFT>R",
+                "description": "Screenshot of region"
+            },
+            {
+                "key": "<CTRL><SHIFT>W",
+                "description": "Screenshot of window"
+            }
+        ]
+    },
+    {
+        "name": "Gimp",
+        "shortcuts": [
+            {
+                "key": "R",
+                "description": "Select rectangle"
+            },
+            {
+                "key": "U",
+                "description": "Magic selection"
+            },
+            {
+                "key": "<SHIFT>c",
+                "description": "Crop tool"
+            }
+        ]
+    }
+]
