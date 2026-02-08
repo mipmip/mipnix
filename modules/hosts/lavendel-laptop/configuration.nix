@@ -26,7 +26,7 @@ in
       inputs.nixos-hardware.nixosModules.framework-12-13th-gen-intel
 
       framework-misc
-      #hardware-chipsailing-fingerprint
+      hardware-chipsailing-fingerprint
 
       networking-wifi
 
@@ -41,12 +41,14 @@ in
       nix-cli
       nix-age
 
-      #networking-nebula
+      networking-nebula
 
       services-core
       shell-core
       user-pim
       user-annemarie
+      system-trusted-annemarie
+      desktop-virt-virtualization
 
     ];
 

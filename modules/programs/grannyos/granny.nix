@@ -16,6 +16,8 @@
       pkgs.unstable.signal-desktop
       flare-signal
 
+      pkgs.nebula
+
       rustdesk
 
       gcc
@@ -34,6 +36,8 @@
       gpaste
 
       seafile-client
+
+      fastmail-desktop
 
 
     ];

@@ -11,8 +11,6 @@
     "annemarie@lavendel" = self.lib.makeHomeConf {
       hostname = "lavendel";
     };
-
-
   };
 
   flake.modules.nixos.user-annemarie = { config, pkgs, ... }: {

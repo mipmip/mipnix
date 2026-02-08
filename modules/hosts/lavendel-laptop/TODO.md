@@ -6,3 +6,4 @@
 - [ ] libreoffice + vertaal
 - [ ] newelle
 - [ ] bedrock keys
+- [ ] copy files
