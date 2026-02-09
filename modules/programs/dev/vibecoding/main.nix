@@ -18,7 +18,7 @@
       agents   = {};
       commands = {};
       settings = {
-        theme = "opencode";
+        theme = "system";
         autoshare = false;
         autoupdate = true;
         plugin = [
