@@ -37,11 +37,11 @@ in
       };
     };
 
-networking.extraHosts =
-  ''
-    127.0.0.2 other-localhost
-    10.0.0.1 server
-  '';
+    networking.extraHosts =
+    ''
+      127.0.0.2 other-localhost
+      10.0.0.1 server
+    '';
 
 
     services.nebula.networks.mesh = {

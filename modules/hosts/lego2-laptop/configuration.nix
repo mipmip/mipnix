@@ -10,9 +10,6 @@ in
 
     "pim@lego2" = self.lib.makeHomeConf {
       inherit hostname;
-      #secondbrain = true;
-      #awscontrol = true;
-      #desktop = true;
       imports = with inputs.self.modules.homeManager; [
         pim-with-desktop
         pim-with-secondbrain
@@ -54,12 +51,13 @@ in
       nix-utils
       nix-nixpkgs-dev
 
-      users-core
+      nixos-pim
 
       system-luks
-      system-trusted-agenix
+      system-trusted-pim
 
       services-samba
+      services-core
 
       # Development tools - Languages
       dev-lang-c
@@ -152,6 +150,9 @@ in
       db-psql
 
       networking-nebula
+      services-core
+      shell-core
+      user-pim
 
     ];
 

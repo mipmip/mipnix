@@ -1,5 +1,5 @@
 { inputs, ... } : {
-  flake.modules.nixos.system-trusted-agenix = { config, pkgs, ... }: {
+  flake.modules.nixos.system-trusted-pim = { config, pkgs, ... }: {
 
     environment.systemPackages = with pkgs; [
       age
@@ -35,7 +35,6 @@
 
       # for use this with litellm
       env-for-litellm = keyconf "env-for-litellm";
-
 
       id_ed25519_remotebuild = keyconf_root "id_ed25519_remotebuild";
     };

@@ -24,16 +24,11 @@
           inputs.hm-ricing-mode.homeManagerModules.hm-ricing-mode
 
           (inputs.import-tree ../../home/_generic-for-contribution)
-          #(../../home + "/${username}")
 
           {
             home.stateVersion = "24.11";
             home.username = username;
             home.homeDirectory = homedir;
-            #roles.secondbrain.enable = secondbrain;
-            #roles.awscontrol.enable = awscontrol;
-            #roles.desktop.enable = desktop;
-            #desktopConf.gnome.swapAltWin = swapAltWin;
           }
         ] ++ imports;
 
@@ -46,7 +41,6 @@
           inherit inputs system;
           unstable = import inputs.unstable {
             inherit system;
-            #overlays = [ (import ../overlays) ];
             config.allowUnfree = true;
           };
         };

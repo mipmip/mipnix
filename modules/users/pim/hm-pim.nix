@@ -20,6 +20,11 @@
     "pim@arcana-one" = self.lib.makeHomeConf {
       hostname = "arcana-one";
     };
+
+    "pim@lavendel" = self.lib.makeHomeConf {
+      hostname = "lavendel";
+    };
+
   };
 
   flake.modules.homeManager.pim = {
