@@ -26,8 +26,6 @@ in
     };
   };
 
-  #flake.nixosConfigurations = inputs.self.lib.mkNixos "x86_64-linux" hostname;
-
   flake.modules.nixos.lego2 = { config, pkgs, ... } : {
     system.stateVersion = "25.05";
 
@@ -50,8 +48,6 @@ in
       nix-age
       nix-utils
       nix-nixpkgs-dev
-
-      nixos-pim
 
       system-luks
       system-trusted-pim
@@ -139,9 +135,6 @@ in
       tui-system
       tui-tmux
 
-      # Home Manager
-      hm-integration
-
       vibecoding-main
       vibecoding-utils
 
@@ -156,8 +149,6 @@ in
 
     ];
 
-    # All modulesAuto options removed - now using imports above
-    # Migration complete! All modulesAuto modules have been migrated to dendritic pattern.
   };
 
 }
