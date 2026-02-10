@@ -1,5 +1,6 @@
 
 [default]
-path = "/home/pim/mipnix/resources/wallpapers-dark/"
+# Points to symlink managed by theme-wallpaper script
+path = "/home/pim/.cache/wallpapers-current/"
 duration = "30m"
 sorting = "ascending"
