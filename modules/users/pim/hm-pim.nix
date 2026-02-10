@@ -70,6 +70,7 @@
       pim-tmux
       pim-neovim
       pim-hyprland
+      pim-noctalia
       pim-fonts
 #      pim-gnome-desktop-generic
 #      pim-gnome-desktop-input-sources

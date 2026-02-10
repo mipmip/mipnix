@@ -2,16 +2,16 @@
 
 ## Implementation Order
 
-1. [ ] Create `resources/wallpapers-dark/` directory
-2. [ ] Create `resources/wallpapers-light/` directory
-3. [ ] Move existing wallpapers to appropriate theme folder (or copy to both as placeholder)
-4. [ ] Create `scripts/theme-wallpaper` script that:
+1. [x] Create `resources/wallpapers-dark/` directory
+2. [x] Create `resources/wallpapers-light/` directory
+3. [x] Move existing wallpapers to appropriate theme folder (or copy to both as placeholder)
+4. [x] Create `scripts/theme-wallpaper` script that:
    - Accepts `dark` or `light` argument
    - Updates wpaperd config with correct path
    - Reloads wpaperd wallpaper
-5. [ ] Update `binds.conf` to call theme-wallpaper script from dark/light keybindings
-6. [ ] Update `wpaperd/config.toml` to use dark wallpapers by default
-7. [ ] Test keybinding flow: `SUPER+D` switches to dark wallpaper, `SUPER+SHIFT+D` to light
+5. [x] Update `binds.conf` to call theme-wallpaper script from dark/light keybindings
+6. [x] Update `wpaperd/config.toml` to use dark wallpapers by default
+7. [x] Test keybinding flow: `SUPER+D` switches to dark wallpaper, `SUPER+SHIFT+D` to light
 
 ## Verification
 

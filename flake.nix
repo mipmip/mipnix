@@ -49,6 +49,9 @@
     openspec.url = "github:mipmip/OpenSpec";
     fred.url = "github:linden-project/fred";
 
+    noctalia.url = "github:noctalia-dev/noctalia-shell";
+    noctalia.inputs.nixpkgs.follows = "unstable";
+
     nixpkgs-pine64.url = "nixpkgs/dfd82985c273aac6eced03625f454b334daae2e8";
     mobile-nixos = {
       url = "github:nixos/mobile-nixos/efbe2c3c5409c868309ae0770852638e623690b5";

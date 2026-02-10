@@ -1,12 +1,19 @@
-# Proposal: add-theme-wallpapers
+# Change: Add theme-aware wallpapers
 
-## Summary
+## Why
 
-Add support for separate light and dark mode wallpapers in Hyprland, integrated with the existing theme toggle keybindings (`SUPER+D` for dark, `SUPER+SHIFT+D` for light).
+The wallpaper setup uses a single folder with no theme awareness. When switching between light and dark mode, GTK4 apps respond but the wallpaper stays unchanged, creating a visual disconnect.
 
-## Motivation
+## What Changes
 
-Currently, the wallpaper setup uses a single folder (`resources/wallpapers/`) via wpaperd with no awareness of the system theme. When switching between light and dark mode using the existing keybindings, only GTK4 applications respond. The desktop wallpaper remains unchanged, creating a visual disconnect.
+- Reorganize wallpapers into `wallpapers-dark/` and `wallpapers-light/` directories
+- Create a theme-switch script that updates wpaperd's wallpaper path
+- Extend existing keybindings to call the theme-switch script
+
+## Impact
+
+- Affected code: `binds.conf`, `wpaperd/config.toml`, new theme-wallpaper script
+- No spec changes (configuration/tooling only)
 
 ## Proposed Solution
 

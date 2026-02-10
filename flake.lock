@@ -1094,6 +1094,26 @@
         "type": "gitlab"
       }
     },
+    "noctalia": {
+      "inputs": {
+        "nixpkgs": [
+          "unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1770748184,
+        "narHash": "sha256-WcbM9EtPuWt3Jw0nEcH2xaBj+HKhSsWbwQbDNARla5o=",
+        "owner": "noctalia-dev",
+        "repo": "noctalia-shell",
+        "rev": "3a2020437835a69a74c87a1d509c76b5cca2d872",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noctalia-dev",
+        "repo": "noctalia-shell",
+        "type": "github"
+      }
+    },
     "openspec": {
       "inputs": {
         "nixpkgs": "nixpkgs_11"
@@ -1179,6 +1199,7 @@
         "nixpkgs-mama": "nixpkgs-mama",
         "nixpkgs-pine64": "nixpkgs-pine64",
         "nixvim": "nixvim",
+        "noctalia": "noctalia",
         "openspec": "openspec",
         "pre-commit-hooks": "pre-commit-hooks",
         "race": "race",
