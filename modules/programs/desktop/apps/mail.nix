@@ -6,6 +6,8 @@
       kdePackages.kdepim-addons
       kdePackages.kaddressbook
       kdePackages.akonadi
+      kdePackages.akonadiconsole
+      kdePackages.akonadi-search
 
       #pkgs.unstable.fastmail-desktop
     ];
