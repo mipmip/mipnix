@@ -23,7 +23,7 @@ inputs,
     config = lib.mkMerge [
       {
         shared.shellAliases = {
-          open = "xdg-open";
+          open = "dp xdg-open";
           vim = "nvim";
           signal = ''signal-desktop --password-store="gnome-libsecret"'';
 
