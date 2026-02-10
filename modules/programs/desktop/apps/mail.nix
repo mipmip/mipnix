@@ -5,6 +5,7 @@
       kdePackages.kmail
       kdePackages.kdepim-addons
       kdePackages.kaddressbook
+      kdePackages.akonadi
 
       #pkgs.unstable.fastmail-desktop
     ];
