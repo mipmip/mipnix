@@ -8,6 +8,9 @@
     imports = [
       inputs.noctalia.homeModules.default
     ];
+    home.packages = [
+      pkgs.quickshell
+    ];
 
     programs.noctalia-shell = {
       enable = true;
