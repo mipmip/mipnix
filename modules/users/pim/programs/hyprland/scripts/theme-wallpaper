@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Switch wpaperd wallpaper path based on theme mode
+# Usage: theme-wallpaper dark|light
+
+set -euo pipefail
+
+MODE="${1:-}"
+CONFIG_FILE="$HOME/.config/wpaperd/config.toml"
+WALLPAPER_BASE="$HOME/mipnix/resources"
+
+if [[ -z "$MODE" ]]; then
+    echo "Usage: theme-wallpaper dark|light" >&2
+    exit 1
+fi
+
+case "$MODE" in
+    dark)
+        WALLPAPER_PATH="$WALLPAPER_BASE/wallpapers-dark/"
+        ;;
+    light)
+        WALLPAPER_PATH="$WALLPAPER_BASE/wallpapers-light/"
+        ;;
+    *)
+        echo "Invalid mode: $MODE. Use 'dark' or 'light'." >&2
+        exit 1
+        ;;
+esac
+
+# Update wpaperd config with new path
+if [[ -f "$CONFIG_FILE" ]]; then
+    sed -i "s|^path = .*|path = \"$WALLPAPER_PATH\"|" "$CONFIG_FILE"
+    # Reload wpaperd to apply changes
+    pkill -USR2 wpaperd 2>/dev/null || true
+fi
