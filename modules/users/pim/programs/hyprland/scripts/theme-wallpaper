@@ -48,3 +48,4 @@ ln -s "$TARGET" "$SYMLINK_PATH"
 
 # Reload wpaperd to apply changes
 pkill -USR2 wpaperd 2>/dev/null || true
+hyprctl dispatch exec "wpaperd -d"
