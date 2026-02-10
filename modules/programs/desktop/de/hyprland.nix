@@ -31,7 +31,6 @@
     };
 
     environment.systemPackages = with pkgs; [
-      #waybar
 
       pamixer
 
@@ -50,6 +49,7 @@
       hyprcursor
       rose-pine-hyprcursor
 
+      ashell
       # ashell removed - replaced by noctalia-shell (managed via Home Manager)
       #walker
 

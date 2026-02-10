@@ -13,7 +13,7 @@
     ];
 
     programs.noctalia-shell = {
-      enable = true;
+      enable = false;
       systemd.enable = true;
       settings = {
         # Basic settings - can be customized later
