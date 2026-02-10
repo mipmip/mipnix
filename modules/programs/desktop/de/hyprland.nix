@@ -32,7 +32,9 @@
 
     environment.systemPackages = with pkgs; [
       #waybar
+      pkgs.unstable.quickshell
       pkgs.unstable.noctalia-shell
+
       pamixer
 
       rofi
