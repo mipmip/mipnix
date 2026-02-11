@@ -21,7 +21,7 @@ inputs,
       sessionVariables = {
         BROWSER = "firefox";
         COLORTERM = "truecolor";
-        PATH= "''$HOME/.npm-packages/bin:''$PATH";
+        PATH= "''$HOME/.npm-packages/bin:$HOME/bin:''$PATH";
         NODE_PATH="''$HOME/.npm-packages/lib/node_modules";
       };
 

@@ -46,7 +46,9 @@
       terraformer
       tflint
 
-      terraform
+      #terraform
+      tfswitch
+
       notify # Notify allows sending the output from any tool to Slack, Discord and Telegram
       ssl-cert-check
 
