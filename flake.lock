@@ -1159,11 +1159,11 @@
         "nixpkgs": "nixpkgs_12"
       },
       "locked": {
-        "lastModified": 1765321256,
-        "narHash": "sha256-NEtJN5FaebwFKawF5QcdzdVmkcCxYko+DtDNtsuo5VY=",
+        "lastModified": 1770822121,
+        "narHash": "sha256-zEgaPQaIq/3QSX2BPBJnsIQsHZQ5KhY1qf4n+nbxGVc=",
         "owner": "wearetechnative",
         "repo": "race",
-        "rev": "5fa73b5b196e6c50a95804acbe0f807daea98d78",
+        "rev": "8d75bc21e9a1454a1009215524810c3fb2199b37",
         "type": "github"
       },
       "original": {
