@@ -1,41 +1,52 @@
-{
-  "menu-start": "off",
-  "output": "",
-  "width": "auto",
-  "height": 400,
-  "margin-top": 10,
-  "margin-bottom": 0,
-  "spacing": 4,
-  "position": "top",
-  "layer": "overlay",
-  "modules-left": [],
-  "modules-center": [],
-  "modules-right": [],
-  "controls": "right",
-  "controls-settings": {
-    "window-width": 380,
-    "window-margin-horizontal": 10,
-    "window-margin-vertical": 10,
-    "icon-size": 20,
-    "hover-opens": false,
-    "leave-closes": false,
-    "click-closes": true,
-    "output-switcher": false,
-    "net-interface": "",
-    "battery": true,
-    "battery-low-level": 20,
-    "battery-low-interval": 30,
-    "processes-label": "Processes",
-    "angle": 0.0,
-    "components": [
-      "brightness",
-      "volume",
-      "battery",
-      "network",
-      "bluetooth"
-    ],
-    "custom-items": []
-  },
-  "show-hidden": false,
-  "show-name": false
-}
+[
+  {
+    "name": "panel-top",
+    "output": "",
+    "layer": "overlay",
+    "position": "top",
+    "controls": "right",
+    "width": "auto",
+    "height": 0,
+    "margin-top": 0,
+    "margin-bottom": 0,
+    "padding-horizontal": 0,
+    "padding-vertical": 0,
+    "spacing": 4,
+    "icons": "light",
+    "css-name": "panel-top",
+    "modules-left": [],
+    "modules-center": [],
+    "modules-right": [],
+    "controls-settings": {
+      "components": [
+        "brightness",
+        "volume",
+        "battery",
+        "net",
+        "bluetooth"
+      ],
+      "commands": {
+        "net": "nm-connection-editor",
+        "bluetooth": "blueman-manager"
+      },
+      "show-values": false,
+      "icon-size": 18,
+      "interval": 1,
+      "hover-opens": false,
+      "leave-closes": true,
+      "click-closes": true,
+      "root-css-name": "controls-window",
+      "css-name": "controls",
+      "output-switcher": false,
+      "window-width": 0,
+      "window-margin-horizontal": 0,
+      "window-margin-vertical": 0,
+      "angle": 0.0
+    },
+    "tray": {
+      "root-css-name": "",
+      "inner-css-name": "",
+      "smooth-scrolling-threshold": 0
+    }
+  }
+]
