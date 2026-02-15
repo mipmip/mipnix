@@ -49,8 +49,9 @@
       hyprcursor
       rose-pine-hyprcursor
 
+      waybar
       ashell
-      # ashell removed - replaced by noctalia-shell (managed via Home Manager)
+      # ashell removed from autostart - replaced by waybar
       #walker
 
       swayidle

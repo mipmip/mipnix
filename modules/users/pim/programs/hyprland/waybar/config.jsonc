@@ -14,12 +14,8 @@
   ],
   "modules-right": [
     "tray",
-    "cpu",
     "network",
     "battery",
-    "backlight",
-    "pulseaudio",
-    "pulseaudio#microphone",
     "clock"
   ],
   "hyprland/window": {
