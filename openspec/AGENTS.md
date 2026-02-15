@@ -7,10 +7,22 @@ Instructions for AI coding assistants using OpenSpec for spec-driven development
 - Search existing work: `openspec spec list --long`, `openspec list` (use `rg` only for full-text search)
 - Decide scope: new capability vs modify existing capability
 - Pick a unique `change-id`: kebab-case, verb-led (`add-`, `update-`, `remove-`, `refactor-`)
-- Scaffold: `proposal.md`, `tasks.md`, `design.md` (only if needed), and delta specs per affected capability
+- Scaffold: `proposal.md`, `tasks.md` (with checkboxes `- [ ]`), `design.md` (only if needed), and delta specs per affected capability
 - Write deltas: use `## ADDED|MODIFIED|REMOVED|RENAMED Requirements`; include at least one `#### Scenario:` per requirement
 - Validate: `openspec validate [change-id] --strict` and fix issues
 - Request approval: Do not start implementation until proposal is approved
+- During implementation: Mark tasks as done with `- [x]` to track progress
+
+## Important Project Constraints
+
+### Git Commands
+**DO NOT execute any git commands.** The user will handle all git operations including:
+- `git add` - staging files
+- `git commit` - creating commits
+- `git push` - pushing to remote
+- Any other git operations
+
+When validation or other workflows require git staging, inform the user they need to stage files, but do not execute the git command yourself.
 
 ## Three-Stage Workflow
 
@@ -50,10 +62,10 @@ Skip proposal for:
 Track these steps as TODOs and complete them one by one.
 1. **Read proposal.md** - Understand what's being built
 2. **Read design.md** (if exists) - Review technical decisions
-3. **Read tasks.md** - Get implementation checklist
-4. **Implement tasks sequentially** - Complete in order
-5. **Confirm completion** - Ensure every item in `tasks.md` is finished before updating statuses
-6. **Update checklist** - After all work is done, set every task to `- [x]` so the list reflects reality
+3. **Read tasks.md** - Get implementation checklist (all tasks MUST have checkboxes)
+4. **Implement tasks sequentially** - Complete in order, marking each with `- [x]` as you finish
+5. **Update checkboxes incrementally** - Mark each task `- [x]` immediately after completing it to track progress
+6. **Confirm completion** - Ensure every item in `tasks.md` is checked `- [x]` before considering the change complete
 7. **Approval gate** - Do not start implementation until the proposal is reviewed and approved
 
 ### Stage 3: Archiving Changes
@@ -197,12 +209,24 @@ If multiple capabilities are affected, create multiple delta files under `change
 
 4. **Create tasks.md:**
 ```markdown
-## 1. Implementation
-- [ ] 1.1 Create database schema
-- [ ] 1.2 Implement API endpoint
-- [ ] 1.3 Add frontend component
-- [ ] 1.4 Write tests
+## Implementation Tasks
+
+- [ ] 1. **Task category name**
+  - [ ] 1.1 Specific action item
+  - [ ] 1.2 Another specific action item
+
+- [ ] 2. **Another task category**
+  - [ ] 2.1 Create database schema
+  - [ ] 2.2 Implement API endpoint
+
+## Validation Tasks
+
+- [ ] 3. **Testing**
+  - [ ] 3.1 Write unit tests
+  - [ ] 3.2 Verify functionality
 ```
+
+**Important:** All tasks MUST have checkboxes (`- [ ]`) to track implementation progress. Mark items as complete with `- [x]` during implementation.
 
 5. **Create design.md when needed:**
 Create `design.md` if any of the following apply; otherwise omit it:
