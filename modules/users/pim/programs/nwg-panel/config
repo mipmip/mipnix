@@ -1,0 +1,41 @@
+{
+  "menu-start": "off",
+  "output": "",
+  "width": "auto",
+  "height": 400,
+  "margin-top": 10,
+  "margin-bottom": 0,
+  "spacing": 4,
+  "position": "top",
+  "layer": "overlay",
+  "modules-left": [],
+  "modules-center": [],
+  "modules-right": [],
+  "controls": "right",
+  "controls-settings": {
+    "window-width": 380,
+    "window-margin-horizontal": 10,
+    "window-margin-vertical": 10,
+    "icon-size": 20,
+    "hover-opens": false,
+    "leave-closes": false,
+    "click-closes": true,
+    "output-switcher": false,
+    "net-interface": "",
+    "battery": true,
+    "battery-low-level": 20,
+    "battery-low-interval": 30,
+    "processes-label": "Processes",
+    "angle": 0.0,
+    "components": [
+      "brightness",
+      "volume",
+      "battery",
+      "network",
+      "bluetooth"
+    ],
+    "custom-items": []
+  },
+  "show-hidden": false,
+  "show-name": false
+}
