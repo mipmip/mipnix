@@ -16,7 +16,44 @@
     "css-name": "panel-top",
     "modules-left": [],
     "modules-center": [],
-    "modules-right": [],
+    "modules-right": [
+      {
+        "type": "button",
+        "command": "hyprctl dispatch exit",
+        "icon": "system-log-out",
+        "label": "",
+        "label-position": "right",
+        "css-name": "button-logout",
+        "tooltip": "Logout"
+      },
+      {
+        "type": "button",
+        "command": "systemctl suspend",
+        "icon": "system-suspend",
+        "label": "",
+        "label-position": "right",
+        "css-name": "button-suspend",
+        "tooltip": "Suspend"
+      },
+      {
+        "type": "button",
+        "command": "systemctl reboot",
+        "icon": "system-reboot",
+        "label": "",
+        "label-position": "right",
+        "css-name": "button-reboot",
+        "tooltip": "Reboot"
+      },
+      {
+        "type": "button",
+        "command": "systemctl poweroff",
+        "icon": "system-shutdown",
+        "label": "",
+        "label-position": "right",
+        "css-name": "button-poweroff",
+        "tooltip": "Power Off"
+      }
+    ],
     "controls-settings": {
       "components": [
         "brightness",
