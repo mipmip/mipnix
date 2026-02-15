@@ -16,6 +16,7 @@
     "tray",
     "network",
     "battery",
+    "custom/quicksettings",
     "clock"
   ],
   "hyprland/window": {
@@ -158,5 +159,11 @@
     "tooltip-format-disconnected": "Disconnected",
     "format-alt": "<span foreground='#99ffdd'> {bandwidthDownBytes}</span> <span foreground='#ffcc66'> {bandwidthUpBytes}</span>",
     "interval": 2
+  },
+  "custom/quicksettings": {
+    "format": "󰒓",
+    "tooltip": true,
+    "tooltip-format": "Quick Settings",
+    "on-click": "nwg-panel"
   }
 }

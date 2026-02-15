@@ -71,6 +71,7 @@
       pim-neovim
       pim-hyprland
       pim-noctalia
+      pim-nwg-panel
       pim-fonts
 #      pim-gnome-desktop-generic
 #      pim-gnome-desktop-input-sources

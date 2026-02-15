@@ -40,6 +40,7 @@
       hyprshot
       hyprnome
       nwg-displays
+      nwg-panel
       libinput
       swaynotificationcenter
 
