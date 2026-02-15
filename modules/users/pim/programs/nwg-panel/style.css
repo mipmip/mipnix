@@ -51,3 +51,31 @@ label {
   font-weight: bold;
   margin: 8px 4px;
 }
+
+/* Power button styles */
+#button-logout,
+#button-suspend,
+#button-reboot,
+#button-poweroff {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 8px;
+  min-width: 40px;
+  min-height: 40px;
+}
+
+#button-logout:hover {
+  background-color: rgba(137, 180, 250, 0.3);
+}
+
+#button-suspend:hover {
+  background-color: rgba(137, 180, 250, 0.3);
+}
+
+#button-reboot:hover {
+  background-color: rgba(250, 179, 135, 0.3);
+}
+
+#button-poweroff:hover {
+  background-color: rgba(243, 139, 168, 0.3);
+}
