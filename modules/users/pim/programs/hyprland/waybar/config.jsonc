@@ -161,7 +161,7 @@
     "interval": 2
   },
   "custom/quicksettings": {
-    "format": "󰒓",
+    "format": "",
     "tooltip": true,
     "tooltip-format": "Quick Settings",
     "on-click": "nwg-panel"
