@@ -92,6 +92,8 @@ in
 
       # Desktop environments
       desktop-de-gnome
+      desktop-de-kde
+      desktop-de-elementary
       desktop-de-hyprland
 
       # Desktop applications

@@ -1,8 +1,8 @@
 { inputs, ... } : {
   flake.modules.nixos.vibecoding-main = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
-      pkgs.unstable.claude-code
-      pkgs.unstable.beads
+      #pkgs.unstable.claude-code
+      #pkgs.unstable.beads
 
       inputs.openspec.packages."${pkgs.stdenv.hostPlatform.system}".default
 
