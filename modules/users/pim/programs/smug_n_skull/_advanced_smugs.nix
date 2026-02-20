@@ -35,34 +35,25 @@
   quiqr-dev-run = {
     root = "~/cQuiqr";
     windows = [
+
       {
-        root = "~/cQuiqr/quiqr-desktop";
-        name = "Quiqr Desktop Legacy";
-        layout = "main-horizontal";
+        root = "~/cQuiqr/quiqr-desktop-mipmip";
+        name = "Quiqr Mipmip";
+        layout = "main-vertical";
         commands = [
-          (makeBanner "quiqr-desktop-legacy")
-          "nix develop"
-          "npm run _electron-dev"
+          (makeBanner "quiqr mipmip")
+          "nix develop -c $SHELL"
         ];
-        panes = [{
-          type = "horizontal";
-          commands = [
-            (makeBanner "quiqr-desktop-legacy")
-            "nix develop"
-            "NODE_OPTIONS=--openssl-legacy-provider npm run _react-dev"
-          ];
-        }];
       }
 
       {
-        name = "nextgen";
-        root = "~/cQuiqr/quiqr-desktop-ng";
-        layout = "main-horizontal";
-      }
-      {
-        name = "nextgen-upstream";
-        root = "~/cQuiqr/quiqr-desktop-ng-upstream";
-        layout = "main-horizontal";
+        root = "~/cQuiqr/quiqr-desktop-upstream";
+        layout = "main-vertical";
+        name = "Quiqr Upstream";
+        commands = [
+          (makeBanner "quiqr upstream")
+          "nix develop -c $SHELL"
+        ];
       }
     ];
   };

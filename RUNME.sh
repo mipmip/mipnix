@@ -58,6 +58,7 @@ git_sync_machine(){
   # Create new tag and push
   git tag "$TAG_NAME"
   git push --tags
+  git push
 }
 
 make_command "up_home" "Add latest home-manager updates"
