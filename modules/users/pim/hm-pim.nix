@@ -34,6 +34,7 @@
     imports = with inputs.self.modules.homeManager; [
 
       vibecoding-opencode
+      vibecoding-claude-code-config
 
       pim-homeWith-options
       pim-git
