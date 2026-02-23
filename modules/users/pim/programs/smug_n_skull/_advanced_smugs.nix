@@ -1,4 +1,4 @@
-{makeBanner, ...}:
+{makeBanner, pkgs, ...}:
 {
 
   sudo = {
@@ -31,6 +31,30 @@
       }
     ];
   };
+
+  monitoring = {
+    root = "~/cMonitoring";
+    windows = [
+
+      {
+        name = "CoreVitals";
+        layout = "main-vertical";
+        commands = [
+          "${pkgs.claude-monitor}/bin/claude-monitor"
+        ];
+
+        panes = [{
+          type = "horizontal";
+          commands = [
+          "${pkgs.btop}/bin/btop"
+          ];
+        }];
+      }
+
+    ];
+  };
+
+
 
   quiqr-dev-run = {
     root = "~/cQuiqr";
