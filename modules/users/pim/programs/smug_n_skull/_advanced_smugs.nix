@@ -39,9 +39,7 @@
       {
         name = "CoreVitals";
         layout = "main-vertical";
-        commands = [
-              "${pkgs.btop}/bin/btop"
-        ];
+        commands = [ "${pkgs.btop}/bin/btop" ];
 
         panes = [
           {
@@ -52,9 +50,7 @@
           }
           {
             type = "horizontal";
-            commands = [
-              "${pkgs.btop}/bin/btop"
-            ];
+            commands = [ "nix run github:mipmip/updo -- monitor https://slashdot.org" ];
           }
         ];
       }
