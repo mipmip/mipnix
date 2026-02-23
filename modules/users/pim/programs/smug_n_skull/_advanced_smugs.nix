@@ -40,15 +40,23 @@
         name = "CoreVitals";
         layout = "main-vertical";
         commands = [
-          "${pkgs.claude-monitor}/bin/claude-monitor"
+              "${pkgs.btop}/bin/btop"
         ];
 
-        panes = [{
-          type = "horizontal";
-          commands = [
-          "${pkgs.btop}/bin/btop"
-          ];
-        }];
+        panes = [
+          {
+            type = "horizontal";
+            commands = [
+              "${pkgs.claude-monitor}/bin/claude-monitor"
+            ];
+          }
+          {
+            type = "horizontal";
+            commands = [
+              "${pkgs.btop}/bin/btop"
+            ];
+          }
+        ];
       }
 
     ];
