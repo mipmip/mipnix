@@ -39,18 +39,20 @@
       {
         name = "CoreVitals";
         layout = "main-vertical";
-        commands = [ "${pkgs.btop}/bin/btop" ];
+        commands = [
+          "${pkgs.btop}/bin/btop"
+          "tmux splitw"
+          "${pkgs.claude-monitor}/bin/claude-monitor --plan max5"
+        ];
 
         panes = [
           {
             type = "horizontal";
-            commands = [
-              "${pkgs.claude-monitor}/bin/claude-monitor --plan max5"
-            ];
+            commands = [ "nix run github:mipmip/nping --  192.168.100.6 192.168.100.7" ];
           }
           {
             type = "horizontal";
-            commands = [ "nix run github:mipmip/updo -- monitor https://slashdot.org" ];
+            commands = [ "nix run github:mipmip/updo --  -C ~/.config/updo/config.toml" ];
           }
         ];
       }
