@@ -1,0 +1,17 @@
+[global]
+refresh_interval = 5
+timeout = 10
+#webhook_url = "https://hooks.slack.com/services/YOUR/WEBHOOK"
+#only = ["Google", "API"]  # Monitor only these targets
+
+[[targets]]
+url = "https://vaultwarden.tools.technative.cloud/"
+name = "Lighthouse1"
+assert_text = "Vaultwarden"
+
+# HURRY
+[[targets]]
+url = "https://vaultwarden.notnix.com/"
+name = "Vaultwarden Hurry"
+assert_text = "Vaultwarden"
+

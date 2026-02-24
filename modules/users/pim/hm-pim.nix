@@ -45,6 +45,8 @@
       pim-obs
       pim-shellstuff
       pim-alacritty
+
+      pim-monitoring
       pim-kitty
       pim-ghostty
       pim-firefox
