@@ -45,7 +45,7 @@
           {
             type = "horizontal";
             commands = [
-              "${pkgs.claude-monitor}/bin/claude-monitor"
+              "${pkgs.claude-monitor}/bin/claude-monitor --plan max5"
             ];
           }
           {
