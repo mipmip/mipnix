@@ -49,7 +49,6 @@
       pim-monitoring
       pim-kitty
       pim-ghostty
-      pim-onedrive
       pim-firefox
       pim-librewolf
       pim-wrofi
