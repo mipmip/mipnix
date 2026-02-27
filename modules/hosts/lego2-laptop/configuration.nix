@@ -95,6 +95,7 @@ in
       desktop-de-kde
       desktop-de-elementary
       desktop-de-hyprland
+      services-office365
 
       # Desktop applications
       desktop-apps-browsers
