@@ -167,4 +167,6 @@ in
   "nebula-lavendel.crt.age".publicKeys = users ++ systems;
   "nebula-lavendel.key.age".publicKeys = users ++ systems;
 
+  "openai-api-key-plain-mama.key.age".publicKeys = users ++ systems;
+
 }
