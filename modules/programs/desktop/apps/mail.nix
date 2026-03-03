@@ -1,5 +1,7 @@
 { inputs, ... } : {
   flake.modules.nixos.desktop-apps-mail = { config, pkgs, ... }: {
+    programs.kde-pim.enable = true;
+    programs.kde-pim.kmail = true;
     environment.systemPackages = with pkgs; [
 
       kdePackages.kmail
