@@ -34,6 +34,7 @@ in
 
       desktop-myhotkeys
       desktop-de-kde
+      desktop-apps-mail
 
       plymouth-grannyos
       granny
