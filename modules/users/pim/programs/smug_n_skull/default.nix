@@ -57,7 +57,7 @@ inputs,
 
       smug = {
         enable = true;
-        projects = (import ./_advanced_smugs.nix { inherit makeBanner; })
+        projects = (import ./_advanced_smugs.nix { inherit pkgs; inherit makeBanner; })
           // builtins.listToAttrs (builtins.map (item: {
             name = item.name;
             value = makeSimpleProject item.name item.root;

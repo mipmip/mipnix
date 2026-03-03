@@ -23,7 +23,7 @@
 
           inputs.hm-ricing-mode.homeManagerModules.hm-ricing-mode
 
-          (inputs.import-tree ../../home/_generic-for-contribution)
+          (inputs.import-tree ../_generic-for-contribution)
 
           {
             home.stateVersion = "24.11";

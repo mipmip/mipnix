@@ -51,6 +51,9 @@ inputs,
           firefox_with_yellow_car = "MOZ_ENABLE_WAYLAND=0 proxychains4 firefox -P adevinta --class ffextra --no-remote";
 
           sshpw = "ssh -o PubkeyAuthentication=no -o PreferredAuthentications=password";
+          dp = "hyprctl dispatch exec";
+
+          tfswitch = "tfswitch -b $HOME/bin/terraform";
 
           ns = "nix-search-tv print | fzf --preview 'nix-search-tv preview {}' --scheme history";
 

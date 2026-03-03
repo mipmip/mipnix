@@ -31,7 +31,7 @@
     };
 
     environment.systemPackages = with pkgs; [
-      #waybar
+
       pamixer
 
       rofi
@@ -40,6 +40,7 @@
       hyprshot
       hyprnome
       nwg-displays
+      nwg-panel
       libinput
       swaynotificationcenter
 
@@ -49,7 +50,9 @@
       hyprcursor
       rose-pine-hyprcursor
 
+      waybar
       ashell
+      # ashell removed from autostart - replaced by waybar
       #walker
 
       swayidle

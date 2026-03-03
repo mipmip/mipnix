@@ -16,7 +16,6 @@
           };
         });
 
-
         sc-im = prev.sc-im.overrideAttrs (old: {
           hardeningDisable = [ "fortify" ];
           src = prev.fetchFromGitHub {

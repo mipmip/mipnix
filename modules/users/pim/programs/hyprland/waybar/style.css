@@ -49,7 +49,8 @@ window#waybar {
 #memory,
 #workspaces,
 #tray,
-#backlight {
+#backlight,
+#custom-quicksettings {
     background: #1e1e2e;
     padding: 0px 10px;
     margin: 3px 0px;
@@ -118,6 +119,14 @@ window#waybar {
 
 #battery {
     color:#a6adc8;
+    border-radius: 0px 0px 0px 0px;
+    border-left: 0px;
+    border-right: 0px;
+}
+
+#custom-quicksettings {
+    color: #a6adc8;
     border-radius: 0px 10px 10px 0px;
-    margin-right: 10px;
+    margin-right: 5px;
+    border-left: 0px;
 }

@@ -46,8 +46,11 @@
     dirtygit.url = "github:mipmip/dirtygit";
     skull.url = "github:mipmip/skull";
     mip.url = "github:mipmip/mip.rs";
-    openspec.url = "github:mipmip/OpenSpec";
+    openspec.url = "github:Fission-AI/OpenSpec";
     fred.url = "github:linden-project/fred";
+
+    noctalia.url = "github:noctalia-dev/noctalia-shell";
+    noctalia.inputs.nixpkgs.follows = "unstable";
 
     nixpkgs-pine64.url = "nixpkgs/dfd82985c273aac6eced03625f454b334daae2e8";
     mobile-nixos = {

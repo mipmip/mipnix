@@ -12,6 +12,7 @@ inputs,
       enable = true;
       settings = {
         window-padding-x = 3;
+        confirm-close-surface = false;
         window-padding-y = 3;
         theme = "dark:Gruvbox Material,light:Gruvbox Material Light";
         #theme = "dark:Catppuccin Frappe,light:Catppuccin Latte";

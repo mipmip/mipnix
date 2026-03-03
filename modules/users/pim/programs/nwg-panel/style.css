@@ -1,0 +1,81 @@
+/* nwg-panel styling */
+
+window {
+  background-color: rgba(30, 30, 46, 0.95);
+  border-radius: 10px;
+  border: 1px solid rgba(166, 173, 200, 0.3);
+}
+
+button, image {
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+button {
+  padding: 8px;
+  margin: 2px;
+  border-radius: 8px;
+  color: #cdd6f4;
+}
+
+button:hover {
+  background-color: rgba(166, 173, 200, 0.2);
+}
+
+scale trough {
+  min-height: 8px;
+  min-width: 200px;
+  border-radius: 4px;
+  background-color: rgba(88, 91, 112, 0.5);
+}
+
+scale highlight {
+  border-radius: 4px;
+  background-color: #89b4fa;
+}
+
+scale slider {
+  min-height: 18px;
+  min-width: 18px;
+  border-radius: 9px;
+  background-color: #cdd6f4;
+}
+
+label {
+  color: #cdd6f4;
+  font-size: 14px;
+}
+
+.control-label {
+  font-weight: bold;
+  margin: 8px 4px;
+}
+
+/* Power button styles */
+#button-logout,
+#button-suspend,
+#button-reboot,
+#button-poweroff {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 8px;
+  min-width: 40px;
+  min-height: 40px;
+}
+
+#button-logout:hover {
+  background-color: rgba(137, 180, 250, 0.3);
+}
+
+#button-suspend:hover {
+  background-color: rgba(137, 180, 250, 0.3);
+}
+
+#button-reboot:hover {
+  background-color: rgba(250, 179, 135, 0.3);
+}
+
+#button-poweroff:hover {
+  background-color: rgba(243, 139, 168, 0.3);
+}
