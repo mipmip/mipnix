@@ -36,6 +36,8 @@ in
       dev-lang-python
 
       desktop-myhotkeys
+      desktop-de-kde
+      desktop-apps-mail
 
       plymouth-grannyos
       granny
