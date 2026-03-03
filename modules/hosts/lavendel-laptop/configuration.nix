@@ -33,6 +33,7 @@ in
       dev-lang-python
 
       desktop-myhotkeys
+      desktop-de-kde
 
       plymouth-grannyos
       granny
