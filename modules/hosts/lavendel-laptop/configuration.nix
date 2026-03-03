@@ -20,6 +20,9 @@ in
     services.displayManager.gdm.enable = true;
     services.desktopManager.gnome.enable = true;
 
+    services.displayManager.defaultSession = "gnome";
+
+
     imports = with inputs.self.modules.nixos; [
 
       inputs.self.modules.nixos.nix-channels-mama
