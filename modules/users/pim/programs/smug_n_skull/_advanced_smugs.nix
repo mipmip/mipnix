@@ -50,7 +50,7 @@
           }
           {
             type = "horizontal";
-            commands = [ "nix run github:mipmip/nping --  192.168.100.6 192.168.100.7" ];
+            commands = [ "nix run github:mipmip/nping --  harry hurry lavendel" ];
           }
           {
             type = "horizontal";
