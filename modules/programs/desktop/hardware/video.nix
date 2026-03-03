@@ -17,7 +17,7 @@
           input-overlay
           obs-backgroundremoval
           obs-composite-blur
-          #obs-pipewire-audio-capture
+          obs-retro-effects
         ];
       })
 
