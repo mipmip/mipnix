@@ -58,6 +58,7 @@ git_sync_machine(){
   # Create new tag and push
   git tag "$TAG_NAME"
   git push --tags
+  git push
 }
 
 make_command "up_home" "Add latest home-manager updates"
@@ -66,20 +67,27 @@ up_home(){
   if ! command -v hmrice >/dev/null 2>&1
   then
     check_untracked
-    home-manager switch --impure --flake .\#$USER@$(hostname) -b backup
   else
     RICING=$(hmrice status | grep RICING | wc -l)
     if [ $RICING -gt 0 ]; then
       echo "Unrise first (hmrice unrice), then run again"
+      exit 1
     else
       check_untracked
-      home-manager switch --impure --flake .\#$USER@$(hostname) -b backup
     fi
   fi
 
+  home-manager switch --impure --flake .\#$USER@$(hostname) -b backup-$(date --iso-8601)
 
   # Only sync if home-manager succeeded
   if [ $? -eq 0 ]; then
+    # Install opencode plugins
+    echo "Installing opencode plugins..."
+    if [ -d ~/.config/opencode ]; then
+      cd ~/.config/opencode && npm install
+      cd -
+    fi
+
     EXTRA_ARG="auto run after home-manager switch"
     git_sync_machine
   else

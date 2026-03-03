@@ -38,7 +38,7 @@
       dconf2nix
 
       # NEMO-DESKTOP
-      nemo
+      #nemo
 
       # GrandPerspective
       baobab

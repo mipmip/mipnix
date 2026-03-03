@@ -34,6 +34,7 @@
     imports = with inputs.self.modules.homeManager; [
 
       vibecoding-opencode
+      vibecoding-claude-code-config
 
       pim-homeWith-options
       pim-git
@@ -44,6 +45,8 @@
       pim-obs
       pim-shellstuff
       pim-alacritty
+
+      pim-monitoring
       pim-kitty
       pim-ghostty
       pim-firefox
@@ -70,6 +73,8 @@
       pim-tmux
       pim-neovim
       pim-hyprland
+      pim-noctalia
+      pim-nwg-panel
       pim-fonts
 #      pim-gnome-desktop-generic
 #      pim-gnome-desktop-input-sources

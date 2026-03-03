@@ -1,0 +1,89 @@
+[
+  {
+    "name": "panel-top",
+    "output": "",
+    "layer": "overlay",
+    "position": "top",
+    "controls": "right",
+    "width": "auto",
+    "height": 0,
+    "margin-top": 0,
+    "margin-bottom": 0,
+    "padding-horizontal": 0,
+    "padding-vertical": 0,
+    "spacing": 4,
+    "icons": "light",
+    "css-name": "panel-top",
+    "modules-left": [],
+    "modules-center": [],
+    "modules-right": [
+      {
+        "type": "button",
+        "command": "hyprctl dispatch exit",
+        "icon": "system-log-out",
+        "label": "",
+        "label-position": "right",
+        "css-name": "button-logout",
+        "tooltip": "Logout"
+      },
+      {
+        "type": "button",
+        "command": "systemctl suspend",
+        "icon": "system-suspend",
+        "label": "",
+        "label-position": "right",
+        "css-name": "button-suspend",
+        "tooltip": "Suspend"
+      },
+      {
+        "type": "button",
+        "command": "systemctl reboot",
+        "icon": "system-reboot",
+        "label": "",
+        "label-position": "right",
+        "css-name": "button-reboot",
+        "tooltip": "Reboot"
+      },
+      {
+        "type": "button",
+        "command": "systemctl poweroff",
+        "icon": "system-shutdown",
+        "label": "",
+        "label-position": "right",
+        "css-name": "button-poweroff",
+        "tooltip": "Power Off"
+      }
+    ],
+    "controls-settings": {
+      "components": [
+        "brightness",
+        "volume",
+        "battery",
+        "net",
+        "bluetooth"
+      ],
+      "commands": {
+        "net": "nm-connection-editor",
+        "bluetooth": "blueman-manager"
+      },
+      "show-values": false,
+      "icon-size": 18,
+      "interval": 1,
+      "hover-opens": false,
+      "leave-closes": true,
+      "click-closes": true,
+      "root-css-name": "controls-window",
+      "css-name": "controls",
+      "output-switcher": false,
+      "window-width": 0,
+      "window-margin-horizontal": 0,
+      "window-margin-vertical": 0,
+      "angle": 0.0
+    },
+    "tray": {
+      "root-css-name": "",
+      "inner-css-name": "",
+      "smooth-scrolling-threshold": 0
+    }
+  }
+]

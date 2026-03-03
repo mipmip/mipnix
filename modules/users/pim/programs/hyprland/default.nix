@@ -9,6 +9,10 @@ inputs,
         source = ./hypr;
         recursive = true;
       };
+      ".config/hypr/scripts" = {
+        source = ./scripts;
+        recursive = true;
+      };
     };
 
     programs.hm-ricing-mode.apps.hypr = {
