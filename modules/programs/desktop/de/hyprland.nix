@@ -7,15 +7,18 @@
 
       hyprland = {
         enable = true;
-        #package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-        #portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+        package = pkgs.unstable-hyprland.hyprland;
+        portalPackage = pkgs.unstable-hyprland.xdg-desktop-portal-hyprland;
+
         #plugins = [
         #  inputs.hyprland-plugins.packages.${pkgs.stdenv.hostPlatform.system}.hyprexpo
         #];
+
       };
     };
 
     security.polkit.enable = true;
+
     #services.displayManager.sessionPackages = [ pkgs.upstream-hyprland.hyprland ];
 
     #    xdg.portal = {
@@ -35,12 +38,12 @@
       ELECTRON_OZONE_PLATFORM_HINT = "wayland";
     };
 
-    environment.systemPackages = with pkgs.unstable; [
+    environment.systemPackages = with pkgs.unstable-hyprland; [
 
       pamixer
 
       #hyprland
-      #hyprlock
+      hyprlock
       hyprshot
       hyprnome
       hyprcursor
