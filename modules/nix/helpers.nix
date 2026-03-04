@@ -39,6 +39,10 @@
         };
         extraSpecialArgs = {
           inherit inputs system;
+          unstable-hyprland = import inputs.unstable-hyprland {
+            inherit system;
+            config.allowUnfree = true;
+          };
           unstable = import inputs.unstable {
             inherit system;
             config.allowUnfree = true;
