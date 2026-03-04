@@ -13,9 +13,7 @@
 
         (final: _prev: {
           unstable = initChannel inputs.unstable final;
-
-          # TODO use this the other way around: makeNixos { channel = nixpkgs-mama; }
-          # nixmama = initChannel inputs.nixpkgs-mama final;
+          unstable-hyprland = initChannel inputs.unstable-hyprland final;
         })
 
       ];
@@ -33,9 +31,6 @@
 
         (final: _prev: {
           unstable = initChannel inputs.unstable final;
-
-          # TODO use this the other way around: makeNixos { channel = nixpkgs-mama; }
-          # nixmama = initChannel inputs.nixpkgs-mama final;
         })
 
       ];
