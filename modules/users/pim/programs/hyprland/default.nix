@@ -3,10 +3,15 @@ inputs,
 ...
 }:
 {
-  flake.modules.homeManager.pim-hyprland = { pkgs, system, ... }: {
+  flake.modules.homeManager.pim-hyprland = { pkgs, unstable-hyprland, system, ... }: {
 
     #wayland.windowManager.hyprland.systemd.enable = false;
 
+    #    wayland.windowManager.hyprland.enable = true;
+    #    wayland.windowManager.hyprland.plugins = [
+    #      unstable-hyprland.hyprlandPlugins.hyprbars
+    #      #unstable-hyprland.hyprlandPlugins.hyprexpo
+    #    ];
 
     home.file = {
       ".config/hypr" = {
