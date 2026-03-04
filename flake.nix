@@ -9,13 +9,13 @@
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    #unstable-hyprland.url = "github:NixOS/nixpkgs/nixos-unstable";
+    unstable-hyprland.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    hyprland.url = "github:hyprwm/Hyprland";
-    hyprland-plugins = {
-      url = "github:hyprwm/hyprland-plugins";
-      inputs.hyprland.follows = "hyprland";
-    };
+    #hyprland.url = "github:hyprwm/Hyprland";
+    #hyprland-plugins = {
+    #  url = "github:hyprwm/hyprland-plugins";
+    #  inputs.hyprland.follows = "hyprland";
+    #};
 
     nixos-boot-grannyos.url = "github:mipmip/nixos-boot-grannyos";
 
