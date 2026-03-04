@@ -4,67 +4,71 @@
     programs = {
       dconf.enable = true;
       xwayland.enable = true;
+
+      hyprland = {
+        enable = true;
+        #package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+        #portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+        #plugins = [
+        #  inputs.hyprland-plugins.packages.${pkgs.stdenv.hostPlatform.system}.hyprexpo
+        #];
+      };
     };
 
     security.polkit.enable = true;
+    #services.displayManager.sessionPackages = [ pkgs.upstream-hyprland.hyprland ];
 
-    services.displayManager.sessionPackages = [ pkgs.unstable-hyprland.hyprland ];
-
-    xdg.portal = {
-      enable = true;
-      wlr.enable = true;
-      extraPortals = [
-        pkgs.unstable-hyprland.xdg-desktop-portal-hyprland
-      ];
-    };
-
-    services.input-remapper = {
-      enable = true;
-    };
+    #    xdg.portal = {
+    #      enable = true;
+    #      wlr.enable = true;
+    #      extraPortals = [
+    #        pkgs.unstable-hyprland.xdg-desktop-portal-hyprland
+    #      ];
+    #    };
+    #
+    #    services.input-remapper = {
+    #      enable = true;
+    #    };
 
     # Hint Electon apps to use wayland
     environment.sessionVariables = {
       ELECTRON_OZONE_PLATFORM_HINT = "wayland";
     };
 
-    environment.systemPackages = with pkgs.unstable-hyprland; [
+    environment.systemPackages = with pkgs.unstable; [
 
       pamixer
 
-      #rofi
-      hyprland
-      hyprlock
+      #hyprland
+      #hyprlock
       hyprshot
       hyprnome
-      nwg-displays
-      #nwg-panel
-      libinput
-      swaynotificationcenter
-
-      wpaperd
-      wl-clipboard
-
       hyprcursor
+      hyprmon
+      hyprviz
       rose-pine-hyprcursor
 
+      nwg-displays
+      swaynotificationcenter
       waybar
+      wpaperd
+
+      libinput
+      wl-clipboard
+
       ashell
-      # ashell removed from autostart - replaced by waybar
-      #walker
 
       swayidle
 
       cliphist
-      wl-clipboard
 
       wofi
-      swww # for wallpapers
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal-hyprland
+      swww
+
+      #xdg-desktop-portal-gtk
+      #xdg-desktop-portal-hyprland
       #xwayland
-      hyprshell
-      hyprmon
-      hyprviz
+      #hyprshell
     ];
 
   };

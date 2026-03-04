@@ -14,6 +14,7 @@
         (final: _prev: {
           unstable = initChannel inputs.unstable final;
           unstable-hyprland = initChannel inputs.unstable-hyprland final;
+          #upstream-hyprland = initChannel inputs.hyprland final;
         })
 
       ];
