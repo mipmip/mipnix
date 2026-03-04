@@ -9,7 +9,13 @@
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    unstable-hyprland.url = "github:NixOS/nixpkgs/nixos-unstable";
+    #unstable-hyprland.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland-plugins = {
+      url = "github:hyprwm/hyprland-plugins";
+      inputs.hyprland.follows = "hyprland";
+    };
 
     nixos-boot-grannyos.url = "github:mipmip/nixos-boot-grannyos";
 
@@ -76,14 +82,13 @@
   outputs = inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
 
-      # Import all flake-parts modules
       imports = [
         inputs.flake-parts.flakeModules.modules
         inputs.home-manager.flakeModules.home-manager
+        #inputs.hyprland.nixosModules.default
         (inputs.import-tree ./modules)
       ];
 
-      # Define supported systems
       systems = [
         "x86_64-linux"
         "aarch64-linux"
@@ -102,7 +107,6 @@
       # Optional: per-system outputs (formatter, devShells, etc.)
       perSystem = { system, pkgs, ... }:
         let
-          # Import unstable nixpkgs for nixvim
           pkgs-unstable = import inputs.unstable {
             inherit system;
             config.allowUnfree = true;

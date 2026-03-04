@@ -4,6 +4,10 @@ inputs,
 }:
 {
   flake.modules.homeManager.pim-hyprland = { pkgs, system, ... }: {
+
+    #wayland.windowManager.hyprland.systemd.enable = false;
+
+
     home.file = {
       ".config/hypr" = {
         source = ./hypr;
