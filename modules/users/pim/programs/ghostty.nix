@@ -14,7 +14,8 @@ inputs,
         window-padding-x = 3;
         confirm-close-surface = false;
         window-padding-y = 3;
-        theme = "dark:Gruvbox Material,light:Gruvbox Material Light";
+        theme = "dark:Gruvbox Material,light:Gruvbox Material";
+        #theme = "dark:Gruvbox Material,light:Gruvbox Material Light";
         #theme = "dark:Catppuccin Frappe,light:Catppuccin Latte";
         cursor-invert-fg-bg = true;
         mouse-hide-while-typing = true;
