@@ -23,7 +23,7 @@ inputs,
     config = lib.mkMerge [
       {
         shared.shellAliases = {
-          open = "xdg-open";
+          open = "hyprctl dispatch exec xdg-open";
           vim = "nvim";
           signal = ''signal-desktop --password-store="gnome-libsecret"'';
 
