@@ -7,31 +7,19 @@
       src = pkgs.fetchFromGitHub {
         owner = "linden-project";
         repo = "linny.vim";
-        rev = "cef962e96ccff85e25aa911f2e20fa5daf08b3fd";
-        hash = "sha256-jIXNclctwpDKfGP4dh5YvrXE9sXN8SWfcS75uspfAYM=";
+        rev = "f1e4977be9e3b52f02f6e91411376df9a9f9f628";
+        hash = "sha256-834xi/VfkqXBRNtyrZxFecl8mQiYpBE+Qlnnp4tnf+U=";
       };
     })
 
   ];
 
   extraConfigLua =
-    # lua
     ''
-      local f=io.open( os.getenv( "HOME" ) .. "/.i-am-second-brain","r")
-
-      if f~=nil then
-        io.close(f)
-
+      local secondbrain_path = os.getenv("HOME") .. "/secondbrain"
+      local stat = vim.uv.fs_stat(secondbrain_path)
+      if stat and stat.type == "directory" then
         vim.g.linny_open_notebook_path = vim.env.HOME .. '/secondbrain'
-
-        vim.g.linny_menu_display_docs_count = 1
-        vim.g.linny_menu_display_taxo_count = 1
-        vim.g.linnycfg_setup_autocommands = 1
-
-        vim.cmd [[
-          let g:linny_wikitags_register = {}
-        ]]
-        vim.fn['linny#Init']()
       end
     '';
 }
