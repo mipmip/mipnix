@@ -7,14 +7,9 @@
       src = pkgs.fetchFromGitHub {
         owner = "linden-project";
         repo = "linny.vim";
-        rev = "e5e4689c29f303b8a5a45b16b71e36647d037363";
-        hash = "sha256-iMOrAcGRHJBIQCg5XDMkFG6n6gjuLkguCmUKBEDjQLc=";
+        rev = "cef962e96ccff85e25aa911f2e20fa5daf08b3fd";
+        hash = "sha256-jIXNclctwpDKfGP4dh5YvrXE9sXN8SWfcS75uspfAYM=";
       };
-      nvimSkipModule = [
-        "linny"
-        "linny.menu"
-        "linny.menu.init"
-      ];
     })
 
   ];
