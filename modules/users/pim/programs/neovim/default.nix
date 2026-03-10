@@ -12,6 +12,7 @@
     {
       home.packages = [
         inputs.self.packages."${system}".mipvim
+        pkgs.tree-sitter
       ];
     };
 }
