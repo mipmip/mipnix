@@ -7,8 +7,8 @@
       src = pkgs.fetchFromGitHub {
         owner = "linden-project";
         repo = "linny.vim";
-        rev = "f1e4977be9e3b52f02f6e91411376df9a9f9f628";
-        hash = "sha256-834xi/VfkqXBRNtyrZxFecl8mQiYpBE+Qlnnp4tnf+U=";
+        rev = "d5922061bd10e215bbcec71159411e32c898221e";
+        hash = "sha256-R7jEtHuXZBclwevBwJ9HMY2IyQJ11GQovW/CEdFYWSo=";
       };
     })
 
@@ -20,6 +20,7 @@
       local stat = vim.uv.fs_stat(secondbrain_path)
       if stat and stat.type == "directory" then
         vim.g.linny_open_notebook_path = vim.env.HOME .. '/secondbrain'
+        vim.g.linny_hugo_watch_enabled = 1
       end
     '';
 }
