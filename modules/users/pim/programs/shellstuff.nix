@@ -31,9 +31,7 @@ inputs,
         ${pkgs.tmux}/bin/tmux switch -t "''$profile"
         '';
 
-      o2 = pkgs.writeShellScriptBin "o2" ''
-        xdg-open "$@" &\; disown
-        '';
+        #o2 = pkgs.writeShellScriptBin "o2" "xdg-open ''$@ &; disown";
 
 
       o = pkgs.writeShellScriptBin "o" ''
@@ -46,7 +44,7 @@ inputs,
       home.packages = [
         smg
         o
-        o2
+        #o2
       ];
   };
 }
