@@ -8,7 +8,7 @@ inputs,
     let
 
       ## smg is bound to bind + S in tmux and shows all preconfigured smus tmux sessions
-      smg = pkgs.writeShellScriptBin "smg" ''
+      smg = pkgs.writeShellScriptBin "smg2" ''
         profile=$(${pkgs.smug}/bin/smug list | ${pkgs.gum}/bin/gum filter)
 
         if [ -z "''$profile" ] || [ "''$profile" -eq "" ]
@@ -31,6 +31,11 @@ inputs,
         '';
 
       ## detrun
+      o2 = pkgs.writeShellScriptBin "o2" ''
+        disown xdg-open "$@"
+        '';
+
+
       o = pkgs.writeShellScriptBin "o" ''
         setsid xdg-open "$@" < /dev/null > /dev/null 2>&1
         '';
@@ -41,6 +46,7 @@ inputs,
       home.packages = [
         smg
         o
+        o2
         #inputs.shellstuff.packages."${pkgs.system}".shellstuff
       ];
   };
