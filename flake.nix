@@ -50,7 +50,6 @@
 
     jsonify-aws-dotfiles.url = "github:mipmip/jsonify-aws-dotfiles";
     myhotkeys.url = "github:mipmip/gnome-hotkeys.cr/0.2.7";
-    shellstuff.url = "github:mipmip/nix-shellstuff";
     dirtygit.url = "github:mipmip/dirtygit";
     skull.url = "github:mipmip/skull";
     mip.url = "github:mipmip/mip.rs";

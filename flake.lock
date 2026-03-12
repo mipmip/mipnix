@@ -96,7 +96,7 @@
         "crystal-x86_64-linux": "crystal-x86_64-linux",
         "crystalline-src": "crystalline-src",
         "flake-parts": "flake-parts_3",
-        "nixpkgs": "nixpkgs_14"
+        "nixpkgs": "nixpkgs_13"
       },
       "locked": {
         "lastModified": 1679338490,
@@ -836,21 +836,6 @@
     },
     "nixpkgs_13": {
       "locked": {
-        "lastModified": 1726838390,
-        "narHash": "sha256-NmcVhGElxDbmEWzgXsyAjlRhUus/nEqPC5So7BOJLUM=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "944b2aea7f0a2d7c79f72468106bc5510cbf5101",
-        "type": "github"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "ref": "nixos-24.05",
-        "type": "indirect"
-      }
-    },
-    "nixpkgs_14": {
-      "locked": {
         "lastModified": 1677543769,
         "narHash": "sha256-LwbqS8vGisXl2WHpK9r5+kodr0zoIT8F2YB0R4y1TsA=",
         "owner": "NixOS",
@@ -865,7 +850,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_15": {
+    "nixpkgs_14": {
       "locked": {
         "lastModified": 1679748960,
         "narHash": "sha256-BP8XcYHyj1NxQi04RpyNW8e7KiXSoI+Fy1tXIK2GfdA=",
@@ -881,7 +866,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_16": {
+    "nixpkgs_15": {
       "locked": {
         "lastModified": 1757068644,
         "narHash": "sha256-NOrUtIhTkIIumj1E/Rsv1J37Yi3xGStISEo8tZm3KW4=",
@@ -1203,7 +1188,6 @@
         "openspec": "openspec",
         "pre-commit-hooks": "pre-commit-hooks",
         "race": "race",
-        "shellstuff": "shellstuff",
         "skull": "skull",
         "unstable": "unstable",
         "unstable-hyprland": "unstable-hyprland",
@@ -1226,28 +1210,10 @@
         "type": "github"
       }
     },
-    "shellstuff": {
-      "inputs": {
-        "nixpkgs": "nixpkgs_13"
-      },
-      "locked": {
-        "lastModified": 1742226185,
-        "narHash": "sha256-zeCT06KjIhTXz31bXk2ckjU9SRnDY/TnhyHIIqESRkQ=",
-        "owner": "mipmip",
-        "repo": "nix-shellstuff",
-        "rev": "894693ff9ec5beff9b9c2441ec29c45ab162f262",
-        "type": "github"
-      },
-      "original": {
-        "owner": "mipmip",
-        "repo": "nix-shellstuff",
-        "type": "github"
-      }
-    },
     "skull": {
       "inputs": {
         "crystal-flake": "crystal-flake",
-        "nixpkgs": "nixpkgs_15"
+        "nixpkgs": "nixpkgs_14"
       },
       "locked": {
         "lastModified": 1759392335,
@@ -1360,7 +1326,7 @@
         "elephant": [
           "elephant"
         ],
-        "nixpkgs": "nixpkgs_16",
+        "nixpkgs": "nixpkgs_15",
         "systems": "systems_4"
       },
       "locked": {
