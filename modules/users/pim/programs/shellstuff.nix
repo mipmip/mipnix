@@ -31,22 +31,16 @@ inputs,
         ${pkgs.tmux}/bin/tmux switch -t "''$profile"
         '';
 
-        o2 = pkgs.writeShellScriptBin "o2" ''
+        ## dispatched open command. Non blocking and independant of starting terminal
+        open = pkgs.writeShellScriptBin "open" ''
           xdg-open "''$@" & disown
         '';
-
-
-      o = pkgs.writeShellScriptBin "o" ''
-        setsid xdg-open "$@" < /dev/null > /dev/null 2>&1
-        '';
-
 
     in
     {
       home.packages = [
         smg
-        o
-        o2
+        open
       ];
   };
 }
