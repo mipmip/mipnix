@@ -62,8 +62,6 @@
     ];
   };
 
-
-
   quiqr-dev-run = {
     root = "~/cQuiqr";
     windows = [
@@ -102,13 +100,6 @@
         name = "sync";
         layout = "main-horizontal";
         commands = [ "watch -n 10 git-sync -n" ];
-
-        panes = [{
-          type = "horizontal";
-          commands = [
-            "hugo server --ignoreCache --forceSyncStatic --cleanDestinationDir --disableFastRender -e private -p 1314"
-          ];
-        }];
       }
     ];
   };
