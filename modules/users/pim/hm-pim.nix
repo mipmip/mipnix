@@ -44,6 +44,7 @@
       pim-yazi
       pim-obs
       pim-shellstuff
+      pim-aoe
       pim-alacritty
 
       pim-monitoring

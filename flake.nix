@@ -39,6 +39,7 @@
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
     pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
 
+
     hm-ricing-mode.url = "github:mipmip/hm-ricing-mode";
     hm-ricing-mode.inputs.nixpkgs.follows = "nixpkgs-2505";
     nixpkgs-2505.url = "github:NixOS/nixpkgs/nixos-25.05";
@@ -55,6 +56,7 @@
     mip.url = "github:mipmip/mip.rs";
     openspec.url = "github:Fission-AI/OpenSpec";
     fred.url = "github:linden-project/fred";
+    aoe.url = "github:njbrake/agent-of-empires";
 
     noctalia.url = "github:noctalia-dev/noctalia-shell";
     noctalia.inputs.nixpkgs.follows = "unstable";
