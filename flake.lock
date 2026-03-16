@@ -951,6 +951,22 @@
     },
     "nixpkgs_16": {
       "locked": {
+        "lastModified": 1773282481,
+        "narHash": "sha256-b/GV2ysM8mKHhinse2wz+uP37epUrSE+sAKXy/xvBY4=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "fe416aaedd397cacb33a610b33d60ff2b431b127",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_17": {
+      "locked": {
         "lastModified": 1757068644,
         "narHash": "sha256-NOrUtIhTkIIumj1E/Rsv1J37Yi3xGStISEo8tZm3KW4=",
         "owner": "NixOS",
@@ -1274,6 +1290,7 @@
         "pre-commit-hooks": "pre-commit-hooks",
         "race": "race",
         "skull": "skull",
+        "teejay": "teejay",
         "unstable": "unstable",
         "unstable-hyprland": "unstable-hyprland",
         "walker": "walker"
@@ -1374,6 +1391,24 @@
         "type": "github"
       }
     },
+    "teejay": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_16"
+      },
+      "locked": {
+        "lastModified": 1773421263,
+        "narHash": "sha256-IVphSaQZxx9wMiKBk+3RtIu9aeAKDtL0SsamC0K90IU=",
+        "owner": "mipmip",
+        "repo": "teejay",
+        "rev": "38213a9965fe6e0f62d8b6805f2dd550517006f8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mipmip",
+        "repo": "teejay",
+        "type": "github"
+      }
+    },
     "unstable": {
       "locked": {
         "lastModified": 1772433332,
@@ -1411,7 +1446,7 @@
         "elephant": [
           "elephant"
         ],
-        "nixpkgs": "nixpkgs_16",
+        "nixpkgs": "nixpkgs_17",
         "systems": "systems_4"
       },
       "locked": {
