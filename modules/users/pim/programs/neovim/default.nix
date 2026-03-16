@@ -6,12 +6,11 @@
   flake.modules.homeManager.pim-neovim =
     {
       pkgs,
-      system,
       ...
     }:
     {
       home.packages = [
-        inputs.self.packages."${system}".mipvim
+        inputs.self.packages."${pkgs.stdenv.hostPlatform.system}".mipvim
         pkgs.tree-sitter
       ];
     };
