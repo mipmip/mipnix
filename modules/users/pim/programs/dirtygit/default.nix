@@ -5,7 +5,7 @@ inputs,
 {
   flake.modules.homeManager.pim-dirtygit = { pkgs, ... }: {
     home.packages = [
-      inputs.dirtygit.packages."${pkgs.system}".dirtygit
+      inputs.dirtygit.packages."${pkgs.stdenv.hostPlatform.system}".dirtygit
     ];
 
     home.file = {

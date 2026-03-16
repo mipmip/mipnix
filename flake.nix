@@ -11,6 +11,7 @@
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     unstable-hyprland.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+
     #hyprland.url = "github:hyprwm/Hyprland";
     #hyprland-plugins = {
     #  url = "github:hyprwm/hyprland-plugins";
@@ -48,6 +49,7 @@
 
     bmc.url = "github:wearetechnative/bmc";
     race.url = "github:wearetechnative/race";
+    teejay.url = "github:mipmip/teejay";
 
     jsonify-aws-dotfiles.url = "github:mipmip/jsonify-aws-dotfiles";
     myhotkeys.url = "github:mipmip/gnome-hotkeys.cr/0.2.7";

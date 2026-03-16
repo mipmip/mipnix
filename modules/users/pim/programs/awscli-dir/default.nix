@@ -103,9 +103,9 @@ inputs,
   {
 
     home.packages = [
-       inputs.jsonify-aws-dotfiles.packages."${pkgs.system}".jsonify-aws-dotfiles
-       inputs.bmc.packages."${pkgs.system}".bmc
-       inputs.race.packages."${pkgs.system}".race
+       inputs.jsonify-aws-dotfiles.packages."${pkgs.stdenv.hostPlatform.system}".jsonify-aws-dotfiles
+       inputs.bmc.packages."${pkgs.stdenv.hostPlatform.system}".bmc
+       inputs.race.packages."${pkgs.stdenv.hostPlatform.system}".race
        pkgs.granted
        pkgs.gum
     ];
