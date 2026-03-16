@@ -36,7 +36,7 @@ inputs,
           tmxb = "tmux unbind C-b && tmux set-option -g prefix C-b && tmux bind-key C-b send-prefix";
 
           twn = ''
-          tmux rename-window "''$(basename "''$PWD")
+          tmux rename-window "$(basename "$PWD")
           '';
 
 
