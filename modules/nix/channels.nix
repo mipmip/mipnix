@@ -4,7 +4,7 @@
   flake.modules.nixos.nix-channels =
     let
       initChannel = channel: final:
-        import channel { inherit (final) config system; };
+        import channel { inherit (final) config; system = final.stdenv.hostPlatform.system; };
     in
     {
       nixpkgs.overlays = [
@@ -23,7 +23,7 @@
   flake.modules.nixos.nix-channels-mama =
     let
       initChannel = channel: final:
-        import channel { inherit (final) config system; };
+        import channel { inherit (final) config; system = final.stdenv.hostPlatform.system; };
     in
       {
       nixpkgs.overlays = [
