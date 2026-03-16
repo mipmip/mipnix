@@ -169,4 +169,6 @@ in
 
   "openai-api-key-plain-mama.key.age".publicKeys = users ++ systems;
 
+  "ghi-token.age".publicKeys = users; ## should configure ghi in home manager
+
 }
