@@ -4,6 +4,8 @@
       #pkgs.unstable.claude-code
       #pkgs.unstable.beads
 
+      pkgs.unstable.rtk
+
       inputs.openspec.packages."${pkgs.stdenv.hostPlatform.system}".default
 
       ## util programs used by agents
@@ -47,6 +49,8 @@
   };
 
   flake.modules.homeManager.vibecoding-claude-code-config = { unstable, ... }: {
+
+
     programs.claude-code = {
       enable = true;
       package = unstable.claude-code;
