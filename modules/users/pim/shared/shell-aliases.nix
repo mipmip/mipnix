@@ -26,8 +26,6 @@ inputs,
           vim = "nvim";
           signal = ''signal-desktop --password-store="gnome-libsecret"'';
 
-
-
           lin = "vim -c LinnyStart";
 
           tn = "tmux new -d -s";
@@ -38,8 +36,6 @@ inputs,
           twn = ''
           tmux rename-window "$(basename "$PWD")"
           '';
-
-
 
           mip = "WEBKIT_DISABLE_DMABUF_RENDERER=1 mip";
 
