@@ -95,6 +95,45 @@ inputs,
           end
         end
 
+        function is_jj_repo
+          command jj root --ignore-working-copy 2>/dev/null >/dev/null
+        end
+
+        function pim_jj_prompt
+          set --local jj_info (command jj log -r @ --no-graph --ignore-working-copy -T 'change_id.shortest() ++ "\n" ++ if(bookmarks, bookmarks.join(", "), "-") ++ "\n" ++ if(conflict, "conflict", "-") ++ "\n" ++ if(empty, "clean", "dirty")' 2>/dev/null)
+
+          if test (count $jj_info) -ne 4
+            echo -s " "
+            return
+          end
+
+          set --local change_id $jj_info[1]
+          set --local bmarks $jj_info[2]
+          set --local conflicts $jj_info[3]
+          set --local dirty $jj_info[4]
+
+          echo -n " ("
+          echo -n (set_color -o red)"jj:"$change_id(set_color normal)
+          if test "$bmarks" != "-"
+            echo -n " "(set_color -o cyan)$bmarks(set_color normal)
+          end
+          if test "$conflicts" = "conflict"
+            echo -n " "(set_color -o yellow)"⚠"(set_color normal)
+          end
+          if test "$dirty" = "dirty"
+            echo -n " "(set_color -o yellow)"✗"(set_color normal)
+          end
+          echo -n ") "
+        end
+
+        function pim_vcs_prompt
+          if is_jj_repo
+            pim_jj_prompt
+          else
+            pim_git_prompt
+          end
+        end
+
         function fish_prompt
           set -l prompt_symbol '$'
           fish_is_root_user; and set prompt_symbol '#'
@@ -103,7 +142,7 @@ inputs,
             (set_color -o purple) (prompt_user) \
             (set_color -o blue) "@" (prompt_hostname) " " \
             (set_color -o green) (prompt_path_simple) \
-            (set_color -o red) (pim_git_prompt) \
+            (set_color -o red) (pim_vcs_prompt) \
             (set_color -o white) $prompt_symbol " " \
             (set_color normal)
         end
