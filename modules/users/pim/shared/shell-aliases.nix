@@ -67,6 +67,8 @@ inputs,
           ls = "ls -al";
           fzf = "fzf --preview 'bat --color=always {}'";
 
+          gi = "gh issue";
+
           #hm_reset_envs = "unset __HM_SESS_VARS_SOURCED __HM_ZSH_SESS_VARS_SOURCED && source ~/.zshenv";
           aiderbrclaude37 = ''
             AWS_REGION_NAME=eu-central-1 \
