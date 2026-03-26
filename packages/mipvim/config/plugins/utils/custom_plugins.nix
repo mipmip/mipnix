@@ -28,6 +28,17 @@
       };
     })
 
+    (pkgs.vimUtils.buildVimPlugin {
+      name = "tmux-sendit";
+      src = pkgs.fetchFromGitHub {
+        owner = "mipmip";
+        repo = "tmux-sendit.nvim";
+        rev = "d50660219ae39fa659a8d0b6644ef2f2df717f42";
+        hash = "sha256-rVqnQU8pdDUaN+uRAbc6nXMmZytRQhsOpyhedbQFDT0=";
+      };
+    })
+
+
   ];
 
     extraConfigLua =
