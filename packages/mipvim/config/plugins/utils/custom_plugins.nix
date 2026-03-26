@@ -43,6 +43,9 @@
 
     extraConfigLua =
       ''
+        require('sendit').setup({
+        })
+
         require('claudecode').setup({
           -- opts = {},
           keys = {
