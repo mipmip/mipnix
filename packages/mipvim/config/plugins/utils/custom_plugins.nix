@@ -41,7 +41,7 @@
 
   extraConfigLua = ''
     require('sendit').setup({
-      -- opts = {},
+      pane_scope = "window",
     })
   '';
 
