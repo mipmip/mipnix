@@ -4,10 +4,6 @@ inputs,
 }:
 {
   flake.modules.homeManager.pim-git = { pkgs, ... }:{
-    home.packages = [
-      pkgs.ghi
-    ];
-
     programs.git = {
       enable = true;
       settings = {
