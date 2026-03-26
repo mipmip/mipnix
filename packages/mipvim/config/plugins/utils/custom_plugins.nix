@@ -4,6 +4,7 @@
     pkgs.vimPlugins.mkdx
     pkgs.vimPlugins.vim-better-whitespace
     pkgs.vimPlugins.vim-eunuch
+    pkgs.vimPlugins.claudecode-nvim
 
     #    pkgs.vimPlugins.markdown-nvim
     (pkgs.vimUtils.buildVimPlugin {
