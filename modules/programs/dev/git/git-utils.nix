@@ -8,7 +8,7 @@
       git-lfs
       gitFull
       bfg-repo-cleaner
-      jujutsu
+      #jujutsu
       lazygit
     ];
   };
