@@ -8,17 +8,17 @@
     };
   };
 
-  plugins.claude-code = {
-    enable = true;
-    #keymaps = {
-    #  "<leader>cc" = "<cmd>ClaudeCode<CR>";
-    #};
-    settings = {
-      window = {
-        position = "rightbelow vsplit";
-      };
-    };
-  };
+  #  plugins.claude-code = {
+  #    enable = true;
+  #    #keymaps = {
+  #    #  "<leader>cc" = "<cmd>ClaudeCode<CR>";
+  #    #};
+  #    settings = {
+  #      window = {
+  #        position = "rightbelow vsplit";
+  #      };
+  #    };
+  #  };
 
   #  keymaps = [
   #   {
