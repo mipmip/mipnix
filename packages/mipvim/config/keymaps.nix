@@ -524,5 +524,18 @@
       key = "<leader>sp";
     }
 
+    {
+      key = "<leader>as";
+      action = ''<cmd>lua require("sendit").send_selection()<cr>'';
+      mode = "v";
+      options.desc = "Send selection to tmux pane";
+    }
+
+  #            { "<leader>af", function() require("sendit").send_rel_path() end, mode = { "n", "v" }, desc = "Send relative file path to tmux pane" },
+  #            { "<leader>aF", function() require("sendit").send_abs_path() end, mode = { "n", "v" }, desc = "Send absolute file path to tmux pane" },
+  #            { "<leader>ad", function() require("sendit").send_diagnostic() end, mode = { "n", "v" }, desc = "Send diagnostics to tmux pane" },
+
+
+
   ];
 }
