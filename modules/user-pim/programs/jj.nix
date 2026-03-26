@@ -14,7 +14,7 @@ config,
         #          email = config.flags.git.userEmail;
         #        };
         ui = {
-          default-command = ["log" "--reversed --no-pager"];
+          default-command = ["log" "--reversed" "--no-pager"];
         };
         #        git = {
         #          push-branch-prefix = "refs/heads/";
