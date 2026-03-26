@@ -33,8 +33,8 @@
       src = pkgs.fetchFromGitHub {
         owner = "mipmip";
         repo = "tmux-sendit.nvim";
-        rev = "37f5eb7d4225e835b82f6135f69d63b2dfa6066a";
-        hash = "sha256-F1uYsyIcLjGE79xIOC7OR+1wR3X+OS7/gzIj5gZZ0Mg=";
+        rev = "95415204";
+        hash = "sha256-clRNsmlcxL3t5yb4CkPJ5kt0G+4kv6cdo5VX0bpr394=";
       };
     })
   ];
