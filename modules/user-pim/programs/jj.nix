@@ -9,10 +9,10 @@ config,
     programs.jujutsu = {
       enable = true;
       settings = {
-        #        user = {
-        #          name = config.flags.git.userName;
-        #          email = config.flags.git.userEmail;
-        #        };
+        user = {
+          name = "Pim Snel";
+          email = "post@pimsnel.com";
+        };
         ui = {
           default-command = ["log" "--no-pager"];
         };
