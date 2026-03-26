@@ -517,6 +517,7 @@
       };
     }
 
+    ## PENCIL
     {
       mode = "n";
       options.desc = "Set PencilSoft";
@@ -524,6 +525,7 @@
       key = "<leader>sp";
     }
 
+    ## SEND IT
     {
       key = "<leader>as";
       action = ''<cmd>lua require("sendit").send_selection()<cr>'';
@@ -531,7 +533,12 @@
       options.desc = "Send selection to tmux pane";
     }
 
-  #            { "<leader>af", function() require("sendit").send_rel_path() end, mode = { "n", "v" }, desc = "Send relative file path to tmux pane" },
+    {
+      key = "<leader>af";
+      action = ''<cmd>lua require("sendit").send_rel_path()<cr>'';
+      mode = ["v" "n"];
+      options.desc = "Send relative path to tmux pane";
+    }
   #            { "<leader>aF", function() require("sendit").send_abs_path() end, mode = { "n", "v" }, desc = "Send absolute file path to tmux pane" },
   #            { "<leader>ad", function() require("sendit").send_diagnostic() end, mode = { "n", "v" }, desc = "Send diagnostics to tmux pane" },
 
