@@ -55,7 +55,6 @@
       pim-wrofi
       pim-awscli
       pim-aider
-      pim-dirtygit
       pim-nix
       pim-npm
       pim-wtf

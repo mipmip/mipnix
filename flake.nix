@@ -11,13 +11,6 @@
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     unstable-hyprland.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-
-    #hyprland.url = "github:hyprwm/Hyprland";
-    #hyprland-plugins = {
-    #  url = "github:hyprwm/hyprland-plugins";
-    #  inputs.hyprland.follows = "hyprland";
-    #};
-
     nixos-boot-grannyos.url = "github:mipmip/nixos-boot-grannyos";
 
     nixpkgs-inkscape13.url = "github:leiserfg/nixpkgs?ref=staging";
@@ -40,7 +33,6 @@
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
     pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
 
-
     hm-ricing-mode.url = "github:mipmip/hm-ricing-mode";
     hm-ricing-mode.inputs.nixpkgs.follows = "nixpkgs-2505";
     nixpkgs-2505.url = "github:NixOS/nixpkgs/nixos-25.05";
@@ -53,7 +45,7 @@
 
     jsonify-aws-dotfiles.url = "github:mipmip/jsonify-aws-dotfiles";
     myhotkeys.url = "github:mipmip/gnome-hotkeys.cr/0.2.7";
-    dirtygit.url = "github:mipmip/dirtygit";
+    dirty-repo-scanner.url = "github:mipmip/dirty-repo-scanner";
     skull.url = "github:mipmip/skull";
     mip.url = "github:mipmip/mip.rs";
     openspec.url = "github:Fission-AI/OpenSpec";

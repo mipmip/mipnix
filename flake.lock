@@ -239,21 +239,21 @@
         "type": "github"
       }
     },
-    "dirtygit": {
+    "dirty-repo-scanner": {
       "inputs": {
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1728502623,
-        "narHash": "sha256-ADTM5eIodBEsUUXGG2Y7WAIPrUlCirTwQ9xxKQnyQ60=",
+        "lastModified": 1774866703,
+        "narHash": "sha256-7DaO2aMzORYSQHWuAkpua64MBBIvMlAbvnfp47xWjg0=",
         "owner": "mipmip",
-        "repo": "dirtygit",
-        "rev": "261f681b9bac4dcf9ab74fc50eb6406d05b5c0db",
+        "repo": "dirty-repo-scanner",
+        "rev": "73669f6ca2e8f7159942b7c5865b21ba5492cdca",
         "type": "github"
       },
       "original": {
         "owner": "mipmip",
-        "repo": "dirtygit",
+        "repo": "dirty-repo-scanner",
         "type": "github"
       }
     },
@@ -1014,16 +1014,16 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1726447378,
-        "narHash": "sha256-2yV8nmYE1p9lfmLHhOCbYwQC/W8WYfGQABoGzJOb1JQ=",
+        "lastModified": 1767313136,
+        "narHash": "sha256-16KkgfdYqjaeRGBaYsNrhPRRENs0qzkQVUooNHtoy2w=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "086b448a5d54fd117f4dc2dee55c9f0ff461bdc1",
+        "rev": "ac62194c3917d5f474c1a844b6fd6da2db95077d",
         "type": "github"
       },
       "original": {
         "id": "nixpkgs",
-        "ref": "nixos-24.05",
+        "ref": "nixos-25.05",
         "type": "indirect"
       }
     },
@@ -1262,7 +1262,7 @@
         "agenix": "agenix",
         "aoe": "aoe",
         "bmc": "bmc",
-        "dirtygit": "dirtygit",
+        "dirty-repo-scanner": "dirty-repo-scanner",
         "elephant": "elephant",
         "flake-parts": "flake-parts_2",
         "fred": "fred",
@@ -1396,11 +1396,11 @@
         "nixpkgs": "nixpkgs_16"
       },
       "locked": {
-        "lastModified": 1773421263,
-        "narHash": "sha256-IVphSaQZxx9wMiKBk+3RtIu9aeAKDtL0SsamC0K90IU=",
+        "lastModified": 1774874603,
+        "narHash": "sha256-WUE9fciUXXtZBVHfC/FppNRb+/dTWykaxIR3F8oDdlA=",
         "owner": "mipmip",
         "repo": "teejay",
-        "rev": "38213a9965fe6e0f62d8b6805f2dd550517006f8",
+        "rev": "cff2d2e3a3171156ae1761ffc35d5915db893e66",
         "type": "github"
       },
       "original": {

@@ -21,7 +21,7 @@ scandirs:
 # which files to ignore inside a git repo
 # any .gitignore file in your repo will be adhered to, the config
 # below allows your repo to consider files to be added but
-# ignored by dirtygit
+# ignored by dirty-repo-scanner
 gitignore:
 
   fileglob:
