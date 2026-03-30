@@ -38,6 +38,7 @@ in
       desktop-myhotkeys
       desktop-de-kde
       desktop-apps-mail
+      desktop-hw-printers
 
       plymouth-grannyos
       granny
