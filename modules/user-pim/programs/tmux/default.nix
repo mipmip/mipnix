@@ -59,7 +59,7 @@ inputs,
 
         bind s choose-tree -sZ -O name
         bind S popup -E smg
-        bind T popup -E -w 80% -h 80% 'tj --columns --sort-activity --no-sound --no-notify --picker --no-preview'
+        bind T popup -E -w 80% -h 80% 'tj --columns --sort-activity --no-sound --no-notify --picker'
 
         # START WITH MOUSE MODE ENABLED
         set -g mouse on

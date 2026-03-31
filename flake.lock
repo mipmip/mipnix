@@ -244,11 +244,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1774866703,
-        "narHash": "sha256-7DaO2aMzORYSQHWuAkpua64MBBIvMlAbvnfp47xWjg0=",
+        "lastModified": 1774974136,
+        "narHash": "sha256-ozDaz4KOxL7oix9Sq5eF8pNrCdLCMwv9AuSrGSzm1kw=",
         "owner": "mipmip",
         "repo": "dirty-repo-scanner",
-        "rev": "73669f6ca2e8f7159942b7c5865b21ba5492cdca",
+        "rev": "80488f8958261c26dbcb8ecc70cdd1afb4624311",
         "type": "github"
       },
       "original": {
@@ -951,6 +951,21 @@
     },
     "nixpkgs_16": {
       "locked": {
+        "lastModified": 1767313136,
+        "narHash": "sha256-16KkgfdYqjaeRGBaYsNrhPRRENs0qzkQVUooNHtoy2w=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "ac62194c3917d5f474c1a844b6fd6da2db95077d",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "nixos-25.05",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_17": {
+      "locked": {
         "lastModified": 1773282481,
         "narHash": "sha256-b/GV2ysM8mKHhinse2wz+uP37epUrSE+sAKXy/xvBY4=",
         "owner": "NixOS",
@@ -965,7 +980,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_17": {
+    "nixpkgs_18": {
       "locked": {
         "lastModified": 1757068644,
         "narHash": "sha256-NOrUtIhTkIIumj1E/Rsv1J37Yi3xGStISEo8tZm3KW4=",
@@ -1290,6 +1305,7 @@
         "pre-commit-hooks": "pre-commit-hooks",
         "race": "race",
         "skull": "skull",
+        "specgetty": "specgetty",
         "teejay": "teejay",
         "unstable": "unstable",
         "unstable-hyprland": "unstable-hyprland",
@@ -1328,6 +1344,24 @@
       "original": {
         "owner": "mipmip",
         "repo": "skull",
+        "type": "github"
+      }
+    },
+    "specgetty": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_16"
+      },
+      "locked": {
+        "lastModified": 1774974098,
+        "narHash": "sha256-ryBOChQ3v0hksUmYAojhqa+pgs+/fpHKqDIz3nH0k7A=",
+        "owner": "mipmip",
+        "repo": "specgetty",
+        "rev": "a098a067e325a1d5eec3cdd3ea0f2a300e2f223b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mipmip",
+        "repo": "specgetty",
         "type": "github"
       }
     },
@@ -1393,7 +1427,7 @@
     },
     "teejay": {
       "inputs": {
-        "nixpkgs": "nixpkgs_16"
+        "nixpkgs": "nixpkgs_17"
       },
       "locked": {
         "lastModified": 1774970929,
@@ -1446,7 +1480,7 @@
         "elephant": [
           "elephant"
         ],
-        "nixpkgs": "nixpkgs_17",
+        "nixpkgs": "nixpkgs_18",
         "systems": "systems_4"
       },
       "locked": {
