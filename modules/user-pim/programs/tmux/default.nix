@@ -59,6 +59,7 @@ inputs,
 
         bind s choose-tree -sZ -O name
         bind S popup -E smg
+        bind T popup -E -w 80% -h 80% teejay
 
         # START WITH MOUSE MODE ENABLED
         set -g mouse on
