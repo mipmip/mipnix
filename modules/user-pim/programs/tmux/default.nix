@@ -3,7 +3,7 @@ inputs,
 ...
 }:
 {
-  flake.modules.homeManager.pim-tmux = { pkgs, ... }: {
+  flake.modules.homeManager.pim-tmux = { pkgs, config, ... }: {
     home.file = {
       ".tmux" = {
         source = ./tmux;
@@ -88,8 +88,8 @@ inputs,
         run 'cat ~/.tmux/gpakosz.sh | sh -s _apply_configuration'
 
         ######### THEME  ##########
-        set-window-option -g window-active-style bg=black
-        set-window-option -g window-style bg='#292f32'
+        set-window-option -g window-active-style bg=${config.mip.theme.colors.bg.active}
+        set-window-option -g window-style bg='${config.mip.theme.colors.bg.inactive}'
       '';
     };
   };

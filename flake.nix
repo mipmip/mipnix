@@ -116,7 +116,9 @@
                 (inputs.import-tree ./packages/mipvim/config)
               ];
             };
-            extraSpecialArgs = { };
+            extraSpecialArgs = {
+              mipColors = import ./lib/colors.nix;
+            };
           };
         in
         {
