@@ -41,14 +41,17 @@
 
     bmc.url = "github:wearetechnative/bmc";
     race.url = "github:wearetechnative/race";
-    teejay.url = "github:mipmip/teejay";
 
     jsonify-aws-dotfiles.url = "github:mipmip/jsonify-aws-dotfiles";
     myhotkeys.url = "github:mipmip/gnome-hotkeys.cr/0.2.7";
+
     dirty-repo-scanner.url = "github:mipmip/dirty-repo-scanner";
+    teejay.url = "github:mipmip/teejay";
+    specgetty.url = "github:mipmip/specgetty";
+    openspec.url = "github:Fission-AI/OpenSpec";
+
     skull.url = "github:mipmip/skull";
     mip.url = "github:mipmip/mip.rs";
-    openspec.url = "github:Fission-AI/OpenSpec";
     fred.url = "github:linden-project/fred";
     aoe.url = "github:njbrake/agent-of-empires";
 

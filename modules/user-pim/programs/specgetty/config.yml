@@ -1,0 +1,23 @@
+# which directories should be walked to find git repositories?
+scandirs:
+
+  # a list of one/more starting points
+  # this will have env vars expanded
+  include:
+
+    - $HOME/c*
+    - $HOME/tc*
+    - $HOME/nixos
+    - $HOME/.vim/plugged
+    - $HOME/secondbrain
+
+  # a list of specific directories to exclude from the scan
+  # this will have env vars expanded
+  exclude:
+    - $GOPATH/pkg
+    - .terraform
+    - $HOME/tcAdevinta
+
+# if true, walking the directory tree underneath the `include` directories
+# will traverse directories pointed to be symlinks
+followsymlinks: false

@@ -64,7 +64,8 @@ inputs,
           fzf = "fzf --preview 'bat --color=always {}'";
 
           gi = "gh issue";
-          gic = ''gh issue create -m "" -t '';
+          gil = "gh issue list";
+          gic = ''gh issue create -b "" -t '';
 
           #hm_reset_envs = "unset __HM_SESS_VARS_SOURCED __HM_ZSH_SESS_VARS_SOURCED && source ~/.zshenv";
           #          aiderbrclaude37 = ''
