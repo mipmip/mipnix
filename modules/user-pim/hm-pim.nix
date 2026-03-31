@@ -33,6 +33,8 @@
 
     imports = with inputs.self.modules.homeManager; [
 
+      mip-theme
+
       vibecoding-opencode
       vibecoding-claude-code-config
 
