@@ -1396,11 +1396,11 @@
         "nixpkgs": "nixpkgs_16"
       },
       "locked": {
-        "lastModified": 1774874603,
-        "narHash": "sha256-WUE9fciUXXtZBVHfC/FppNRb+/dTWykaxIR3F8oDdlA=",
+        "lastModified": 1774970929,
+        "narHash": "sha256-JoDVBwas0W1AH+5o7pTLKeVaYCyYfPdEIYYW8wM72BQ=",
         "owner": "mipmip",
         "repo": "teejay",
-        "rev": "cff2d2e3a3171156ae1761ffc35d5915db893e66",
+        "rev": "bfe8445dce3aeb7d29b52f2429a30b7907bcd10c",
         "type": "github"
       },
       "original": {
