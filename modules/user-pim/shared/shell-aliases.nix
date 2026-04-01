@@ -65,7 +65,9 @@ inputs,
 
           gi = "gh issue";
           gil = "gh issue list";
-          gic = ''gh issue create -b "" -t '';
+          gin = ''gh issue create -b "" -t '';
+          gic = ''gh issue close '';
+          gib = ''gh browse'';
 
           #hm_reset_envs = "unset __HM_SESS_VARS_SOURCED __HM_ZSH_SESS_VARS_SOURCED && source ~/.zshenv";
           #          aiderbrclaude37 = ''
