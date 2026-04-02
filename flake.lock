@@ -1352,11 +1352,11 @@
         "nixpkgs": "nixpkgs_16"
       },
       "locked": {
-        "lastModified": 1774974098,
-        "narHash": "sha256-ryBOChQ3v0hksUmYAojhqa+pgs+/fpHKqDIz3nH0k7A=",
+        "lastModified": 1775149955,
+        "narHash": "sha256-F3cKUE75Lf6sX3eXRBPVvuQd5stqPHhgP20xTkj90tk=",
         "owner": "mipmip",
         "repo": "specgetty",
-        "rev": "a098a067e325a1d5eec3cdd3ea0f2a300e2f223b",
+        "rev": "6b30460dbfa9e5a1190e617463cb11d8f0d87b27",
         "type": "github"
       },
       "original": {
