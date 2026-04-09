@@ -61,7 +61,7 @@ inputs,
         bind S popup -E smg
         bind T popup -E -w 80% -h 80% 'tj --columns --sort-activity --no-sound --no-notify --picker'
         bind P display-popup -d '#{pane_current_path}'
-        bind O run-shell 'open #{pane_current_path} &'
+        bind O run-shell 'nohup open #{pane_current_path} >/dev/null 2>&1 &'
 
 
         # START WITH MOUSE MODE ENABLED
