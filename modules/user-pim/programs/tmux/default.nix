@@ -60,7 +60,7 @@ inputs,
         bind s choose-tree -sZ -O name
         bind S popup -E smg
         bind T popup -E -w 80% -h 80% 'tj --columns --sort-activity --no-sound --no-notify --picker'
-        bind O display-popup -E open '#{pane_current_path}'
+        bind O display-popup -E 'open #{pane_current_path}'
         bind P display-popup -d '#{pane_current_path}'
 
 
