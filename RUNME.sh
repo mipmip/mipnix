@@ -94,7 +94,7 @@ up_home(){
     echo "home-manager switch failed, skipping git sync"
     exit 1
   fi
-tmux source-file ~/.config/tmux/tmux.conf
+  tmux source-file ~/.config/tmux/tmux.conf
 
 }
 
