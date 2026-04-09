@@ -60,6 +60,9 @@ inputs,
         bind s choose-tree -sZ -O name
         bind S popup -E smg
         bind T popup -E -w 80% -h 80% 'tj --columns --sort-activity --no-sound --no-notify --picker'
+        bind O display-popup -d '#{pane_current_path}' -E open
+        bind P display-popup -d '#{pane_current_path}'
+
 
         # START WITH MOUSE MODE ENABLED
         set -g mouse on
