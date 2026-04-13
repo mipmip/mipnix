@@ -4,7 +4,7 @@
     users.users.pim = {
       shell = pkgs.fish;
       isNormalUser = true;
-      extraGroups = [ "wheel" "docker" "networkmanager" "disk"];
+      extraGroups = [ "wheel" "docker" "networkmanager" "disk" "input"];
     };
   };
 }
