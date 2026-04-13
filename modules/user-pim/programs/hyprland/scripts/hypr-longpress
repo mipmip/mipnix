@@ -35,9 +35,7 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 # libinput debug-events patterns
-# POINTER_BUTTON: " event13  POINTER_BUTTON           +2.456s	BTN_LEFT (272) pressed, seat count: 1"
 RE_BUTTON = re.compile(r"POINTER_BUTTON\s+.*BTN_LEFT\s+\(\d+\)\s+(pressed|released)")
-# POINTER_MOTION: " event13  POINTER_MOTION           +0.018s	 -0.78/  3.12 ( -1.00/ +4.00)"
 RE_MOTION = re.compile(r"POINTER_MOTION\s+.*\(\s*([+-]?[\d.]+)/\s*([+-]?[\d.]+)\)")
 
 
@@ -80,16 +78,12 @@ def get_screen_relative_pos(global_x, global_y):
 def dispatch_action(selection, window_addr):
     """Map a menu selection to a hyprctl dispatch command."""
     if not selection or not window_addr:
-        log.warning("dispatch_action called with empty selection=%r or window_addr=%r", selection, window_addr)
         return
 
     addr = f"address:{window_addr}"
-    log.info("Dispatching action=%r to %s", selection, addr)
 
     def run_hyprctl(*args):
-        result = subprocess.run(["hyprctl", *args], capture_output=True, text=True)
-        log.info("hyprctl %s -> stdout=%r stderr=%r", " ".join(args), result.stdout.strip(), result.stderr.strip())
-        return result
+        subprocess.run(["hyprctl", *args], capture_output=True, text=True)
 
     if selection == "Close":
         run_hyprctl("dispatch", "closewindow", addr)
@@ -113,21 +107,52 @@ def show_menu(screen_x, screen_y):
     """Show rofi dmenu at the given screen-relative position and return the selection."""
     menu_input = "\n".join(ACTIONS)
     try:
+        theme = f"""
+            window {{
+                location: northwest;
+                x-offset: {screen_x}px;
+                y-offset: {screen_y}px;
+                width: 240px;
+                border: 2px;
+                border-radius: 8px;
+                padding: 4px;
+            }}
+            inputbar {{
+                enabled: false;
+            }}
+            listview {{
+                lines: 15;
+                scrollbar: false;
+                fixed-height: false;
+                spacing: 2px;
+            }}
+            element {{
+                padding: 10px 14px;
+                border-radius: 6px;
+                cursor: pointer;
+            }}
+            element selected.normal {{
+                background-color: @selected-normal-background;
+                text-color: @selected-normal-foreground;
+            }}
+            element normal.normal {{
+                background-color: transparent;
+            }}
+        """
         result = subprocess.run(
             [
                 "rofi",
                 "-dmenu",
-                "-p", "Window",
-                "-theme-str", f"window {{ location: northwest; x-offset: {screen_x}px; y-offset: {screen_y}px; }}",
-                "-theme-str", "listview { lines: 15; }",
-                "-theme-str", "window { width: 200px; }",
+                "-theme-str", theme,
+                "-hover-select",
+                "-me-select-entry", "",
+                "-me-accept-entry", "MousePrimary",
             ],
             input=menu_input,
             capture_output=True,
             text=True,
             timeout=10,
         )
-        log.info("rofi exit code: %d, stdout: %r, stderr: %r", result.returncode, result.stdout.strip(), result.stderr.strip())
         return result.stdout.strip()
     except subprocess.TimeoutExpired:
         return ""
@@ -155,25 +180,17 @@ class LongPressDetector:
         try:
             window_addr = get_active_window()
             if not window_addr:
-                log.info("No active window, skipping menu")
                 return
 
             global_x, global_y = get_cursor_pos()
             screen_x, screen_y = get_screen_relative_pos(global_x, global_y)
 
-            log.info("Long-press detected at (%d, %d), showing menu", screen_x, screen_y)
-
             loop = asyncio.get_event_loop()
             selection = await loop.run_in_executor(None, show_menu, screen_x, screen_y)
 
             if selection:
-                log.info("Selected: %s for window %s", selection, window_addr)
-                try:
-                    await loop.run_in_executor(None, dispatch_action, selection, window_addr)
-                except Exception as e:
-                    log.error("dispatch_action failed: %s", e)
-            else:
-                log.info("Menu dismissed")
+                log.info("Action: %s on %s", selection, window_addr)
+                await loop.run_in_executor(None, dispatch_action, selection, window_addr)
         except Exception as e:
             log.error("on_trigger error: %s", e, exc_info=True)
         finally:
@@ -188,7 +205,6 @@ class LongPressDetector:
         await self.on_trigger()
 
     def on_button_down(self):
-        log.debug("BTN_LEFT pressed")
         if self.menu_active:
             return
         self.pressed = True
@@ -198,7 +214,6 @@ class LongPressDetector:
         self.timer_task = asyncio.ensure_future(self.hold_timer())
 
     def on_button_up(self):
-        log.debug("BTN_LEFT released")
         self.pressed = False
         self.cancel_timer()
 
@@ -209,7 +224,6 @@ class LongPressDetector:
         self.cumulative_dy += dy
         dist = math.hypot(self.cumulative_dx, self.cumulative_dy)
         if dist > DEADZONE_PX:
-            log.debug("Movement exceeded deadzone (%.1fpx), cancelling", dist)
             self.cancel_timer()
 
 
@@ -222,8 +236,6 @@ async def main():
         stderr=asyncio.subprocess.DEVNULL,
     )
 
-    import os
-    log.info("HYPRLAND_INSTANCE_SIGNATURE=%s", os.environ.get("HYPRLAND_INSTANCE_SIGNATURE", "NOT SET"))
     log.info("Listening via libinput debug-events (pid %d)", proc.pid)
 
     async for line_bytes in proc.stdout:

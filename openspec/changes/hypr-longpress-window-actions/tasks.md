@@ -20,4 +20,4 @@
 ## 4. Hyprland Integration
 
 - [x] 4.1 Add the daemon to autostart.conf as exec-once
-- [ ] 4.2 Verify daemon works with both mouse and trackpad input devices
+- [x] 4.2 Verify daemon works with both mouse and trackpad input devices
