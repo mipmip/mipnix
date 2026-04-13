@@ -182,6 +182,9 @@ class LongPressDetector:
     async def hold_timer(self):
         """Wait for HOLD_DURATION then trigger the menu."""
         await asyncio.sleep(HOLD_DURATION)
+        # Clear timer_task before triggering, so button_up can't cancel
+        # the on_trigger execution mid-flight
+        self.timer_task = None
         await self.on_trigger()
 
     def on_button_down(self):
