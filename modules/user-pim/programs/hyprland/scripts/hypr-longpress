@@ -1,0 +1,280 @@
+#!/usr/bin/env python3
+"""
+hypr-longpress: Long-press LMB to open a window action menu.
+
+Listens to evdev pointer devices for a 2-second left-click hold with
+minimal cursor movement (<5px), then spawns a rofi context menu with
+window management actions dispatched via hyprctl.
+"""
+
+import asyncio
+import json
+import logging
+import math
+import subprocess
+import sys
+
+import evdev
+from evdev import ecodes
+
+HOLD_DURATION = 2.0  # seconds
+DEADZONE_PX = 5  # pixels
+
+ACTIONS = [
+    "Close",
+    "Fullscreen",
+    "Float",
+    "Minimize",
+    "Pin",
+    *[f"Move to WS {i}" for i in range(1, 11)],
+]
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [hypr-longpress] %(message)s",
+)
+log = logging.getLogger(__name__)
+
+
+def find_pointer_devices():
+    """Find all evdev devices that have pointer capabilities (BTN_LEFT + movement axes)."""
+    devices = []
+    for path in evdev.list_devices():
+        try:
+            dev = evdev.InputDevice(path)
+        except PermissionError:
+            log.error(
+                "Cannot open %s — permission denied. "
+                "Ensure your user is in the 'input' group: "
+                "sudo usermod -aG input $USER",
+                path,
+            )
+            continue
+
+        caps = dev.capabilities(verbose=False)
+        ev_key = caps.get(ecodes.EV_KEY, [])
+        has_btn_left = ecodes.BTN_LEFT in ev_key
+
+        has_rel = ecodes.EV_REL in caps
+        has_abs = ecodes.EV_ABS in caps
+
+        if has_btn_left and (has_rel or has_abs):
+            log.info("Found pointer device: %s (%s)", dev.name, dev.path)
+            devices.append(dev)
+
+    return devices
+
+
+def hyprctl_json(command):
+    """Run a hyprctl command and return parsed JSON."""
+    result = subprocess.run(
+        ["hyprctl", command, "-j"],
+        capture_output=True,
+        text=True,
+    )
+    return json.loads(result.stdout)
+
+
+def get_cursor_pos():
+    """Get cursor position in global layout coordinates."""
+    result = subprocess.run(
+        ["hyprctl", "cursorpos", "-j"],
+        capture_output=True,
+        text=True,
+    )
+    pos = json.loads(result.stdout)
+    return pos["x"], pos["y"]
+
+
+def get_active_window():
+    """Get the active window address."""
+    win = hyprctl_json("activewindow")
+    return win.get("address", "")
+
+
+def get_screen_relative_pos(global_x, global_y):
+    """Convert global layout coordinates to screen-relative coordinates for rofi."""
+    monitors = hyprctl_json("monitors")
+    for mon in monitors:
+        mx, my = mon["x"], mon["y"]
+        mw, mh = mon["width"], mon["height"]
+        scale = mon.get("scale", 1.0)
+        # Check if cursor is within this monitor's bounds
+        scaled_w = mw / scale
+        scaled_h = mh / scale
+        if mx <= global_x < mx + scaled_w and my <= global_y < my + scaled_h:
+            return int(global_x - mx), int(global_y - my)
+    # Fallback: return global coords
+    return int(global_x), int(global_y)
+
+
+def dispatch_action(selection, window_addr):
+    """Map a menu selection to a hyprctl dispatch command."""
+    if not selection or not window_addr:
+        return
+
+    addr = f"address:{window_addr}"
+
+    if selection == "Close":
+        subprocess.run(["hyprctl", "dispatch", "closewindow", addr])
+    elif selection == "Fullscreen":
+        subprocess.run(["hyprctl", "dispatch", "focuswindow", addr])
+        subprocess.run(["hyprctl", "dispatch", "fullscreen", "1"])
+    elif selection == "Float":
+        subprocess.run(["hyprctl", "dispatch", "focuswindow", addr])
+        subprocess.run(["hyprctl", "dispatch", "togglefloating", addr])
+    elif selection == "Minimize":
+        subprocess.run(
+            ["hyprctl", "dispatch", "movetoworkspacesilent", f"special:minimized,{addr}"]
+        )
+    elif selection == "Pin":
+        subprocess.run(["hyprctl", "dispatch", "focuswindow", addr])
+        subprocess.run(["hyprctl", "dispatch", "pin", addr])
+    elif selection.startswith("Move to WS "):
+        ws = selection.split()[-1]
+        subprocess.run(["hyprctl", "dispatch", "movetoworkspace", f"{ws},{addr}"])
+
+
+def show_menu(screen_x, screen_y):
+    """Show rofi dmenu at the given screen-relative position and return the selection."""
+    menu_input = "\n".join(ACTIONS)
+    try:
+        result = subprocess.run(
+            [
+                "rofi",
+                "-dmenu",
+                "-p", "Window",
+                "-theme-str", f"window {{ location: northwest; x-offset: {screen_x}px; y-offset: {screen_y}px; }}",
+                "-theme-str", "listview { lines: 15; }",
+                "-theme-str", "window { width: 200px; }",
+            ],
+            input=menu_input,
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+        return result.stdout.strip()
+    except subprocess.TimeoutExpired:
+        return ""
+
+
+class LongPressDetector:
+    def __init__(self):
+        self.pressed = False
+        self.start_x = 0.0
+        self.start_y = 0.0
+        self.current_x = 0.0
+        self.current_y = 0.0
+        self.timer_task = None
+        self.menu_active = False
+
+    def cancel_timer(self):
+        if self.timer_task and not self.timer_task.done():
+            self.timer_task.cancel()
+            self.timer_task = None
+
+    async def on_trigger(self):
+        """Called when long-press hold completes."""
+        if self.menu_active:
+            return
+
+        self.menu_active = True
+        try:
+            window_addr = get_active_window()
+            if not window_addr:
+                log.info("No active window, skipping menu")
+                return
+
+            global_x, global_y = get_cursor_pos()
+            screen_x, screen_y = get_screen_relative_pos(global_x, global_y)
+
+            log.info("Long-press detected at (%d, %d), showing menu", screen_x, screen_y)
+
+            loop = asyncio.get_event_loop()
+            selection = await loop.run_in_executor(None, show_menu, screen_x, screen_y)
+
+            if selection:
+                log.info("Selected: %s for window %s", selection, window_addr)
+                await loop.run_in_executor(None, dispatch_action, selection, window_addr)
+            else:
+                log.info("Menu dismissed")
+        finally:
+            self.menu_active = False
+
+    async def hold_timer(self):
+        """Wait for HOLD_DURATION then trigger the menu."""
+        await asyncio.sleep(HOLD_DURATION)
+        await self.on_trigger()
+
+    def on_button_down(self):
+        if self.menu_active:
+            return
+        self.pressed = True
+        # Record starting cursor position from hyprctl for accuracy
+        try:
+            self.start_x, self.start_y = get_cursor_pos()
+            self.current_x, self.current_y = self.start_x, self.start_y
+        except Exception:
+            self.pressed = False
+            return
+        self.cancel_timer()
+        self.timer_task = asyncio.ensure_future(self.hold_timer())
+
+    def on_button_up(self):
+        self.pressed = False
+        self.cancel_timer()
+
+    def on_motion(self, dx, dy, absolute=False):
+        if not self.pressed:
+            return
+        if absolute:
+            self.current_x, self.current_y = dx, dy
+        else:
+            self.current_x += dx
+            self.current_y += dy
+        dist = math.hypot(self.current_x - self.start_x, self.current_y - self.start_y)
+        if dist > DEADZONE_PX:
+            self.cancel_timer()
+
+
+async def monitor_device(device, detector):
+    """Read events from a single evdev device."""
+    try:
+        async for event in device.async_read_loop():
+            if event.type == ecodes.EV_KEY and event.code == ecodes.BTN_LEFT:
+                if event.value == 1:  # press
+                    detector.on_button_down()
+                elif event.value == 0:  # release
+                    detector.on_button_up()
+            elif event.type == ecodes.EV_REL:
+                if event.code == ecodes.REL_X:
+                    detector.on_motion(event.value, 0)
+                elif event.code == ecodes.REL_Y:
+                    detector.on_motion(0, event.value)
+            elif event.type == ecodes.EV_ABS:
+                if event.code == ecodes.ABS_X:
+                    detector.on_motion(event.value, 0, absolute=True)
+                elif event.code == ecodes.ABS_Y:
+                    detector.on_motion(0, event.value, absolute=True)
+    except OSError as e:
+        log.warning("Device %s disconnected: %s", device.name, e)
+
+
+async def main():
+    devices = find_pointer_devices()
+    if not devices:
+        log.error(
+            "No pointer devices found. Ensure your user is in the 'input' group "
+            "and pointer devices are connected."
+        )
+        sys.exit(1)
+
+    log.info("Listening on %d device(s) for long-press events", len(devices))
+    detector = LongPressDetector()
+
+    tasks = [monitor_device(dev, detector) for dev in devices]
+    await asyncio.gather(*tasks)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
