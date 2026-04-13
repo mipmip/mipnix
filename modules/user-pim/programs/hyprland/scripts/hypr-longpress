@@ -123,6 +123,7 @@ def show_menu(screen_x, screen_y):
             text=True,
             timeout=10,
         )
+        log.info("rofi exit code: %d, stdout: %r, stderr: %r", result.returncode, result.stdout.strip(), result.stderr.strip())
         return result.stdout.strip()
     except subprocess.TimeoutExpired:
         return ""
