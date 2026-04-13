@@ -80,29 +80,33 @@ def get_screen_relative_pos(global_x, global_y):
 def dispatch_action(selection, window_addr):
     """Map a menu selection to a hyprctl dispatch command."""
     if not selection or not window_addr:
+        log.warning("dispatch_action called with empty selection=%r or window_addr=%r", selection, window_addr)
         return
 
     addr = f"address:{window_addr}"
+    log.info("Dispatching action=%r to %s", selection, addr)
+
+    def run_hyprctl(*args):
+        result = subprocess.run(["hyprctl", *args], capture_output=True, text=True)
+        log.info("hyprctl %s -> stdout=%r stderr=%r", " ".join(args), result.stdout.strip(), result.stderr.strip())
+        return result
 
     if selection == "Close":
-        result = subprocess.run(["hyprctl", "dispatch", "closewindow", addr], capture_output=True, text=True)
-        log.info("closewindow %s -> %s", addr, result.stdout.strip())
+        run_hyprctl("dispatch", "closewindow", addr)
     elif selection == "Fullscreen":
-        subprocess.run(["hyprctl", "dispatch", "focuswindow", addr])
-        subprocess.run(["hyprctl", "dispatch", "fullscreen", "1"])
+        run_hyprctl("dispatch", "focuswindow", addr)
+        run_hyprctl("dispatch", "fullscreen", "1")
     elif selection == "Float":
-        subprocess.run(["hyprctl", "dispatch", "focuswindow", addr])
-        subprocess.run(["hyprctl", "dispatch", "togglefloating", addr])
+        run_hyprctl("dispatch", "focuswindow", addr)
+        run_hyprctl("dispatch", "togglefloating", addr)
     elif selection == "Minimize":
-        subprocess.run(
-            ["hyprctl", "dispatch", "movetoworkspacesilent", f"special:minimized,{addr}"]
-        )
+        run_hyprctl("dispatch", "movetoworkspacesilent", f"special:minimized,{addr}")
     elif selection == "Pin":
-        subprocess.run(["hyprctl", "dispatch", "focuswindow", addr])
-        subprocess.run(["hyprctl", "dispatch", "pin", addr])
+        run_hyprctl("dispatch", "focuswindow", addr)
+        run_hyprctl("dispatch", "pin", addr)
     elif selection.startswith("Move to WS "):
         ws = selection.split()[-1]
-        subprocess.run(["hyprctl", "dispatch", "movetoworkspace", f"{ws},{addr}"])
+        run_hyprctl("dispatch", "movetoworkspace", f"{ws},{addr}")
 
 
 def show_menu(screen_x, screen_y):
@@ -164,9 +168,14 @@ class LongPressDetector:
 
             if selection:
                 log.info("Selected: %s for window %s", selection, window_addr)
-                await loop.run_in_executor(None, dispatch_action, selection, window_addr)
+                try:
+                    await loop.run_in_executor(None, dispatch_action, selection, window_addr)
+                except Exception as e:
+                    log.error("dispatch_action failed: %s", e)
             else:
                 log.info("Menu dismissed")
+        except Exception as e:
+            log.error("on_trigger error: %s", e, exc_info=True)
         finally:
             self.menu_active = False
 
