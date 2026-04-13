@@ -2,20 +2,19 @@
 """
 hypr-longpress: Long-press LMB to open a window action menu.
 
-Listens to evdev pointer devices for a 2-second left-click hold with
-minimal cursor movement (<5px), then spawns a rofi context menu with
-window management actions dispatched via hyprctl.
+Parses libinput debug-events for button press/release and pointer motion,
+detects a 2-second left-click hold with minimal cursor movement (<5px),
+then spawns a rofi context menu with window management actions dispatched
+via hyprctl.
 """
 
 import asyncio
 import json
 import logging
 import math
+import re
 import subprocess
 import sys
-
-import evdev
-from evdev import ecodes
 
 HOLD_DURATION = 2.0  # seconds
 DEADZONE_PX = 5  # pixels
@@ -35,34 +34,11 @@ logging.basicConfig(
 )
 log = logging.getLogger(__name__)
 
-
-def find_pointer_devices():
-    """Find all evdev devices that have pointer capabilities (BTN_LEFT + movement axes)."""
-    devices = []
-    for path in evdev.list_devices():
-        try:
-            dev = evdev.InputDevice(path)
-        except PermissionError:
-            log.error(
-                "Cannot open %s — permission denied. "
-                "Ensure your user is in the 'input' group: "
-                "sudo usermod -aG input $USER",
-                path,
-            )
-            continue
-
-        caps = dev.capabilities(verbose=False)
-        ev_key = caps.get(ecodes.EV_KEY, [])
-        has_btn_left = ecodes.BTN_LEFT in ev_key
-
-        has_rel = ecodes.EV_REL in caps
-        has_abs = ecodes.EV_ABS in caps
-
-        if has_btn_left and (has_rel or has_abs):
-            log.info("Found pointer device: %s (%s)", dev.name, dev.path)
-            devices.append(dev)
-
-    return devices
+# libinput debug-events patterns
+# POINTER_BUTTON: " event13  POINTER_BUTTON           +2.456s	BTN_LEFT (272) pressed, seat count: 1"
+RE_BUTTON = re.compile(r"POINTER_BUTTON\s+.*BTN_LEFT\s+\(\d+\)\s+(pressed|released)")
+# POINTER_MOTION: " event13  POINTER_MOTION           +0.018s	 -0.78/  3.12 ( -1.00/ +4.00)"
+RE_MOTION = re.compile(r"POINTER_MOTION\s+.*\(\s*([+-]?[\d.]+)/\s*([+-]?[\d.]+)\)")
 
 
 def hyprctl_json(command):
@@ -77,12 +53,7 @@ def hyprctl_json(command):
 
 def get_cursor_pos():
     """Get cursor position in global layout coordinates."""
-    result = subprocess.run(
-        ["hyprctl", "cursorpos", "-j"],
-        capture_output=True,
-        text=True,
-    )
-    pos = json.loads(result.stdout)
+    pos = hyprctl_json("cursorpos")
     return pos["x"], pos["y"]
 
 
@@ -99,12 +70,10 @@ def get_screen_relative_pos(global_x, global_y):
         mx, my = mon["x"], mon["y"]
         mw, mh = mon["width"], mon["height"]
         scale = mon.get("scale", 1.0)
-        # Check if cursor is within this monitor's bounds
         scaled_w = mw / scale
         scaled_h = mh / scale
         if mx <= global_x < mx + scaled_w and my <= global_y < my + scaled_h:
             return int(global_x - mx), int(global_y - my)
-    # Fallback: return global coords
     return int(global_x), int(global_y)
 
 
@@ -161,10 +130,8 @@ def show_menu(screen_x, screen_y):
 class LongPressDetector:
     def __init__(self):
         self.pressed = False
-        self.start_x = 0.0
-        self.start_y = 0.0
-        self.current_x = 0.0
-        self.current_y = 0.0
+        self.cumulative_dx = 0.0
+        self.cumulative_dy = 0.0
         self.timer_task = None
         self.menu_active = False
 
@@ -207,73 +174,63 @@ class LongPressDetector:
         await self.on_trigger()
 
     def on_button_down(self):
+        log.debug("BTN_LEFT pressed")
         if self.menu_active:
             return
         self.pressed = True
-        # Record starting cursor position from hyprctl for accuracy
-        try:
-            self.start_x, self.start_y = get_cursor_pos()
-            self.current_x, self.current_y = self.start_x, self.start_y
-        except Exception:
-            self.pressed = False
-            return
+        self.cumulative_dx = 0.0
+        self.cumulative_dy = 0.0
         self.cancel_timer()
         self.timer_task = asyncio.ensure_future(self.hold_timer())
 
     def on_button_up(self):
+        log.debug("BTN_LEFT released")
         self.pressed = False
         self.cancel_timer()
 
-    def on_motion(self, dx, dy, absolute=False):
+    def on_motion(self, dx, dy):
         if not self.pressed:
             return
-        if absolute:
-            self.current_x, self.current_y = dx, dy
-        else:
-            self.current_x += dx
-            self.current_y += dy
-        dist = math.hypot(self.current_x - self.start_x, self.current_y - self.start_y)
+        self.cumulative_dx += dx
+        self.cumulative_dy += dy
+        dist = math.hypot(self.cumulative_dx, self.cumulative_dy)
         if dist > DEADZONE_PX:
+            log.debug("Movement exceeded deadzone (%.1fpx), cancelling", dist)
             self.cancel_timer()
 
 
-async def monitor_device(device, detector):
-    """Read events from a single evdev device."""
-    try:
-        async for event in device.async_read_loop():
-            if event.type == ecodes.EV_KEY and event.code == ecodes.BTN_LEFT:
-                if event.value == 1:  # press
-                    detector.on_button_down()
-                elif event.value == 0:  # release
-                    detector.on_button_up()
-            elif event.type == ecodes.EV_REL:
-                if event.code == ecodes.REL_X:
-                    detector.on_motion(event.value, 0)
-                elif event.code == ecodes.REL_Y:
-                    detector.on_motion(0, event.value)
-            elif event.type == ecodes.EV_ABS:
-                if event.code == ecodes.ABS_X:
-                    detector.on_motion(event.value, 0, absolute=True)
-                elif event.code == ecodes.ABS_Y:
-                    detector.on_motion(0, event.value, absolute=True)
-    except OSError as e:
-        log.warning("Device %s disconnected: %s", device.name, e)
-
-
 async def main():
-    devices = find_pointer_devices()
-    if not devices:
-        log.error(
-            "No pointer devices found. Ensure your user is in the 'input' group "
-            "and pointer devices are connected."
-        )
-        sys.exit(1)
-
-    log.info("Listening on %d device(s) for long-press events", len(devices))
     detector = LongPressDetector()
 
-    tasks = [monitor_device(dev, detector) for dev in devices]
-    await asyncio.gather(*tasks)
+    proc = await asyncio.create_subprocess_exec(
+        "libinput", "debug-events",
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.DEVNULL,
+    )
+
+    log.info("Listening via libinput debug-events (pid %d)", proc.pid)
+
+    async for line_bytes in proc.stdout:
+        line = line_bytes.decode("utf-8", errors="replace")
+
+        m = RE_BUTTON.search(line)
+        if m:
+            if m.group(1) == "pressed":
+                detector.on_button_down()
+            else:
+                detector.on_button_up()
+            continue
+
+        m = RE_MOTION.search(line)
+        if m:
+            dx, dy = float(m.group(1)), float(m.group(2))
+            detector.on_motion(dx, dy)
+
+    rc = await proc.wait()
+    if rc != 0:
+        log.error("libinput debug-events exited with code %d", rc)
+        log.error("Ensure your user is in the 'input' group and libinput is installed")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
