@@ -75,6 +75,7 @@
       pim-tmux
       pim-neovim
       pim-hyprland
+      pim-hypr-longpress
       pim-noctalia
       pim-nwg-panel
       pim-fonts
