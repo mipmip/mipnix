@@ -85,7 +85,8 @@ def dispatch_action(selection, window_addr):
     addr = f"address:{window_addr}"
 
     if selection == "Close":
-        subprocess.run(["hyprctl", "dispatch", "closewindow", addr])
+        result = subprocess.run(["hyprctl", "dispatch", "closewindow", addr], capture_output=True, text=True)
+        log.info("closewindow %s -> %s", addr, result.stdout.strip())
     elif selection == "Fullscreen":
         subprocess.run(["hyprctl", "dispatch", "focuswindow", addr])
         subprocess.run(["hyprctl", "dispatch", "fullscreen", "1"])
@@ -208,6 +209,8 @@ async def main():
         stderr=asyncio.subprocess.DEVNULL,
     )
 
+    import os
+    log.info("HYPRLAND_INSTANCE_SIGNATURE=%s", os.environ.get("HYPRLAND_INSTANCE_SIGNATURE", "NOT SET"))
     log.info("Listening via libinput debug-events (pid %d)", proc.pid)
 
     async for line_bytes in proc.stdout:
