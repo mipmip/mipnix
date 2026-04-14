@@ -49,6 +49,7 @@
     teejay.url = "github:mipmip/teejay";
     specgetty.url = "github:mipmip/specgetty";
     openspec.url = "github:Fission-AI/OpenSpec";
+    verynix.url = "github:mipmip/verynix";
 
     skull.url = "github:mipmip/skull";
     mip.url = "github:mipmip/mip.rs";

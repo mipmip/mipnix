@@ -9,6 +9,7 @@
       patchelf
       nix-tree
       nix-search-tv
+      inputs.verynix.packages."${pkgs.stdenv.hostPlatform.system}".default
     ];
   };
 }
