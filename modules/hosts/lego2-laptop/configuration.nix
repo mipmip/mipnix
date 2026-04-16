@@ -121,7 +121,7 @@ in
       tex-linny
 
       # Cobol
-      cobol-main
+      #cobol-main
 
       # TUI tools
       tui-disk

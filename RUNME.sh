@@ -406,10 +406,15 @@ new_host(){
     exit 1
   fi
 
-  # Check hardware-configuration.nix exists
+  # Check NixOS configuration files exist
   HW_SOURCE="/etc/nixos/hardware-configuration.nix"
+  CFG_SOURCE="/etc/nixos/configuration.nix"
   if [[ ! -f "$HW_SOURCE" ]]; then
     echo "Error: $HW_SOURCE not found. This must be run on a NixOS machine."
+    exit 1
+  fi
+  if [[ ! -f "$CFG_SOURCE" ]]; then
+    echo "Error: $CFG_SOURCE not found. This must be run on a NixOS machine."
     exit 1
   fi
 
@@ -459,6 +464,17 @@ ${HW_BODY}
 HWEOF
 
   # --- configuration.nix ---
+  # Extract body from /etc/nixos/configuration.nix, stripping:
+  # - function signature and outer braces
+  # - imports block (references ./hardware-configuration.nix)
+  # - comment-only lines
+  CFG_BODY=$(sed -n '/^{$/,/^}$/{/^{$/d;/^}$/d;p}' "$CFG_SOURCE")
+  if [[ -z "$CFG_BODY" ]]; then
+    CFG_BODY=$(sed '1,/^{/d;$d' "$CFG_SOURCE")
+  fi
+  # Remove imports block and comment-only lines
+  CFG_BODY=$(echo "$CFG_BODY" | sed '/^\s*imports\s*=/,/\];/d' | sed '/^\s*#.*$/d' | sed '/^\s*$/N;/^\s*\n\s*$/d')
+
   cat > "$HOST_DIR/configuration.nix" <<CFGEOF
 { inputs, self, ... }:
 
@@ -498,6 +514,11 @@ in
       user-pim
 
     ];
+
+    # --- Extracted from $CFG_SOURCE ---
+    # Review and remove what is already covered by shared modules above
+
+${CFG_BODY}
 
   };
 
