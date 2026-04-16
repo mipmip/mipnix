@@ -475,7 +475,7 @@ HWEOF
     CFG_BODY=$(sed '1,/^{/d;$d' "$CFG_SOURCE")
   fi
   # Remove imports block, comment-only lines, and networking.hostName (handled in networking.nix)
-  CFG_BODY=$(echo "$CFG_BODY" | sed '/^\s*imports\s*=/,/\];/d' | sed '/^\s*#.*$/d' | sed '/^\s*networking\.hostName\s*=/d' | sed '/^\s*$/N;/^\s*\n\s*$/d')
+  CFG_BODY=$(echo "$CFG_BODY" | sed '/^\s*imports\s*=/,/\];/d' | sed '/^\s*#.*$/d' | sed '/^\s*networking\.hostName\s*=/d' | sed '/^\s*system\.stateVersion\s*=/d' | sed '/^\s*$/N;/^\s*\n\s*$/d')
 
   cat > "$HOST_DIR/configuration.nix" <<CFGEOF
 { inputs, self, ... }:
