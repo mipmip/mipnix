@@ -446,6 +446,8 @@ new_host(){
     # Fallback: signature and opening brace on same line (e.g., "{ config, ... }: {")
     HW_BODY=$(sed '1,/^{/d;$d' "$HW_SOURCE")
   fi
+  # Remove imports block (contains modulesPath reference to installer scan)
+  HW_BODY=$(echo "$HW_BODY" | sed '/^\s*imports\s*=/,/\];/d')
 
   cat > "$HOST_DIR/hardware.nix" <<HWEOF
 {
@@ -472,8 +474,8 @@ HWEOF
   if [[ -z "$CFG_BODY" ]]; then
     CFG_BODY=$(sed '1,/^{/d;$d' "$CFG_SOURCE")
   fi
-  # Remove imports block and comment-only lines
-  CFG_BODY=$(echo "$CFG_BODY" | sed '/^\s*imports\s*=/,/\];/d' | sed '/^\s*#.*$/d' | sed '/^\s*$/N;/^\s*\n\s*$/d')
+  # Remove imports block, comment-only lines, and networking.hostName (handled in networking.nix)
+  CFG_BODY=$(echo "$CFG_BODY" | sed '/^\s*imports\s*=/,/\];/d' | sed '/^\s*#.*$/d' | sed '/^\s*networking\.hostName\s*=/d' | sed '/^\s*$/N;/^\s*\n\s*$/d')
 
   cat > "$HOST_DIR/configuration.nix" <<CFGEOF
 { inputs, self, ... }:
