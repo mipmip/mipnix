@@ -1,25 +1,24 @@
 #!/usr/bin/env sh
-#(C)2019-2022 Pim Snel - https://github.com/mipmip/RUNME.sh
-ALLARGS=("$@");CMDS=();DESC=();NARGS=$#;ARG1=$1;make_command(){ CMDS+=($1);DESC+=("$2");};usage(){ printf "\nUsage: %s [command]\n\nCommands:\n" $0;line="              ";for((i=0;i<=$(( ${#CMDS[*]} -1));i++));do printf "  %s %s ${DESC[$i]}\n" ${CMDS[$i]} "${line:${#CMDS[$i]}}";done;echo;};runme(){ if test $NARGS -gt 0;then eval "$ARG1"||usage;else usage;fi;}
-
+#(C)2019-2026 Pim Snel - https://github.com/mipmip/RUNME.sh
+ALLARGS=("$@");CMDS=();DESC=();NARGS=$#;ARG1=$1;make_command(){ CMDS+=($1);DESC+=("$2");};usage(){ printf "\nUsage: %s [command]\n\nCommands:\n" $0;line="                      ";for((i=0;i<=$(( ${#CMDS[*]} -1));i++));do printf "  %s %s ${DESC[$i]}\n" ${CMDS[$i]} "${line:${#CMDS[$i]}}";done;echo;};runme(){ if test $NARGS -gt 0;then eval "$ARG1"||usage;else usage;fi;}
 
 EXTRA_ARG=$2
 
-make_command "nixclean" "Run nix garbage collector"
-nixclean(){
+make_command "nix_clean" "Run nix garbage collector"
+nix_clean(){
   sudo nix-collect-garbage -d
   nix-collect-garbage -d
   sudo rm -Rf /root/.cache/nix/eval-cache-v2
 }
-make_command "nixcleanyesterday" "Run nix garbage collector delete yesterday and older"
-nixcleanyesterday(){
+make_command "nix_clean_yesterday" "Run nix garbage collector delete yesterday and older"
+nix_clean_yesterday(){
   sudo nix-collect-garbage --delete-older-than 1d
   nix-collect-garbage -d
   sudo rm -Rf /root/.cache/nix/eval-cache-v2
 }
 
-make_command "nixoptimise" "Run nix store optimise"
-nixoptimise(){
+make_command "nix_optimise" "Run nix store optimise"
+nix_optimise(){
   sudo nix store optimise
 }
 
@@ -28,20 +27,13 @@ reload_tmux(){
   tmux source ~/.config/tmux/tmux.conf
 }
 
-make_command "pcirescan" "Rescan for devices that don't wake up"
-pcirescan(){
-  sudo echo "1" /sys/bus/pci/rescan
-}
-
 check_untracked(){
-
   # Check for untracked files only
   if [[ -n $(git status --porcelain | grep '^??') ]]; then
     echo "Error: There are untracked files. Please add or remove them first."
     git status --short | grep '^??'
     exit 1
   fi
-
 }
 
 make_command "git_sync_machine" "Commit latest version with hostname tag"
@@ -147,8 +139,8 @@ setup_aws_key(){
   technativeawsupdate
 }
 
-make_command "technativeawsupdate" "update AWS account info from technative"
-technativeawsupdate(){
+make_command "txn_aws_update" "update AWS account info from technative"
+txn_aws_update(){
   aws-mfa --profile technative --device arn:aws:iam::521402697040:mfa/pim@technative.nl
   aws --profile=technative-web_dns s3 cp s3://docs-mcs.technative.eu-longhorn/managed_service_accounts.json ~/.aws/
   echo "Don't forget to run home-manager again"
@@ -182,6 +174,29 @@ copy_privkey_to_remote(){
   ssh -o PubkeyAuthentication=no -o PreferredAuthentications=password ${ALLARGS[1]} "chmod 600 ~/.ssh/id_ed25519"
 }
 
+next_free_nebula_ip(){
+  # Scan networking.nix files for used 192.168.100.x IPs, find the next free one
+  USED_IPS=$(grep -roh '192\.168\.100\.[0-9]\+' modules/hosts/*/networking.nix modules/services/networking/nebula.nix 2>/dev/null | grep -o '[0-9]\+$' | sort -n | uniq)
+  NEXT_IP=2
+  while echo "$USED_IPS" | grep -qx "$NEXT_IP"; do
+    NEXT_IP=$((NEXT_IP + 1))
+  done
+  echo "192.168.100.${NEXT_IP}/24"
+}
+
+show_nebula_ip_allocation(){
+  # Show current IP allocation from networking.nix files
+  echo "Current nebula IP allocation:"
+  for f in modules/hosts/*/networking.nix; do
+    HOST_DIR=$(basename "$(dirname "$f")")
+    IP=$(grep -o '192\.168\.100\.[0-9]\+' "$f" 2>/dev/null | head -1)
+    if [[ -n "$IP" ]]; then
+      printf "  %-20s %s\n" "$IP" "$HOST_DIR"
+    fi
+  done | sort -t. -k4 -n
+  echo
+}
+
 make_command "new_nebula_node" "Create new nebula node certificates"
 new_nebula_node(){
   # Check required tools
@@ -202,11 +217,15 @@ new_nebula_node(){
     exit 1
   fi
 
-  # Interactive questions using gum
-  NODE_NAME=$(gum input --placeholder "Enter node name (e.g., harry, lego2)")
-  if [[ -z "$NODE_NAME" ]]; then
-    echo "Error: Node name is required"
-    exit 1
+  # Use HOST_NAME if set (called from new_host), otherwise prompt
+  if [[ -n "$HOST_NAME" ]]; then
+    NODE_NAME="$HOST_NAME"
+  else
+    NODE_NAME=$(gum input --placeholder "Enter node name (e.g., harry, lego2)")
+    if [[ -z "$NODE_NAME" ]]; then
+      echo "Error: Node name is required"
+      exit 1
+    fi
   fi
 
   # Check if node already exists
@@ -215,7 +234,9 @@ new_nebula_node(){
     exit 1
   fi
 
-  NODE_IP=$(gum input --placeholder "Enter nebula IP in CIDR notation (e.g., 192.168.100.5/24)")
+  show_nebula_ip_allocation
+  SUGGESTED_IP=$(next_free_nebula_ip)
+  NODE_IP=$(gum input --placeholder "Enter nebula IP in CIDR notation" --value "$SUGGESTED_IP")
   if [[ -z "$NODE_IP" ]]; then
     echo "Error: IP address is required"
     exit 1
@@ -225,6 +246,30 @@ new_nebula_node(){
   if ! [[ "$NODE_IP" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/[0-9]+$ ]]; then
     echo "Error: Invalid CIDR notation. Expected format: 192.168.100.5/24"
     exit 1
+  fi
+
+  # Show existing groups from nebula certificates
+  EXISTING_GROUPS=""
+  TMPFILE=$(mktemp)
+  trap "rm -f \"$TMPFILE\"" RETURN
+  for certfile in ./secrets/nebula-*.crt.age; do
+    [[ "$certfile" == *"nebula-ca.crt.age" ]] && continue
+    if age --decrypt -i ~/.ssh/id_ed25519 "$certfile" > "$TMPFILE" 2>/dev/null; then
+      CERT_GROUPS=$(nebula-cert print -json -path "$TMPFILE" 2>/dev/null | python3 -c "import sys,json; g=json.load(sys.stdin).get('details',{}).get('groups',[]); print(','.join(g) if g else '')" 2>/dev/null)
+      if [[ -n "$CERT_GROUPS" ]]; then
+        EXISTING_GROUPS="${EXISTING_GROUPS}${EXISTING_GROUPS:+,}${CERT_GROUPS}"
+      fi
+    fi
+  done
+  rm -f "$TMPFILE"
+  trap - RETURN
+
+  if [[ -n "$EXISTING_GROUPS" ]]; then
+    # Deduplicate and sort
+    UNIQUE_GROUPS=$(echo "$EXISTING_GROUPS" | tr ',' '\n' | sort -u | tr '\n' ',' | sed 's/,$//')
+    echo "Existing nebula groups: $UNIQUE_GROUPS"
+  else
+    echo "No existing nebula groups found (or could not decrypt certificates)"
   fi
 
   NODE_GROUPS=$(gum input --placeholder "Enter groups (comma-separated, or leave empty)")
@@ -323,6 +368,179 @@ new_nebula_node(){
     "  2. Configure services.nebula.networks.mesh in the same file" \
     "  3. Commit changes to git" \
     "  4. Rebuild the system configuration"
+  echo
+}
+
+make_command "new_host" "Create a new NixOS host configuration"
+new_host(){
+  # Check required tools
+  if ! command -v gum &> /dev/null; then
+    echo "Error: gum is not installed"
+    exit 1
+  fi
+
+  # Interactive prompts
+  HOST_NAME=$(gum input --placeholder "Enter hostname (e.g., birdie)")
+  if [[ -z "$HOST_NAME" ]]; then
+    echo "Error: Hostname is required"
+    exit 1
+  fi
+
+  HOST_TYPE=$(gum input --placeholder "Enter type suffix (e.g., laptop, pi, server)")
+  if [[ -z "$HOST_TYPE" ]]; then
+    echo "Error: Type suffix is required"
+    exit 1
+  fi
+
+  HOST_ARCH=$(gum choose "x86_64-linux" "aarch64-linux")
+  if [[ -z "$HOST_ARCH" ]]; then
+    echo "Error: Architecture is required"
+    exit 1
+  fi
+
+  HOST_DIR="modules/hosts/${HOST_NAME}-${HOST_TYPE}"
+
+  # Check for duplicate
+  if [[ -d "$HOST_DIR" ]]; then
+    echo "Error: Host directory '$HOST_DIR' already exists"
+    exit 1
+  fi
+
+  # Check hardware-configuration.nix exists
+  HW_SOURCE="/etc/nixos/hardware-configuration.nix"
+  if [[ ! -f "$HW_SOURCE" ]]; then
+    echo "Error: $HW_SOURCE not found. This must be run on a NixOS machine."
+    exit 1
+  fi
+
+  # Confirmation
+  gum style --border normal --padding "1 2" --border-foreground 33 \
+    "Creating new host:" \
+    "  Hostname: $HOST_NAME" \
+    "  Type: $HOST_TYPE" \
+    "  Architecture: $HOST_ARCH" \
+    "  Directory: $HOST_DIR" \
+    "" \
+    "Files to create:" \
+    "  • $HOST_DIR/configuration.nix" \
+    "  • $HOST_DIR/hardware.nix" \
+    "  • $HOST_DIR/networking.nix"
+
+  if ! gum confirm "Proceed with host creation?"; then
+    echo "Cancelled"
+    exit 0
+  fi
+
+  mkdir -p "$HOST_DIR"
+
+  # --- hardware.nix ---
+  # Extract body from hardware-configuration.nix by stripping the function
+  # signature and outer braces, then wrap in flake module pattern
+  HW_BODY=$(sed -n '/^{$/,/^}$/{/^{$/d;/^}$/d;p}' "$HW_SOURCE")
+  if [[ -z "$HW_BODY" ]]; then
+    # Fallback: signature and opening brace on same line (e.g., "{ config, ... }: {")
+    HW_BODY=$(sed '1,/^{/d;$d' "$HW_SOURCE")
+  fi
+
+  cat > "$HOST_DIR/hardware.nix" <<HWEOF
+{
+lib,
+inputs,
+...
+}:
+{
+  flake.modules.nixos.${HOST_NAME} = { config, pkgs, lib, ... }: {
+    # Auto-imported from $HW_SOURCE
+    # Review and adjust as needed
+
+${HW_BODY}
+  };
+}
+HWEOF
+
+  # --- configuration.nix ---
+  cat > "$HOST_DIR/configuration.nix" <<CFGEOF
+{ inputs, self, ... }:
+
+let
+  hostname = "${HOST_NAME}";
+in
+
+  {
+
+  flake.homeConfigurations = {
+
+    "pim@${HOST_NAME}" = self.lib.makeHomeConf {
+      inherit hostname;
+    };
+  };
+
+  flake.nixosConfigurations = {
+
+    ${HOST_NAME} = self.lib.makeNixos {
+      inherit hostname;
+      system = "${HOST_ARCH}";
+    };
+  };
+
+  flake.modules.nixos.${HOST_NAME} = { config, pkgs, ... } : {
+    system.stateVersion = "25.11";
+
+    imports = with inputs.self.modules.nixos; [
+
+      system-default
+      system-locale
+
+      hm-nixos
+
+      nix-cli
+
+      user-pim
+
+    ];
+
+  };
+
+}
+CFGEOF
+
+  # --- networking.nix ---
+  cat > "$HOST_DIR/networking.nix" <<NETEOF
+{
+...
+}:
+let
+  hostname = "${HOST_NAME}";
+in
+{
+  flake.modules.nixos.${HOST_NAME} = { config, pkgs, ... } : {
+
+    networking.hostName = hostname;
+    networking.firewall.enable = false;
+
+  };
+}
+NETEOF
+
+  # Optional nebula setup
+  if gum confirm "Set up nebula for this host?"; then
+    new_nebula_node
+  fi
+
+  # Success message
+  echo
+  gum style --border normal --padding "1 2" --border-foreground 212 \
+    "✓ Created host configuration for $HOST_NAME" \
+    "" \
+    "Files created:" \
+    "  • $HOST_DIR/configuration.nix" \
+    "  • $HOST_DIR/hardware.nix" \
+    "  • $HOST_DIR/networking.nix" \
+    "" \
+    "Next steps:" \
+    "  1. Review hardware.nix and adjust as needed" \
+    "  2. Add nixos modules to configuration.nix imports" \
+    "  3. Run: ./RUNME.sh up_machine"
   echo
 }
 
