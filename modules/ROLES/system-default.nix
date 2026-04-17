@@ -19,6 +19,7 @@
       networking-nebula
       editors-vim
       system-luks
+      tui-system
     ];
   };
 }

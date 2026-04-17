@@ -1,6 +1,9 @@
 { inputs, ... } : {
   flake.modules.nixos.tui-system = { config, pkgs, ... }: {
     environment.systemPackages = with pkgs; [
+      # SHELL
+      gum
+
 
       #SYSTEM
       lsof
