@@ -27,7 +27,6 @@ in
     imports = with inputs.self.modules.nixos; [
 
       system-default
-      system-locale
 
       hm-nixos
 

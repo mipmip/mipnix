@@ -125,7 +125,6 @@ in
       tui-hardware
       tui-help
       tui-multimedia
-      tui-neovim
       tui-net
       tui-search
       tui-security
