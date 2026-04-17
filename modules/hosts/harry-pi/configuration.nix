@@ -53,7 +53,6 @@ in
       # Editors
       editors-vim
 
-      # Home Manager
       hm-integration
 
       networking-nebula

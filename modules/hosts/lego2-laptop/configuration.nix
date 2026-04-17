@@ -32,14 +32,12 @@ in
     imports = with inputs.self.modules.nixos; [
 
       system-default
-      system-locale
 
       inputs.nixos-hardware.nixosModules.framework-13-7040-amd
-
-      hm-nixos
       hardware-keychron
       framework-fingerprint
       framework-misc
+
       networking-wifi
 
       desktop-myhotkeys
@@ -53,13 +51,11 @@ in
       system-trusted-pim
 
       services-samba
-      services-core
 
       # Development tools - Languages
       dev-lang-c
       dev-lang-crystal
       dev-lang-go
-      dev-lang-python
       dev-lang-ruby
       dev-lang-rust
       dev-lang-nodejs
@@ -144,10 +140,6 @@ in
 
       db-psql
 
-      networking-nebula
-      services-core
-      shell-core
-      user-pim
 
     ];
 
