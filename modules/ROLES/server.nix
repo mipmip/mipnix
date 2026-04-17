@@ -3,7 +3,7 @@ inputs,
 ...
 }:
 {
-  flake.modules.nixos.system-default = {
+  flake.modules.nixos.role-server = {
 
     boot.kernelParams = [ "consoleblank=60" ];
 
