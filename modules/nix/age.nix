@@ -7,13 +7,6 @@
 
     imports = [
       inputs.agenix.nixosModules.default
-
     ];
-
   };
 }
-
-
-
-
-
