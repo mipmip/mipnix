@@ -28,6 +28,10 @@ in
   flake.modules.nixos.lego2 = { config, pkgs, ... } : {
     system.stateVersion = "25.05";
 
+    environment.systemPackages = with pkgs; [
+      colmena
+    ];
+
     imports = with inputs.self.modules.nixos; [
 
       system-default
