@@ -1,13 +1,15 @@
 { inputs, self, ... }:
 
 let
-  hostname = "harry";
+  hostname = "hurry";
 in
+
+
 
   {
   flake.homeConfigurations = {
 
-    "pim@harry" = self.lib.makeHomeConf {
+    "pim@hurry" = self.lib.makeHomeConf {
       inherit hostname;
       server = true;
     };
@@ -15,13 +17,13 @@ in
 
   flake.nixosConfigurations = {
 
-    harry = self.lib.makeNixos {
+    hurry = self.lib.makeNixos {
       inherit hostname;
       system = "aarch64-linux";
     };
   };
 
-  flake.modules.nixos.harry = { config, pkgs, ... } : {
+  flake.modules.nixos.hurry = { config, pkgs, ... } : {
     system.stateVersion = "23.11";
 
     imports = with inputs.self.modules.nixos; [
@@ -38,22 +40,10 @@ in
 
       system-trusted-agenix
 
-      # TUI tools for server management
-      #tui-disk
-      #tui-file-utils
-      #tui-hardware
-      #tui-help
-      #tui-net
-      #tui-search
       tui-security
-      #tui-shell
-      #tui-system
       tui-tmux
 
-      # Editors
       editors-vim
-
-      hm-integration
 
       networking-nebula
 
@@ -61,7 +51,7 @@ in
 
     # Additional packages for server
     environment.systemPackages = with pkgs; [
-      nfs-utils
+      nebula
       libraspberrypi
       raspberrypi-eeprom
     ];
