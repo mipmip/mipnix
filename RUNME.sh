@@ -176,7 +176,7 @@ copy_privkey_to_remote(){
 
 next_free_nebula_ip(){
   # Scan networking.nix files for used 192.168.100.x IPs, find the next free one
-  USED_IPS=$(grep -roh '192\.168\.100\.[0-9]\+' modules/hosts/*/networking.nix modules/services/networking/nebula.nix 2>/dev/null | grep -o '[0-9]\+$' | sort -n | uniq)
+  USED_IPS=$(grep -roh '192\.168\.100\.[0-9]\+' modules/HOSTS/*/networking.nix modules/services/networking/nebula.nix 2>/dev/null | grep -o '[0-9]\+$' | sort -n | uniq)
   NEXT_IP=2
   while echo "$USED_IPS" | grep -qx "$NEXT_IP"; do
     NEXT_IP=$((NEXT_IP + 1))
@@ -187,7 +187,7 @@ next_free_nebula_ip(){
 show_nebula_ip_allocation(){
   # Show current IP allocation from networking.nix files
   echo "Current nebula IP allocation:"
-  for f in modules/hosts/*/networking.nix; do
+  for f in modules/HOSTS/*/networking.nix; do
     HOST_DIR=$(basename "$(dirname "$f")")
     IP=$(grep -o '192\.168\.100\.[0-9]\+' "$f" 2>/dev/null | head -1)
     if [[ -n "$IP" ]]; then
@@ -398,7 +398,7 @@ new_host(){
     exit 1
   fi
 
-  HOST_DIR="modules/hosts/${HOST_NAME}-${HOST_TYPE}"
+  HOST_DIR="modules/HOSTS/${HOST_NAME}-${HOST_TYPE}"
 
   # Check for duplicate
   if [[ -d "$HOST_DIR" ]]; then
@@ -418,12 +418,42 @@ new_host(){
     exit 1
   fi
 
+  # Auto-discover available roles from modules/ROLES/
+  AVAILABLE_ROLES=()
+  for rolefile in modules/ROLES/*.nix; do
+    ROLE_NAME=$(grep -o 'flake\.modules\.nixos\.role-[a-z0-9-]*' "$rolefile" 2>/dev/null | head -1 | sed 's/flake\.modules\.nixos\.//')
+    if [[ -n "$ROLE_NAME" ]]; then
+      AVAILABLE_ROLES+=("$ROLE_NAME")
+    fi
+  done
+
+  # Interactive role selection
+  SELECTED_ROLES=()
+  if [[ ${#AVAILABLE_ROLES[@]} -gt 0 ]]; then
+    echo "Select roles for this host (space to toggle, enter to confirm):"
+    ROLE_SELECTION=$(printf '%s\n' "${AVAILABLE_ROLES[@]}" | gum choose --no-limit)
+    if [[ -n "$ROLE_SELECTION" ]]; then
+      while IFS= read -r role; do
+        SELECTED_ROLES+=("$role")
+      done <<< "$ROLE_SELECTION"
+    fi
+  fi
+
+  # Build roles display string
+  if [[ ${#SELECTED_ROLES[@]} -gt 0 ]]; then
+    ROLES_DISPLAY=$(printf ', %s' "${SELECTED_ROLES[@]}")
+    ROLES_DISPLAY="${ROLES_DISPLAY:2}"
+  else
+    ROLES_DISPLAY="none"
+  fi
+
   # Confirmation
   gum style --border normal --padding "1 2" --border-foreground 33 \
     "Creating new host:" \
     "  Hostname: $HOST_NAME" \
     "  Type: $HOST_TYPE" \
     "  Architecture: $HOST_ARCH" \
+    "  Roles: $ROLES_DISPLAY" \
     "  Directory: $HOST_DIR" \
     "" \
     "Files to create:" \
@@ -477,6 +507,13 @@ HWEOF
   # Remove imports block, comment-only lines, and networking.hostName (handled in networking.nix)
   CFG_BODY=$(echo "$CFG_BODY" | sed '/^\s*imports\s*=/,/\];/d' | sed '/^\s*#.*$/d' | sed '/^\s*networking\.hostName\s*=/d' | sed '/^\s*system\.stateVersion\s*=/d' | sed '/^\s*$/N;/^\s*\n\s*$/d')
 
+  # Build roles imports for configuration.nix
+  ROLES_IMPORTS=""
+  for role in "${SELECTED_ROLES[@]}"; do
+    ROLES_IMPORTS="${ROLES_IMPORTS}      ${role}
+"
+  done
+
   cat > "$HOST_DIR/configuration.nix" <<CFGEOF
 { inputs, self, ... }:
 
@@ -484,7 +521,7 @@ let
   hostname = "${HOST_NAME}";
 in
 
-  {
+{
 
   flake.homeConfigurations = {
 
@@ -507,14 +544,7 @@ in
     imports = with inputs.self.modules.nixos; [
 
       system-default
-      system-locale
-
-      hm-nixos
-
-      nix-cli
-
-      user-pim
-
+${ROLES_IMPORTS}
     ];
 
     # --- Extracted from $CFG_SOURCE ---
@@ -545,10 +575,13 @@ in
 }
 NETEOF
 
-  # Optional nebula setup
-  if gum confirm "Set up nebula for this host?"; then
-    new_nebula_node
-  fi
+  # If role-nebula-node was selected, run nebula cert generation
+  for role in "${SELECTED_ROLES[@]}"; do
+    if [[ "$role" == "role-nebula-node" ]]; then
+      new_nebula_node
+      break
+    fi
+  done
 
   # Success message
   echo
@@ -560,9 +593,11 @@ NETEOF
     "  • $HOST_DIR/hardware.nix" \
     "  • $HOST_DIR/networking.nix" \
     "" \
+    "Roles: $ROLES_DISPLAY" \
+    "" \
     "Next steps:" \
     "  1. Review hardware.nix and adjust as needed" \
-    "  2. Add nixos modules to configuration.nix imports" \
+    "  2. Add host-specific modules to configuration.nix imports" \
     "  3. Run: ./RUNME.sh up_machine"
   echo
 }
