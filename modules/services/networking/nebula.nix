@@ -1,10 +1,6 @@
 { inputs, ... } : {
   flake.modules.nixos.networking-nebula = { pkgs, config, ... }: {
 
-    environment.systemPackages = [
-      pkgs.nebula
-    ];
-
     age = {
       secrets = {
         "nebula-ca-cert" = {

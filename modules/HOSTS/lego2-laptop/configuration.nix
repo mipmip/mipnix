@@ -33,6 +33,7 @@ in
       system-default
       role-devbox
       role-desktop-pim
+      role-nebula-node
       system-trusted-pim
 
       inputs.nixos-hardware.nixosModules.framework-13-7040-amd

@@ -28,6 +28,7 @@ in
 
       system-default
       system-locale
+      role-nebula-node
 
       hm-nixos
 
