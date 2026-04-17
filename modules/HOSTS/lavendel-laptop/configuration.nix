@@ -25,11 +25,15 @@ in
 
     imports = with inputs.self.modules.nixos; [
 
+      system-default
+      role-nebula-node
+
       inputs.self.modules.nixos.nix-channels-mama
       inputs.nixos-hardware.nixosModules.framework-12-13th-gen-intel
 
       framework-misc
       hardware-chipsailing-fingerprint
+      role-nebula-node
 
       networking-wifi
 

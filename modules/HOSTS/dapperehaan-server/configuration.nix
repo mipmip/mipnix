@@ -30,6 +30,7 @@ in
       role-devbox
       system-trusted-pim
       services-samba
+      #role-nebula-node
     ];
 
     boot.loader.systemd-boot.enable = true;

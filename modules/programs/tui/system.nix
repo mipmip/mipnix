@@ -4,6 +4,8 @@
       # SHELL
       gum
 
+      # NET
+
 
       #SYSTEM
       lsof

@@ -16,7 +16,6 @@
       dev-lang-python
       dev-infra-dataformat
       user-pim
-      networking-nebula
       editors-vim
       system-luks
       tui-system
