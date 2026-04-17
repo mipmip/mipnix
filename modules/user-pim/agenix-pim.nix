@@ -7,7 +7,7 @@
 
     age.secrets = let
       keyconf = keyname: {
-        file = ../../../secrets/${keyname}.age;
+        file = ../../secrets/${keyname}.age;
         path = "/tmp/${keyname}";
         owner = "pim";
         group = "users";
@@ -15,7 +15,7 @@
       };
 
       keyconf_root = keyname: {
-        file = ../../../secrets/${keyname}.age;
+        file = ../../secrets/${keyname}.age;
         path = "/tmp/${keyname}";
         owner = "root";
         group = "root";
