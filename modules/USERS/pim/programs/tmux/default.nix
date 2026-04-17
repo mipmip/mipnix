@@ -26,7 +26,7 @@ inputs,
 
       extraConfig = ''
         set -s escape-time 10                     # faster command sequences
-        set -sg repeat-time 600                   # increase repeat timeout
+        set -sg repeat-time 200                   # increase repeat timeout
 
         set -s focus-events on
 
