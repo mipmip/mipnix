@@ -6,7 +6,6 @@
   flake.modules.nixos.system-default = {
     imports = with inputs.self.modules.nixos; [
 
-      inputs.self.modules.nixos.nix-channels
       nix-cli
       nix-age
       system-locale

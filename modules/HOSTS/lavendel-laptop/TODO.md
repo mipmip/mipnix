@@ -5,6 +5,6 @@
 - [ ] mail + vertaal
 - [ ] libreoffice + mailknopje
 - [ ] libreoffice + vertaal
-- [ ] newelle
+- [x] newelle
 - [ ] bedrock keys
 - [ ] mac opstart icoontje
