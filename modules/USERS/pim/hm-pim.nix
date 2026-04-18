@@ -56,7 +56,6 @@
       pim-librewolf
       pim-wrofi
       pim-awscli
-      pim-aider
       pim-nix
       pim-npm
       pim-wtf

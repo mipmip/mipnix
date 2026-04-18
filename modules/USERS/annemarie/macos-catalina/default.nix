@@ -25,7 +25,7 @@
       genericName = "Virtual Machine";
       exec = "/home/annemarie/.local/bin/start-macos-catalina.sh";
       categories = [ "System" "Emulator" ];
-      terminal = true;
+      terminal = false;
       startupNotify = true;
       type = "Application";
       icon = "macos-catalina";
