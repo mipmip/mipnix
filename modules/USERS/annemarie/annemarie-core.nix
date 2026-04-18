@@ -10,6 +10,8 @@
 
     "annemarie@lavendel" = self.lib.makeHomeConf {
       hostname = "lavendel";
+      username = "annemarie";
+      homedir = "/home/annemarie";
     };
   };
 
@@ -26,6 +28,7 @@
 
     imports = with inputs.self.modules.homeManager; [
       annemarie-myhotkeys
+      annemarie-macos-catalina
     ];
   };
 }
