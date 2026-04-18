@@ -25,41 +25,22 @@ in
 
     imports = with inputs.self.modules.nixos; [
 
+      inputs.self.modules.nixos.nix-channels-mama
       system-default
       role-nebula-node
 
-      inputs.self.modules.nixos.nix-channels-mama
       inputs.nixos-hardware.nixosModules.framework-12-13th-gen-intel
 
       framework-misc
       hardware-chipsailing-fingerprint
       role-nebula-node
+      networking-nebula
 
       networking-wifi
 
-      dev-lang-python
-
-      desktop-myhotkeys
-      desktop-de-kde
-      desktop-apps-mail
-      desktop-hw-printers
-
-      plymouth-grannyos
-      granny
-
-      hm-nixos
-
-      nix-cli
-      nix-age
-
-      networking-nebula
-
-      services-core
-      shell-core
-      user-pim
       user-annemarie
+      role-desktop-annemarie
       system-trusted-annemarie
-      desktop-virt-virtualization
 
     ];
 
@@ -71,24 +52,6 @@ in
 
     # Enable networking
     networking.networkmanager.enable = true;
-
-    # Set your time zone.
-    time.timeZone = "Europe/Amsterdam";
-
-    # Select internationalisation properties.
-    i18n.defaultLocale = "nl_NL.UTF-8";
-
-    i18n.extraLocaleSettings = {
-      LC_ADDRESS = "nl_NL.UTF-8";
-      LC_IDENTIFICATION = "nl_NL.UTF-8";
-      LC_MEASUREMENT = "nl_NL.UTF-8";
-      LC_MONETARY = "nl_NL.UTF-8";
-      LC_NAME = "nl_NL.UTF-8";
-      LC_NUMERIC = "nl_NL.UTF-8";
-      LC_PAPER = "nl_NL.UTF-8";
-      LC_TELEPHONE = "nl_NL.UTF-8";
-      LC_TIME = "nl_NL.UTF-8";
-    };
 
     services.xserver.xkb = {
       layout = "nl";
@@ -106,14 +69,6 @@ in
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
-    };
-
-    users.users.pim = {
-      isNormalUser = true;
-      description = "pim";
-      extraGroups = [ "networkmanager" "wheel" ];
-      packages = with pkgs; [
-      ];
     };
 
     system.stateVersion = "25.11"; # Did you read the comment?
