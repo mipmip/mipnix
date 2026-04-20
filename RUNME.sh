@@ -37,16 +37,11 @@ reload_tmux(){
 
 with_age_identity(){
   AGE_IDENTITY=$(mktemp)
-  TMPSSHKEY=$(mktemp)
-  trap "shred -u \"$AGE_IDENTITY\" \"$TMPSSHKEY\" 2>/dev/null" RETURN
-  cp ~/.ssh/id_ed25519 "$TMPSSHKEY"
-  chmod 600 "$TMPSSHKEY"
-  if ! ssh-keygen -p -N "" -f "$TMPSSHKEY"; then
+  trap "shred -u \"$AGE_IDENTITY\" 2>/dev/null" RETURN
+  cp ~/.ssh/id_ed25519 "$AGE_IDENTITY"
+  chmod 600 "$AGE_IDENTITY"
+  if ! ssh-keygen -p -N "" -f "$AGE_IDENTITY"; then
     echo "Error: Failed to decrypt SSH key"
-    return 1
-  fi
-  if ! nix shell nixpkgs#ssh-to-age -c ssh-to-age -private-key -i "$TMPSSHKEY" -o "$AGE_IDENTITY"; then
-    echo "Error: Failed to convert SSH key to age identity"
     return 1
   fi
   "$@"

@@ -48,7 +48,6 @@
       pim-shellstuff
       pim-aoe
       pim-alacritty
-
       pim-monitoring
       pim-kitty
       pim-ghostty
@@ -75,13 +74,7 @@
       pim-neovim
       pim-hyprland
       pim-hypr-longpress
-      pim-noctalia
-      pim-nwg-panel
       pim-fonts
-#      pim-gnome-desktop-generic
-#      pim-gnome-desktop-input-sources
-#      pim-gnome-desktop-shortcuts
-#      pim-gnome-extensions
     ];
 
     nixpkgs.config.allowUnfree = true;

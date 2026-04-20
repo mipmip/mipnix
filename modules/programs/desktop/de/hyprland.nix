@@ -53,7 +53,6 @@
 
       nwg-displays
       swaynotificationcenter
-      waybar
       wpaperd
 
       libinput
