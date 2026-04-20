@@ -29,21 +29,12 @@ let
 in
 {
 
-  "openai-api-key.age".publicKeys = [
-    pim
-    trusted_systems
-  ];
+  "openai-api-key.age".publicKeys = [ pim ] ++ trusted_systems;
   "openai-api-key-plain.age".publicKeys = [
     pim
   ];
-  "kagi-api-key-plain.age".publicKeys = [
-    users
-    systems
-  ];
-  "tavily-api-key-plain.age".publicKeys = [
-    pim
-    trusted_systems
-  ];
+  "kagi-api-key-plain.age".publicKeys = users ++ systems;
+  "tavily-api-key-plain.age".publicKeys = [ pim ] ++ trusted_systems;
 
   "bedrock-annemarie-api-keys-env.age".publicKeys = [
     pim
@@ -52,31 +43,16 @@ in
     annemarie
   ];
 
-  "bedrockpim-api-keys-env.age".publicKeys = [
-    pim
-    trusted_systems
-  ];
+  "bedrockpim-api-keys-env.age".publicKeys = [ pim ] ++ trusted_systems;
 
-  "env-for-litellm.age".publicKeys = [
-    pim
-    trusted_systems
-  ];
+  "env-for-litellm.age".publicKeys = [ pim ] ++ trusted_systems;
 
 
-  "bedrock-keys-for-avante-env.age".publicKeys = [
-    pim
-    trusted_systems
-  ];
+  "bedrock-keys-for-avante-env.age".publicKeys = [ pim ] ++ trusted_systems;
 
-  "aws-credentials-copy.age".publicKeys = [
-    pim
-    trusted_systems
-  ];
+  "aws-credentials-copy.age".publicKeys = [ pim ] ++ trusted_systems;
   "aws-config-copy-first-time-only.age".publicKeys = [ pim ];
-  "aws-accounts.json.age".publicKeys = [
-    pim
-    trusted_systems
-  ];
+  "aws-accounts.json.age".publicKeys = [ pim ] ++ trusted_systems;
 
   "wifi.age".publicKeys = [
     pim
