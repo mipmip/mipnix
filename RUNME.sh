@@ -49,7 +49,7 @@ git_sync_machine(){
   git push origin --delete "$TAG_NAME" 2>/dev/null || true
   # Create new tag and push
   git tag "$TAG_NAME"
-  git push --tags
+  git push origin "$TAG_NAME"
   git push
 }
 
