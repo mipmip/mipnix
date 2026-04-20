@@ -12,6 +12,8 @@ inputs,
           email = "post@pimsnel.com";
         };
 
+        # add git config pull.rebase false
+
         init = {
           defaultBranch = "main";
         };
