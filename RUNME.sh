@@ -4,6 +4,14 @@ ALLARGS=("$@");CMDS=();DESC=();NARGS=$#;ARG1=$1;make_command(){ CMDS+=($1);DESC+
 
 EXTRA_ARG=$2
 
+make_command "rekey" "Rekey all age secrets (single passphrase prompt)"
+rekey(){
+  with_age_identity _rekey_inner
+}
+_rekey_inner(){
+  (cd secrets && agenix --rekey -i "$AGE_IDENTITY")
+}
+
 make_command "nix_clean" "Run nix garbage collector"
 nix_clean(){
   sudo nix-collect-garbage -d
@@ -25,6 +33,23 @@ nix_optimise(){
 make_command "reload_tmux" "Reload TMUX Configuration"
 reload_tmux(){
   tmux source ~/.config/tmux/tmux.conf
+}
+
+with_age_identity(){
+  AGE_IDENTITY=$(mktemp)
+  TMPSSHKEY=$(mktemp)
+  trap "shred -u \"$AGE_IDENTITY\" \"$TMPSSHKEY\" 2>/dev/null" RETURN
+  cp ~/.ssh/id_ed25519 "$TMPSSHKEY"
+  chmod 600 "$TMPSSHKEY"
+  if ! ssh-keygen -p -N "" -f "$TMPSSHKEY"; then
+    echo "Error: Failed to decrypt SSH key"
+    return 1
+  fi
+  if ! nix shell nixpkgs#ssh-to-age -c ssh-to-age -private-key -i "$TMPSSHKEY" -o "$AGE_IDENTITY"; then
+    echo "Error: Failed to convert SSH key to age identity"
+    return 1
+  fi
+  "$@"
 }
 
 check_untracked(){
@@ -199,6 +224,9 @@ show_nebula_ip_allocation(){
 
 make_command "new_nebula_node" "Create new nebula node certificates"
 new_nebula_node(){
+  with_age_identity _new_nebula_node_inner
+}
+_new_nebula_node_inner(){
   # Check required tools
   if ! command -v gum &> /dev/null; then
     echo "Error: gum is not installed"
@@ -254,7 +282,7 @@ new_nebula_node(){
   trap "rm -f \"$TMPFILE\"" RETURN
   for certfile in ./secrets/nebula-*.crt.age; do
     [[ "$certfile" == *"nebula-ca.crt.age" ]] && continue
-    if age --decrypt -i ~/.ssh/id_ed25519 "$certfile" > "$TMPFILE" 2>/dev/null; then
+    if age --decrypt -i "$AGE_IDENTITY" "$certfile" > "$TMPFILE" 2>/dev/null; then
       CERT_GROUPS=$(nebula-cert print -json -path "$TMPFILE" 2>/dev/null | python3 -c "import sys,json; g=json.load(sys.stdin).get('details',{}).get('groups',[]); print(','.join(g) if g else '')" 2>/dev/null)
       if [[ -n "$CERT_GROUPS" ]]; then
         EXISTING_GROUPS="${EXISTING_GROUPS}${EXISTING_GROUPS:+,}${CERT_GROUPS}"
@@ -297,13 +325,13 @@ new_nebula_node(){
   echo "Decrypting CA certificates..."
 
   # Decrypt CA key and certificate
-  if ! age --decrypt -i ~/.ssh/id_ed25519 ./secrets/nebula-ca.key.age > "$TMPDIR/ca.key"; then
+  if ! age --decrypt -i "$AGE_IDENTITY" ./secrets/nebula-ca.key.age > "$TMPDIR/ca.key"; then
     echo "Error: Failed to decrypt CA key"
     exit 1
   fi
   chmod 600 "$TMPDIR/ca.key"
 
-  if ! age --decrypt -i ~/.ssh/id_ed25519 ./secrets/nebula-ca.crt.age > "$TMPDIR/ca.crt"; then
+  if ! age --decrypt -i "$AGE_IDENTITY" ./secrets/nebula-ca.crt.age > "$TMPDIR/ca.crt"; then
     echo "Error: Failed to decrypt CA certificate"
     exit 1
   fi

@@ -12,7 +12,7 @@ inputs,
           email = "post@pimsnel.com";
         };
 
-        # add git config pull.rebase false
+        # add git config pull.rebase
 
         init = {
           defaultBranch = "main";
