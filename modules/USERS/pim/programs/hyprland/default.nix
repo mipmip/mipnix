@@ -92,18 +92,5 @@ inputs,
       };
     };
 
-    home.file = {
-      ".config/waybar" = {
-        source = ./waybar;
-        recursive = true;
-      };
-    };
-
-    programs.hm-ricing-mode.apps.waybar = {
-      dest_dir = ".config/waybar";
-      source_dir = "$HOME/nixos/home/pim/_hm-modules/programs/hyprland/waybar";
-      type = "symlink";
-    };
-
   };
 }
