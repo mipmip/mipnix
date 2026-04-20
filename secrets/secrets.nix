@@ -30,9 +30,7 @@ in
 {
 
   "openai-api-key.age".publicKeys = [ pim ] ++ trusted_systems;
-  "openai-api-key-plain.age".publicKeys = [
-    pim
-  ];
+  "openai-api-key-plain.age".publicKeys = [ pim ] ++ trusted_systems;
   "kagi-api-key-plain.age".publicKeys = users ++ systems;
   "tavily-api-key-plain.age".publicKeys = [ pim ] ++ trusted_systems;
 
