@@ -15,6 +15,7 @@
       dev-lang-python
       dev-infra-dataformat
       user-pim
+      system-setup
       editors-vim
       system-luks
       tui-system
