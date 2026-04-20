@@ -14,13 +14,15 @@ let
 
   users = [ pim annemarie ];
   systems = [
-    ojs
-    lego1
-    rodin
     hurry
     harry
     lego2
     lavendel
+    dapperehaan
+  ];
+
+  trusted_systems = [
+    lego2
     dapperehaan
   ];
 
@@ -29,33 +31,18 @@ in
 
   "openai-api-key.age".publicKeys = [
     pim
-    ojs
-    lego1
-    rodin
-    lego2
+    trusted_systems
   ];
   "openai-api-key-plain.age".publicKeys = [
     pim
-    ojs
-    lego1
-    rodin
-    lego2
   ];
   "kagi-api-key-plain.age".publicKeys = [
-    pim
-    ojs
-    lego1
-    rodin
-    lego2
-    annemarie
-    lavendel
+    users
+    systems
   ];
   "tavily-api-key-plain.age".publicKeys = [
     pim
-    ojs
-    lego1
-    rodin
-    lego2
+    trusted_systems
   ];
 
   "bedrock-annemarie-api-keys-env.age".publicKeys = [
@@ -67,43 +54,28 @@ in
 
   "bedrockpim-api-keys-env.age".publicKeys = [
     pim
-    ojs
-    lego1
-    rodin
-    lego2
+    trusted_systems
   ];
 
   "env-for-litellm.age".publicKeys = [
     pim
-    ojs
-    lego1
-    rodin
-    lego2
+    trusted_systems
   ];
 
 
   "bedrock-keys-for-avante-env.age".publicKeys = [
     pim
-    ojs
-    lego1
-    rodin
-    lego2
+    trusted_systems
   ];
 
   "aws-credentials-copy.age".publicKeys = [
     pim
-    ojs
-    lego1
-    rodin
-    lego2
+    trusted_systems
   ];
   "aws-config-copy-first-time-only.age".publicKeys = [ pim ];
   "aws-accounts.json.age".publicKeys = [
     pim
-    ojs
-    lego1
-    rodin
-    lego2
+    trusted_systems
   ];
 
   "wifi.age".publicKeys = [
