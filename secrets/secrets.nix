@@ -119,4 +119,7 @@ in
 
   "ghi-token.age".publicKeys = users; ## should configure ghi in home manager
 
+  "nebula-dapperehaan.crt.age".publicKeys = users ++ systems;
+  "nebula-dapperehaan.key.age".publicKeys = users ++ systems;
+
 }
