@@ -34,7 +34,8 @@ in
 
     imports = with inputs.self.modules.nixos; [
 
-      inputs.self.modules.nixos.nix-channels
+      channel-default
+
       system-default
       role-devbox
       role-desktop-pim

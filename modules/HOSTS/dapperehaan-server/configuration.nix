@@ -25,6 +25,10 @@ in
     system.stateVersion = "25.11";
 
     imports = with inputs.self.modules.nixos; [
+
+      channel-default
+      system-trusted-pim
+
       system-default
       role-server
       role-devbox
