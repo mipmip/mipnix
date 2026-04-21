@@ -4,7 +4,7 @@ inputs,
 ...
 }:
 {
-  flake.modules.nixos.dapperehaan = { config, pkgs, lib, ... }: {
+  flake.modules.nixos.durer = { config, pkgs, lib, ... }: {
 
    fileSystems."/" = {
      device = "/dev/disk/by-label/nixos";
