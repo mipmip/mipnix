@@ -11,6 +11,7 @@ inputs,
       pim-fish
       pim-fzf
       pim-tmux
+      pim-shared-shell-aliases
     ];
 
   };

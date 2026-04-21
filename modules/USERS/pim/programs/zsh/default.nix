@@ -4,7 +4,6 @@ inputs,
 }:
 {
   flake.modules.homeManager.pim-zsh = { config, pkgs, ... }: {
-    imports = [ inputs.self.modules.homeManager.pim-shared-shell-aliases ];
 
     home.file = {
       ".ohmyzsh-pim" = {
