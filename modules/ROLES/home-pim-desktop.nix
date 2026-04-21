@@ -10,8 +10,6 @@ inputs,
 
     imports = with inputs.self.modules.homeManager; [
 
-      pim-homeWith-options
-
       pim-obs
       pim-alacritty
       pim-aoe

@@ -20,6 +20,7 @@
         modules = [
 
           #          inputs.self.modules.homeManager.${username}
+          inputs.self.modules.homeManager.pim-homeWith-options
 
           inputs.hm-ricing-mode.homeManagerModules.hm-ricing-mode
 
