@@ -26,6 +26,9 @@ in
   flake.modules.nixos.durer = { config, pkgs, ... } : {
     system.stateVersion = "25.11";
 
+    services.ergochat.enable = true;
+
+
     imports = with inputs.self.modules.nixos; [
       channel-default
       system-default
