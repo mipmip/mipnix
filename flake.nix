@@ -50,6 +50,7 @@
     specgetty.url = "github:mipmip/specgetty";
     openspec.url = "github:Fission-AI/OpenSpec";
     verynix.url = "github:mipmip/verynix";
+    rme.url = "github:mipmip/rme";
 
     skull.url = "github:mipmip/skull";
     mip.url = "github:mipmip/mip.rs";
