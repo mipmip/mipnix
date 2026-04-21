@@ -30,9 +30,7 @@ in
 {
 
   "openai-api-key.age".publicKeys = [ pim ] ++ trusted_systems;
-  "openai-api-key-plain.age".publicKeys = [
-    pim
-  ];
+  "openai-api-key-plain.age".publicKeys = [ pim ] ++ trusted_systems;
   "kagi-api-key-plain.age".publicKeys = users ++ systems;
   "tavily-api-key-plain.age".publicKeys = [ pim ] ++ trusted_systems;
 
@@ -120,5 +118,8 @@ in
   "openai-api-key-plain-mama.key.age".publicKeys = users ++ systems;
 
   "ghi-token.age".publicKeys = users; ## should configure ghi in home manager
+
+  "nebula-dapperehaan.crt.age".publicKeys = users ++ systems;
+  "nebula-dapperehaan.key.age".publicKeys = users ++ systems;
 
 }
