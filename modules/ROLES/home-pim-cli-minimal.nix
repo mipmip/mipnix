@@ -16,6 +16,10 @@ inputs,
       pim-shared-shell-aliases
     ];
 
+    programs.vim = {
+      enable = true;
+    };
+
   };
 }
 
