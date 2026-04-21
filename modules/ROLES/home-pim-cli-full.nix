@@ -30,7 +30,7 @@ inputs,
       pim-smug-skull
       pim-pandoc
       pim-sc-im
-      #pim-vim
+      pim-vim
       pim-neovim
       vibecoding-opencode
       vibecoding-claude-code-config
