@@ -32,7 +32,6 @@ inputs,
       pim-sc-im
       pim-vim
       pim-neovim
-      mip-theme
       vibecoding-opencode
       vibecoding-claude-code-config
     ];
