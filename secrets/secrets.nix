@@ -7,7 +7,9 @@ let
   lego2 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINEk9rmZ6i/iCukbQBKf28MVz994Ed3GtdK6K37r8QOH";
   lavendel = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB7SSE52Oaftqy7uqCXSIr5lQTrs7wqR7lUdf7IiVHvo";
   rodin = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIITKQnVAoVLw3gGL4c2pWW4uA6CySG6Rd/r4NIEAk6KU";
+
   dapperehaan = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKjWlnTNc6cEhpI2SHofjwWZW7HZU0OBD6pY7QI4gpki";
+  durer = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE+jRQYvOX+EI+QeB31JT994sYo+B1j18AxTjzuprQ2F";
 
   hurry = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPyh9gDCDN2rzAExllvavzVVr4XkKea63Wa+B7JO8+Qz";
   harry = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOmY6Jv/y1CSyVe0t1L+65NQjocDoDUShhriPp5yg6eh";
@@ -19,6 +21,7 @@ let
     lego2
     lavendel
     dapperehaan
+    durer
   ];
 
   trusted_systems = [
@@ -121,5 +124,8 @@ in
 
   "nebula-dapperehaan.crt.age".publicKeys = users ++ systems;
   "nebula-dapperehaan.key.age".publicKeys = users ++ systems;
+
+  "nebula-durer.crt.age".publicKeys = users ++ systems;
+  "nebula-durer.key.age".publicKeys = users ++ systems;
 
 }

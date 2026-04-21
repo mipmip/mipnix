@@ -7,10 +7,12 @@ in
   {
   flake.modules.nixos.durer = { config, pkgs, ... } : {
 
+    security.sudo.wheelNeedsPassword = false;
+
     networking.hostName = hostname;
     networking.firewall.enable = true;
-
-    security.sudo.wheelNeedsPassword = false;
+    networking.firewall.allowedTCPPorts = [ 22 ];
+    networking.firewall.allowedUDPPorts = [ 4242 ];
 
     services.openssh = {
       enable = true;
@@ -21,7 +23,28 @@ in
       };
     };
 
-    networking.firewall.allowedTCPPorts = [ 22 ];
+    age = {
+      secrets = {
+        "nebula-${hostname}-key" = {
+          file = ../../../secrets + "/nebula-${hostname}.key.age";
+          path = "/var/lib/nebula/nebula-${hostname}.key";
+          owner = "nebula-mesh";
+          group = "root";
+          mode = "600";
+        };
+        "nebula-${hostname}-cert" = {
+          file = ../../../secrets + "/nebula-${hostname}.crt.age";
+          path = "/var/lib/nebula/nebula-${hostname}.crt";
+          owner = "nebula-mesh";
+          group = "root";
+          mode = "600";
+        };
+      };
+    };
+    services.nebula.networks.mesh = {
+      cert = config.age.secrets."nebula-${hostname}-cert".path;
+      key = config.age.secrets."nebula-${hostname}-key".path;
+    };
 
 
   };
