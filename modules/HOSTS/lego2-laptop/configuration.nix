@@ -18,8 +18,9 @@ in
     "pim@lego2" = self.lib.makeHomeConf {
       inherit hostname;
       imports = with inputs.self.modules.homeManager; [
-        pim-with-desktop
-        pim-with-secondbrain
+        role-pim-cli-full
+        role-pim-cli-minimal
+        role-pim-desktop
       ];
 
     };

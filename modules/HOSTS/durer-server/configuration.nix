@@ -8,6 +8,10 @@ in
 
     "pim@durer" = self.lib.makeHomeConf {
       inherit hostname;
+      imports = with inputs.self.modules.homeManager; [
+        role-pim-cli-minimal
+      ];
+
     };
   };
 
