@@ -30,6 +30,7 @@ in
       channel-default
       system-default
       role-server
+      role-nebula-node
     ];
   };
 }
