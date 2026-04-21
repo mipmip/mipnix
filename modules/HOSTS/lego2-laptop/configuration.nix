@@ -6,7 +6,6 @@ in
 
 {
   flake.nixosConfigurations = {
-
     lego2 = self.lib.makeNixos {
       inherit hostname;
       system = "x86_64-linux";
