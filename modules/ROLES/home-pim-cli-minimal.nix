@@ -12,7 +12,7 @@ inputs,
       pim-shellstuff
       pim-fish
       pim-fzf
-      #pim-tmux
+      pim-tmux
       pim-shared-shell-aliases
     ];
 
