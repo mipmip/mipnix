@@ -11,7 +11,7 @@ in
 
     networking.hostName = hostname;
     networking.firewall.enable = true;
-    networking.firewall.allowedTCPPorts = [ 22 ];
+    networking.firewall.allowedTCPPorts = [ 22 6697 ];
     networking.firewall.allowedUDPPorts = [ 4242 ];
 
     services.openssh = {
