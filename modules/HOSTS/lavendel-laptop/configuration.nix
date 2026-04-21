@@ -4,7 +4,7 @@ let
   hostname = "lavendel";
 in
 
-  {
+{
 
   flake.nixosConfigurations = {
 
@@ -13,6 +13,14 @@ in
       system = "x86_64-linux";
       channel = inputs.nixpkgs-mama;
     };
+  };
+
+  flake.homeConfigurations = {
+
+    "pim@arcana-one" = self.lib.makeHomeConf {
+      hostname = "arcana-one";
+    };
+
   };
 
   flake.modules.nixos.lavendel = { config, pkgs, ... } : {

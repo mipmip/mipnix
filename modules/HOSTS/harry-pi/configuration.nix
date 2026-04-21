@@ -10,7 +10,9 @@ in
     "pim@harry" = self.lib.makeHomeConf {
       inherit hostname;
       server = true;
+      system = "aarch64-linux";
     };
+
   };
 
   flake.nixosConfigurations = {

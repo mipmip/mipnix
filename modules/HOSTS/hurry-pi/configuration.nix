@@ -8,15 +8,14 @@ in
 
   {
   flake.homeConfigurations = {
-
     "pim@hurry" = self.lib.makeHomeConf {
       inherit hostname;
+      system = "aarch64-linux";
       server = true;
     };
   };
 
   flake.nixosConfigurations = {
-
     hurry = self.lib.makeNixos {
       inherit hostname;
       system = "aarch64-linux";
