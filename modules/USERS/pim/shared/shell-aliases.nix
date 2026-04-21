@@ -23,7 +23,7 @@ inputs,
     config = lib.mkMerge [
       {
         shared.shellAliases = {
-          vim = "nvim";
+          #vim = "nvim";
           signal = ''signal-desktop --password-store="gnome-libsecret"'';
 
           lin = "vim -c LinnyStart";
@@ -68,29 +68,6 @@ inputs,
           gin = ''gh issue create -b "" -t '';
           gic = ''gh issue close '';
           gib = ''gh browse'';
-
-          #hm_reset_envs = "unset __HM_SESS_VARS_SOURCED __HM_ZSH_SESS_VARS_SOURCED && source ~/.zshenv";
-          #          aiderbrclaude37 = ''
-          #            AWS_REGION_NAME=eu-central-1 \
-          #                          AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_BEDROCK_PIM \
-          #                          AWS_SECRET_ACCESS_KEY=$AWS_ACCESS_KEY_BEDROCK_PIM_SECRET \
-          #                          aider --model bedrock/eu.anthropic.claude-3-7-sonnet-20250219-v1:0'';
-          #
-          #          #          aiderbrclaude40 = ''AWS_REGION_NAME=us-east-1 \
-          #          #              AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_BEDROCK_PIM \
-          #          #              AWS_SECRET_ACCESS_KEY=$AWS_ACCESS_KEY_BEDROCK_PIM_SECRET \
-          #          #              aider --model bedrock/us.anthropic.claude-sonnet-4-20250514-v1:0'';
-          #
-          #          aiderbrclaude45 = ''
-          #            AWS_REGION_NAME=us-east-1 \
-          #                          AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_BEDROCK_PIM \
-          #                          AWS_SECRET_ACCESS_KEY=$AWS_ACCESS_KEY_BEDROCK_PIM_SECRET \
-          #                          aider --model bedrock_converse/eu.anthropic.claude-sonnet-4-5-20250929-v1:0'';
-          #
-          #          aiderbrmeta32 = ''AWS_REGION_NAME=eu-central-1 \
-          #              AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_BEDROCK_PIM \
-          #              AWS_SECRET_ACCESS_KEY=$AWS_ACCESS_KEY_BEDROCK_PIM_SECRET
-          #              aider --model bedrock/eu.meta.llama3-2-3b-instruct-v1:0'';
         };
       }
 
