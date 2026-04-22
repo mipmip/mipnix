@@ -5,6 +5,15 @@ let
   hostname = "dapperehaan";
 in
 {
+
+  flake.modules.nixos.networking-nebula = {...} : {
+    networking.extraHosts =
+      ''
+        192.168.100.2 ${hostname}
+      '';
+  };
+
+
   flake.modules.nixos.dapperehaan = { config, pkgs, ... } : {
 
     networking.hostName = hostname;
