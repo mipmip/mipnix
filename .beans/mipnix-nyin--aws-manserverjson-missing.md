@@ -3,9 +3,11 @@
 title: aws-manserver.json missing
 status: draft
 type: task
+priority: normal
 created_at: 2026-04-21T18:49:35Z
-updated_at: 2026-04-21T18:49:35Z
+updated_at: 2026-04-22T08:02:18Z
 ---
+
 new servers up_home
 
        … while evaluating the option `programs.smug.projects':

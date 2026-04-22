@@ -3,8 +3,7 @@ inputs,
 ...
 }:
 {
-  flake.modules.homeManager.pim-shellstuff = { pkgs, ... }:
-
+  flake.modules.homeManager.pim-shellstuff-cli = { pkgs, ... }:
     let
 
       # `smg` is bound to bind + S in tmux and shows all preconfigured smus tmux
@@ -31,16 +30,11 @@ inputs,
         ${pkgs.tmux}/bin/tmux switch -t "''$profile"
         '';
 
-        ## dispatched open command. Non blocking and independant of starting terminal
-        open = pkgs.writeShellScriptBin "open" ''
-          xdg-open "''$@" & disown
-        '';
-
     in
     {
       home.packages = [
         smg
-        open
+        inputs.rme.packages."${pkgs.stdenv.hostPlatform.system}".default
       ];
   };
 }

@@ -27,6 +27,8 @@ inputs,
       pim-hypr-longpress
       pim-fonts
 
+      pim-shellstuff-desktop
+
     ];
 
   };
