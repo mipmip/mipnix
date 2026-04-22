@@ -4,7 +4,15 @@
 let
   hostname = "durer";
 in
-  {
+{
+
+  flake.modules.nixos.networking-nebula = {...} : {
+    networking.extraHosts =
+      ''
+        192.168.100.12 ${hostname}
+      '';
+  };
+
   flake.modules.nixos.durer = { config, pkgs, ... } : {
 
     security.sudo.wheelNeedsPassword = false;

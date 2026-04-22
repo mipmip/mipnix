@@ -93,13 +93,6 @@ up_home(){
 
   # Only sync if home-manager succeeded
   if [ $? -eq 0 ]; then
-    # Install opencode plugins
-    #echo "Installing opencode plugins..."
-    #if [ -d ~/.config/opencode ]; then
-    #  cd ~/.config/opencode && npm install
-    #  cd -
-    #fi
-
     EXTRA_ARG="auto run after home-manager switch"
     git_sync_machine
   else
@@ -110,7 +103,7 @@ up_home(){
 
 }
 
-make_command "up_machine" "Add latest home-manager updates"
+make_command "up_machine" "Rebuild NixOS system configuration"
 up_machine(){
 
   check_untracked
@@ -141,14 +134,14 @@ setup_aws_key(){
   mkdir -p ~/.aws
   chmod 700 ~/.aws
 
-  if [ ~/.aws/credentials ]; then
+  if [ -f ~/.aws/credentials ]; then
     cp ~/.aws/credentials ~/.aws/credentials.bak
     chmod 600 ~/.aws/credentials.bak
   fi
   age --decrypt -i ~/.ssh/id_ed25519 ./secrets/aws-credentials-copy.age > ~/.aws/credentials
   chmod 600 ~/.aws/credentials
 
-  if [ ~/.aws/config ]; then
+  if [ -f ~/.aws/config ]; then
     cp ~/.aws/config ~/.aws/config.bak
     chmod 600 ~/.aws/config.bak
   fi
@@ -182,30 +175,50 @@ copy_privkey_to_remote(){
   fi
   echo
   echo "making 1st SSH connection"
-  #ssh -o PubkeyAuthentication=no -o PreferredAuthentications=password ${ALLARGS[1]} "mkdir -p ~/.ssh && chmod 700 ~/.ssh"
   ssh ${ALLARGS[1]} "mkdir -p ~/.ssh && chmod 700 ~/.ssh"
   echo
   echo "Decrypt key for sending to remote"
   KEY="$(age --decrypt -i ~/.ssh/id_ed25519 ./secrets/pimprived.age)"
   echo
   echo "Making 2nd SSH connection"
-  #echo "$KEY" | ssh -o PubkeyAuthentication=no -o PreferredAuthentications=password ${ALLARGS[1]} "cat > ~/.ssh/id_ed25519"
   echo "$KEY" | ssh ${ALLARGS[1]} "cat > ~/.ssh/id_ed25519"
 
   echo
   echo "Making last SSH connection"
-  #ssh -o PubkeyAuthentication=no -o PreferredAuthentications=password ${ALLARGS[1]} "chmod 600 ~/.ssh/id_ed25519"
   ssh ${ALLARGS[1]} "chmod 600 ~/.ssh/id_ed25519"
 
   echo
   echo "Copying public key to remote"
-  #scp -o PubkeyAuthentication=no -o PreferredAuthentications=password ~/.ssh/id_ed25519.pub ${ALLARGS[1]}:~/.ssh/id_ed25519.pub
   scp ~/.ssh/id_ed25519.pub ${ALLARGS[1]}:~/.ssh/id_ed25519.pub
 }
 
+make_command "nebula_hosts" "List all nebula hosts and their IP addresses"
+nebula_hosts(){
+  with_age_identity show_nebula_ip_allocation
+}
+
+_nebula_ips_from_certs(){
+  # Outputs "IP NAME" lines from decrypted nebula certificates
+  # Requires $AGE_IDENTITY to be set (via with_age_identity)
+  TMPFILE=$(mktemp)
+  trap "rm -f \"$TMPFILE\"" RETURN
+  for certfile in ./secrets/nebula-*.crt.age; do
+    [[ "$certfile" == *"nebula-ca.crt.age" ]] && continue
+    if age --decrypt -i "$AGE_IDENTITY" "$certfile" > "$TMPFILE" 2>/dev/null; then
+      INFO=$(nebula-cert print -json -path "$TMPFILE" 2>/dev/null)
+      NAME=$(echo "$INFO" | python3 -c "import sys,json; d=json.load(sys.stdin)[0]['details']; print(d['name'])" 2>/dev/null)
+      IP=$(echo "$INFO" | python3 -c "import sys,json; d=json.load(sys.stdin)[0]['details']; print(d.get('networks',d.get('ips',['']))[0])" 2>/dev/null)
+      if [[ -n "$NAME" && -n "$IP" ]]; then
+        echo "$IP $NAME"
+      fi
+    fi
+  done
+  rm -f "$TMPFILE"
+}
+
 next_free_nebula_ip(){
-  # Scan networking.nix files for used 192.168.100.x IPs, find the next free one
-  USED_IPS=$(grep -roh '192\.168\.100\.[0-9]\+' modules/HOSTS/*/networking.nix modules/services/networking/nebula.nix 2>/dev/null | grep -o '[0-9]\+$' | sort -n | uniq)
+  # Find next free nebula IP from decrypted certificates
+  USED_IPS=$(_nebula_ips_from_certs | grep -o '192\.168\.100\.[0-9]\+' | grep -o '[0-9]\+$' | sort -n | uniq)
   NEXT_IP=2
   while echo "$USED_IPS" | grep -qx "$NEXT_IP"; do
     NEXT_IP=$((NEXT_IP + 1))
@@ -214,14 +227,10 @@ next_free_nebula_ip(){
 }
 
 show_nebula_ip_allocation(){
-  # Show current IP allocation from networking.nix files
+  # Show current IP allocation from decrypted certificates
   echo "Current nebula IP allocation:"
-  for f in modules/HOSTS/*/networking.nix; do
-    HOST_DIR=$(basename "$(dirname "$f")")
-    IP=$(grep -o '192\.168\.100\.[0-9]\+' "$f" 2>/dev/null | head -1)
-    if [[ -n "$IP" ]]; then
-      printf "  %-20s %s\n" "$IP" "$HOST_DIR"
-    fi
+  _nebula_ips_from_certs | while read -r IP NAME; do
+    printf "  %-20s %s\n" "$IP" "$NAME"
   done | sort -t. -k4 -n
   echo
 }
@@ -287,7 +296,7 @@ _new_nebula_node_inner(){
   for certfile in ./secrets/nebula-*.crt.age; do
     [[ "$certfile" == *"nebula-ca.crt.age" ]] && continue
     if age --decrypt -i "$AGE_IDENTITY" "$certfile" > "$TMPFILE" 2>/dev/null; then
-      CERT_GROUPS=$(nebula-cert print -json -path "$TMPFILE" 2>/dev/null | python3 -c "import sys,json; g=json.load(sys.stdin).get('details',{}).get('groups',[]); print(','.join(g) if g else '')" 2>/dev/null)
+      CERT_GROUPS=$(nebula-cert print -json -path "$TMPFILE" 2>/dev/null | python3 -c "import sys,json; g=json.load(sys.stdin)[0]['details'].get('groups',[]); print(','.join(g) if g else '')" 2>/dev/null)
       if [[ -n "$CERT_GROUPS" ]]; then
         EXISTING_GROUPS="${EXISTING_GROUPS}${EXISTING_GROUPS:+,}${CERT_GROUPS}"
       fi
@@ -375,14 +384,6 @@ _new_nebula_node_inner(){
   # Add entries to secrets.nix before the closing brace
   sed -i "/^}$/i \  \"nebula-$NODE_NAME.crt.age\".publicKeys = users ++ systems;\n  \"nebula-$NODE_NAME.key.age\".publicKeys = users ++ systems;\n" ./secrets/secrets.nix
 
-#  echo "Rekeying secrets with agenix..."
-
-#  # Rekey secrets
-#  if ! (cd secrets && agenix --rekey); then
-#    echo "Error: Failed to rekey secrets"
-#    exit 1
-#  fi
-
   # Success message
   echo
   gum style --border normal --padding "1 2" --border-foreground 212 \
@@ -393,7 +394,7 @@ _new_nebula_node_inner(){
     "  • secrets/nebula-$NODE_NAME.crt.age" \
     "  • Updated secrets/secrets.nix" \
     "" \
-    "✓ Secrets rekeyed with agenix for all authorized systems" \
+    "Run './RUNME.sh rekey' to re-encrypt for all authorized systems" \
     "" \
     "Next steps:" \
     "  1. Add age.secrets configuration in hosts/$NODE_NAME/nebula.nix" \
