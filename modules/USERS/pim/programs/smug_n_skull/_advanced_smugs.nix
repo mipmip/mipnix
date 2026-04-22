@@ -50,7 +50,7 @@
           }
           {
             type = "horizontal";
-            commands = [ "nix run github:mipmip/nping --  harry hurry lavendel dapperehaan durer" ];
+            commands = [ "nix run github:mipmip/nping -- -v table -i 3 harry hurry lavendel dapperehaan durer" ];
           }
           {
             type = "horizontal";
