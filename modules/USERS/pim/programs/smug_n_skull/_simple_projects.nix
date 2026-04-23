@@ -36,6 +36,23 @@
       root = "~/";
     }
     {
+      name = "vibeCoding";
+      root = "~/cVibeCoding";
+      repos = [
+        { source = "mipmip/teejay"; }
+        { source = "speclib/specgetty"; }
+      ];
+    }
+    {
+      name = "devops";
+      root = "~/cDevOps";
+      repos = [
+        { source = "mipmip/RUNME.sh"; }
+        { source = "mipmip/rme"; }
+        { source = "mipmip/dirty-repo-scanner"; }
+      ];
+    }
+    {
       name = "nixdev";
       root = "~/cNixos";
       repos = [{ source = "mipmip/home-manager-option-search"; }];
