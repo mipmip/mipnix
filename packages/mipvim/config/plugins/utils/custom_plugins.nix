@@ -28,15 +28,15 @@
       };
     })
 
-    (pkgs.vimUtils.buildVimPlugin {
-      name = "age";
-      src = pkgs.fetchFromGitHub {
-        owner = "abhinandh-s";
-        repo = "age.nvim";
-        rev = "ie660248de1e4c91a760f510fc165c172a19cc1d5";
-        hash = "sha256-z6USTspCiWU6UEP9TyACvzlb4MGEadBKUfxN2vJyeV0=";
-      };
-    })
+    #    (pkgs.vimUtils.buildVimPlugin {
+    #      name = "age";
+    #      src = pkgs.fetchFromGitHub {
+    #        owner = "abhinandh-s";
+    #        repo = "age.nvim";
+    #        rev = "ie660248de1e4c91a760f510fc165c172a19cc1d5";
+    #        hash = "sha256-z6USTspCiWU6UEP9TyACvzlb4MGEadBKUfxN2vJyeV0=";
+    #      };
+    #    })
 
 
     (pkgs.vimUtils.buildVimPlugin {
