@@ -11,8 +11,8 @@ inputs,
     other_profiles = /home/pim/.aws/other_accounts.json;
 
     aws_accounts = []
-          #++ builtins.fromJSON (lib.readFile other_profiles)
-      ++ builtins.fromJSON (lib.readFile technative_profiles);
+        ++ builtins.fromJSON (lib.readFile other_profiles)
+        ++ builtins.fromJSON (lib.readFile technative_profiles);
 
     # TODO SET THESE VALS in agenix
     groups = {
