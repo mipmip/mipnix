@@ -20,7 +20,6 @@ inputs,
       pim-direnv
       pim-atuin
       pim-yazi
-      pim-awscli
       pim-nix
       pim-npm
       pim-wtf
