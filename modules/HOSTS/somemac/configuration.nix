@@ -1,7 +1,7 @@
 { inputs, self, ... }:
 
 let
-  hostname = "somemac";
+  hostname = "ng";
 in
 
 {
