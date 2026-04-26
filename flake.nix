@@ -15,6 +15,9 @@
 
     nixpkgs-inkscape13.url = "github:leiserfg/nixpkgs?ref=staging";
 
+    darwin.url = "github:LnL7/nix-darwin";
+    darwin.inputs.nixpkgs.follows = "nixpkgs";
+
     nixos-hardware.url = "github:nixos/nixos-hardware";
     nixos-hardware-t2.url = "github:nixos/nixos-hardware";
 
@@ -92,6 +95,7 @@
       systems = [
         "x86_64-linux"
         "aarch64-linux"
+        "x86_64-darwin"
       ];
 
       # Preserve templates

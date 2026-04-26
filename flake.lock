@@ -239,6 +239,26 @@
         "type": "github"
       }
     },
+    "darwin_2": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1775037210,
+        "narHash": "sha256-KM2WYj6EA7M/FVZVCl3rqWY+TFV5QzSyyGE2gQxeODU=",
+        "owner": "LnL7",
+        "repo": "nix-darwin",
+        "rev": "06648f4902343228ce2de79f291dd5a58ee12146",
+        "type": "github"
+      },
+      "original": {
+        "owner": "LnL7",
+        "repo": "nix-darwin",
+        "type": "github"
+      }
+    },
     "dirty-repo-scanner": {
       "inputs": {
         "nixpkgs": "nixpkgs_4"
@@ -1345,6 +1365,7 @@
         "agenix": "agenix",
         "aoe": "aoe",
         "bmc": "bmc",
+        "darwin": "darwin_2",
         "dirty-repo-scanner": "dirty-repo-scanner",
         "elephant": "elephant",
         "flake-parts": "flake-parts_2",
