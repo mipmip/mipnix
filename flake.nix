@@ -15,7 +15,7 @@
 
     nixpkgs-inkscape13.url = "github:leiserfg/nixpkgs?ref=staging";
 
-    darwin.url = "github:LnL7/nix-darwin";
+    darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     nixos-hardware.url = "github:nixos/nixos-hardware";
