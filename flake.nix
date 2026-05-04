@@ -65,8 +65,8 @@
     fred.url = "github:linden-project/fred";
     aoe.url = "github:njbrake/agent-of-empires";
 
-    noctalia.url = "github:noctalia-dev/noctalia-shell";
-    noctalia.inputs.nixpkgs.follows = "unstable";
+    #    noctalia.url = "github:noctalia-dev/noctalia-shell";
+    #    noctalia.inputs.nixpkgs.follows = "unstable";
 
     nixpkgs-pine64.url = "nixpkgs/dfd82985c273aac6eced03625f454b334daae2e8";
     mobile-nixos = {
@@ -142,6 +142,8 @@
             network
             battery
             tray
+            wireplumber
+            bluetooth
           ];
 
           mipbar-extraPackages = mipbar-astalPackages ++ [
@@ -152,6 +154,14 @@
         {
           packages.mipvim = nixvim'.makeNixvimWithModule nixvimModule;
           checks.mipvim = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
+
+          devShells.default = pkgs.mkShell {
+            buildInputs = [
+              (inputs.ags.packages.${system}.default.override {
+                extraPackages = mipbar-extraPackages;
+              })
+            ];
+          };
 
           packages.mipbar = pkgs-unstable.stdenv.mkDerivation {
             name = "mipbar";

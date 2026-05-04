@@ -3,12 +3,11 @@ import { Astal, Gtk, Gdk } from "ags/gtk4"
 import { execAsync } from "ags/process"
 import { createPoll } from "ags/time"
 import Workspaces from "./Workspaces"
-import Wifi from "./Wifi"
-import Battery from "./Battery"
 import Screenshare from "./Screenshare"
 import Tray from "./Tray"
 import SystemMonitor from "./SystemMonitor"
 import WindowTitle from "./WindowTitle"
+import QuickSettings from "./QuickSettings"
 
 export default function Bar(gdkmonitor: Gdk.Monitor) {
   const time = createPoll("", 60000, 'bash -c \'LC_TIME=nl_NL.UTF-8 date +"%a %-d %b, %H:%M"\'')
@@ -47,8 +46,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
           </menubutton>
           <Tray />
           <Screenshare />
-          <Wifi />
-          <Battery />
+          <QuickSettings />
         </box>
       </centerbox>
     </window>

@@ -1,7 +1,8 @@
 ---
 # mipbar-i8io
 title: integrate in ~/mipnix
-status: in-progress
+status: completed
+openspec-link: openspec/changes/archive/2026-05-04-mipnix-integration
 type: task
 priority: normal
 created_at: 2026-05-04T18:08:56Z
