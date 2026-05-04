@@ -15,3 +15,8 @@ url = "https://vaultwarden.notnix.com/"
 name = "Vaultwarden Hurry"
 assert_text = "Vaultwarden"
 
+# DURER
+[[targets]]
+url = "https://nuremberg.pimsnel.com/"
+name = "Durer"
+

@@ -1,11 +1,11 @@
 ---
 # mipbar-0g5a
 title: clicking on most right status icons quick settings
-status: draft
+status: completed
 type: task
 priority: normal
 created_at: 2026-05-04T15:51:05Z
-updated_at: 2026-05-04T17:30:39Z
+updated_at: 2026-05-04T20:16:45Z
 ---
 
 - volume mic
