@@ -24,6 +24,7 @@ inputs,
       pim-thunderbird
       pim-freedesktop
       pim-hyprland
+      pim-mipbar
       pim-hypr-longpress
       pim-fonts
 

@@ -21,6 +21,11 @@
     nixos-hardware.url = "github:nixos/nixos-hardware";
     nixos-hardware-t2.url = "github:nixos/nixos-hardware";
 
+    ags = {
+      url = "github:aylur/ags";
+      inputs.nixpkgs.follows = "unstable";
+    };
+
     walker = {
       url = "github:abenz1267/walker";
       inputs.elephant.follows = "elephant";
@@ -129,10 +134,48 @@
               mipColors = import ./lib/colors.nix;
             };
           };
+
+          mipbar-astalPackages = with inputs.ags.packages.${system}; [
+            io
+            astal4
+            hyprland
+            network
+            battery
+            tray
+          ];
+
+          mipbar-extraPackages = mipbar-astalPackages ++ [
+            pkgs-unstable.libadwaita
+            pkgs-unstable.libsoup_3
+          ];
         in
         {
           packages.mipvim = nixvim'.makeNixvimWithModule nixvimModule;
           checks.mipvim = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
+
+          packages.mipbar = pkgs-unstable.stdenv.mkDerivation {
+            name = "mipbar";
+            src = ./packages/mipbar;
+
+            nativeBuildInputs = with pkgs-unstable; [
+              wrapGAppsHook3
+              gobject-introspection
+              inputs.ags.packages.${system}.default
+            ];
+
+            buildInputs = mipbar-extraPackages ++ [ pkgs-unstable.gjs ];
+
+            installPhase = ''
+              runHook preInstall
+
+              mkdir -p $out/bin
+              mkdir -p $out/share
+              cp -r * $out/share
+              ags bundle app.ts $out/bin/mipbar -d "SRC='$out/share'"
+
+              runHook postInstall
+            '';
+          };
         };
     };
 }
