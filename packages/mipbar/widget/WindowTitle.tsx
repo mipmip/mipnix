@@ -19,7 +19,7 @@ export default function WindowTitle() {
             />
             <label
               class="WindowTitleLabel"
-              label={createBinding(client, "title")}
+              label={createBinding(client, "title")((t) => t || "")}
               ellipsize={Pango.EllipsizeMode.END}
               maxWidthChars={60}
             />
