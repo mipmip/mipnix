@@ -24,7 +24,7 @@ function ToggleRow() {
           <togglebutton
             class="Toggle"
             active={createBinding(w, "enabled")}
-            onToggled={(self) => { w.enabled = self.active }}
+            onClicked={() => { w.enabled = !w.enabled }}
           >
             <box orientation={Gtk.Orientation.VERTICAL}>
               <image iconName="network-wireless-symbolic" />
@@ -36,7 +36,7 @@ function ToggleRow() {
       <togglebutton
         class="Toggle"
         active={createBinding(bt, "isPowered")}
-        onToggled={() => {
+        onClicked={() => {
           const adapter = bt.adapter
           if (adapter) adapter.powered = !adapter.powered
         }}
@@ -49,7 +49,7 @@ function ToggleRow() {
       <togglebutton
         class="Toggle"
         active={airplaneOn}
-        onToggled={() => {
+        onClicked={() => {
           const newState = !airplaneOn.get()
           execAsync(newState ? "rfkill block all" : "rfkill unblock all")
             .then(() => setAirplaneOn(newState))
@@ -158,7 +158,7 @@ function ActionButtons() {
         onClicked={() => execAsync("systemctl suspend")}
       >
         <box orientation={Gtk.Orientation.VERTICAL}>
-          <image iconName="system-suspend-symbolic" />
+          <image iconName="weather-clear-night-symbolic" />
           <label label="Sleep" />
         </box>
       </button>
@@ -169,6 +169,33 @@ function ActionButtons() {
         <box orientation={Gtk.Orientation.VERTICAL}>
           <image iconName="applets-screenshooter-symbolic" />
           <label label="Screen" />
+        </box>
+      </button>
+      <button
+        class="ActionButton"
+        onClicked={() => execAsync("hyprctl dispatch exit")}
+      >
+        <box orientation={Gtk.Orientation.VERTICAL}>
+          <image iconName="system-log-out-symbolic" />
+          <label label="Logout" />
+        </box>
+      </button>
+      <button
+        class="ActionButton"
+        onClicked={() => execAsync("systemctl reboot")}
+      >
+        <box orientation={Gtk.Orientation.VERTICAL}>
+          <image iconName="system-reboot-symbolic" />
+          <label label="Restart" />
+        </box>
+      </button>
+      <button
+        class="ActionButton"
+        onClicked={() => execAsync("systemctl poweroff")}
+      >
+        <box orientation={Gtk.Orientation.VERTICAL}>
+          <image iconName="system-shutdown-symbolic" />
+          <label label="Shutdown" />
         </box>
       </button>
     </box>
