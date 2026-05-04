@@ -139,4 +139,112 @@ window.Bar {
       }
     }
   }
+
+  .QuickSettings {
+    .StatusIcon {
+      padding: 0 2px;
+    }
+  }
+}
+
+.QuickSettingsPanel {
+  padding: 12px;
+  min-width: 300px;
+
+  .ToggleRow {
+    margin-bottom: 8px;
+
+    .Toggle {
+      border-radius: 12px;
+      padding: 8px 4px;
+      margin: 0 4px;
+      background: #{"alpha(@theme_fg_color, 0.06)"};
+
+      &:checked {
+        background: #{"alpha(@accent_bg_color, 0.3)"};
+      }
+
+      image {
+        -gtk-icon-size: 20px;
+        margin-bottom: 4px;
+      }
+
+      label {
+        font-size: 0.8em;
+        font-weight: normal;
+      }
+    }
+  }
+
+  .VolumeSliders {
+    padding: 4px 0;
+
+    .VolumeRow {
+      padding: 4px 0;
+
+      image {
+        -gtk-icon-size: 16px;
+        margin-right: 8px;
+      }
+
+      slider {
+        min-height: 4px;
+      }
+    }
+  }
+
+  .StatusRow {
+    padding: 6px 0;
+
+    image {
+      -gtk-icon-size: 16px;
+      margin-right: 8px;
+    }
+
+    label {
+      font-weight: normal;
+      font-size: 0.9em;
+    }
+
+    .ActionSmall {
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.8em;
+      font-weight: normal;
+      background: #{"alpha(@theme_fg_color, 0.08)"};
+
+      &:hover {
+        background: #{"alpha(@theme_fg_color, 0.14)"};
+      }
+    }
+  }
+
+  .ActionButtons {
+    margin-top: 8px;
+
+    .ActionButton {
+      border-radius: 12px;
+      padding: 8px 4px;
+      margin: 0 4px;
+      background: #{"alpha(@theme_fg_color, 0.06)"};
+
+      &:hover {
+        background: #{"alpha(@theme_fg_color, 0.12)"};
+      }
+
+      image {
+        -gtk-icon-size: 20px;
+        margin-bottom: 4px;
+      }
+
+      label {
+        font-size: 0.8em;
+        font-weight: normal;
+      }
+    }
+  }
+
+  separator {
+    margin: 4px 0;
+  }
 }
