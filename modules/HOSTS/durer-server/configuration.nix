@@ -102,7 +102,7 @@ in
     systemd.services.ergochat = {
       after = [ "acme-nuremberg.pimsnel.com.service" ];
       requires = [ "acme-nuremberg.pimsnel.com.service" ];
-      serviceConfig.SupplementaryGroups = [ "acme" ];
+      serviceConfig.SupplementaryGroups = [ "nginx" ];
     };
 
     imports = with inputs.self.modules.nixos; [
