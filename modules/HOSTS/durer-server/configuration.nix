@@ -98,8 +98,12 @@ in
       };
     };
 
-    # Grant ergo (DynamicUser) access to ACME certs
-    systemd.services.ergochat.serviceConfig.SupplementaryGroups = [ "acme" ];
+    # Grant ergo (DynamicUser) access to ACME certs, start after cert issuance
+    systemd.services.ergochat = {
+      after = [ "acme-nuremberg.pimsnel.com.service" ];
+      requires = [ "acme-nuremberg.pimsnel.com.service" ];
+      serviceConfig.SupplementaryGroups = [ "acme" ];
+    };
 
     imports = with inputs.self.modules.nixos; [
       channel-default
