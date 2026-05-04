@@ -30,12 +30,7 @@ inputs,
       type = "symlink";
     };
 
-    home.file = {
-      ".config/ashell" = {
-        source = ./ashell;
-        recursive = true;
-      };
-    };
+    # ashell config removed — replaced by mipbar
 
     imports = [
       #inputs.elephant.homeManagerModules.default

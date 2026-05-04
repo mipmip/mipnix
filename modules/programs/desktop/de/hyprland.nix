@@ -58,7 +58,7 @@
       libinput
       wl-clipboard
 
-      ashell
+      #ashell  # replaced by mipbar
 
       swayidle
 
