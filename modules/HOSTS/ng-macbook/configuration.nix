@@ -6,7 +6,7 @@ in
 
 {
   flake.darwinConfigurations = {
-    somemac = inputs.darwin.lib.darwinSystem {
+    ng = inputs.darwin.lib.darwinSystem {
       system = "x86_64-darwin";
       modules = [
         {
@@ -19,7 +19,7 @@ in
     };
   };
 
-  flake.modules.darwin.somemac = { pkgs, ... }: {
+  flake.modules.darwin.ng = { pkgs, ... }: {
 
     environment.systemPackages = with pkgs; [
       git
