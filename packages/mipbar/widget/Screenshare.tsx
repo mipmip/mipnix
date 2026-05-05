@@ -93,7 +93,7 @@ export default function Screenshare() {
           }
         }}
       >
-        <image iconName="camera-web-symbolic" />
+        <image iconName="video-display-symbolic" />
       </button>
     </box>
   )
