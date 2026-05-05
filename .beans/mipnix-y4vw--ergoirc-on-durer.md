@@ -1,12 +1,12 @@
 ---
 # mipnix-y4vw
 title: ergoirc on durer
-status: in-progress
-openspec-link: openspec/changes/ergo-irc-on-durer
+status: completed
+openspec-link: openspec/changes/archive/2026-05-05-ergo-irc-on-durer
 type: task
 priority: normal
 created_at: 2026-05-04T20:20:26Z
-updated_at: 2026-05-04T20:45:00Z
+updated_at: 2026-05-05T00:15:00Z
 ---
 
 I want ergo.chat as irc server on durer
