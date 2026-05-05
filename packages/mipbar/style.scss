@@ -89,6 +89,14 @@ window.Bar {
       padding: 0;
       margin: 0;
     }
+
+    &.Screenshare image {
+      -gtk-icon-size: 12px;
+    }
+
+    &.Camera image {
+      -gtk-icon-size: 16px;
+    }
   }
 
   .SystemMonitorIcon {

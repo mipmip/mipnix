@@ -4,6 +4,7 @@ import { execAsync } from "ags/process"
 import { createPoll } from "ags/time"
 import Workspaces from "./Workspaces"
 import Screenshare from "./Screenshare"
+import Camera from "./Camera"
 import Tray from "./Tray"
 import SystemMonitor from "./SystemMonitor"
 import WindowTitle from "./WindowTitle"
@@ -44,6 +45,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
               <Gtk.Calendar />
             </popover>
           </menubutton>
+          <Camera />
           <Screenshare />
           <SystemMonitor />
           <QuickSettings />

@@ -25,12 +25,12 @@ THEN the screenshare indicator SHALL become hidden
 
 ### Requirement: screenshare-icon
 
-The screenshare indicator SHALL display a distinct icon that clearly communicates screen sharing is active.
+The screenshare indicator SHALL display a distinct icon that clearly communicates screen sharing is active. The icon SHALL be `video-display-symbolic` — not a camera icon.
 
 #### Scenario: indicator appearance
 
 WHEN screenshare is active
-THEN the indicator SHALL display a recognizable screenshare/camera icon
+THEN the indicator SHALL display `video-display-symbolic`
 
 ### Requirement: screenshare-process-tooltip
 The screenshare indicator SHALL display a tooltip on hover showing the name of the application that is sharing the screen.
