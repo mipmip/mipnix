@@ -37,15 +37,15 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
           <WindowTitle />
         </box>
         <box $type="end" halign={Gtk.Align.END}>
-          <SystemMonitor />
+          <Tray />
           <menubutton>
             <label label={time} />
             <popover>
               <Gtk.Calendar />
             </popover>
           </menubutton>
-          <Tray />
           <Screenshare />
+          <SystemMonitor />
           <QuickSettings />
         </box>
       </centerbox>

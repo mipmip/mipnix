@@ -30,7 +30,6 @@ in
     security.acme = {
       acceptTerms = true;
       defaults.email = "pim@pimsnel.com";
-      certs."nuremberg.pimsnel.com".reloadServices = [ "ergochat.service" ];
     };
 
     # --- Nginx (ACME webserver + health check) ---
@@ -68,58 +67,6 @@ in
       };
     };
 
-    # --- Ergo IRC ---
-    services.ergochat = {
-      enable = true;
-      settings = {
-        network.name = "pimsnel";
-
-        server = {
-          name = "nuremberg.pimsnel.com";
-          listeners = {
-            ":6697" = {
-              tls = {
-                cert = "/var/lib/acme/nuremberg.pimsnel.com/fullchain.pem";
-                key = "/var/lib/acme/nuremberg.pimsnel.com/key.pem";
-              };
-            };
-          };
-        };
-
-        accounts = {
-          authentication-enabled = true;
-          registration.enabled = false;
-          require-sasl.enabled = true;
-          multiclient = {
-            enabled = true;
-            always-on = "opt-out";
-          };
-        };
-
-        opers = {
-          pim = {
-            class = "server-admin";
-            password = "$2a$04$rX9dQcdIqWMioiB807Q.7ONcguneuF.2zF76QTllJuWa3DTA1Y7iK";
-          };
-        };
-
-        oper-classes = {
-          server-admin = {
-            title = "Server Admin";
-            capabilities = [
-              "oper:local_kill"
-              "oper:local_ban"
-              "oper:local_unban"
-              "chanreg"
-              "accreg"
-              "rehash"
-              "samode"
-            ];
-          };
-        };
-      };
-    };
-
     # --- Tuwunel Matrix ---
     services.matrix-tuwunel = {
       enable = true;
@@ -127,17 +74,11 @@ in
         server_name = "nuremberg.pimsnel.com";
         port = [ 6167 ];
         allow_registration = false;
+        #registration_token = "tmpregister2026";
         allow_encryption = true;
         allow_federation = false;
         trusted_servers = [];
       };
-    };
-
-    # Grant ergo (DynamicUser) access to ACME certs, start after cert issuance
-    systemd.services.ergochat = {
-      after = [ "acme-nuremberg.pimsnel.com.service" ];
-      requires = [ "acme-nuremberg.pimsnel.com.service" ];
-      serviceConfig.SupplementaryGroups = [ "nginx" ];
     };
 
     imports = with inputs.self.modules.nixos; [

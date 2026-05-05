@@ -83,6 +83,12 @@ window.Bar {
     label {
       margin-left: 2px;
     }
+
+    button {
+      all: unset;
+      padding: 0;
+      margin: 0;
+    }
   }
 
   .SystemMonitorIcon {
