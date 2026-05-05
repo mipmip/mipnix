@@ -89,7 +89,7 @@ in
         accounts = {
           authentication-enabled = true;
           registration.enabled = false;
-          require-sasl.enabled = false;
+          require-sasl.enabled = true;
           multiclient = {
             enabled = true;
             always-on = "opt-out";
