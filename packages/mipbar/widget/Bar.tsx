@@ -17,7 +17,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
   return (
     <window
       visible
-      name="bar"
+      name={`bar-${gdkmonitor.get_connector() || "default"}`}
       class="Bar"
       gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
