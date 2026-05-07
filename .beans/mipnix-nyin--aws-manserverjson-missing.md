@@ -1,11 +1,11 @@
 ---
 # mipnix-nyin
 title: aws-manserver.json missing
-status: draft
+status: completed
 type: task
 priority: normal
 created_at: 2026-04-21T18:49:35Z
-updated_at: 2026-04-22T08:02:18Z
+updated_at: 2026-05-07T11:00:28Z
 ---
 
 new servers up_home
