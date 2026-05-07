@@ -1,30 +1,20 @@
 # Workspace Navigation
 
-## ADDED Requirements
+### Requirement: workspace-visibility
 
-### Requirement: show-occupied-workspaces
+The workspace indicator SHALL always display workspaces 1-9 and 0, regardless of whether they contain windows.
 
-The bar SHALL display a button for each hyprland workspace that has at least one client (window). Empty workspaces SHALL NOT be shown. The workspace list SHALL react to client-level changes (open, close, move) in addition to workspace-level changes (added, removed).
+#### Scenario: all workspaces visible
+- **WHEN** mipbar starts
+- **THEN** workspaces 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 SHALL all be visible in this order
 
-#### Scenario: workspace with windows is visible
+#### Scenario: empty workspace appearance
+- **WHEN** a workspace has no windows
+- **THEN** it SHALL display the workspace number only (no app icons)
 
-WHEN a workspace has one or more clients
-THEN the bar SHALL display a button for that workspace
-
-#### Scenario: empty workspace is hidden
-
-WHEN a workspace has zero clients
-THEN the bar SHALL NOT display a button for that workspace
-
-#### Scenario: workspace becomes empty
-
-WHEN the last client is removed from a workspace
-THEN the button for that workspace SHALL be removed from the bar
-
-#### Scenario: window opens in empty workspace
-
-WHEN a client is added to a previously empty workspace
-THEN a button for that workspace SHALL appear in the bar
+#### Scenario: occupied workspace appearance
+- **WHEN** a workspace has windows
+- **THEN** it SHALL display the workspace number and app icons for each window
 
 #### Scenario: client added to existing workspace triggers update
 
@@ -45,6 +35,35 @@ Workspaces SHALL be displayed grouped by monitor. Each monitor group SHALL be vi
 WHEN workspaces exist on both DP-3 and eDP-1
 THEN the bar SHALL show workspaces grouped by their monitor assignment
 AND groups SHALL be visually distinguishable
+
+### Requirement: workspace-monitor-groups
+The workspace indicator SHALL visually separate external monitor workspaces (1-7) from laptop workspaces (8, 9, 0).
+
+#### Scenario: group separator
+- **WHEN** all workspaces are displayed
+- **THEN** there SHALL be a visual separator between workspace 7 and workspace 8
+
+### Requirement: laptop-workspace-accent
+Laptop workspaces (8, 9, 0) SHALL have a distinct accent color to differentiate them from external monitor workspaces.
+
+#### Scenario: laptop accent in dark mode
+- **WHEN** dark mode is active
+- **THEN** laptop workspaces SHALL have a cool-toned tinted background
+
+#### Scenario: laptop accent in light mode
+- **WHEN** light mode is active
+- **THEN** laptop workspaces SHALL have a cool-toned tinted background with appropriate contrast
+
+#### Scenario: accent persists when laptop-only
+- **WHEN** only the laptop display is connected
+- **THEN** laptop workspaces (8, 9, 0) SHALL still show the accent color
+
+### Requirement: light-mode-workspace-background
+The workspace container SHALL have visible background contrast in light mode, matching the dark mode behavior.
+
+#### Scenario: light mode background
+- **WHEN** light mode is active
+- **THEN** the workspace container background SHALL be visually distinct from the bar background
 
 ### Requirement: show-on-all-bars
 

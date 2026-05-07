@@ -14,6 +14,12 @@ window.Bar .WorkspaceButton:active,
 window.Bar .WorkspaceButton.focused {
   background: rgba(255, 255, 255, 0.2);
 }
+window.Bar .WorkspaceButton.laptop {
+  background: rgba(100, 140, 255, 0.12);
+}
+window.Bar .WorkspaceButton.laptop.focused {
+  background: rgba(100, 140, 255, 0.28);
+}
 window.Bar .StatusIcon.Screenshare {
   color: #ff4444;
 }
@@ -37,6 +43,15 @@ window.Bar button:active,
 window.Bar menubutton > button:active,
 window.Bar .WorkspaceButton.focused {
   background: rgba(0, 0, 0, 0.25);
+}
+window.Bar .Workspaces {
+  background: rgba(0, 0, 0, 0.06);
+}
+window.Bar .WorkspaceButton.laptop {
+  background: rgba(60, 100, 220, 0.10);
+}
+window.Bar .WorkspaceButton.laptop.focused {
+  background: rgba(60, 100, 220, 0.25);
 }
 window.Bar .StatusIcon.Screenshare {
   color: #cc0000;
