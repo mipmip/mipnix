@@ -3,6 +3,7 @@
     environment.systemPackages = with pkgs; [
       nebula
       age
+      git
     ];
   };
 }

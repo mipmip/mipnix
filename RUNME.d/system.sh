@@ -19,6 +19,16 @@ up_home(){
     fi
   fi
 
+  mkdir -p ~/.aws
+  chmod 700 ~/.aws
+  if ! [[ -f ~/.aws/other_accounts.json ]]; then
+    echo "[]" > ~/.aws/other_accounts.json
+  fi
+  if ! [[ -f ~/.aws/managed_service_accounts.json ]]; then
+    echo "[]" > ~/.aws/managed_service_accounts.json
+  fi
+
+
   home-manager switch --impure --flake .\#$USER@$(hostname) -b backup-$(date --iso-8601)
 
   # Only sync if home-manager succeeded
@@ -29,7 +39,11 @@ up_home(){
     echo "home-manager switch failed, skipping git sync"
     exit 1
   fi
-  tmux source-file ~/.config/tmux/tmux.conf
+
+  if command -v tmux >/dev/null 2>&1
+  then
+    tmux source-file ~/.config/tmux/tmux.conf
+  fi
 
 }
 

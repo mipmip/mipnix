@@ -12,6 +12,11 @@ in
       inherit hostname;
       system = "aarch64-linux";
       server = true;
+      imports = with inputs.self.modules.homeManager; [
+        role-pim-cli-minimal
+        role-pim-cli-full
+      ];
+
     };
   };
 
@@ -27,23 +32,13 @@ in
 
     imports = with inputs.self.modules.nixos; [
 
+      channel-default
+
       system-default
-      system-locale
+
       role-nebula-node
 
-      hm-nixos
-
-      nix-cli
-      nix-age
-
-      users-core
-
-      system-trusted-agenix
-
-      tui-security
-      tui-tmux
-
-      editors-vim
+      system-trusted-pim
 
       networking-nebula
 
