@@ -35,6 +35,8 @@ in
       system-trusted-pim
       services-samba
       role-nebula-node
+
+      desktop-virt-virtualization # for distrobox
     ];
 
     boot.loader.systemd-boot.enable = true;
