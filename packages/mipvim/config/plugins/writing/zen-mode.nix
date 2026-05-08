@@ -43,6 +43,7 @@
       on_close = ''
                 function(win)
                    vim.cmd.colorscheme('gruvbox')
+                   vim.o.background = 'dark'
                    vim.opt.relativenumber = true
                    vim.opt.number = true
         --           require('lualine').hide({
