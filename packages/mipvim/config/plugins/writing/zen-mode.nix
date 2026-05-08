@@ -32,7 +32,6 @@
                    local result = handle:read("*a")
                    handle:close()
                    if result:find("prefer%-dark") then
-                     vim.cmd.colorscheme('gruvbox')
                      vim.o.background = 'dark'
                    else
                      vim.cmd.colorscheme('whitewriter')
