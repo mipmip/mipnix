@@ -28,15 +28,22 @@
       };
       on_open = ''
                 function(win)
-                   vim.cmd.colorscheme('whitewriter') 
+                   local handle = io.popen("gsettings get org.gnome.desktop.interface color-scheme")
+                   local result = handle:read("*a")
+                   handle:close()
+                   if result:find("prefer%-dark") then
+                     vim.cmd.colorscheme('gruvbox')
+                     vim.o.background = 'dark'
+                   else
+                     vim.cmd.colorscheme('whitewriter')
+                   end
                    vim.opt.relativenumber = false
                    vim.opt.number = false
-        --           require('lualine').hide()
                 end
       '';
       on_close = ''
                 function(win)
-                   vim.cmd.colorscheme('gruvbox-baby') 
+                   vim.cmd.colorscheme('gruvbox')
                    vim.opt.relativenumber = true
                    vim.opt.number = true
         --           require('lualine').hide({
