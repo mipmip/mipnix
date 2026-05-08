@@ -29,6 +29,14 @@ inputs,
 
         set fish_greeting # Disable greeting
 
+        function bmc
+          if test "$argv[1]" = "profsel"
+            eval (command bmc profsel $argv)
+          else
+            command bmc $argv
+          end
+        end
+
         set -l nix_shell_info (
           if test -n "$IN_NIX_SHELL"
             echo -n "<nix-shell> "
