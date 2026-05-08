@@ -157,13 +157,13 @@ inputs,
 
         function tfbackend_prompt_info
           if test -f .terraform/tfbackend.state
-            echo -n ":"(cat .terraform/tfbackend.state)
+            echo -n "  "(cat .terraform/tfbackend.state)
           end
         end
 
         function aws_prompt_info
           if test -n "$AWS_PROFILE"
-            echo -n "<aws:$AWS_PROFILE>"
+            echo -n "<󰸏 $AWS_PROFILE>"
           end
         end
 
