@@ -155,6 +155,24 @@ inputs,
             (set_color normal)
         end
 
+        function tfbackend_prompt_info
+          if test -f .terraform/tfbackend.state
+            echo -n ":"(cat .terraform/tfbackend.state)
+          end
+        end
+
+        function aws_prompt_info
+          if test -n "$AWS_PROFILE"
+            echo -n "<aws:$AWS_PROFILE>"
+          end
+        end
+
+        function fish_right_prompt
+          set -l aws (aws_prompt_info)
+          set -l tf (tfbackend_prompt_info)
+          echo -s (set_color yellow)$aws$tf(set_color normal)
+        end
+
         bass source /tmp/openai-api-key
         bass source /tmp/bedrockpim-api-keys-env
         bass source /tmp/bedrock-keys-for-avante-env
