@@ -167,20 +167,27 @@ inputs,
           end
         end
 
-        function fish_right_prompt
-          set -l aws (aws_prompt_info)
-          set -l tf (tfbackend_prompt_info)
-          echo -s (set_color yellow)$aws$tf(set_color normal)
-        end
-
         bass source /tmp/openai-api-key
         bass source /tmp/bedrockpim-api-keys-env
         bass source /tmp/bedrock-keys-for-avante-env
 
         set -gx EDITOR nvim
 
-
         #bass export PATH=~/.npm-packages/bin:$PATH
+
+        # Right prompt — must be defined last to avoid plugin overrides
+        function fish_right_prompt
+          set -l parts
+          if test -n "$AWS_PROFILE"
+            set -a parts "<aws:$AWS_PROFILE>"
+          end
+          if test -f .terraform/tfbackend.state
+            set -a parts ":"(cat .terraform/tfbackend.state)
+          end
+          if test (count $parts) -gt 0
+            echo -s (set_color yellow)(string join "" $parts)(set_color normal)
+          end
+        end
 
       '';
 
