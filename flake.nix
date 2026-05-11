@@ -186,6 +186,11 @@
               runHook postInstall
             '';
           };
+
+          packages.pimsnel-website = pkgs.runCommand "pimsnel-website" {} ''
+            mkdir -p $out
+            cp -r ${./packages/pimsnel-website}/* $out/
+          '';
         };
     };
 }

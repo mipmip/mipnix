@@ -128,4 +128,5 @@ in
   "nebula-durer.crt.age".publicKeys = users ++ systems;
   "nebula-durer.key.age".publicKeys = users ++ systems;
 
+  "personal-data-server.env.age".publicKeys = [pim durer];
 }
