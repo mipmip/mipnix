@@ -103,11 +103,16 @@ const brightnessAvailable = createPoll(false, 1000,
   ["bash", "-c", "brightnessctl -m 2>/dev/null || true"],
   (out) => out.trim().length > 0)
 
-const brightnessFraction = createPoll(0, 1000,
+let _dragTimeout: number | null = null
+const [brightness, setBrightness] = createState(0)
+
+createPoll(0, 1000,
   ["bash", "-c", "brightnessctl -m 2>/dev/null | head -1 | cut -d, -f4"],
   (out) => {
     const val = parseInt(out)
-    return isNaN(val) ? 0 : val / 100
+    const frac = isNaN(val) ? 0 : val / 100
+    if (!_dragTimeout) setBrightness(frac)
+    return frac
   })
 
 function BrightnessSlider() {
@@ -117,10 +122,13 @@ function BrightnessSlider() {
         <image iconName="display-brightness-symbolic" />
         <slider
           hexpand
-          value={brightnessFraction}
+          value={brightness}
           onChangeValue={(self) => {
+            if (_dragTimeout) clearTimeout(_dragTimeout)
+            _dragTimeout = setTimeout(() => { _dragTimeout = null }, 1500) as unknown as number
             const pct = Math.round(self.value * 100)
-            execAsync(`brightnessctl -e4 -n2 set ${pct}%`).catch(() => {})
+            setBrightness(self.value)
+            execAsync(`brightnessctl set ${pct}% -n1`).catch(() => {})
           }}
         />
       </box>
