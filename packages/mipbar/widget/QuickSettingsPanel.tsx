@@ -2,6 +2,7 @@ import { Gtk } from "ags/gtk4"
 import { createBinding, With } from "ags"
 import { execAsync } from "ags/process"
 import { createState } from "ags"
+import { createPoll } from "ags/time"
 import AstalNetwork from "gi://AstalNetwork"
 import AstalWp from "gi://AstalWp"
 import AstalBluetooth from "gi://AstalBluetooth"
@@ -94,6 +95,35 @@ function VolumeSliders() {
           </box>
         )}
       </With>
+    </box>
+  )
+}
+
+const brightnessAvailable = createPoll(false, 1000,
+  ["bash", "-c", "brightnessctl -m 2>/dev/null || true"],
+  (out) => out.trim().length > 0)
+
+const brightnessFraction = createPoll(0, 1000,
+  ["bash", "-c", "brightnessctl -m 2>/dev/null | head -1 | cut -d, -f4"],
+  (out) => {
+    const val = parseInt(out)
+    return isNaN(val) ? 0 : val / 100
+  })
+
+function BrightnessSlider() {
+  return (
+    <box visible={brightnessAvailable} orientation={Gtk.Orientation.VERTICAL} class="BrightnessSlider">
+      <box class="VolumeRow">
+        <image iconName="display-brightness-symbolic" />
+        <slider
+          hexpand
+          value={brightnessFraction}
+          onChangeValue={(self) => {
+            const pct = Math.round(self.value * 100)
+            execAsync(`brightnessctl -e4 -n2 set ${pct}%`).catch(() => {})
+          }}
+        />
+      </box>
     </box>
   )
 }
@@ -208,6 +238,8 @@ export default function QuickSettingsPanel() {
       <ToggleRow />
       <Gtk.Separator />
       <VolumeSliders />
+      <Gtk.Separator />
+      <BrightnessSlider />
       <Gtk.Separator />
       <WifiStatus />
       <BluetoothStatus />
