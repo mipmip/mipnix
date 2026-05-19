@@ -23,6 +23,18 @@ in
 
   };
 
+  flake.homeConfigurations = {
+
+    "pim@lavendel" = self.lib.makeHomeConf {
+      inherit hostname;
+      imports = with inputs.self.modules.homeManager; [
+        role-pim-cli-full
+        role-pim-cli-minimal
+      ];
+
+    };
+  };
+
   flake.modules.nixos.lavendel = { config, pkgs, ... } : {
 
     services.displayManager.gdm.enable = true;
