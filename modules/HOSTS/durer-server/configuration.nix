@@ -109,8 +109,8 @@ in
       settings.global = {
         server_name = "nuremberg.pimsnel.com";
         port = [ 6167 ];
-        allow_registration = true;
-        registration_token = "tmpregister2026";
+        allow_registration = false;
+        #registration_token = "tmpregister2026";
         allow_encryption = true;
         allow_federation = false;
         trusted_servers = [];
