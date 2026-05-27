@@ -8,6 +8,7 @@ inputs,
     home.packages = [
       inputs.self.packages."${pkgs.stdenv.hostPlatform.system}".mipbar
       pkgs.brightnessctl
+      pkgs.socat
     ];
 
     programs.hm-ricing-mode.apps.mipbar = {
