@@ -74,7 +74,7 @@ in
     users.groups.openclaw = {};
 
     # Install openclaw via npm on first boot, then run gateway
-    environment.systemPackages = with pkgs; [ nodejs_22 ];
+    environment.systemPackages = with pkgs; [ nodejs_22 bash git ];
 
     systemd.services.openclaw-install = {
       description = "Install OpenClaw via npm";
@@ -87,7 +87,7 @@ in
         WorkingDirectory = "/var/lib/openclaw";
         Environment = [
           "HOME=/var/lib/openclaw"
-          "PATH=${pkgs.nodejs_22}/bin:${pkgs.git}/bin:${pkgs.coreutils}/bin"
+          "PATH=${pkgs.nodejs_22}/bin:${pkgs.bash}/bin:${pkgs.git}/bin:${pkgs.coreutils}/bin:/run/current-system/sw/bin"
           "npm_config_prefix=/var/lib/openclaw/.npm-global"
         ];
         ExecStart = "${pkgs.bash}/bin/bash -c 'test -x /var/lib/openclaw/.npm-global/bin/openclaw || ${pkgs.nodejs_22}/bin/npm install -g openclaw'";
