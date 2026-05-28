@@ -53,7 +53,11 @@ in
     users.groups.openclaw = {};
 
     # Install openclaw via npm on first boot, then run gateway
-    environment.systemPackages = with pkgs; [ nodejs_22 bash git ];
+    environment.systemPackages = with pkgs; [
+      nodejs_22 bash git
+      zip unzip curl wget
+      coreutils findutils gnugrep gnused
+    ];
 
     systemd.services.openclaw-install = {
       description = "Install OpenClaw via npm";
