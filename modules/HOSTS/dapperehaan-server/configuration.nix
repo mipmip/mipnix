@@ -56,10 +56,17 @@ in
     # microvm host networking for clawone guest
     boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
 
-    networking.nat = {
-      enable = true;
-      externalInterface = "enp0s10";
-      internalInterfaces = [ "vm-clawone" ];
+    networking.nat.enable = false;
+    systemd.services.microvm-nat = {
+      description = "NAT for microvm guests";
+      after = [ "network.target" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = "${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -o enp0s10 -s 10.0.100.0/24 -j MASQUERADE";
+        ExecStop = "${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -o enp0s10 -s 10.0.100.0/24 -j MASQUERADE";
+      };
     };
 
     systemd.network.enable = true;
