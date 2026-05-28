@@ -8,6 +8,11 @@ in
   flake.modules.nixos.clawone = { config, pkgs, lib, ... }: {
     system.stateVersion = "25.11";
 
+    imports = [
+      inputs.agenix.nixosModules.default
+      inputs.nix-openclaw.nixosModules.openclaw-gateway
+    ];
+
     microvm = {
       hypervisor = "qemu";
       vcpu = 2;
@@ -31,6 +36,35 @@ in
         mountPoint = "/nix/.ro-store";
         proto = "virtiofs";
       }];
+    };
+
+    # Agenix secrets
+    age.secrets.matrix-openclaw-password = {
+      file = ../../../../secrets/matrix-openclaw-password.age;
+      owner = "openclaw";
+      group = "openclaw";
+      mode = "400";
+    };
+
+    # OpenClaw workspace documents
+    environment.etc."openclaw/workspace/AGENTS.md".source = ./documents/AGENTS.md;
+    environment.etc."openclaw/workspace/SOUL.md".source = ./documents/SOUL.md;
+    environment.etc."openclaw/workspace/TOOLS.md".source = ./documents/TOOLS.md;
+
+    # OpenClaw gateway
+    services.openclaw-gateway = {
+      enable = true;
+      config = {
+        gateway.mode = "local";
+        defaults.model.primary = "openai/gpt-4.1";
+        agents.defaults.workspace = "/etc/openclaw/workspace";
+        channels.matrix = {
+          homeserverUrl = "https://nuremberg.pimnsnel.com";
+          userId = "@openclaw1:nuremberg.pimnsnel.com";
+          passwordFile = config.age.secrets.matrix-openclaw-password.path;
+          autoJoin = true;
+        };
+      };
     };
 
     services.openssh = {
