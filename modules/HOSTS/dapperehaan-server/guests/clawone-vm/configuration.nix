@@ -40,7 +40,7 @@ in
 
     # Agenix secrets
     age.secrets.matrix-openclaw-password = {
-      file = ../../../../secrets/matrix-openclaw-password.age;
+      file = ../../../../../secrets/matrix-openclaw-password.age;
       owner = "openclaw";
       group = "openclaw";
       mode = "400";
