@@ -54,9 +54,37 @@ in
 
     # Install openclaw via npm on first boot, then run gateway
     environment.systemPackages = with pkgs; [
+      # Runtime
       nodejs_22 bash git
-      zip unzip curl wget
-      coreutils findutils gnugrep gnused
+
+      # Core utils
+      coreutils findutils gnugrep gnused gawk
+      diffutils patch less file which tree
+      procps htop
+
+      # Network
+      curl wget jq
+
+      # Archives
+      zip unzip gnutar gzip bzip2 xz zstd p7zip
+
+      # Text & documents
+      pandoc poppler_utils    # PDF tools (pdftotext, pdfinfo)
+      ghostscript             # PDF/PS processing
+      imagemagick             # Image conversion
+      csvkit                  # CSV processing
+      libxml2                 # xmllint
+      html-tidy               # HTML processing
+      dos2unix                # Line ending conversion
+
+      # Data & formats
+      yq-go                   # YAML/TOML processing
+      sqlite                  # SQLite databases
+      miller                  # CSV/JSON/tabular data
+
+      # Dev tools
+      ripgrep fd bat
+      python3
     ];
 
     systemd.services.openclaw-install = {
