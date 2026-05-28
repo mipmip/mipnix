@@ -49,7 +49,7 @@ The guest SHALL have outbound network connectivity via a TAP interface with NAT 
 - **THEN** the request SHALL receive an HTTP response (not a connection error)
 
 #### Scenario: Outbound Matrix connectivity
-- **WHEN** `curl https://nuremberg.pimnsnel.com` is run inside the guest
+- **WHEN** `curl https://nuremberg.pimsnel.com` is run inside the guest
 - **THEN** the request SHALL receive an HTTP response
 
 ### Requirement: Guest has SSH access from host
