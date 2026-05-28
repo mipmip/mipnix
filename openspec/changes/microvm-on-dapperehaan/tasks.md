@@ -22,7 +22,7 @@
 
 - [x] 4.1 Verify clawone module is discovered by import-tree and evaluates via dapperehaan's microvm.vms
 - [x] 4.2 Build dapperehaan config (includes clawone guest): `nix build .#nixosConfigurations.dapperehaan.config.system.build.toplevel`
-- [ ] 4.3 Deploy to dapperehaan with `nixos-rebuild switch`
-- [ ] 4.4 Verify `microvm@clawone.service` is running on the host
-- [ ] 4.5 SSH from host to guest (`ssh pim@10.0.100.2`)
-- [ ] 4.6 From inside the guest, verify outbound HTTPS: `curl -s https://nuremberg.pimnsnel.com` and `curl -s https://api.openai.com`
+- [x] 4.3 Deploy to dapperehaan with `nixos-rebuild switch`
+- [x] 4.4 Verify `microvm@clawone.service` is running on the host
+- [x] 4.5 SSH from host to guest (`ssh pim@10.0.100.2`)
+- [x] 4.6 From inside the guest, verify outbound HTTPS: `curl -s https://nuremberg.pimnsnel.com` and `curl -s https://api.openai.com`
