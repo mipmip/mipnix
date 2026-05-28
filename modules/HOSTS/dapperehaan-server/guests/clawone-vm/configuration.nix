@@ -38,6 +38,8 @@ in
       settings.PermitRootLogin = "no";
     };
 
+    security.sudo.wheelNeedsPassword = false;
+
     users.users.pim = {
       isNormalUser = true;
       extraGroups = [ "wheel" ];
