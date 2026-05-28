@@ -80,6 +80,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    microvm.url = "github:astro/microvm.nix";
+    microvm.inputs.nixpkgs.follows = "nixpkgs";
+
     import-tree.url = "github:vic/import-tree";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
