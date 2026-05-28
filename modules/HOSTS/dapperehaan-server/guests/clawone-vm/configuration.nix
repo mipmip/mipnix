@@ -69,7 +69,7 @@ in
       zip unzip gnutar gzip bzip2 xz zstd p7zip
 
       # Text & documents
-      pandoc poppler_utils    # PDF tools (pdftotext, pdfinfo)
+      pandoc poppler-utils    # PDF tools (pdftotext, pdfinfo)
       ghostscript             # PDF/PS processing
       imagemagick             # Image conversion
       csvkit                  # CSV processing
