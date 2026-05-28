@@ -90,7 +90,7 @@ in
           "PATH=${pkgs.nodejs_22}/bin:${pkgs.git}/bin:${pkgs.coreutils}/bin"
           "npm_config_prefix=/var/lib/openclaw/.npm-global"
         ];
-        ExecStart = "${pkgs.bash}/bin/bash -c 'test -x /var/lib/openclaw/.npm-global/bin/openclaw || ${pkgs.nodejs_22}/bin/npm install -g @anthropic-ai/openclaw'";
+        ExecStart = "${pkgs.bash}/bin/bash -c 'test -x /var/lib/openclaw/.npm-global/bin/openclaw || ${pkgs.nodejs_22}/bin/npm install -g openclaw'";
       };
     };
 
