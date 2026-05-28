@@ -37,31 +37,10 @@ in
       }];
     };
 
-    # Agenix secrets
-    age.secrets.matrix-openclaw-password = {
-      file = ../../../../../secrets/matrix-openclaw-password.age;
-      owner = "openclaw";
-      group = "openclaw";
-      mode = "400";
-    };
-
     # OpenClaw workspace documents
     environment.etc."openclaw/workspace/AGENTS.md".source = ./documents/AGENTS.md;
     environment.etc."openclaw/workspace/SOUL.md".source = ./documents/SOUL.md;
     environment.etc."openclaw/workspace/TOOLS.md".source = ./documents/TOOLS.md;
-
-    # OpenClaw config
-    environment.etc."openclaw/openclaw.json".text = builtins.toJSON {
-      gateway.mode = "local";
-      defaults.model.primary = "openai/gpt-4.1";
-      agents.defaults.workspace = "/etc/openclaw/workspace";
-      channels.matrix = {
-        homeserverUrl = "https://nuremberg.pimnsnel.com";
-        userId = "@openclaw1:nuremberg.pimnsnel.com";
-        passwordFile = "/run/agenix/matrix-openclaw-password";
-        autoJoin = true;
-      };
-    };
 
     # System user for openclaw
     users.users.openclaw = {
@@ -108,9 +87,9 @@ in
         RestartSec = 5;
         Environment = [
           "HOME=/var/lib/openclaw"
-          "OPENCLAW_CONFIG_PATH=/etc/openclaw/openclaw.json"
+          "OPENCLAW_CONFIG_PATH=/var/lib/openclaw/openclaw.json"
           "OPENCLAW_STATE_DIR=/var/lib/openclaw"
-          "PATH=/var/lib/openclaw/.npm-global/bin:${pkgs.nodejs_22}/bin:${pkgs.coreutils}/bin"
+          "PATH=/var/lib/openclaw/.npm-global/bin:${pkgs.nodejs_22}/bin:${pkgs.bash}/bin:${pkgs.coreutils}/bin:/run/current-system/sw/bin"
         ];
         ExecStart = "/var/lib/openclaw/.npm-global/bin/openclaw gateway --port 18789";
       };
