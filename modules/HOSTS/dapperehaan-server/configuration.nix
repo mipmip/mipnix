@@ -58,6 +58,7 @@ in
 
     networking.nat = {
       enable = true;
+      externalInterface = "enp0s10";
       internalInterfaces = [ "vm-clawone" ];
     };
 
