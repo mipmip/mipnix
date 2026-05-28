@@ -11,7 +11,7 @@ in
     microvm = {
       hypervisor = "qemu";
       vcpu = 2;
-      mem = 2048;
+      mem = 2049;
 
       interfaces = [{
         type = "tap";
