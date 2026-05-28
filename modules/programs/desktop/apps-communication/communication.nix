@@ -11,6 +11,7 @@
 
       zoom-us
       rustdesk
+      fractal
 
       #msmtp
       #teams
