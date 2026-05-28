@@ -37,6 +37,8 @@ in
       role-nebula-node
 
       desktop-virt-virtualization # for distrobox
+
+      inputs.microvm.nixosModules.host
     ];
 
     boot.loader.systemd-boot.enable = true;
@@ -49,6 +51,27 @@ in
     services.xserver.xkb = {
       layout = "us";
       variant = "mac-iso";
+    };
+
+    # microvm host networking for clawone guest
+    boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
+
+    networking.nat = {
+      enable = true;
+      internalInterfaces = [ "vm-clawone" ];
+    };
+
+    systemd.network.enable = true;
+    systemd.network.networks."50-microvm-clawone" = {
+      matchConfig.Name = "vm-clawone";
+      addresses = [ { Address = "10.0.100.1/24"; } ];
+      networkConfig.DHCPServer = false;
+    };
+
+    microvm.vms.clawone = {
+      config = {
+        imports = [ inputs.self.modules.nixos.clawone ];
+      };
     };
 
   };
