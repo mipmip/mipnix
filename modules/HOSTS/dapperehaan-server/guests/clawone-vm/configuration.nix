@@ -54,7 +54,9 @@ in
     # OpenClaw gateway
     services.openclaw-gateway = {
       enable = true;
-      package = inputs.nix-openclaw.packages."${pkgs.stdenv.hostPlatform.system}".default;
+      package = (inputs.nix-openclaw.packages."${pkgs.stdenv.hostPlatform.system}".default.overrideAttrs (old: {
+        pnpmDeps = old.pnpmDeps.overrideAttrs { hash = "sha256-mFZKNKBtHr6/4j8auYRCnbyo7jBK/aJWbV9zuq/vPR4="; };
+      }));
       config = {
         gateway.mode = "local";
         defaults.model.primary = "openai/gpt-4.1";
