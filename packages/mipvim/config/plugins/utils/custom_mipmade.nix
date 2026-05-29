@@ -28,6 +28,16 @@
       vim.keymap.set("n", "<leader>mo", ":Mimosa<CR>")
       vim.keymap.set("n", "<leader>mn", ":MimosaNew<CR>")
       vim.keymap.set("n", "<leader>ms", ":MimosaNew svg<CR>")
+
+      -- open-mip: open current file in mip
+      vim.keymap.set("n", "<leader>mi", ":MIP<CR>")
+      vim.api.nvim_create_user_command("MIP", function()
+        local file = vim.fn.expand("%")
+        if vim.fn.filereadable(file) == 1 then
+          local cmd = (vim.g.mip_exec_path or "mip") .. " " .. vim.fn.shellescape(file)
+          vim.fn.jobstart(cmd, { detach = true })
+        end
+      end, {})
     '';
 
 }
