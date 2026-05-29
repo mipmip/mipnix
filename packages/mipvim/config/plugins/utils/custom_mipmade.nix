@@ -8,7 +8,7 @@
         owner = "mipmip";
         repo = "vim-mimosa";
         rev = "d6f3af58bc93d255091267aeaee6dddb40496d08";
-        hash = "";
+        hash = "sha256-nWrMRHPHVliWneJiCLp0Rn8ifh4M1481bmk4CK0Pk7g=";
       };
     })
 
