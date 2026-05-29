@@ -37,7 +37,7 @@ inputs,
           tmux rename-window "$(basename "$PWD")"
           '';
 
-          mip = "WEBKIT_DISABLE_DMABUF_RENDERER=1 mip";
+          #mip = "WEBKIT_DISABLE_DMABUF_RENDERER=1 mip";
 
           smugs = lib.mkDefault "smug && smug start sudo && smug start nixos && smug start lobby";
           smugs_q = "smug start quiqr_dev_run && smug start quiqr_data";
