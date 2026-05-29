@@ -1,8 +1,8 @@
 {
   "mfa": {
-    "enabled": true,
+    "enabled": true
   },
   "console": {
-    "firefox_containers": true,
+    "firefox_containers": true
   }
 }
