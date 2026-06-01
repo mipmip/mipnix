@@ -91,12 +91,18 @@ inputs,
         function pim_git_prompt
           set --local gp (fish_git_prompt)
           set --local dirty (_pure_prompt_git_dirty)
+          set --local wt ""
+          set --local git_dir (command git rev-parse --git-dir 2>/dev/null)
+          set --local git_common (command git rev-parse --git-common-dir 2>/dev/null)
+          if test -n "$git_dir" -a -n "$git_common" -a "$git_dir" != "$git_common"
+            set wt " "(set_color -o magenta)"[wt:"(basename "$git_dir")"]"(set_color normal)
+          end
 
           if test -n "$gp"
             if test -n "$dirty"
-              echo -s (fish_git_prompt) " " (_pure_prompt_git_dirty) " "
+              echo -s (fish_git_prompt) " " (_pure_prompt_git_dirty) $wt " "
             else
-              echo -s (fish_git_prompt) " "
+              echo -s (fish_git_prompt) $wt " "
             end
           else
             echo -s " "
@@ -108,9 +114,9 @@ inputs,
         end
 
         function pim_jj_prompt
-          set --local jj_info (command jj log -r @ --no-graph --ignore-working-copy -T 'change_id.shortest() ++ "\n" ++ if(bookmarks, bookmarks.join(", "), "-") ++ "\n" ++ if(conflict, "conflict", "-") ++ "\n" ++ if(empty, "clean", "dirty")' 2>/dev/null)
+          set --local jj_info (command jj log -r @ --no-graph --ignore-working-copy -T 'change_id.shortest() ++ "\n" ++ if(bookmarks, bookmarks.join(", "), "-") ++ "\n" ++ if(conflict, "conflict", "-") ++ "\n" ++ if(empty, "clean", "dirty") ++ "\n" ++ self.working_copies()' 2>/dev/null)
 
-          if test (count $jj_info) -ne 4
+          if test (count $jj_info) -ne 5
             echo -s " "
             return
           end
@@ -119,6 +125,7 @@ inputs,
           set --local bmarks $jj_info[2]
           set --local conflicts $jj_info[3]
           set --local dirty $jj_info[4]
+          set --local workspace (string replace -r '@$' "" $jj_info[5])
 
           echo -n " ("
           echo -n (set_color -o red)"jj:"$change_id(set_color normal)
@@ -130,6 +137,9 @@ inputs,
           end
           if test "$dirty" = "dirty"
             echo -n " "(set_color -o yellow)"✗"(set_color normal)
+          end
+          if test "$workspace" != "default"
+            echo -n " "(set_color -o magenta)"[ws:$workspace]"(set_color normal)
           end
           echo -n ") "
         end
