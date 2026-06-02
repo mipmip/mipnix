@@ -33,6 +33,7 @@ inputs,
       pim-neovim
       vibecoding-opencode
       vibecoding-claude-code-config
+      vibecoding-codex
     ];
 
   };
