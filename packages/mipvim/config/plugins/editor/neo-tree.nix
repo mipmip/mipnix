@@ -19,35 +19,6 @@
           enabled = true;
         };
 
-        components = {
-          icon = lib.nixvim.mkRaw ''
-            function(config, node, state)
-              local cc = require("neo-tree.sources.common.components")
-              local result = cc.icon(config, node, state)
-              if node.type == "directory"
-                 and node.name == "archive"
-                 and node:get_parent_id()
-                 and node:get_parent_id():match("/openspec/changes$") then
-                result.text = "󰀼 "
-                result.highlight = "NeoTreeArchiveIcon"
-              end
-              return result
-            end
-          '';
-          name = lib.nixvim.mkRaw ''
-            function(config, node, state)
-              local cc = require("neo-tree.sources.common.components")
-              local result = cc.name(config, node, state)
-              if node.type == "directory"
-                 and node.name == "archive"
-                 and node:get_parent_id()
-                 and node:get_parent_id():match("/openspec/changes$") then
-                result.highlight = "NeoTreeArchiveFolder"
-              end
-              return result
-            end
-          '';
-        };
       };
 
       default_component_configs = {
@@ -113,11 +84,6 @@
       };
     };
   };
-
-  extraConfigLua = ''
-    vim.api.nvim_set_hl(0, "NeoTreeArchiveIcon", { fg = "#d79921" })
-    vim.api.nvim_set_hl(0, "NeoTreeArchiveFolder", { fg = "#a89984", italic = true })
-  '';
 
   keymaps = [
     {
