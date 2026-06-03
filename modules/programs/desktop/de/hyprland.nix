@@ -7,8 +7,7 @@
 
       hyprland = {
         enable = true;
-        package = pkgs.unstable-hyprland.hyprland;
-        portalPackage = pkgs.unstable-hyprland.xdg-desktop-portal-hyprland;
+        package = pkgs.hyprland;
 
         #plugins = [
         #  inputs.hyprland-plugins.packages.${pkgs.stdenv.hostPlatform.system}.hyprexpo
@@ -25,7 +24,7 @@
     #      enable = true;
     #      wlr.enable = true;
     #      extraPortals = [
-    #        pkgs.unstable-hyprland.xdg-desktop-portal-hyprland
+    #        pkgs.xdg-desktop-portal-hyprland
     #      ];
     #    };
     #
@@ -38,7 +37,7 @@
       ELECTRON_OZONE_PLATFORM_HINT = "wayland";
     };
 
-    environment.systemPackages = with pkgs.unstable-hyprland; [
+    environment.systemPackages = with pkgs; [
 
       pamixer
 
@@ -65,7 +64,7 @@
       cliphist
 
       wofi
-      swww
+      awww
 
       #xdg-desktop-portal-gtk
       #xdg-desktop-portal-hyprland
