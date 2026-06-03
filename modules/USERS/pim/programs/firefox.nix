@@ -6,6 +6,7 @@ inputs,
   flake.modules.homeManager.pim-firefox = { pkgs, ... }: {
     programs.firefox = {
       enable = true;
+      configPath = ".mozilla/firefox";
       package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
         extraPolicies = {
           CaptivePortal = false;
