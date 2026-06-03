@@ -629,11 +629,11 @@
         "nixpkgs": "nixpkgs_9"
       },
       "locked": {
-        "lastModified": 1780502001,
-        "narHash": "sha256-8IoPJrOTzOokJEi9yOCqd8yc+6hMKdGIJ067K0sQf0k=",
+        "lastModified": 1780516734,
+        "narHash": "sha256-WC/FqxqluP5wTHLZc3L5L4lMCE7DLi5AG8HOSnfmFXs=",
         "owner": "speclib",
         "repo": "jjay",
-        "rev": "361bd1125341122d7230b16cc582f4fdd2e33361",
+        "rev": "9c4b1b4523c9add32773c529c10fad9313b83801",
         "type": "github"
       },
       "original": {
