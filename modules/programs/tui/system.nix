@@ -17,7 +17,6 @@
       gettext
       psmisc
       file
-      neofetch
       fastfetch
     ];
   };

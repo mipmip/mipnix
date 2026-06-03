@@ -2,7 +2,7 @@
 
   inputs = {
 
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11"; # GNOME 49
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05"; # GNOME 50
     nixpkgs-old-stable.url = "github:NixOS/nixpkgs/nixos-25.11"; # GNOME 49
     nixpkgs-mama.url = "github:NixOS/nixpkgs/nixos-25.11"; # GNOME 49
 

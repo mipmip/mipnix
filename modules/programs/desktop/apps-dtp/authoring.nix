@@ -3,8 +3,8 @@
     environment.systemPackages = with pkgs; [
 
       gimp
-      pkgs.unstable.gimp3-with-plugins
-      pkgs.unstable.inkscape-with-extensions
+      gimp3-with-plugins
+      inkscape-with-extensions
       #krita
 
       #nixpkgs-inkscape13.inkscape
