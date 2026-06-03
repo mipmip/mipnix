@@ -114,7 +114,7 @@ inputs,
         end
 
         function pim_jj_prompt
-          set --local jj_info (command jj log -r @ --no-graph --ignore-working-copy -T 'change_id.shortest() ++ "\n" ++ if(bookmarks, bookmarks.join(", "), "-") ++ "\n" ++ if(conflict, "conflict", "-") ++ "\n" ++ if(empty, "clean", "dirty") ++ "\n" ++ self.working_copies()' 2>/dev/null)
+          set --local jj_info (command jj log -r @ --no-graph --ignore-working-copy -T 'change_id.shortest() ++ "\n" ++ if(bookmarks, bookmarks.join(", "), "-") ++ "\n" ++ if(conflict, "conflict", "-") ++ "\n" ++ if(empty, "clean", "dirty") ++ "\n" ++ if(self.working_copies(), self.working_copies(), "default")' 2>/dev/null)
 
           if test (count $jj_info) -ne 5
             echo -s " "

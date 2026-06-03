@@ -54,6 +54,7 @@
     myhotkeys.url = "github:mipmip/gnome-hotkeys.cr/0.2.7";
 
     dirty-repo-scanner.url = "github:mipmip/dirty-repo-scanner";
+    jjay.url = "github:speclib/jjay";
     teejay.url = "github:mipmip/teejay";
     specgetty.url = "github:mipmip/specgetty";
     openspec.url = "github:Fission-AI/OpenSpec";
