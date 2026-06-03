@@ -129,8 +129,12 @@
 
           nixvimLib = inputs.nixvim.lib.${system};
           nixvim' = inputs.nixvim.legacyPackages.${system};
+          pkgs-nixvim = import inputs.nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+          };
           nixvimModule = {
-            pkgs = pkgs-unstable;
+            pkgs = pkgs-nixvim;
             module = {
               imports = [
                 (inputs.import-tree ./packages/mipvim/config)
