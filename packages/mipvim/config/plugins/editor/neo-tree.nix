@@ -21,15 +21,17 @@
         };
       };
 
-      # The libuv watcher refreshes the filesystem source but never the
-      # git_status source. Bridge buffer writes to a git_status refresh so
-      # git markers update on :w without a manual `R`.
+      # vim_buffer_changed fires on BufWritePost. Refresh the filesystem
+      # source (whose tree shows the git markers next to each file) on every
+      # write so git state updates without a manual `R`. Refreshing
+      # "git_status" alone only updates the standalone git_status view, not
+      # the markers in the file tree.
       event_handlers = [
         {
           event = "vim_buffer_changed";
           handler = lib.nixvim.mkRaw ''
             function()
-              require("neo-tree.sources.manager").refresh("git_status")
+              require("neo-tree.sources.manager").refresh("filesystem")
             end
           '';
         }
