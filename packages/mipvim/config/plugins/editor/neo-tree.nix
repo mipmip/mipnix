@@ -21,22 +21,6 @@
         };
       };
 
-      # vim_buffer_changed fires on BufWritePost. Refresh the filesystem
-      # source (whose tree shows the git markers next to each file) on every
-      # write so git state updates without a manual `R`. Refreshing
-      # "git_status" alone only updates the standalone git_status view, not
-      # the markers in the file tree.
-      event_handlers = [
-        {
-          event = "vim_buffer_changed";
-          handler = lib.nixvim.mkRaw ''
-            function()
-              require("neo-tree.sources.manager").refresh("filesystem")
-            end
-          '';
-        }
-      ];
-
       default_component_configs = {
         indent = {
           with_expanders = true;
