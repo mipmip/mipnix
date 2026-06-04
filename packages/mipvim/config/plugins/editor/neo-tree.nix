@@ -12,6 +12,8 @@
       ];
 
       add_blank_line_at_top = false;
+      enable_git_status = true;
+      enable_diagnostics = true;
 
       filesystem = {
         bind_to_cwd = false;
@@ -20,6 +22,42 @@
           enabled = true;
         };
       };
+
+      # Auto-reload: the libuv watcher only covers expanded directories and
+      # never refreshes git_status. Bridge Neovim autocmds to neo-tree
+      # refreshes so external file changes (A) and git-state changes (B)
+      # show up without a manual `R`.
+      event_handlers = [
+        {
+          # File written inside nvim → its git state may have changed.
+          event = "vim_buffer_changed";
+          handler = lib.nixvim.mkRaw ''
+            function()
+              require("neo-tree.sources.manager").refresh("git_status")
+              require("neo-tree.sources.manager").refresh("filesystem")
+            end
+          '';
+        }
+        {
+          # Regaining focus / returning to nvim → catch external edits,
+          # `git checkout`, files moved in a terminal, etc.
+          event = "vim_buffer_enter";
+          handler = lib.nixvim.mkRaw ''
+            function()
+              require("neo-tree.sources.manager").refresh("git_status")
+            end
+          '';
+        }
+        {
+          # libuv detected an on-disk change in a watched directory.
+          event = "fs_event";
+          handler = lib.nixvim.mkRaw ''
+            function()
+              require("neo-tree.sources.manager").refresh("git_status")
+            end
+          '';
+        }
+      ];
 
       default_component_configs = {
         indent = {
