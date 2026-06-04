@@ -210,7 +210,12 @@ function ActionButtons() {
       </button>
       <button
         class="ActionButton"
-        onClicked={() => execAsync("hyprctl dispatch exit")}
+        onClicked={() =>
+          // Cleanly tear down the whole logind session (returns to GDM)
+          // instead of just killing the compositor with `hyprctl dispatch
+          // exit`, which orphaned child processes and left stale sockets.
+          execAsync(["bash", "-c", "loginctl terminate-session \"$XDG_SESSION_ID\""])
+        }
       >
         <box orientation={Gtk.Orientation.VERTICAL}>
           <image iconName="system-log-out-symbolic" />
