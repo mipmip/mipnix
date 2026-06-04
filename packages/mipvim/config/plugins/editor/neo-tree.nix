@@ -31,15 +31,15 @@
 
         git_status = {
           symbols = {
-            added = " ";
-            conflict = "󰩌 ";
+            added = "󰐕";
+            conflict = "󰩌";
             deleted = "󱂥";
-            ignored = " ";
-            modified = " ";
+            ignored = "󰄰";
+            modified = "󰄱";
             renamed = "󰑕";
             staged = "󰩍";
-            unstaged = "";
-            untracked = " ";
+            unstaged = "󰚩";
+            untracked = "󰜄";
           };
         };
       };
