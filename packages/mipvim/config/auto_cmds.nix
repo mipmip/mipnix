@@ -5,7 +5,6 @@
     indentscope = { };
     restore_cursor = { };
     md_filetype = { };
-    auto_reload = { };
   };
 
   autoCmd = [
@@ -63,27 +62,6 @@
         __raw = ''
           function()
             vim.b.miniindentscope_disable = true
-          end
-        '';
-      };
-    }
-    ## Auto-reload buffers and neo-tree git status when returning to nvim or
-    ## leaving a terminal — catches external edits / `git checkout` made while
-    ## nvim was focused but idle (the case the libuv watcher misses).
-    {
-      group = "auto_reload";
-      event = [ "FocusGained" "BufEnter" "TermClose" "TermLeave" ];
-      pattern = "*";
-      callback = {
-        __raw = ''
-          function()
-            if vim.o.buftype ~= "c" then
-              vim.cmd("checktime")
-            end
-            local ok, mgr = pcall(require, "neo-tree.sources.manager")
-            if ok then
-              pcall(mgr.refresh, "git_status")
-            end
           end
         '';
       };
