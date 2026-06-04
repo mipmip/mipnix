@@ -5,6 +5,7 @@
     indentscope = { };
     restore_cursor = { };
     md_filetype = { };
+    neotree_git_refresh = { };
   };
 
   autoCmd = [
@@ -62,6 +63,26 @@
         __raw = ''
           function()
             vim.b.miniindentscope_disable = true
+          end
+        '';
+      };
+    }
+    ## Refresh neo-tree git markers after EXTERNAL git operations (git add /
+    ## commit / checkout run in a terminal). Nvim isn't notified of those, so
+    ## the only reliable trigger is regaining focus / leaving a terminal.
+    ## The tree window already exists here, so manager.refresh redraws it
+    ## immediately rather than just marking it dirty.
+    {
+      group = "neotree_git_refresh";
+      event = [ "FocusGained" "TermClose" "TermLeave" ];
+      pattern = "*";
+      callback = {
+        __raw = ''
+          function()
+            local ok, mgr = pcall(require, "neo-tree.sources.manager")
+            if ok then
+              pcall(mgr.refresh, "filesystem")
+            end
           end
         '';
       };
