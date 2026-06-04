@@ -9,7 +9,9 @@ inputs,
       extraConfig = ''
       '';
       font = {
-        name = "DejaVu Sans Mono";
+        # Must be a Nerd Font, otherwise neovim/neo-tree icon glyphs (git
+        # markers, diagnostics, tree expanders) render as tofu boxes.
+        name = "JetBrainsMono Nerd Font";
       };
       settings = {
         #font_family = "FiraCode Nerd Font";
