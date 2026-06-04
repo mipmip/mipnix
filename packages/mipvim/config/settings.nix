@@ -71,10 +71,6 @@
       # Disable swap file creation
       swapfile = false;
 
-      # Reload files changed outside nvim (paired with the auto_reload
-      # autocmd's checktime so neo-tree + buffers stay in sync).
-      autoread = true;
-
       # Time in milliseconds to wait for a mapped sequence to complete
       timeoutlen = 300;
 
