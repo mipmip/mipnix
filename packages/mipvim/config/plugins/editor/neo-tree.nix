@@ -35,7 +35,7 @@
             conflict = "󰩌";
             deleted = "󱂥";
             ignored = "󰄰";
-            modified = "󰄱";
+            modified = "";
             renamed = "󰑕";
             staged = "󰩍";
             unstaged = "󰚩";
