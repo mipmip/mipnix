@@ -15,10 +15,10 @@
 
       filesystem = {
         bind_to_cwd = false;
+        use_libuv_file_watcher = true;
         follow_current_file = {
           enabled = true;
         };
-
       };
 
       default_component_configs = {
