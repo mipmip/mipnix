@@ -10,6 +10,7 @@ in
       inherit hostname;
       imports = with inputs.self.modules.homeManager; [
         role-pim-cli-minimal
+        role-pim-cli-server-dev
       ];
 
     };
