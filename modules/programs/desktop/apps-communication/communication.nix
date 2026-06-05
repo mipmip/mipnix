@@ -2,15 +2,14 @@
 
   flake.modules.nixos.desktop-apps-communication = { config, pkgs, ... }: {
     environment.systemPackages = with pkgs; [
-      pkgs.unstable.slack
+      pkgs.slack
 
-      pkgs.unstable.wasistlos
 
-      pkgs.unstable.signal-desktop
-      pkgs.unstable.flare-signal
+      pkgs.signal-desktop
+      #pkgs.unstable.flare-signal
 
-      zoom-us
-      rustdesk
+      #zoom-us
+      #rustdesk
       fractal
 
       #msmtp
@@ -21,7 +20,8 @@
       vesktop
 
       # TODO Remove
-      pkgs.unstable.himalaya
+      himalaya
+      karere
     ];
   };
 }

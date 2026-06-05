@@ -8,6 +8,6 @@
           ! remove Lock = Caps_Lock
         '';
       in
-        "${pkgs.xorg.xmodmap}/bin/xmodmap ${myCustomLayout}";
+        "${pkgs.xmodmap}/bin/xmodmap ${myCustomLayout}";
   };
 }

@@ -3,7 +3,7 @@
     environment.systemPackages = with pkgs; [
 
       fedistar #multicolumn mastodon
-      pkgs.unstable.tuba # Mastodon
+      #pkgs.unstable.tuba # Mastodon
 
     ];
   };

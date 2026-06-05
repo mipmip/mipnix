@@ -16,16 +16,19 @@
         #          };
         #        });
 
-        sc-im = prev.sc-im.overrideAttrs (old: {
-          hardeningDisable = [ "fortify" ];
-          src = prev.fetchFromGitHub {
-            version = "0.8.5";
-            owner = "mipmip";
-            repo = "sc-im";
-            rev = "pimsMain";
-            hash = "sha256-8KwGDEmr182ippdoeNVvNMFN6+iJu83xkX7xMbI5/No=";
-          };
-        });
+        #sc-im = prev.sc-im.overrideAttrs (old: {
+        #  hardeningDisable = [ "fortify" ];
+        #  env = (old.env or {}) // {
+        #    NIX_CFLAGS_COMPILE = toString (old.env.NIX_CFLAGS_COMPILE or "") + " -Wno-error=incompatible-pointer-types";
+        #  };
+        #  src = prev.fetchFromGitHub {
+        #    version = "0.8.5";
+        #    owner = "mipmip";
+        #    repo = "sc-im";
+        #    rev = "pimsMain";
+        #    hash = "sha256-8KwGDEmr182ippdoeNVvNMFN6+iJu83xkX7xMbI5/No=";
+        #  };
+        #});
 
         quarto = prev.quarto.override {
           extraRPackages = [

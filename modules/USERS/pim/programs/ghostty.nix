@@ -11,6 +11,10 @@ inputs,
     programs.ghostty = {
       enable = true;
       settings = {
+        # Must be a Nerd Font; the default fallback (Ubuntu Mono) lacks the
+        # icon glyphs neovim/neo-tree use (git markers, diagnostics, tree
+        # expanders), which then render as tofu boxes.
+        font-family = "JetBrainsMono Nerd Font";
         window-padding-x = 3;
         confirm-close-surface = false;
         window-padding-y = 3;

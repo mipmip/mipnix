@@ -66,6 +66,9 @@
               _module.args.inputs = inputs;
               nixpkgs.hostPlatform = system;
               nixpkgs.config.allowUnfree = true;
+              nixpkgs.config.permittedInsecurePackages = [
+                "electron-39.8.10"
+              ];
             };
           in
           [

@@ -71,3 +71,27 @@ up_machine(){
     exit 1
   fi
 }
+
+make_command "up_machine_trace" "Rebuild NixOS system configuration (with full trace)"
+up_machine_trace(){
+
+  check_untracked
+
+  HOSTNAME=$(hostname)
+  LIMITED_HOSTS="harry hurry"
+
+  if echo "$LIMITED_HOSTS" | grep -wq "$HOSTNAME"; then
+    sudo nixos-rebuild switch --flake .#$HOSTNAME --max-jobs 1 -j 1 --cores 1 --show-trace 2>&1 | tee /tmp/nixos-rebuild-trace.log
+  else
+    sudo nixos-rebuild switch --flake .#$HOSTNAME --show-trace 2>&1 | tee /tmp/nixos-rebuild-trace.log
+  fi
+
+  if [ ${PIPESTATUS[0]} -eq 0 ]; then
+    EXTRA_ARG="auto run after nixos-rebuild switch"
+    git_sync_machine
+  else
+    echo ""
+    echo "nixos-rebuild failed. Full trace saved to /tmp/nixos-rebuild-trace.log"
+    exit 1
+  fi
+}

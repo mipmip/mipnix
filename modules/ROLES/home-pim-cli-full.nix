@@ -31,8 +31,10 @@ inputs,
       pim-sc-im
       #pim-vim
       pim-neovim
+      pim-jjay
       vibecoding-opencode
       vibecoding-claude-code-config
+      vibecoding-codex
     ];
 
   };

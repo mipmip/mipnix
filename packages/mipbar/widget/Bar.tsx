@@ -11,7 +11,7 @@ import WindowTitle from "./WindowTitle"
 import QuickSettings from "./QuickSettings"
 
 export default function Bar(gdkmonitor: Gdk.Monitor) {
-  const time = createPoll("", 60000, 'bash -c \'LC_TIME=nl_NL.UTF-8 date +"W%V · %a %-d %b, %H:%M"\'')
+  const time = createPoll("", 60000, 'bash -c \'LC_TIME=nl_NL.UTF-8 date +"W%V · %a %-d %b · %H:%M"\'')
   const { TOP, LEFT, RIGHT } = Astal.WindowAnchor
 
   return (
