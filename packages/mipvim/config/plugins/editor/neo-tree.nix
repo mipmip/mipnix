@@ -15,6 +15,7 @@
 
       filesystem = {
         bind_to_cwd = false;
+        use_libuv_file_watcher = true;
         follow_current_file = {
           enabled = true;
         };
@@ -30,15 +31,15 @@
 
         git_status = {
           symbols = {
-            added = " ";
-            conflict = "󰩌 ";
+            added = "󰐕";
+            conflict = "󰩌";
             deleted = "󱂥";
-            ignored = " ";
-            modified = " ";
+            ignored = "󰄰";
+            modified = "";
             renamed = "󰑕";
             staged = "󰩍";
-            unstaged = "";
-            untracked = " ";
+            unstaged = "󰚩";
+            untracked = "󰜄";
           };
         };
       };

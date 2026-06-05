@@ -5,8 +5,10 @@
       package = unstable.opencode;
       agents   = {};
       commands = {};
-      settings = {
+      tui = {
         theme = "system";
+      };
+      settings = {
         autoshare = false;
         autoupdate = true;
         plugin = [

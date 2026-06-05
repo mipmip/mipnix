@@ -2,7 +2,8 @@
 
   inputs = {
 
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11"; # GNOME 49
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05"; # GNOME 50
+    nixpkgs-old-stable.url = "github:NixOS/nixpkgs/nixos-25.11"; # GNOME 49
     nixpkgs-mama.url = "github:NixOS/nixpkgs/nixos-25.11"; # GNOME 49
 
     nix-index-database.url = "github:nix-community/nix-index-database";
@@ -32,11 +33,11 @@
     };
     elephant.url = "github:abenz1267/elephant";
 
-    home-manager.url = "github:nix-community/home-manager/release-25.11";
+    home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nixvim.url = "github:nix-community/nixvim";
-    nixvim.inputs.nixpkgs.follows = "unstable";
+    nixvim.inputs.nixpkgs.follows = "nixpkgs";
 
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
     pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
@@ -54,6 +55,7 @@
     myhotkeys.url = "github:mipmip/gnome-hotkeys.cr/0.2.7";
 
     dirty-repo-scanner.url = "github:mipmip/dirty-repo-scanner";
+    jjay.url = "github:speclib/jjay";
     teejay.url = "github:mipmip/teejay";
     specgetty.url = "github:mipmip/specgetty";
     openspec.url = "github:Fission-AI/OpenSpec";
@@ -62,6 +64,7 @@
 
     skull.url = "github:mipmip/skull";
     mip.url = "github:mipmip/mip.rs";
+    hypr-network-manager.url = "github:mipmip/hypr-network-manager";
     fred.url = "github:linden-project/fred";
     aoe.url = "github:njbrake/agent-of-empires";
 
@@ -126,8 +129,12 @@
 
           nixvimLib = inputs.nixvim.lib.${system};
           nixvim' = inputs.nixvim.legacyPackages.${system};
+          pkgs-nixvim = import inputs.nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+          };
           nixvimModule = {
-            pkgs = pkgs-unstable;
+            pkgs = pkgs-nixvim;
             module = {
               imports = [
                 (inputs.import-tree ./packages/mipvim/config)

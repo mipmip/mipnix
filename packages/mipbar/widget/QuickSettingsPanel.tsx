@@ -104,15 +104,14 @@ const brightnessAvailable = createPoll(false, 1000,
   (out) => out.trim().length > 0)
 
 let _dragTimeout: number | null = null
-const [brightness, setBrightness] = createState(0)
+let _dragValue: number | null = null
 
-createPoll(0, 1000,
+const brightness = createPoll(0, 1000,
   ["bash", "-c", "brightnessctl -m 2>/dev/null | head -1 | cut -d, -f4"],
   (out) => {
+    if (_dragTimeout) return _dragValue!
     const val = parseInt(out)
-    const frac = isNaN(val) ? 0 : val / 100
-    if (!_dragTimeout) setBrightness(frac)
-    return frac
+    return isNaN(val) ? 0 : val / 100
   })
 
 function BrightnessSlider() {
@@ -125,9 +124,9 @@ function BrightnessSlider() {
           value={brightness}
           onChangeValue={(self) => {
             if (_dragTimeout) clearTimeout(_dragTimeout)
-            _dragTimeout = setTimeout(() => { _dragTimeout = null }, 1500) as unknown as number
+            _dragValue = self.value
+            _dragTimeout = setTimeout(() => { _dragTimeout = null; _dragValue = null }, 1500) as unknown as number
             const pct = Math.round(self.value * 100)
-            setBrightness(self.value)
             execAsync(`brightnessctl set ${pct}% -n1`).catch(() => {})
           }}
         />
@@ -148,7 +147,7 @@ function WifiStatus() {
           <label label={createBinding(w, "ssid")((s) => s || "Not connected")} hexpand halign={Gtk.Align.START} />
           <button
             class="ActionSmall"
-            onClicked={() => execAsync("ghostty -e nmtui")}
+            onClicked={() => execAsync("hypr-network-manager")}
           >
             <label label="Manage" />
           </button>
@@ -211,7 +210,12 @@ function ActionButtons() {
       </button>
       <button
         class="ActionButton"
-        onClicked={() => execAsync("hyprctl dispatch exit")}
+        onClicked={() =>
+          // Cleanly tear down the whole logind session (returns to GDM)
+          // instead of just killing the compositor with `hyprctl dispatch
+          // exit`, which orphaned child processes and left stale sockets.
+          execAsync(["bash", "-c", "loginctl terminate-session \"$XDG_SESSION_ID\""])
+        }
       >
         <box orientation={Gtk.Orientation.VERTICAL}>
           <image iconName="system-log-out-symbolic" />

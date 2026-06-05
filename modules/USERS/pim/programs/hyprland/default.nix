@@ -3,7 +3,7 @@ inputs,
 ...
 }:
 {
-  flake.modules.homeManager.pim-hyprland = { pkgs, unstable-hyprland, ... }: {
+  flake.modules.homeManager.pim-hyprland = { pkgs, ... }: {
 
     #wayland.windowManager.hyprland.systemd.enable = false;
 
