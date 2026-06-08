@@ -68,40 +68,11 @@ in
       };
     };
 
-    # --- Bluesky PDS ---
-    services.bluesky-pds = {
-      enable = true;
-      settings = {
-        PDS_HOSTNAME = "pimsnel.com";
-      };
-      environmentFiles = [
-        config.age.secrets."personal-data-server-env".path
-      ];
-    };
-
-    age.secrets."personal-data-server-env" = {
-      file = ../../../secrets/personal-data-server.env.age;
-      owner = "pds";
-      group = "pds";
-      mode = "400";
-    };
-
-    # --- pimsnel.com website + PDS proxy ---
+    # --- pimsnel.com website ---
     services.nginx.virtualHosts."pimsnel.com" = {
       enableACME = true;
       forceSSL = true;
       root = inputs.self.packages."${pkgs.stdenv.hostPlatform.system}".pimsnel-website;
-
-      locations."/xrpc/" = {
-        proxyPass = "http://localhost:3000";
-        proxyWebsockets = true;
-        extraConfig = ''
-          client_max_body_size 100m;
-        '';
-      };
-      locations."/.well-known/atproto-did" = {
-        proxyPass = "http://localhost:3000";
-      };
     };
 
     # --- Tuwunel Matrix ---

@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+# workspace-monitor-rehome: keep external workspaces on the external monitor.
+#
+# Bug this fixes: workspaces 1-7 are statically pinned to a connector name
+# (DP-3) in nwg-displays' workspaces.conf. The external monitor is a different
+# physical display on a different HDMI port at home vs. work, so it enumerates
+# as DP-2 or DP-3 and the static pin breaks — stranding workspaces 1-7 on the
+# laptop. The only stable predicate is "the monitor that is NOT the laptop
+# panel eDP-1".
+#
+# This script owns the workspace->monitor BINDING at runtime; nwg-displays
+# still owns monitor GEOMETRY (monitors.conf) and may keep writing port names
+# into workspaces.conf — that's fine, this re-applies the correct binding on
+# every monitor add/remove and once at startup.
+#
+# Mapping:
+#   workspaces 1-7  -> the connected external monitor (first non-eDP-1), if any
+#   workspaces 8/9/0 -> always the laptop panel eDP-1
+
+set -u
+
+LAPTOP="eDP-1"
+EXTERNAL_WS="1 2 3 4 5 6 7"
+LAPTOP_WS="8 9 0"
+
+# Pick the external monitor name: first connected monitor that is not the laptop.
+# Empty string if only the laptop is connected.
+external_monitor() {
+  hyprctl monitors -j 2>/dev/null \
+    | jq -r --arg laptop "$LAPTOP" \
+        'map(select(.name != $laptop)) | .[0].name // empty'
+}
+
+monitor_connected() {
+  hyprctl monitors -j 2>/dev/null | jq -e --arg n "$1" 'any(.name == $n)' >/dev/null 2>&1
+}
+
+reconcile() {
+  local ext laptop_present
+  ext="$(external_monitor)"
+
+  if monitor_connected "$LAPTOP"; then
+    laptop_present=1
+  else
+    laptop_present=0
+  fi
+
+  if [ -n "$ext" ]; then
+    # External present: 1-7 -> external, 8/9/0 -> laptop (if laptop present).
+    for ws in $EXTERNAL_WS; do
+      hyprctl dispatch moveworkspacetomonitor "$ws $ext" >/dev/null 2>&1
+    done
+    if [ "$laptop_present" = "1" ]; then
+      for ws in $LAPTOP_WS; do
+        hyprctl dispatch moveworkspacetomonitor "$ws $LAPTOP" >/dev/null 2>&1
+      done
+    fi
+  else
+    # No external: everything falls back to the laptop panel.
+    if [ "$laptop_present" = "1" ]; then
+      for ws in $EXTERNAL_WS $LAPTOP_WS; do
+        hyprctl dispatch moveworkspacetomonitor "$ws $LAPTOP" >/dev/null 2>&1
+      done
+    fi
+  fi
+}
+
+# 1. Initial reconciliation (handles monitors already connected at login).
+reconcile
+
+# 2. Listen for monitor add/remove events and reconcile on each.
+SOCK="$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock"
+if [ ! -S "$SOCK" ]; then
+  echo "workspace-monitor-rehome: socket2 not found at $SOCK" >&2
+  exit 1
+fi
+
+socat -U - "UNIX-CONNECT:$SOCK" 2>/dev/null | while read -r line; do
+  case "$line" in
+    monitoradded*|monitoraddedv2*|monitorremoved*|monitorremovedv2*)
+      # Brief settle so hyprctl monitors reflects the new topology.
+      sleep 0.3
+      reconcile
+      ;;
+  esac
+done
