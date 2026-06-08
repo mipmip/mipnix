@@ -14,7 +14,7 @@
 
 ## 4. Build and verify
 
-- [ ] 4.1 Rebuild mipvim with `up_home` and restart nvim
-- [ ] 4.2 Query the live nvim over its `--server` socket and confirm `default_component_configs.git_status.symbols` equal the configured values (notably `unstaged = U+F06A9`, not the default `U+F0131`)
-- [ ] 4.3 Open a repo with a `' M'` file (e.g. `tsconfig.tsbuildinfo`) in neo-tree and confirm the marker renders as the configured glyph, not a box
-- [ ] 4.4 Confirm the openspec neo-tree features (archive icon/components, `NeoTreeArchiveIcon` highlight) still work after the merge change
+- [x] 4.1 Rebuild mipvim with `up_home` and restart nvim
+- [x] 4.2 Query the live nvim over its `--server` socket and confirm `default_component_configs.git_status.symbols` equal the configured values (notably `unstaged = U+F06A9`, not the default `U+F0131`)
+- [x] 4.3 Open a repo with a `' M'` file (e.g. `tsconfig.tsbuildinfo`) in neo-tree and confirm the marker renders as the configured glyph, not a box
+- [x] 4.4 Confirm the openspec neo-tree features (archive icon/components, `NeoTreeArchiveIcon` highlight) still work after the merge change

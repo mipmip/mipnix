@@ -57,6 +57,9 @@
       libinput
       wl-clipboard
 
+      # Required by the workspace-monitor-rehome script (reads Hyprland socket2).
+      socat
+
       #ashell  # replaced by mipbar
 
       swayidle
