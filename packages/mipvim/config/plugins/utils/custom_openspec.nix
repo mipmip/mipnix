@@ -34,8 +34,8 @@ in
       src = pkgs.fetchFromGitHub {
         owner = "speclib";
         repo = "openspec.nvim";
-        rev = "3b729e9";
-        hash = "sha256-P6Y/+NytwOhNjz4nhtFlhn8Y6kbPiNIktaK0HjFUSK0=";
+        rev = "00fc1d55c5f59134827676cada08a96f703cd641";
+        hash = "sha256-572rQOzKr3nfnLWr7zEBEk+teCTB/TX0tvbuJQknEaI=";
       };
     })
 
