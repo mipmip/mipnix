@@ -1,10 +1,21 @@
-{ withSystem, ... }: {
+{ withSystem, inputs, ... }: {
 
   flake.overlays.apps = final: prev:
     withSystem prev.stdenv.hostPlatform.system (
 
       # perSystem parameters. Note that perSystem does not use `final` or `prev`.
-      { config, ... }: {
+      { config, ... }:
+      let
+        # Quarto pinned to the nixpkgs 25.11 release (1.7.34) — temporary
+        # workaround for a 1.9.x (26.05) regression; downgrade is the fastest
+        # fix. To revert: base `quarto` below on `prev` instead of `pkgs2511`
+        # (returns to the default 26.05 Quarto) once 1.9.x works again.
+        pkgs2511 = import inputs.nixpkgs-2511 {
+          system = prev.stdenv.hostPlatform.system;
+          config.allowUnfree = true;
+        };
+      in
+      {
 
         #        bambu-studio = prev.bambu-studio.overrideAttrs (oldAttrs: {
         #          version = "01.00.01.50";
@@ -30,9 +41,9 @@
         #  };
         #});
 
-        quarto = prev.quarto.override {
+        quarto = pkgs2511.quarto.override {
           extraRPackages = [
-            prev.rPackages.reticulate
+            pkgs2511.rPackages.reticulate
           ];
           extraPythonPackages = ps: with ps; [
             plotly
