@@ -117,7 +117,14 @@ open the launcher and confirm results appear (not an empty launcher).
 **Rollback**: restore the inputs and the `programs.walker`/`programs.elephant` config,
 re-add the cachix cache; rebuild.
 
-## Open Questions
+## Resolved During Implementation
 
-- Does `services.walker` (systemd user service) start/depend on elephant, or must
-  `exec-once = elephant` remain? Resolve by live test at apply time.
+- **`systemd.enable` does NOT work in this session.** `services.walker`'s systemd user
+  service is `WantedBy = graphical-session.target`, but this Hyprland session does not
+  populate that target (no uwsm/systemd integration) — confirmed live:
+  `systemctl --user is-active graphical-session.target` → `inactive`, and the walker
+  service sat `enabled` but `inactive (dead)`. So `systemd.enable = false`; Walker is
+  launched via `exec-once = walker --gapplication-service` in `autostart.conf` instead.
+  The `services.walker` module still provides the package + config; only its (non-firing)
+  systemd unit is disabled.
+- `exec-once = elephant` is kept (Elephant is Walker's backend daemon; safe default).

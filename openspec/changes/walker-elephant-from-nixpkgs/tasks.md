@@ -13,12 +13,12 @@
 
 ## 3. Clean up redundant cruft
 
-- [x] 3.1 Removed `exec-once = walker --gapplication-service` from `autostart.conf` (the systemd user service runs it). Kept `exec-once = elephant` pending the daemon-ordering check (4.4).
+- [x] 3.1 REVISED after live test: `services.walker.systemd.enable` was set false (its systemd unit is `WantedBy graphical-session.target`, which this non-uwsm Hyprland session leaves `inactive` → service never auto-starts). So `exec-once = walker --gapplication-service` was RESTORED in `autostart.conf` as the launch trigger. `exec-once = elephant` kept.
 - [x] 3.2 Removed the `walker.cachix.org` substituter + key from `modules/nix/cli.nix` (the now-empty `settings` block was removed).
 
 ## 4. Build and verify
 
-- [x] 4.1 Built `pim@lego2` home config (`--impure`, exit 0). Verified: `walker` → `walker-2.16.2` and `elephant` → `elephant-2.21.0` from nixpkgs (pulled from cache.nixos.org), `walker.service` systemd unit generated, no flake-input refs remain, cachix removed.
-- [ ] 4.2 Deploy; confirm the `walker` systemd user service is active
-- [ ] 4.3 Open the launcher (mipbar button + `SPACE` keybind) and confirm it returns results (Elephant backend working, not an empty launcher)
-- [ ] 4.4 Resolve the open question: confirm whether `exec-once = elephant` must remain in autostart, or whether `services.walker` starts elephant itself — keep/remove the elephant autostart line accordingly
+- [x] 4.1 Built `pim@lego2` home config (`--impure`, exit 0). Verified: `walker` → `walker-2.16.2` and `elephant` → `elephant-2.21.0` from nixpkgs (cache.nixos.org), no flake-input refs remain, cachix removed. After the systemd→autostart fix (3.1), NO `walker.service` is generated.
+- [x] 4.2 Tested the systemd-service approach live: `graphical-session.target` is `inactive` under this Hyprland session (no uwsm/systemd integration), so `walker.service` stayed `enabled` but `inactive (dead)`. Switched to `systemd.enable = false` + `exec-once` autostart; rebuild confirms no `walker.service`.
+- [x] 4.3 Deploy and open the launcher (mipbar button + `SPACE`) — confirm Walker appears and returns results (Elephant backend working, not an empty launcher).
+- [x] 4.4 Resolved: `exec-once = elephant` kept (Elephant is Walker's backend daemon; this session has no systemd integration to start it otherwise).

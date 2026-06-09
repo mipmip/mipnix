@@ -16,19 +16,19 @@ Walker and Elephant SHALL be provisioned from official nixpkgs/home-manager, wit
 - **WHEN** the home configuration is built
 - **THEN** Walker SHALL resolve to `pkgs.walker` and Elephant to `pkgs.elephant` from the project's nixpkgs (26.05)
 
-### Requirement: walker-via-home-manager-service
+### Requirement: walker-via-home-manager-module
 
-Walker SHALL be installed and run via the official home-manager `services.walker` module as a systemd user service.
+Walker SHALL be installed via the official home-manager `services.walker` module (for the package and config) and launched via Hyprland autostart.
 
-#### Scenario: walker service enabled
+#### Scenario: walker module enabled, systemd trigger off
 
 - **WHEN** the home configuration is built and activated
-- **THEN** `services.walker` SHALL be enabled with `systemd.enable = true`, providing a `walker` systemd user service that runs `walker --gapplication-service`
+- **THEN** `services.walker` SHALL be enabled with `systemd.enable = false` (the systemd user service is `WantedBy graphical-session.target`, which this non-systemd-integrated Hyprland session does not populate, so it would never auto-start)
 
-#### Scenario: redundant autostart removed
+#### Scenario: walker launched via autostart
 
-- **WHEN** the session starts
-- **THEN** there SHALL NOT be a separate `exec-once = walker --gapplication-service` autostart entry (the systemd user service owns running walker)
+- **WHEN** the Hyprland session starts
+- **THEN** Walker SHALL be started via `exec-once = walker --gapplication-service` in `autostart.conf`
 
 ### Requirement: elephant-package-default-config
 
