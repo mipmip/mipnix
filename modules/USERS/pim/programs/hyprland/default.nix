@@ -33,13 +33,18 @@ inputs,
     # ashell config removed — replaced by mipbar
 
     # Walker + Elephant from official nixpkgs/home-manager (golden path).
-    # Walker via the home-manager services.walker module (systemd user service,
-    # package defaults to pkgs.walker); Elephant as the pkgs.elephant package
-    # with default config. Custom Elephant providers/settings were dropped — see
-    # openspec change walker-elephant-from-nixpkgs; re-add declaratively if missed.
+    # Walker via the home-manager services.walker module (package defaults to
+    # pkgs.walker); Elephant as the pkgs.elephant package with default config.
+    # Custom Elephant providers/settings were dropped — see openspec change
+    # walker-elephant-from-nixpkgs; re-add declaratively if missed.
+    #
+    # systemd.enable = false on purpose: the systemd user service is WantedBy
+    # graphical-session.target, which this Hyprland session does NOT populate
+    # (no uwsm/systemd integration), so the service would never auto-start.
+    # Walker is launched via `exec-once` in autostart.conf instead.
     services.walker = {
       enable = true;
-      systemd.enable = true;
+      systemd.enable = false;
     };
 
     home.packages = [ pkgs.elephant ];
