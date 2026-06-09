@@ -11,6 +11,11 @@ A tmux keybinding `prefix + B` SHALL open a large `display-popup` that launches 
 - **WHEN** the user presses `prefix + B` from a directory at or below a beans project (a `.beans.yml` exists at or above the pane's current directory)
 - **THEN** a `display-popup` sized 90% × 90% SHALL open and run `beans tui` in that directory
 
+#### Scenario: popup uses the active pane's directory
+
+- **WHEN** the popup is opened from a pane whose working directory differs from the tmux session's start directory
+- **THEN** the popup SHALL run in the active pane's current directory (the bind uses `-d '#{pane_current_path}'`), NOT the session start directory
+
 #### Scenario: clean quit closes the popup
 
 - **WHEN** the user quits `beans tui` normally (exit code 0)

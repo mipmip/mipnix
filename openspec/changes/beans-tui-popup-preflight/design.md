@@ -107,7 +107,25 @@ CWD used + `beans check` output and pauses (req 3); only failure pauses (req 1/4
 
 **Rollback**: revert the bind to `popup -E ... 'beans tui'` and drop the script.
 
-## Open Questions
+## Resolved During Implementation — the technative flash-close cause
 
-- None for this change. (The technative root cause remains open, but this change exists to
-  reveal it, not resolve it.)
+The verbose preflight revealed the real cause: **the popup's working directory was the
+parent of the project, not the active pane's directory.** Panes were all in
+`/home/pim/tcTNxDocs/technative-project-proposals/` (has `.beans.yml`), but the popup ran
+in `/home/pim/tcTNxDocs/` (no `.beans.yml`) — so `find_project` correctly reported "no
+project."
+
+Cause: tmux 3.6 `display-popup` without `-d` uses the SESSION's start directory, not the
+active pane's cwd. The session was started in the parent dir, so the popup inherited that
+even though every pane had since `cd`'d into the project.
+
+Fix (added to the bind): `-d '#{pane_current_path}'` — pins the popup to the active pane's
+directory. This mirrors the existing `bind P display-popup -d '#{pane_current_path}'`. This
+corrects the original `tmux-beans-tui-popup` change's assumption that the no-`-d` default
+already used the pane cwd (it does not).
+
+So the final bind is:
+
+```
+bind B popup -d '#{pane_current_path}' -w 90% -h 90% 'beans-tui-popup'
+```
