@@ -5,6 +5,7 @@ status: in-progress
 type: task
 priority: normal
 created_at: 2026-06-09T08:29:12Z
-updated_at: 2026-06-09T10:27:06Z
+updated_at: 2026-06-09T11:39:40Z
+openspec-link: openspec/changes/archive/2026-06-09-tmux-beans-tui-popup
 ---
 
