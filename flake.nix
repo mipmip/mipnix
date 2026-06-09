@@ -27,12 +27,6 @@
       inputs.nixpkgs.follows = "unstable";
     };
 
-    walker = {
-      url = "github:abenz1267/walker";
-      inputs.elephant.follows = "elephant";
-    };
-    elephant.url = "github:abenz1267/elephant";
-
     home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 

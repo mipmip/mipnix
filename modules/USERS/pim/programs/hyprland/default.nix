@@ -32,53 +32,17 @@ inputs,
 
     # ashell config removed — replaced by mipbar
 
-    imports = [
-      #inputs.elephant.homeManagerModules.default
-      inputs.walker.homeManagerModules.default
-    ];
-
-    programs.elephant = {
+    # Walker + Elephant from official nixpkgs/home-manager (golden path).
+    # Walker via the home-manager services.walker module (systemd user service,
+    # package defaults to pkgs.walker); Elephant as the pkgs.elephant package
+    # with default config. Custom Elephant providers/settings were dropped — see
+    # openspec change walker-elephant-from-nixpkgs; re-add declaratively if missed.
+    services.walker = {
       enable = true;
-      debug = false;
-
-      # Select specific providers
-      providers = [
-        #"files"
-        "desktopapplications"
-        "calc"
-        "runner"
-        "clipboard"
-        "symbols"
-        "websearch"
-        "menus"
-        "providerlist"
-      ];
-
-      # Custom elephant configuration
-      settings = {
-        providers = {
-          files = {
-            min_score = 50;
-            icon = "folder";
-          };
-          desktopapplications = {
-            launch_prefix = "uwsm app --";
-            min_score = 60;
-          };
-          calc = {
-            icon = "accessories-calculator";
-          };
-        };
-      };
+      systemd.enable = true;
     };
 
-
-    programs.walker = {
-      enable = true;
-      runAsService = true;
-    };
-
-    home.packages = [ inputs.walker.packages.${pkgs.stdenv.hostPlatform.system}.default ];
+    home.packages = [ pkgs.elephant ];
 
     home.file = {
       ".config/wpaperd" = {
