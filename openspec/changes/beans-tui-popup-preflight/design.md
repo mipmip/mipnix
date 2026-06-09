@@ -58,7 +58,7 @@ reliable signal.
 **Still run `beans check`**: its OUTPUT is shown on the failure path (per the request) as
 extra diagnostics, even though its exit code is ignored.
 
-### Branch logic + lifecycle (drop `-E`)
+### Branch logic + lifecycle (keep `-E`)
 
 ```
 echo "CWD: $PWD"
@@ -78,11 +78,19 @@ else
 fi
 ```
 
-The bind drops `-E` so the script owns when the popup closes: clean quit → script ends →
-popup closes; failure → `read` holds it open.
+**Lifecycle / `-E` — corrected:** the bind KEEPS `-E`. `-E` means "close the popup when the
+command exits" — it does NOT cause a flash-close (the original flash-close was the wrong
+cwd, fixed by `-d`). Crucially, WITHOUT `-E`, tmux's own popup handling grabs `Escape`/`C-c`
+to dismiss the popup — which hijacks Escape from `beans tui` (where Escape is back-navigation).
+The working `bind T` (tj) uses `-E` and Escape passes through to the app; an earlier
+no-`-E` version of `bind B` let tmux eat Escape and close the popup mid-navigation. So `-E`
+both (a) passes Escape through to beans and (b) still works with the preflight pause: the
+`read -rn1` keeps the command alive on the failure path, so `-E` only closes after the
+keypress; on the happy path beans exits and `-E` closes the popup.
 
-**Why this matches the requirements**: happy path runs `beans tui` (req 4); failure shows
-CWD used + `beans check` output and pauses (req 3); only failure pauses (req 1/4).
+**Why this matches the requirements**: happy path runs `beans tui` and Escape navigates
+within it (req 4); failure shows CWD + `beans check` output and pauses via `read` (req 3);
+only failure pauses (req 1/4); `-E` closes on actual exit.
 
 ## Risks / Trade-offs
 

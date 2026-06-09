@@ -103,7 +103,7 @@ inputs,
         bind s choose-tree -sZ -O name
         bind S popup -E smg
         bind T popup -E -w 80% -h 80% 'tj --columns --sort-activity --no-sound --no-notify --picker'
-        bind B popup -d '#{pane_current_path}' -w 90% -h 90% 'beans-tui-popup'
+        bind B popup -E -d '#{pane_current_path}' -w 90% -h 90% 'beans-tui-popup'
         bind P display-popup -d '#{pane_current_path}'
         bind O run-shell 'nohup open #{pane_current_path} >/dev/null 2>&1 &'
 
