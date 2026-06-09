@@ -21,8 +21,12 @@ Related task: [mipnix-tn0f](.beans/mipnix-tn0f--add-tmux-shortcut-which-shows-la
   - **failure path** — if the project can't be resolved / `beans tui` exits non-zero, it
     shows the CWD used and the `beans check` output, then waits for a keypress before
     closing ("Press any key to close").
-- Drop `-E` from the bind so the script controls the popup lifecycle (close on clean quit,
-  hold open on failure).
+- Keep `-E` on the bind, and add `-d '#{pane_current_path}'`. `-E` closes the popup when the
+  command exits (the `read` pause keeps it open on failure); crucially, WITHOUT `-E` tmux
+  grabs `Escape`/`C-c` to dismiss the popup, hijacking Escape from `beans tui` (where Escape
+  is back-navigation). `-E` lets Escape pass through to beans, matching the working `bind T`.
+  `-d '#{pane_current_path}'` makes the popup use the active pane's directory (the popup was
+  landing in the session start dir, the cause of the original flash-close).
 
 Note: `beans check` exits 0 even in a non-project dir (it prints an error but returns 0),
 so the preflight gates on the project marker (`.beans.yml` searched upward), not on

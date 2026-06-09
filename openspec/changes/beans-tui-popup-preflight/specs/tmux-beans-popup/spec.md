@@ -21,6 +21,11 @@ A tmux keybinding `prefix + B` SHALL open a large `display-popup` that launches 
 - **WHEN** the user quits `beans tui` normally (exit code 0)
 - **THEN** the popup SHALL close automatically without requiring a keypress
 
+#### Scenario: Escape is passed to beans, not grabbed by tmux
+
+- **WHEN** the user presses `Escape` while `beans tui` is running in the popup (e.g. to back out of a filter or detail view)
+- **THEN** `Escape` SHALL be delivered to `beans tui` (for back-navigation) and SHALL NOT cause tmux to dismiss the popup; the popup closes only when `beans tui` itself exits (the bind uses `-E`, which leaves key handling to the running command rather than tmux's default Escape/C-c dismissal)
+
 #### Scenario: no beans project — verbose failure, hold open
 
 - **WHEN** the user presses `prefix + B` from a directory with no `.beans.yml` at or above it
