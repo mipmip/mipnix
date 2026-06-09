@@ -3,7 +3,49 @@ inputs,
 ...
 }:
 {
-  flake.modules.homeManager.pim-tmux = { pkgs, config, ... }: {
+  flake.modules.homeManager.pim-tmux = { pkgs, config, ... }:
+    let
+      # Launcher for the `prefix + B` tmux popup. Preflights for a beans project
+      # (.beans.yml searched upward — NOT `beans check`'s exit code, which is 0
+      # even with no project) and, on failure, shows the CWD + `beans check`
+      # output and waits for a keypress instead of letting the -E popup silently
+      # flash-close. Happy path runs `beans tui` and closes on a clean quit.
+      beans-tui-popup = pkgs.writeShellScriptBin "beans-tui-popup" ''
+        echo "CWD: ''$PWD"
+
+        # Search upward for the beans project marker (.beans.yml).
+        find_project() {
+          d="''$PWD"
+          while [ "''$d" != "/" ]; do
+            [ -f "''$d/.beans.yml" ] && return 0
+            d="''$(dirname "''$d")"
+          done
+          return 1
+        }
+
+        if find_project; then
+          beans tui
+          rc=''$?
+          if [ "''$rc" -ne 0 ]; then
+            echo
+            echo "beans tui exited with code ''$rc"
+            echo "---- beans check ----"
+            beans check
+            echo
+            echo "Press any key to close"
+            read -rn1
+          fi
+        else
+          echo "No beans project (.beans.yml) found at or above this directory."
+          echo "---- beans check ----"
+          beans check
+          echo
+          echo "Press any key to close"
+          read -rn1
+        fi
+      '';
+    in
+    {
     home.file = {
       ".tmux" = {
         source = ./tmux;
@@ -13,6 +55,7 @@ inputs,
 
     home.packages = with pkgs; [
       urlscan
+      beans-tui-popup
     ];
 
     programs.tmux = {
@@ -60,7 +103,7 @@ inputs,
         bind s choose-tree -sZ -O name
         bind S popup -E smg
         bind T popup -E -w 80% -h 80% 'tj --columns --sort-activity --no-sound --no-notify --picker'
-        bind B popup -E -w 90% -h 90% 'beans tui'
+        bind B popup -w 90% -h 90% 'beans-tui-popup'
         bind P display-popup -d '#{pane_current_path}'
         bind O run-shell 'nohup open #{pane_current_path} >/dev/null 2>&1 &'
 
