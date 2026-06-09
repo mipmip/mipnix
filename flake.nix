@@ -2,19 +2,20 @@
 
   inputs = {
 
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05"; # GNOME 50
-    nixpkgs-old-stable.url = "github:NixOS/nixpkgs/nixos-25.11"; # GNOME 49
-    nixpkgs-mama.url = "github:NixOS/nixpkgs/nixos-25.11"; # GNOME 49
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    nixpkgs-2511.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs-2505.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs-mama.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs-inkscape13.url = "github:leiserfg/nixpkgs?ref=staging";
+    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    unstable-hyprland.url = "github:NixOS/nixpkgs/nixos-unstable";
+
 
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
-    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    unstable-hyprland.url = "github:NixOS/nixpkgs/nixos-unstable";
-
     nixos-boot-grannyos.url = "github:mipmip/nixos-boot-grannyos";
 
-    nixpkgs-inkscape13.url = "github:leiserfg/nixpkgs?ref=staging";
 
     darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
@@ -38,7 +39,6 @@
 
     hm-ricing-mode.url = "github:mipmip/hm-ricing-mode";
     hm-ricing-mode.inputs.nixpkgs.follows = "nixpkgs-2505";
-    nixpkgs-2505.url = "github:NixOS/nixpkgs/nixos-25.05";
 
     agenix.url = "github:ryantm/agenix";
 
