@@ -667,11 +667,11 @@
         "nixpkgs": "nixpkgs_10"
       },
       "locked": {
-        "lastModified": 1780416327,
-        "narHash": "sha256-tJ+zkdbP5QLLPY1qrOvG1GjT7pyjgyCec54RG3f/7EI=",
+        "lastModified": 1781538711,
+        "narHash": "sha256-146+OJ7OxGbnwKtQUZV7LyzYgidjtdDxDopi4wHTDbA=",
         "owner": "mipmip",
         "repo": "mip.rs",
-        "rev": "b158dc278565e8a3b7688b8a5f90b728dfc40a9f",
+        "rev": "ba3c820b9c7d4805e2fe152e05832fad4d5340ca",
         "type": "github"
       },
       "original": {

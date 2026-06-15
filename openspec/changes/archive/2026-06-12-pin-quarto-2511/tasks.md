@@ -8,7 +8,7 @@
 
 - [x] 2.1 Built `.#nixosConfigurations.lego2.pkgs.quarto` (real build, exit 0).
 - [x] 2.2 Verified `quarto --version` → `1.7.34` (not 1.9.37); closure includes `r-reticulate-1.43.0` and Python `numpy`/`matplotlib`/`plotly`/`pandas` (+tabulate) from the 25.11 stack.
-- [ ] 2.3 Run the workflow that broke under 1.9.x and confirm it works again on 1.7.34 (live, post-deploy).
+- [x] 2.3 Run the workflow that broke under 1.9.x and confirm it works again on 1.7.34 (live, post-deploy).
 - [x] 2.4 Confirmed consumers reference `quarto` unchanged (`tex.nix:7`); they get the pinned build with no edits.
 
 ## 3. Document revert
