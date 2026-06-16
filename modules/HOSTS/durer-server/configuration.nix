@@ -27,6 +27,23 @@ in
   flake.modules.nixos.durer = { config, pkgs, ... } : {
     system.stateVersion = "25.11";
 
+    # --- Remote deployment (deploy-rs builds on lego2, copies the closure) ---
+    # deploy-rs pushes via ssh-ng into durer's nix daemon. The closure is built
+    # on lego2 and is unsigned; durer's default trusted-users is `root` only, so
+    # `pim` would be rejected with "lacks a signature by a trusted key". Trusting
+    # pim lets the push land. See modules/HOSTS/durer-server/deploy.nix.
+    nix.settings.trusted-users = [ "root" "pim" ];
+
+    # durer is a 30 GB VM. Bound the disk by capping retained generations and
+    # collecting old ones on a timer. GC must NOT run as part of a deploy: the
+    # previous generation has to survive deploy-rs's magic-rollback window.
+    boot.loader.grub.configurationLimit = 10;
+    nix.gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 14d";
+    };
+
     # --- ACME / Let's Encrypt ---
     security.acme = {
       acceptTerms = true;
@@ -98,22 +115,22 @@ in
       file = ../../../secrets/voorzetramenshop-env.age;
     };
 
-#    services.voorzetramenshop = {
-#      enable = true;
-#      domain = "mintshop.nuremberg.pimsnel.com";
-#      port = 3001;
-#      maintenanceMode = true;
-#      environmentFile = config.age.secrets."voorzetramenshop-env".path;
-#      # package: left at default (the flake's voorzetramenshop package)
-#    };
+    services.voorzetramenshop = {
+      enable = true;
+      domain = "mintshop.nuremberg.pimsnel.com";
+      port = 3001;
+      maintenanceMode = true;
+      environmentFile = config.age.secrets."voorzetramenshop-env".path;
+      # package: left at default (the flake's voorzetramenshop package)
+    };
 
-    imports = with inputs.self.modules.nixos; [
+    imports = (with inputs.self.modules.nixos; [
       channel-default
       system-default
       role-server
       role-nebula-node
-
-      #inputs.voorzetramenshop.nixosModules.default
+    ]) ++ [
+      inputs.voorzetramenshop.nixosModules.default
     ];
   };
 }

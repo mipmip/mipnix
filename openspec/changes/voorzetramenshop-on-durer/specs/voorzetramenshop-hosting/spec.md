@@ -82,17 +82,57 @@ The voorzetramenshop module's nginx vhost and ACME settings SHALL compose with d
 - **WHEN** ACME provisions a certificate for `mintshop.nuremberg.pimsnel.com`
 - **THEN** an HTTP-01 challenge succeeds against the per-host FQDN (no wildcard/DNS-01 certificate is required)
 
+### Requirement: Build on lego2 and deploy the closure to durer
+
+Because durer cannot hold the shop's multi-GB build footprint, the durer system closure SHALL be built on lego2 and copied to durer; durer SHALL NOT build the voorzetramenshop package locally.
+
+#### Scenario: Build happens off-target
+
+- **WHEN** a deploy is performed
+- **THEN** the `nixosConfigurations.durer` closure is built on lego2 (native x86_64-linux)
+- **AND** only the realised closure is transferred to durer via `nix copy` (build intermediates never land on durer)
+
+#### Scenario: durer accepts the pushed closure
+
+- **WHEN** deploy-rs pushes the lego2-built (unsigned) closure to durer over `ssh-ng`
+- **THEN** durer's `nix.settings.trusted-users` includes `pim`, so the unsigned paths are accepted
+- **AND** the push does not fail with `lacks a signature by a trusted key`
+
+#### Scenario: durer bounds its disk without losing rollback
+
+- **WHEN** durer accumulates system generations over repeated deploys
+- **THEN** a GC policy (generation cap and/or periodic `nix.gc`) prunes old generations
+- **AND** the GC does not run as part of a deploy, so the previous generation remains available for rollback during the magic-rollback confirmation window
+
+### Requirement: deploy-rs node and RUNME.d wrapper
+
+The flake SHALL define a deploy-rs node for durer, and a `RUNME.d/` command SHALL wrap the deploy so it runs from the build host against a named remote.
+
+#### Scenario: deploy-rs node is declared
+
+- **WHEN** the flake is evaluated
+- **THEN** `flake.deploy.nodes.durer` exists with `hostname = "192.168.100.12"`, `sshUser = "pim"`, and `profiles.system.path` referencing `deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.durer`
+- **AND** durer's host configuration is otherwise unchanged except for the `trusted-users` and GC additions
+
+#### Scenario: deploy via the wrapper
+
+- **WHEN** the maintainer runs `rme deploy_remote durer` on lego2 with the SSH agent loaded
+- **THEN** the wrapper checks for untracked files, drives deploy-rs to build on lego2, copy the closure, and activate on durer over passwordless sudo
+- **AND** on success it commits and tags via `git_sync_machine`; on failure deploy-rs has auto-rolled-back durer and the wrapper exits non-zero
+
 ### Requirement: Version-bump deploy and rollback workflow
 
-Deploying a new version SHALL be a documented two-step operation that updates the flake input as the user (with agent auth available) before the privileged rebuild, and rollback SHALL be possible without redeploying code.
+Deploying a new version SHALL update the flake input as the user (with agent auth available) before deploying, and rollback SHALL be possible without redeploying code.
 
 #### Scenario: Deploy a new version
 
-- **WHEN** the maintainer runs `nix flake update voorzetramenshop` as the user, then `rme up_machine`
-- **THEN** the input fetch happens during the user-run update (agent available) and writes `flake.lock`
-- **AND** the subsequent sudo rebuild reads the already-locked store path without needing the SSH agent
+- **WHEN** the maintainer runs `nix flake update voorzetramenshop` as the user, then `rme deploy_remote durer`
+- **THEN** the input fetch happens during the user-run update on lego2 (agent native) and writes `flake.lock`
+- **AND** deploy-rs evaluates the already-locked store path, building on lego2 without needing durer to fetch the private input
 
 #### Scenario: Roll back to the previous version
 
-- **WHEN** a deployed version misbehaves
-- **THEN** the maintainer can revert the `flake.lock` bump (git) and rebuild, or run `nixos-rebuild --rollback`
+- **WHEN** a deployed version is unreachable after activation
+- **THEN** deploy-rs's magic rollback automatically reverts durer to the previous generation
+- **WHEN** a deployed version is reachable but misbehaving
+- **THEN** the maintainer can revert the `flake.lock` bump (git) and re-deploy, or run `nixos-rebuild --rollback` on durer

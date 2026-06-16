@@ -62,11 +62,8 @@
     fred.url = "github:linden-project/fred";
     aoe.url = "github:njbrake/agent-of-empires";
 
-#    voorzetramenshop.url = "git+ssh://git@github.com/mintglasinlood/voorzetramenshop.git";
-#    voorzetramenshop.inputs.nixpkgs.follows = "nixpkgs";
-
-    #    noctalia.url = "github:noctalia-dev/noctalia-shell";
-    #    noctalia.inputs.nixpkgs.follows = "unstable";
+    voorzetramenshop.url = "git+ssh://git@github.com/mintglasinlood/voorzetramenshop.git";
+    voorzetramenshop.inputs.nixpkgs.follows = "nixpkgs";
 
     nixpkgs-pine64.url = "nixpkgs/dfd82985c273aac6eced03625f454b334daae2e8";
     mobile-nixos = {
@@ -87,6 +84,9 @@
 
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
+
+    deploy-rs.url = "github:serokell/deploy-rs";
+    deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
 
   };
 

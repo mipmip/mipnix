@@ -1,11 +1,11 @@
 ---
 # mipnix-nbpu
 title: configure durer with a smart deployment tool
-status: draft
+status: in-progress
 type: task
 priority: normal
 created_at: 2026-05-04T20:24:59Z
-updated_at: 2026-06-05T14:38:38Z
+updated_at: 2026-06-16T19:30:00Z
 parent: mipnix-rxxc
 ---
 
