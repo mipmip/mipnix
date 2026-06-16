@@ -9,6 +9,7 @@
         inter
         rubik
         lato
+        cinzel
         noto-fonts
         noto-fonts-color-emoji
         #fira-code-nerdfont
