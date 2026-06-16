@@ -2,10 +2,10 @@
 
   flake.modules.nixos.desktop-apps-communication = { config, pkgs, ... }: {
     environment.systemPackages = with pkgs; [
-      pkgs.slack
+      slack
 
 
-      pkgs.signal-desktop
+      signal-desktop
       #pkgs.unstable.flare-signal
 
       #zoom-us
