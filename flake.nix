@@ -62,6 +62,9 @@
     fred.url = "github:linden-project/fred";
     aoe.url = "github:njbrake/agent-of-empires";
 
+#    voorzetramenshop.url = "git+ssh://git@github.com/mintglasinlood/voorzetramenshop.git";
+#    voorzetramenshop.inputs.nixpkgs.follows = "nixpkgs";
+
     #    noctalia.url = "github:noctalia-dev/noctalia-shell";
     #    noctalia.inputs.nixpkgs.follows = "unstable";
 

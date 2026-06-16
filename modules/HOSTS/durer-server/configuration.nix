@@ -81,19 +81,39 @@ in
       settings.global = {
         server_name = "nuremberg.pimsnel.com";
         port = [ 6167 ];
-        allow_registration = true;
-        registration_token = "tmpregister2026";
+        allow_registration = false;
+        #registration_token = "tmpregister2026";
         allow_encryption = true;
         allow_federation = false;
         trusted_servers = [];
       };
     };
 
+    # --- voorzetramenshop webshop ---
+    # Secret decrypted by durer's host key at activation; systemd reads it as
+    # root via EnvironmentFile= before dropping to the service's DynamicUser,
+    # so agenix defaults (root:root, 0400) suffice for both the app and the
+    # migrate oneshot. See secrets/secrets.nix for recipients [ pim durer ].
+    age.secrets."voorzetramenshop-env" = {
+      file = ../../../secrets/voorzetramenshop-env.age;
+    };
+
+#    services.voorzetramenshop = {
+#      enable = true;
+#      domain = "mintshop.nuremberg.pimsnel.com";
+#      port = 3001;
+#      maintenanceMode = true;
+#      environmentFile = config.age.secrets."voorzetramenshop-env".path;
+#      # package: left at default (the flake's voorzetramenshop package)
+#    };
+
     imports = with inputs.self.modules.nixos; [
       channel-default
       system-default
       role-server
       role-nebula-node
+
+      #inputs.voorzetramenshop.nixosModules.default
     ];
   };
 }
