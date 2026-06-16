@@ -28,7 +28,6 @@ inputs,
 
           lin = "vim -c LinnyStart";
 
-          tn = "tmux new -d -s";
           t = lib.mkDefault "tmux a || smug start lobby && smug start sudo && smug start nixos && smug start tekst";
           tmxa = "tmux unbind C-a && tmux set-option -g prefix C-a && tmux bind-key C-a send-prefix";
           tmxb = "tmux unbind C-b && tmux set-option -g prefix C-b && tmux bind-key C-b send-prefix";
