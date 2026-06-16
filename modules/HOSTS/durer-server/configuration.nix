@@ -26,6 +26,7 @@ in
 
   flake.modules.nixos.durer = { config, pkgs, ... } : {
     system.stateVersion = "25.11";
+    nix.settings.trusted-users = [ "root" "pim" ];
 
     # --- ACME / Let's Encrypt ---
     security.acme = {
