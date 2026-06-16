@@ -26,7 +26,6 @@ in
 
   flake.modules.nixos.durer = { config, pkgs, ... } : {
     system.stateVersion = "25.11";
-    nix.settings.trusted-users = [ "root" "pim" ];
 
     # --- Remote deployment (deploy-rs builds on lego2, copies the closure) ---
     # deploy-rs pushes via ssh-ng into durer's nix daemon. The closure is built
