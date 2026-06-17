@@ -26,7 +26,8 @@
     # sets GDK_PIXBUF_MODULE_FILE via environment.sessionVariables (/etc/set-
     # environment), which the GDM session — and thus every GTK app launched from
     # Hyprland — inherits.
-    services.xserver.gdk-pixbuf.modulePackages = [ pkgs.librsvg ];
+    #services.xserver.gdk-pixbuf.modulePackages = [ pkgs.librsvg ];
+    programs.gdk-pixbuf.modulePackages = [pkgs.librsvg];
 
     #services.displayManager.sessionPackages = [ pkgs.upstream-hyprland.hyprland ];
 
