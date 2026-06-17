@@ -39,6 +39,7 @@
 
       # TERRAFORM
       terraform-docs
+      opentofu
       terrascan
       terraformer
       tflint

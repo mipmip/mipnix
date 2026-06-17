@@ -96,7 +96,6 @@
       imports = [
         inputs.flake-parts.flakeModules.modules
         inputs.home-manager.flakeModules.home-manager
-        #inputs.hyprland.nixosModules.default
         (inputs.import-tree ./modules)
       ];
 
