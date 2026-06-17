@@ -1,6 +1,17 @@
 { inputs, ... } : {
-  flake.modules.nixos.dev-infra-iac = { config, pkgs, ... }: {
+  flake.modules.nixos.dev-infra-iac = { config, pkgs, ... }:
+    let
+      # Global `terraform` binary that transparently forwards to tofu.
+      # Lives in PATH so it works in every shell (not a shell alias).
+      terraform = pkgs.writeShellScriptBin "terraform" ''
+        exec ${pkgs.opentofu}/bin/tofu "''$@"
+      '';
+    in
+    {
     environment.systemPackages = with pkgs; [
+
+      terraform
+
 
       # DIAGRAM
       #    drawio
@@ -45,7 +56,6 @@
       tflint
 
       #terraform
-      tfswitch
 
       notify # Notify allows sending the output from any tool to Slack, Discord and Telegram
       ssl-cert-check
