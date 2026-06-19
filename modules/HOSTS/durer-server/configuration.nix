@@ -109,7 +109,7 @@ in
 
     services.voorzetramenshop = {
       enable = true;
-      domain = "mintshop.nuremberg.pimsnel.com";
+      domain = "studio-mint.shop";
       port = 3001;
       maintenanceMode = true;
       environmentFile = config.age.secrets."voorzetramenshop-env".path;
