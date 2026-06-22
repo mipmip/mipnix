@@ -90,6 +90,8 @@ in
     harry
   ];
 
+  "umami-env.age".publicKeys = [ pim durer ];
+
   "pimprived.age".publicKeys = [ pim ];
 
   "id_ed25519_remotebuild.age".publicKeys = [ pim ] ++ systems;

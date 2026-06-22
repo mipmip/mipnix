@@ -17,13 +17,14 @@
           later development.
 
           We will use beans as internal ticket system for milestones and epics.
-          Run `beans prime` to undestand how it works. Claude Code should
-          administer the milestones and epics. Milestone title should start
-          with an incremental two digit number:starting with `01`
+          Run `beans init` to setup and `beans prime` to undestand how it
+          works. Claude Code should administer the milestones and epics.
+          Milestone title should start with an incremental two digit
+          number:starting with `01`
 
           We will use OpenSpec for creating proposals and keeping track of all
           tasks within an epic. OpenSpec needs to be fully setup before the
-          project can take off.
+          project can take off. start with `openspec init.
 
           We need thourough testing and e2e testcases to prove our PoC is
           working as it should.
@@ -32,7 +33,8 @@
           not use flake-utils but plain nix to setup supported architectures.
 
           We will use jj for version control. Pim will give you the url of the
-          remote repository.
+          remote repository. You should commit after every archival of a
+          openspec change. Commit as Pim Snel, no self promotion.
         '';
 
         "mip:flaker" = ''

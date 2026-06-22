@@ -116,6 +116,59 @@ in
       # package: left at default (the flake's voorzetramenshop package)
     };
 
+    # --- umami analytics (migrated as-is from AWS; see MIGRATION.md) ---
+    # Runs the SAME container image as the old AWS host plus its OWN
+    # PostgreSQL 14 container. We do NOT reuse durer's host Postgres (v17,
+    # serving Matrix/webshop): umami v2.5.0 targets PG14 and its DB migrations
+    # are known-broken, so a PG14->PG17 restore is not an as-is move. The two
+    # containers share a private docker network "umami-net"; the DB is never
+    # published to the host, so there is no clash with host PG17 on :5432.
+    virtualisation.docker.enable = true;
+
+    # One env file feeds both containers:
+    #   umami-db reads POSTGRES_USER / POSTGRES_PASSWORD / POSTGRES_DB
+    #   umami    reads DATABASE_URL / HASH_SALT / DISABLE_* flags
+    # HASH_SALT is reused verbatim from the AWS container (keys sessions/data).
+    age.secrets."umami-env" = {
+      file = ../../../secrets/umami-env.age;
+    };
+
+    virtualisation.oci-containers.containers = {
+      umami-db = {
+        image = "postgres:14-alpine";
+        environmentFiles = [ config.age.secrets."umami-env".path ];
+        volumes = [ "/data/postgresql:/var/lib/postgresql/data" ];
+        extraOptions = [ "--network=umami-net" ];
+      };
+      umami = {
+        image = "ghcr.io/umami-software/umami:postgresql-v2.5.0";
+        environmentFiles = [ config.age.secrets."umami-env".path ];
+        dependsOn = [ "umami-db" ];
+        ports = [ "127.0.0.1:3002:3000" ];
+        extraOptions = [ "--network=umami-net" ];
+      };
+    };
+
+    # Create the private docker network before either container starts.
+    systemd.services.init-umami-net = {
+      description = "create umami-net docker network";
+      after = [ "docker.service" ];
+      requires = [ "docker.service" ];
+      wantedBy = [ "docker-umami-db.service" "docker-umami.service" ];
+      before = [ "docker-umami-db.service" "docker-umami.service" ];
+      serviceConfig.Type = "oneshot";
+      script = ''
+        ${pkgs.docker}/bin/docker network inspect umami-net >/dev/null 2>&1 \
+          || ${pkgs.docker}/bin/docker network create umami-net
+      '';
+    };
+
+    services.nginx.virtualHosts."umami.pimsnel.com" = {
+      enableACME = true;
+      forceSSL = true;
+      locations."/".proxyPass = "http://127.0.0.1:3002";
+    };
+
     imports = (with inputs.self.modules.nixos; [
       channel-default
       system-default

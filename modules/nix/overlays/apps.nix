@@ -53,5 +53,26 @@
             tabulate
           ];
         };
+
+        # Karere (WhatsApp client) is a WebKitGTK app whose internal sandbox
+        # (bwrap + xdg-dbus-proxy) fails to launch on this NixOS setup with:
+        #   "Failed to fully launch dbus-proxy: Child process exited with code 1"
+        # Disabling WebKit's process sandbox is the standard workaround. We bake
+        # the env var into both the CLI wrapper and the .desktop Exec line so it
+        # also applies when launched from the app launcher — not just `karere`
+        # from a shell. Trade-off: this turns off WebKit subprocess isolation;
+        # acceptable for a trusted personal WhatsApp client.
+        karere = prev.karere.overrideAttrs (old: {
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ prev.makeWrapper ];
+          postFixup = (old.postFixup or "") + ''
+            wrapProgram $out/bin/karere \
+              --set WEBKIT_DISABLE_SANDBOX_THIS_IS_DANGEROUS 1
+
+            for desktop in $out/share/applications/*.desktop; do
+              substituteInPlace "$desktop" \
+                --replace-quiet 'Exec=karere' 'Exec=env WEBKIT_DISABLE_SANDBOX_THIS_IS_DANGEROUS=1 karere'
+            done
+          '';
+        });
       });
 }

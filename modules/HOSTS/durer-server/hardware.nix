@@ -15,6 +15,16 @@ inputs,
      device = "/dev/disk/by-label/boot";
      fsType = "ext4";
    };
+
+   # Dedicated Hetzner Volume for the umami PostgreSQL 14 container's data.
+   # Created/attached via the Hetzner Cloud console (see MIGRATION.md Phase 0),
+   # formatted ext4 with label "umami-data". nofail so the host still boots if
+   # the volume is ever detached.
+   fileSystems."/data" = {
+     device = "/dev/disk/by-label/umami-data";
+     fsType = "ext4";
+     options = [ "nofail" ];
+   };
    swapDevices = [
      {
        device = "/dev/disk/by-label/swap";
