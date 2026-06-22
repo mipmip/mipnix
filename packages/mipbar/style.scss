@@ -38,7 +38,7 @@ window.Bar {
     .WorkspaceButton {
       min-width: 22px;
       min-height: 22px;
-      padding: 1px 6px;
+      padding: 4px 6px 0px 6px;
       border-radius: 6px;
       margin: 1px;
 
@@ -54,6 +54,15 @@ window.Bar {
       .AppIcon {
         -gtk-icon-size: 14px;
         margin-left: 2px;
+      }
+
+      // Per-workspace monitor indicator. The background colour is set inline
+      // per button (the bound monitor's accent); this only fixes the geometry.
+      .WorkspaceUnderline {
+        min-width: 14px;
+        min-height: 2.5px;
+        border-radius: 2px;
+        margin-bottom: -2px;
       }
     }
   }
@@ -117,7 +126,9 @@ window.Bar {
     }
 
     .SensorValue {
-      font-family: monospace;
+      // Name a concrete installed font; the generic `monospace` alias does not
+      // resolve in the GDM-launched Hyprland session (Pango "file not found").
+      font-family: "Ubuntu Mono", monospace;
       font-size: 0.9em;
     }
 
@@ -268,5 +279,64 @@ window.Bar {
 
   separator {
     margin: 4px 0;
+  }
+}
+
+// Screen picker popover. Rendered as a top-level GTK surface, so these rules
+// live outside `window.Bar`. Accent-driven colours (row border, chips, CURRENT
+// pill, selected tile) are injected inline per monitor in ScreenPicker.tsx;
+// mode-dependent neutrals (bg/border/text/muted) come from theme.ts.
+.ScreenPicker {
+  > contents {
+    padding: 6px;
+    border-radius: 14px;
+  }
+
+  .ScreenPickerHeader {
+    padding: 8px 9px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .ScreenRow {
+    padding: 9px 12px;
+    margin-bottom: 5px;
+    border-radius: 11px;
+    border: 1.5px solid transparent;
+
+    .DeviceImage {
+      border-radius: 6px;
+    }
+
+    .ScreenModel {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .ScreenSpec {
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .ConnectorTag {
+      font-family: "Ubuntu Mono", monospace;
+      font-size: 10.5px;
+      font-weight: 600;
+    }
+
+    .PortChip {
+      padding: 3px 8px 3px 6px;
+      border-radius: 999px;
+      font-size: 10.5px;
+      font-weight: 600;
+    }
+
+    .CurrentPill {
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 8.5px;
+      font-weight: 700;
+    }
   }
 }

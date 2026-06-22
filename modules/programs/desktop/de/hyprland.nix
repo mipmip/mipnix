@@ -31,14 +31,22 @@
 
     #services.displayManager.sessionPackages = [ pkgs.upstream-hyprland.hyprland ];
 
-    #    xdg.portal = {
-    #      enable = true;
-    #      wlr.enable = true;
-    #      extraPortals = [
-    #        pkgs.xdg-desktop-portal-hyprland
-    #      ];
-    #    };
+    # Portal backend routing for this Hyprland session. xdg.portal.enable and the
+    # gtk/hyprland backends are configured elsewhere; here we only fix routing.
     #
+    # Under XDG_CURRENT_DESKTOP=Hyprland the Settings interface
+    # (org.freedesktop.impl.portal.Settings — color-scheme, accent, fonts) was
+    # routing to the hyprland backend, which does NOT implement it. The gtk
+    # backend implements Settings but its .portal file is tagged UseIn=gnome, so
+    # under Hyprland nothing served the request → GDK logged
+    # "Failed to read portal settings: AccessDenied ... /proc/<pid>/root".
+    # Explicitly send Settings to gtk; keep hyprland first for everything else
+    # (ScreenCast/Screenshot) with gtk as the general fallback.
+    xdg.portal.config.Hyprland = {
+      default = [ "hyprland" "gtk" ];
+      "org.freedesktop.impl.portal.Settings" = [ "gtk" ];
+    };
+
     #    services.input-remapper = {
     #      enable = true;
     #    };

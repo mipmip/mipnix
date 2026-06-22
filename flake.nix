@@ -176,6 +176,7 @@
             nativeBuildInputs = with pkgs-unstable; [
               wrapGAppsHook3
               gobject-introspection
+              librsvg # rsvg-convert: rasterize device SVGs to PNG at build time
               inputs.ags.packages.${system}.default
             ];
 
@@ -187,6 +188,13 @@
               mkdir -p $out/bin
               mkdir -p $out/share
               cp -r * $out/share
+
+              # Rasterize device illustrations to PNG so the runtime never needs
+              # an SVG pixbuf loader. deviceImage() loads these from $SRC/assets.
+              for svg in $out/share/assets/*.svg; do
+                rsvg-convert -w 116 -h 84 "$svg" -o "''${svg%.svg}.png"
+              done
+
               ags bundle app.ts $out/bin/mipbar -d "SRC='$out/share'"
 
               runHook postInstall
