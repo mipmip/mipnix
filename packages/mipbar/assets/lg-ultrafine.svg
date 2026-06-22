@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Stylized LG UltraFine monitor illustration. Drawn, not a photo. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="116" height="84" viewBox="0 0 116 84">
+  <!-- Stand: thin neck + flat foot (UltraFine-style) -->
+  <g>
+    <rect x="55" y="58" width="6" height="14" rx="1.5" fill="#3a3f47"/>
+    <rect x="42" y="71" width="32" height="4.5" rx="2.2" fill="#2b2f35"/>
+    <rect x="44" y="70" width="28" height="2" rx="1" fill="#4a4f57"/>
+  </g>
+
+  <!-- Panel: very thin bezel, near edge-to-edge screen -->
+  <g>
+    <rect x="10" y="6" width="96" height="54" rx="4" fill="#15181d"/>
+    <rect x="10" y="6" width="96" height="54" rx="4" fill="none" stroke="#4a4f57" stroke-width="1"/>
+    <!-- screen -->
+    <rect x="13" y="9" width="90" height="46" rx="2" fill="#0c0f14"/>
+    <!-- cool UltraFine sheen -->
+    <rect x="13" y="9" width="90" height="20" rx="2" fill="#7fb6ff" opacity="0.06"/>
+    <!-- bottom chin + LG mark -->
+    <rect x="13" y="55" width="90" height="3" fill="#1a1d22"/>
+    <circle cx="58" cy="56.5" r="0.9" fill="#6b7079"/>
+  </g>
+</svg>

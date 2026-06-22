@@ -26,6 +26,27 @@ window.Bar .StatusIcon.Screenshare {
 window.Bar .StatusIcon.Camera {
   color: #ff4444;
 }
+.ScreenPicker > contents {
+  background: #18181e;
+  border: 1px solid #323238;
+  box-shadow: 0 18px 44px -10px rgba(0, 0, 0, 0.6);
+}
+.ScreenPicker .ScreenPickerHeader {
+  color: #85858c;
+}
+.ScreenPicker .ScreenRow {
+  background: #242328;
+  border-color: #323238;
+}
+.ScreenPicker .ScreenModel {
+  color: #f1f1f4;
+}
+.ScreenPicker .ScreenSpec {
+  color: #85858c;
+}
+.ScreenPicker .ConnectorTag {
+  color: #85858c;
+}
 `
 
 const light = `
@@ -58,6 +79,27 @@ window.Bar .StatusIcon.Screenshare {
 }
 window.Bar .StatusIcon.Camera {
   color: #cc0000;
+}
+.ScreenPicker > contents {
+  background: #ffffff;
+  border: 1px solid #ece8e0;
+  box-shadow: 0 18px 44px -10px rgba(20, 20, 40, 0.38);
+}
+.ScreenPicker .ScreenPickerHeader {
+  color: #a7a299;
+}
+.ScreenPicker .ScreenRow {
+  background: #f6f6f9;
+  border-color: #e7e7ea;
+}
+.ScreenPicker .ScreenModel {
+  color: #2d2d35;
+}
+.ScreenPicker .ScreenSpec {
+  color: #8a857c;
+}
+.ScreenPicker .ConnectorTag {
+  color: #b3aea4;
 }
 `
 

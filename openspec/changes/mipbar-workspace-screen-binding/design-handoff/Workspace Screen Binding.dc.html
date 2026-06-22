@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  html, body { margin: 0; padding: 0; }
+  * { box-sizing: border-box; }
+</style>
+</helmet>
+<div style="width: max-content; min-width: 100%; min-height: 100vh; box-sizing: border-box; padding: 44px; background: #e7e5df; font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;">
+
+  <div style="max-width: 1224px; margin: 0 0 36px;">
+    <div style="font: 700 12px ui-sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #9a958c;">Hyprland workspace bar · new feature</div>
+    <h1 style="font-weight: 700; font-size: 30px; letter-spacing: -.02em; color: #2a2722; margin: 9px 0 7px;">Workspace → screen binding</h1>
+    <p style="font: 400 15px/1.55 ui-sans-serif; color: #6b665d; margin: 0; max-width: 760px;">Each workspace gets a thin underline in the colour of the monitor it's bound to. Right-click a workspace to open the screen picker — each connected display is shown with a product image of the device, its model, resolution, refresh rate and connection port.</p>
+    <div style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
+      <sc-for list="{{ legend }}" as="mon" hint-placeholder-count="3">
+        <div style="display: flex; align-items: center; gap: 9px; padding: 7px 14px 7px 11px; background: #fff; border: 1px solid #e4e0d8; border-radius: 999px;">
+          <span style="width: 10px; height: 10px; border-radius: 50%; background: {{ mon.accent }};"></span>
+          <span style="font: 700 13px ui-sans-serif; color: #2a2722;">{{ mon.name }}</span>
+          <span style="font: 500 12px ui-sans-serif; color: #a7a299;">{{ mon.model }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display: flex; gap: 24px; align-items: flex-start;">
+
+    <!-- LIGHT -->
+    <div style="flex: none; width: 600px;">
+      <div style="font: 600 11px ui-sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #9a958c; margin-bottom: 8px;">Light</div>
+      <div style="position: relative; height: 364px; border-radius: 4px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.1); background: linear-gradient(135deg, oklch(0.9 0.05 92) 0%, oklch(0.83 0.075 150) 48%, oklch(0.82 0.07 226) 100%);">
+        <div style="position: absolute; top: 24px; left: 24px;">
+          <div style="display: flex; align-items: stretch; gap: 2px; padding: 5px; border-radius: 13px; background: oklch(0.99 0.004 286 / 0.46); border: 1px solid oklch(1 0 0 / 0.55); box-shadow: 0 8px 30px -8px rgba(20,20,40,.28), inset 0 1px 0 oklch(1 0 0 / .55); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); width: max-content;">
+            <div style="display: grid; grid-template-columns: repeat(3,3px); gap: 3px; align-content: center; padding: 0 9px; align-self: center;">
+              <sc-for list="{{ dotsLight }}" as="d" hint-placeholder-count="9"><span style="width: 3px; height: 3px; border-radius: 1px; background: {{ d }};"></span></sc-for>
+            </div>
+            <sc-for list="{{ barLight }}" as="ws" hint-placeholder-count="10">
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 5px 9px; border-radius: 9px; background: {{ ws.pillBg }};">
+                <div style="display: flex; align-items: center; gap: 5px; min-height: 17px;">
+                  <sc-if value="{{ ws.icon }}" hint-placeholder-val="{{ false }}"><span style="display: flex; align-items: center;">{{ ws.icon }}</span></sc-if>
+                  <span style="font: 600 13px ui-sans-serif; color: {{ ws.numColor }};">{{ ws.num }}</span>
+                </div>
+                <div style="width: 14px; height: 2.5px; border-radius: 2px; background: {{ ws.accent }};"></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="position: absolute; top: 84px; left: 150px; width: 320px; z-index: 5;">
+          <div style="position: absolute; top: -5px; left: 128px; width: 10px; height: 10px; background: #fff; transform: rotate(45deg); border-top: 1px solid #ece8e0; border-left: 1px solid #ece8e0;"></div>
+          <div style="position: relative; background: #fff; border: 1px solid #ece8e0; border-radius: 14px; box-shadow: 0 18px 44px -10px rgba(20,20,40,.38); padding: 6px;">
+            <div style="padding: 8px 9px 8px;">
+              <div style="font: 700 9px ui-sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #a7a299;">Workspace 6 · bound to screen</div>
+            </div>
+            <sc-for list="{{ menuLight }}" as="row" hint-placeholder-count="3">
+              <div style="display: flex; align-items: center; gap: 12px; padding: 9px 12px; margin-bottom: 5px; border-radius: 11px; background: {{ row.tileBg }}; border: {{ row.border }};">
+                <span style="display: flex; align-items: center; flex: none;">{{ row.thumb }}</span>
+                <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1;">
+                  <div style="display: flex; align-items: center; gap: 7px;">
+                    <span style="font: 700 13px ui-sans-serif; color: #2a2722;">{{ row.model }}</span>
+                    <sc-if value="{{ row.selected }}" hint-placeholder-val="{{ false }}">
+                      <span style="font: 700 8.5px ui-sans-serif; letter-spacing: .06em; text-transform: uppercase; color: {{ row.accent }}; background: {{ row.chipBg }}; padding: 2px 7px; border-radius: 999px;">Current</span>
+                    </sc-if>
+                  </div>
+                  <div style="font: 500 11px ui-sans-serif; color: #8a857c;">{{ row.specLine }}</div>
+                  <div style="display: flex; align-items: center; gap: 7px;">
+                    <span style="display: flex; align-items: center; gap: 5px; padding: 3px 8px 3px 6px; border-radius: 999px; background: {{ row.chipBg }};">
+                      <span style="display: flex;">{{ row.portIcon }}</span>
+                      <span style="font: 600 10.5px ui-sans-serif; color: {{ row.accent }};">{{ row.port }}</span>
+                    </span>
+                    <span style="font: 600 10.5px ui-monospace, monospace; color: #b3aea4;">{{ row.name }}</span>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DARK -->
+    <div style="flex: none; width: 600px;">
+      <div style="font: 600 11px ui-sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #9a958c; margin-bottom: 8px;">Dark</div>
+      <div style="position: relative; height: 364px; border-radius: 4px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.1); background: linear-gradient(135deg, oklch(0.34 0.07 280) 0%, oklch(0.26 0.05 250) 55%, oklch(0.3 0.08 330) 100%);">
+        <div style="position: absolute; top: 24px; left: 24px;">
+          <div style="display: flex; align-items: stretch; gap: 2px; padding: 5px; border-radius: 13px; background: oklch(0.21 0.01 286 / 0.42); border: 1px solid oklch(1 0 0 / 0.09); box-shadow: 0 8px 30px -8px rgba(0,0,0,.4), inset 0 1px 0 oklch(1 0 0 / .08); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); width: max-content;">
+            <div style="display: grid; grid-template-columns: repeat(3,3px); gap: 3px; align-content: center; padding: 0 9px; align-self: center;">
+              <sc-for list="{{ dotsDark }}" as="d" hint-placeholder-count="9"><span style="width: 3px; height: 3px; border-radius: 1px; background: {{ d }};"></span></sc-for>
+            </div>
+            <sc-for list="{{ barDark }}" as="ws" hint-placeholder-count="10">
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 5px 9px; border-radius: 9px; background: {{ ws.pillBg }};">
+                <div style="display: flex; align-items: center; gap: 5px; min-height: 17px;">
+                  <sc-if value="{{ ws.icon }}" hint-placeholder-val="{{ false }}"><span style="display: flex; align-items: center;">{{ ws.icon }}</span></sc-if>
+                  <span style="font: 600 13px ui-sans-serif; color: {{ ws.numColor }};">{{ ws.num }}</span>
+                </div>
+                <div style="width: 14px; height: 2.5px; border-radius: 2px; background: {{ ws.accent }};"></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="position: absolute; top: 84px; left: 150px; width: 320px; z-index: 5;">
+          <div style="position: absolute; top: -5px; left: 128px; width: 10px; height: 10px; background: oklch(0.21 0.012 286); transform: rotate(45deg); border-top: 1px solid oklch(0.32 0.01 286); border-left: 1px solid oklch(0.32 0.01 286);"></div>
+          <div style="position: relative; background: oklch(0.21 0.012 286); border: 1px solid oklch(0.32 0.01 286); border-radius: 14px; box-shadow: 0 18px 44px -10px rgba(0,0,0,.6); padding: 6px;">
+            <div style="padding: 8px 9px 8px;">
+              <div style="font: 700 9px ui-sans-serif; letter-spacing: .1em; text-transform: uppercase; color: oklch(0.62 0.01 286);">Workspace 6 · bound to screen</div>
+            </div>
+            <sc-for list="{{ menuDark }}" as="row" hint-placeholder-count="3">
+              <div style="display: flex; align-items: center; gap: 12px; padding: 9px 12px; margin-bottom: 5px; border-radius: 11px; background: {{ row.tileBg }}; border: {{ row.border }};">
+                <span style="display: flex; align-items: center; flex: none;">{{ row.thumb }}</span>
+                <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1;">
+                  <div style="display: flex; align-items: center; gap: 7px;">
+                    <span style="font: 700 13px ui-sans-serif; color: oklch(0.96 0.004 286);">{{ row.model }}</span>
+                    <sc-if value="{{ row.selected }}" hint-placeholder-val="{{ false }}">
+                      <span style="font: 700 8.5px ui-sans-serif; letter-spacing: .06em; text-transform: uppercase; color: {{ row.accent }}; background: {{ row.chipBg }}; padding: 2px 7px; border-radius: 999px;">Current</span>
+                    </sc-if>
+                  </div>
+                  <div style="font: 500 11px ui-sans-serif; color: oklch(0.62 0.01 286);">{{ row.specLine }}</div>
+                  <div style="display: flex; align-items: center; gap: 7px;">
+                    <span style="display: flex; align-items: center; gap: 5px; padding: 3px 8px 3px 6px; border-radius: 999px; background: {{ row.chipBg }};">
+                      <span style="display: flex;">{{ row.portIcon }}</span>
+                      <span style="font: 600 10.5px ui-sans-serif; color: {{ row.accent }};">{{ row.port }}</span>
+                    </span>
+                    <span style="font: 600 10.5px ui-monospace, monospace; color: oklch(0.55 0.01 286);">{{ row.name }}</span>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HANDOFF NOTE -->
+  <div style="max-width: 1224px; margin-top: 28px; background: #fff; border: 1px solid #e4e0d8; border-radius: 4px; padding: 22px 24px; display: flex; gap: 40px; flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 300px;">
+      <div style="font: 700 11px ui-sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #9a958c; margin-bottom: 10px;">Indicator</div>
+      <p style="font: 400 13.5px/1.55 ui-sans-serif; color: #4a463f; margin: 0;">Resolve each workspace's monitor from the Hyprland event socket (<span style="font-family: ui-monospace, monospace; font-size: 12.5px; color: #2a2722;">workspaces</span> / <span style="font-family: ui-monospace, monospace; font-size: 12.5px; color: #2a2722;">monitors</span>) and draw a 2.5px underline in that monitor's accent. Map monitor name → a stable accent (config map, falling back to a hashed hue) so colours stay consistent across reloads.</p>
+    </div>
+    <div style="flex: 1; min-width: 300px;">
+      <div style="font: 700 11px ui-sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #9a958c; margin-bottom: 10px;">Screen picker</div>
+      <p style="font: 400 13.5px/1.55 ui-sans-serif; color: #4a463f; margin: 0;">Specs read from <span style="font-family: ui-monospace, monospace; font-size: 12.5px; color: #2a2722;">hyprctl monitors -j</span>: <span style="font-family: ui-monospace, monospace; font-size: 12.5px; color: #2a2722;">description</span> (model), active mode, connector. The product image keys off device type — laptop for <span style="font-family: ui-monospace, monospace; font-size: 12.5px; color: #2a2722;">eDP</span>, monitor otherwise — and can be swapped for a real photo matched on model string. Selecting a row runs <span style="font-family: ui-monospace, monospace; font-size: 12.5px; color: #2a2722;">hyprctl dispatch moveworkspacetomonitor 6 NAME</span>.</p>
+    </div>
+  </div>
+
+</div>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100" height="100" rx="16" fill="#2a2d33"/>
+    <rect x="22" y="40" width="56" height="20" rx="6" fill="#f6f6f9"/>
+    <rect x="29" y="55" width="7" height="2.5" rx="1" fill="#429c5a"/>
+    <rect x="40" y="55" width="7" height="2.5" rx="1" fill="#4874d8"/>
+    <rect x="51" y="55" width="7" height="2.5" rx="1" fill="#4874d8"/>
+    <rect x="62" y="55" width="7" height="2.5" rx="1" fill="#ea952d"/>
+  </svg>
+</template></x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const R = window.React;
+    const E = (tag, props, ch) => R.createElement(tag, props, ch);
+    const MON = {
+      'eDP-1':    { l: 0.62, c: 0.13, h: 150, device: 'laptop',  model: 'Built-in display', size: '13.5"', res: '2256×1504', hz: '60 Hz',  port: 'eDP · internal',  portType: 'edp' },
+      'DP-1':     { l: 0.58, c: 0.16, h: 264, device: 'monitor', model: 'Dell U2720Q',      size: '27"',   res: '3840×2160', hz: '60 Hz',  port: 'USB-C',           portType: 'usbc' },
+      'HDMI-A-1': { l: 0.74, c: 0.15, h: 66,  device: 'monitor', model: 'Samsung S24R35',   size: '24"',   res: '1920×1080', hz: '75 Hz',  port: 'HDMI 2.0',        portType: 'hdmi' },
+    };
+    const wsMon = { '1':'eDP-1','2':'eDP-1','3':'eDP-1','4':'DP-1','5':'DP-1','6':'DP-1','7':'DP-1','8':'HDMI-A-1','9':'HDMI-A-1','0':'HDMI-A-1' };
+    const occ = { '2':'terminal','4':'code','6':'firefox','8':'music','9':'chat' };
+    const active = '6';
+    const order = ['1','2','3','4','5','6','7','8','9','0'];
+
+    const acc = (m, dark) => `oklch(${(dark ? Math.min(m.l + 0.09, 0.84) : m.l).toFixed(3)} ${m.c} ${m.h})`;
+    const soft = (m, a) => `oklch(${m.l} ${m.c} ${m.h} / ${a})`;
+
+    const ic = (type, color) => {
+      if (!type) return null;
+      const base = { width: 13, height: 13, viewBox: '0 0 24 24', fill: 'none', stroke: color, strokeWidth: 2.1, strokeLinecap: 'round', strokeLinejoin: 'round' };
+      const P = (d, k) => E('path', { d, key: k || d });
+      const C = (p, k) => E('circle', { ...p, key: k });
+      const L = (p, k) => E('line', { ...p, key: k });
+      const svg = (ch) => E('svg', base, ch);
+      switch (type) {
+        case 'terminal': return svg([P('M4 17l6-5-6-5', 'a'), L({ x1: 12, y1: 18, x2: 20, y2: 18 }, 'b')]);
+        case 'code':     return svg([P('M16 18l5-6-5-6', 'a'), P('M8 6l-5 6 5 6', 'b')]);
+        case 'firefox':  return svg([C({ cx: 12, cy: 12, r: 9 }, 'a'), P('M12 3a6 6 0 1 0 6 6', 'b')]);
+        case 'music':    return svg([C({ cx: 6, cy: 18, r: 2.6 }, 'a'), C({ cx: 18, cy: 16, r: 2.6 }, 'b'), P('M8.6 18V6.5l10.4-2v9', 'c')]);
+        case 'chat':     return svg([P('M21 11.5a8 8 0 0 1-11.5 7.2L4 20l1.3-4.2A8 8 0 1 1 21 11.5z', 'a')]);
+      }
+      return null;
+    };
+
+    const portIcon = (type, color) => {
+      const base = { width: 14, height: 14, viewBox: '0 0 24 24', fill: 'none', stroke: color, strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' };
+      const P = (d, k) => E('path', { d, key: k || d });
+      const Rect = (p, k) => E('rect', { ...p, key: k });
+      const L = (p, k) => E('line', { ...p, key: k });
+      const svg = (ch) => E('svg', base, ch);
+      if (type === 'usbc') return svg([Rect({ x: 3, y: 9, width: 18, height: 6, rx: 3 }, 'a'), L({ x1: 7.5, y1: 12, x2: 16.5, y2: 12 }, 'b')]);
+      if (type === 'edp')  return svg([Rect({ x: 4, y: 5, width: 16, height: 11, rx: 1.5 }, 'a'), L({ x1: 2, y1: 19, x2: 22, y2: 19 }, 'b')]);
+      return svg([P('M7 9h10v3.5a4 4 0 0 1-4 4h-2a4 4 0 0 1-4-4z', 'a'), L({ x1: 9.5, y1: 9, x2: 9.5, y2: 5.5 }, 'b'), L({ x1: 14.5, y1: 9, x2: 14.5, y2: 5.5 }, 'c')]);
+    };
+
+    const deviceThumb = (m) => {
+      const bezel = '#23262c', stand = '#3a3d44';
+      const screen = `oklch(0.33 ${Math.min(m.c, 0.08).toFixed(3)} ${m.h})`;
+      const glow = acc(m, false);
+      const Rect = (p, k) => E('rect', { ...p, key: k });
+      if (m.device === 'laptop') {
+        return E('svg', { width: 58, height: 42, viewBox: '0 0 64 46', fill: 'none' }, [
+          Rect({ x: 13, y: 4, width: 38, height: 25, rx: 2, fill: bezel }, 'lid'),
+          Rect({ x: 15, y: 6, width: 34, height: 21, rx: 1, fill: screen }, 'scr'),
+          Rect({ x: 15, y: 23.5, width: 34, height: 2, fill: glow }, 'glow'),
+          E('path', { key: 'base', d: 'M7 42 L57 42 Q59 42 58.4 40.2 L53 30.8 Q52.5 30 51 30 L13 30 Q11.5 30 11 30.8 L5.6 40.2 Q5 42 7 42 Z', fill: stand }),
+          Rect({ x: 27, y: 30, width: 10, height: 2, rx: 1, fill: '#23262c' }, 'notch'),
+        ]);
+      }
+      return E('svg', { width: 58, height: 42, viewBox: '0 0 64 46', fill: 'none' }, [
+        Rect({ x: 5, y: 3, width: 54, height: 32, rx: 2.5, fill: bezel }, 'fr'),
+        Rect({ x: 7.5, y: 5.5, width: 49, height: 27, rx: 1.5, fill: screen }, 'scr'),
+        Rect({ x: 7.5, y: 30, width: 49, height: 2.5, fill: glow }, 'glow'),
+        Rect({ x: 28, y: 35, width: 8, height: 6, fill: stand }, 'neck'),
+        Rect({ x: 20, y: 40.5, width: 24, height: 3.5, rx: 1.75, fill: stand }, 'base'),
+      ]);
+    };
+
+    const pill = (num, dark) => {
+      const m = MON[wsMon[num]];
+      const isActive = num === active;
+      const isOcc = !!occ[num];
+      let pillBg, numColor, iconColor;
+      if (dark) {
+        pillBg = isActive ? 'oklch(0.58 0.02 286 / 0.78)' : (isOcc ? 'oklch(0.40 0.012 286 / 0.6)' : 'transparent');
+        numColor = (isActive || isOcc) ? 'oklch(0.97 0.004 286)' : 'oklch(0.72 0.01 286)';
+        iconColor = 'oklch(0.90 0.008 286)';
+      } else {
+        pillBg = isActive ? 'oklch(0.79 0.012 286 / 0.95)' : (isOcc ? 'oklch(0.90 0.018 286 / 0.85)' : 'transparent');
+        numColor = (isActive || isOcc) ? 'oklch(0.30 0.015 286)' : 'oklch(0.47 0.012 286)';
+        iconColor = 'oklch(0.38 0.02 286)';
+      }
+      return { num, accent: acc(m, dark), pillBg, numColor, icon: ic(occ[num], iconColor) };
+    };
+
+    const menu = (dark) => ['eDP-1','DP-1','HDMI-A-1'].map((name) => {
+      const m = MON[name];
+      const selected = name === 'DP-1';
+      const a = acc(m, dark);
+      return {
+        name,
+        model: m.model,
+        specLine: `${m.size} · ${m.res} · ${m.hz}`,
+        port: m.port,
+        accent: a,
+        thumb: deviceThumb(m),
+        portIcon: portIcon(m.portType, a),
+        selected,
+        chipBg: soft(m, dark ? 0.26 : 0.15),
+        tileBg: selected ? soft(m, dark ? 0.22 : 0.12) : (dark ? 'oklch(0.26 0.008 286)' : 'oklch(0.975 0.003 286)'),
+        border: selected ? `1.5px solid ${a}` : (dark ? '1.5px solid oklch(0.30 0.01 286)' : '1.5px solid oklch(0.93 0.004 286)'),
+      };
+    });
+
+    return {
+      barLight: order.map((n) => pill(n, false)),
+      barDark: order.map((n) => pill(n, true)),
+      menuLight: menu(false),
+      menuDark: menu(true),
+      dotsLight: Array(9).fill('oklch(0.55 0.01 286)'),
+      dotsDark: Array(9).fill('oklch(0.70 0.01 286)'),
+      legend: ['eDP-1','DP-1','HDMI-A-1'].map((name) => {
+        const m = MON[name];
+        return { name, model: m.model, accent: acc(m, false) };
+      }),
+    };
+  }
+}
+</script>
+</body>
+</html>
