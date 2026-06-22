@@ -38,7 +38,7 @@
 ## 6. Verification
 
 - [x] 6.1 `mipbar` builds successfully (`nix build .#mipbar` — `ags bundle` type-checks + compiles clean)
-- [ ] 6.2 Underline appears on every workspace, coloured per monitor, in both dark and light mode _(live visual check — run the bar)_
-- [ ] 6.3 Right-click opens the picker; primary click still switches workspace _(live interaction check)_
-- [ ] 6.4 Selecting a monitor moves the workspace (verify with `hyprctl monitors` / visual) and the picker closes _(live interaction check)_
-- [ ] 6.5 Underline updates when a monitor is (dis)connected or a workspace is moved _(live hotplug check)_
+- [x] 6.2 Underline appears on every workspace, coloured per monitor, in both dark and light mode _(live visual check — run the bar)_
+- [x] 6.3 Right-click opens the picker; primary click still switches workspace _(live interaction check)_
+- [x] 6.4 Selecting a monitor moves the workspace (verify with `hyprctl monitors` / visual) and the picker closes _(live interaction check)_
+- [x] 6.5 Underline updates when a monitor is (dis)connected or a workspace is moved _(live hotplug check)_
