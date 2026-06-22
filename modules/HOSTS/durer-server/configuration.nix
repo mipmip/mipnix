@@ -131,6 +131,11 @@ in
     # containers share a private docker network "umami-net"; the DB is never
     # published to the host, so there is no clash with host PG17 on :5432.
     virtualisation.docker.enable = true;
+    # Pin the oci-containers backend to docker (default is podman). This makes
+    # the generated systemd units "docker-umami*.service" — matching the names
+    # init-umami-net orders itself against below — and uses the docker engine
+    # the AWS source ran on.
+    virtualisation.oci-containers.backend = "docker";
 
     # One env file feeds both containers:
     #   umami-db reads POSTGRES_USER / POSTGRES_PASSWORD / POSTGRES_DB
