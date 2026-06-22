@@ -19,8 +19,10 @@
       discord
       vesktop
 
-      # TODO Remove
       himalaya
+
+      # WhatsApp client. WebKit sandbox workaround applied via the `apps`
+      # overlay (modules/nix/overlays/apps.nix).
       karere
     ];
   };
