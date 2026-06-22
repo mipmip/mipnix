@@ -123,15 +123,6 @@ in
     # Merges with the environment set by the voorzetramenshop module.
     systemd.services.voorzetramenshop.environment.AUTH_TRUST_HOST = "true";
 
-    # TEMPORARILY DISABLED (2026-06-22): the umami block references
-    # secrets/umami-env.age, which was declared in secrets.nix but never
-    # created/encrypted — so flake eval fails ("Path 'secrets/umami-env.age'
-    # does not exist in Git repository"). Disabled to unblock the
-    # voorzetramenshop deploy. To re-enable: create the secret with
-    #   cd secrets && env RULES=./secrets.nix EDITOR=nano agenix -e umami-env.age -i ~/.ssh/id_ed25519
-    # (set POSTGRES_USER/PASSWORD/DB, DATABASE_URL, HASH_SALT — HASH_SALT reused
-    # from the old AWS container), `git add` it, then remove this /* */ wrapper.
-    /*
     # --- umami analytics (migrated as-is from AWS; see MIGRATION.md) ---
     # Runs the SAME container image as the old AWS host plus its OWN
     # PostgreSQL 14 container. We do NOT reuse durer's host Postgres (v17,
@@ -184,7 +175,6 @@ in
       forceSSL = true;
       locations."/".proxyPass = "http://127.0.0.1:3002";
     };
-    */
 
     imports = (with inputs.self.modules.nixos; [
       channel-default
