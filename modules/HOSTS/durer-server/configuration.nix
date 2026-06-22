@@ -116,6 +116,13 @@ in
       # package: left at default (the flake's voorzetramenshop package)
     };
 
+    # Let Auth.js derive its base URL from the (nginx-forwarded) Host header
+    # instead of a pinned AUTH_URL, so logins redirect to whatever domain the
+    # request came in on. Without this, a stale AUTH_URL in the env secret made
+    # login bounce to the old mintshop.nuremberg.pimsnel.com host.
+    # Merges with the environment set by the voorzetramenshop module.
+    systemd.services.voorzetramenshop.environment.AUTH_TRUST_HOST = "true";
+
     # TEMPORARILY DISABLED (2026-06-22): the umami block references
     # secrets/umami-env.age, which was declared in secrets.nix but never
     # created/encrypted — so flake eval fails ("Path 'secrets/umami-env.age'
