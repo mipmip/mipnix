@@ -42,19 +42,19 @@
 
 ## 7. Build and deploy
 
-- [ ] 7.1 Gate the build on lego2: `nix build .#nixosConfigurations.durer.config.system.build.toplevel` succeeds (proves the shop's large Next.js build fits on lego2's disk and evaluates without nginx/ACME/port conflicts)
-- [ ] 7.2 `rme deploy_remote durer` (deploy-rs: build on lego2, copy closure, activate over passwordless sudo with magic rollback)
-- [ ] 7.3 Verify the `prisma migrate deploy` oneshot completed and the app service is listening on `127.0.0.1:3001`
-- [ ] 7.4 Verify ACME issued a cert for `mintshop.nuremberg.pimsnel.com` and the existing `pimsnel.com` / `nuremberg.pimsnel.com` vhosts still serve
+- [x] 7.1 Gate the build on lego2: `nix build .#nixosConfigurations.durer.config.system.build.toplevel` succeeds (proves the shop's large Next.js build fits on lego2's disk and evaluates without nginx/ACME/port conflicts)
+- [x] 7.2 `rme deploy_remote durer` (deploy-rs: build on lego2, copy closure, activate over passwordless sudo with magic rollback)
+- [x] 7.3 Verify the `prisma migrate deploy` oneshot completed and the app service is listening on `127.0.0.1:3001`
+- [x] 7.4 Verify ACME issued a cert for `mintshop.nuremberg.pimsnel.com` and the existing `pimsnel.com` / `nuremberg.pimsnel.com` vhosts still serve
 
 ## 8. Launch checklist
 
-- [ ] 8.1 DNS: `mintshop.nuremberg.pimsnel.com` resolves to durer (covered by the `*.nuremberg.pimsnel.com` wildcard)
-- [ ] 8.2 SES: account is out of sandbox (or the admin recipient is verified) and `EMAIL_FROM` is a verified SES identity
-- [ ] 8.3 Send a test magic-link and confirm login works end-to-end while `maintenanceMode = true`
-- [ ] 8.4 Document the deploy/rollback workflow location (this change's design.md) for future version bumps
+- [x] 8.1 DNS: `mintshop.nuremberg.pimsnel.com` resolves to durer (covered by the `*.nuremberg.pimsnel.com` wildcard)
+- [x] 8.2 SES: account is out of sandbox (or the admin recipient is verified) and `EMAIL_FROM` is a verified SES identity
+- [x] 8.3 Send a test magic-link and confirm login works end-to-end while `maintenanceMode = true`
+- [x] 8.4 Document the deploy/rollback workflow location (this change's design.md) for future version bumps
 
 ## 9. Wrap-up
 
 - [x] 9.1 `openspec validate voorzetramenshop-on-durer` passes
-- [ ] 9.2 Verify rollback: confirm deploy-rs magic-rollback reverts an unreachable activation; and that reverting the `flake.lock` bump (git) + re-deploy, or `nixos-rebuild --rollback` on durer, work for a reachable-but-bad version
+- [x] 9.2 Verify rollback: confirm deploy-rs magic-rollback reverts an unreachable activation; and that reverting the `flake.lock` bump (git) + re-deploy, or `nixos-rebuild --rollback` on durer, work for a reachable-but-bad version

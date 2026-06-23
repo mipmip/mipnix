@@ -128,7 +128,10 @@ window.Bar {
     .SensorValue {
       // Name a concrete installed font; the generic `monospace` alias does not
       // resolve in the GDM-launched Hyprland session (Pango "file not found").
-      font-family: "Ubuntu Mono", monospace;
+      // Ubuntu Mono lacks the ↑/↓ arrows (U+2191/U+2193) used in the network
+      // value, so it rendered them as tofu boxes; append a Nerd Font Mono that
+      // has them — Pango falls through per-glyph (digits stay Ubuntu Mono).
+      font-family: "Ubuntu Mono", "JetBrainsMono Nerd Font Mono", monospace;
       font-size: 0.9em;
     }
 
