@@ -4,7 +4,7 @@
 
     environment.systemPackages = with pkgs; [
       vim
-      bitwarden-desktop
+      #bitwarden-desktop
       tmux
       git
 
