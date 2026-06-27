@@ -1779,11 +1779,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1782160538,
-        "narHash": "sha256-htNKC0xGTwKyQgtWSoIiUGXiGk0ol3VoG/UdAN0FyKY=",
+        "lastModified": 1782564418,
+        "narHash": "sha256-pXzML+SnYwmyVglN3ZP7NuIe7dz6QA4vPwc8DhCM7MU=",
         "ref": "refs/heads/main",
-        "rev": "0a19b8c7d6d85e27d4593ee92c6707966a82e7c4",
-        "revCount": 51,
+        "rev": "4ae6a5da6b94cb31413648470633affecea7fb63",
+        "revCount": 74,
         "type": "git",
         "url": "ssh://git@github.com/mintglasinlood/voorzetramenshop.git"
       },
