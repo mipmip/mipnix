@@ -4,22 +4,24 @@
 
     environment.systemPackages = with pkgs; [
       vim
-      bitwarden-desktop
       tmux
       git
 
       wget
 
       firefox
-      thunderbird
-
-      pkgs.unstable.newelle
-      pkgs.unstable.signal-desktop
+      #thunderbird
       flare-signal
+      #seafile-client
+      fastmail-desktop
 
-      pkgs.nebula
+      moving.bitwarden-desktop
+      moving.newelle
+      moving.signal-desktop
 
-      rustdesk
+      nebula
+
+      moving.rustdesk
 
       gcc
       pkg-config
@@ -36,9 +38,6 @@
       gnome-tweaks
       gpaste
 
-      seafile-client
-
-      fastmail-desktop
 
 
     ];

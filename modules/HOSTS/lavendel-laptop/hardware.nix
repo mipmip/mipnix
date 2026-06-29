@@ -6,8 +6,6 @@ inputs,
 {
   flake.modules.nixos.lavendel = { config, pkgs, ... } : {
 
-
-
     boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
     boot.initrd.kernelModules = [ "pinctrl_tigerlake" ];
     boot.kernelModules = [ "kvm-intel" "iwlwifi" ];
