@@ -3,6 +3,8 @@
   flake.modules.nixos.granny = { pkgs, ... }: {
 
     environment.systemPackages = with pkgs; [
+      inputs.rme.packages."${pkgs.stdenv.hostPlatform.system}".default
+
       vim
       tmux
       git
@@ -10,9 +12,7 @@
       wget
 
       firefox
-      #thunderbird
       flare-signal
-      #seafile-client
       fastmail-desktop
 
       moving.bitwarden-desktop
@@ -37,17 +37,6 @@
 
       gnome-tweaks
       gpaste
-
-
-
     ];
-
-
   };
 }
-
-
-
-
-
-
