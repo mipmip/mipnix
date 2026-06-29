@@ -2,9 +2,8 @@
 
 - [x] copy files
 - [x] fingerprint
-- [ ] mail + vertaal
-- [ ] libreoffice + mailknopje
-- [ ] libreoffice + vertaal
+- [x] libreoffice + mailknopje
 - [x] newelle
-- [ ] bedrock keys
-- [ ] mac opstart icoontje
+- [x] mac opstart icoontje
+- [ ] libreoffice + vertaal
+- [ ] mail + vertaal
