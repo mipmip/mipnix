@@ -32,6 +32,7 @@
 
         (final: _prev: {
           unstable = initChannel inputs.unstable final;
+          moving = initChannel inputs.nixpkgs-mama-moving final;
         })
 
       ];

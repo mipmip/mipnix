@@ -1,11 +1,14 @@
 {
-
   inputs = {
+
+
+    # GRANNYOS
+    nixpkgs-mama.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs-mama-moving.url = "github:NixOS/nixpkgs/nixos-26.05";
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-2511.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-2505.url = "github:NixOS/nixpkgs/nixos-25.05";
-    nixpkgs-mama.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-inkscape13.url = "github:leiserfg/nixpkgs?ref=staging";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     unstable-hyprland.url = "github:NixOS/nixpkgs/nixos-unstable";
