@@ -15,11 +15,11 @@
       moving.firefox
       #flare-signal
 
-      #moving.fastmail-desktop
-      #moving.bitwarden-desktop
+      moving.fastmail-desktop
+      moving.bitwarden-desktop
       #moving.newelle
-      #moving.signal-desktop
-      #moving.rustdesk
+      unstable.signal-desktop
+      moving.rustdesk
 
       nebula
 
