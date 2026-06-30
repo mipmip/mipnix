@@ -4,6 +4,16 @@
 
     services.fprintd.enable = true;
 
+    # The CS9711 dongle does not survive USB runtime power management: after ~2s
+    # of inactivity the kernel autosuspends it, and the next wake (e.g. a verify
+    # at screenlock) makes it disconnect/reconnect on the bus, after which
+    # fprintd reports "device was disconnected, aborting" and authentication
+    # fails until the daemon is restarted. Disabling autosuspend for this
+    # specific device (vendor 2541, product 0236) keeps it powered and stable.
+    services.udev.extraRules = ''
+      ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="2541", ATTR{idProduct}=="0236", TEST=="power/control", ATTR{power/control}="on"
+    '';
+
     environment.systemPackages = with pkgs; [
       nss
     ];
