@@ -13,7 +13,7 @@
       wget
 
       moving.firefox
-      #flare-signal
+      flare-signal
 
       moving.fastmail-desktop
       moving.bitwarden-desktop
