@@ -68,10 +68,13 @@ export default function SshKey() {
 
   const load = () =>
     // ssh-add runs detached (no controlling tty), so the passphrase prompt must
-    // come from an askpass. SSH_ASKPASS is pinned to a standalone askpass by the
-    // mipbar home-manager module and inherited here (gcr's own askpass refuses
-    // standalone use); force ssh-add to use it. SSH_AUTH_SOCK is inherited.
-    execAsync(["bash", "-c", "SSH_ASKPASS_REQUIRE=force ssh-add ~/.ssh/id_ed25519"])
+    // come from an askpass. ASKPASS is the standalone askpass path injected at
+    // bundle time (see flake.nix) — set it explicitly so we don't depend on the
+    // session having exported SSH_ASKPASS. SSH_AUTH_SOCK is inherited (the plain
+    // ssh-agent, via the Hyprland session env).
+    execAsync(["bash", "-c",
+      `SSH_ASKPASS='${ASKPASS}' SSH_ASKPASS_REQUIRE=force ssh-add ~/.ssh/id_ed25519`,
+    ])
       .then(refresh)
       .catch(refresh)
 
