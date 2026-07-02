@@ -3,7 +3,7 @@ inputs,
 ...
 }:
 {
-  flake.modules.homeManager.pim-mipbar = { pkgs, ... }: {
+  flake.modules.homeManager.pim-mipbar = { pkgs, config, ... }: {
 
     home.packages = [
       inputs.self.packages."${pkgs.stdenv.hostPlatform.system}".mipbar
@@ -31,11 +31,16 @@ inputs,
     systemd.user.sessionVariables.SSH_AUTH_SOCK = "%t/ssh-agent";
 
     # Mask gcr's ssh-agent (socket + service) so it can't claim /run/user/*/gcr/ssh
-    # or export a competing SSH_AUTH_SOCK. A /dev/null symlink is a systemd mask.
-    # gnome-keyring keeps doing secrets/passwords; only its SSH role is dropped.
+    # or export a competing SSH_AUTH_SOCK. A unit *symlinked* to /dev/null is a
+    # systemd mask; use mkOutOfStoreSymlink so HM creates a symlink rather than
+    # trying to copy the /dev/null device node into the store (which errors with
+    # "unsupported type"). gnome-keyring keeps secrets/passwords; only its SSH
+    # role is dropped.
     xdg.configFile = {
-      "systemd/user/gcr-ssh-agent.socket".source = "/dev/null";
-      "systemd/user/gcr-ssh-agent.service".source = "/dev/null";
+      "systemd/user/gcr-ssh-agent.socket".source =
+        config.lib.file.mkOutOfStoreSymlink "/dev/null";
+      "systemd/user/gcr-ssh-agent.service".source =
+        config.lib.file.mkOutOfStoreSymlink "/dev/null";
     };
 
     # The SshKey widget's click-to-load calls `ssh-add` from the detached bar
