@@ -43,15 +43,15 @@ inputs,
         config.lib.file.mkOutOfStoreSymlink "/dev/null";
     };
 
-    # The SshKey widget's click-to-load calls `ssh-add` from the detached bar
-    # process, which has no controlling tty — the passphrase prompt must come
-    # from an askpass helper. gcr's own askpass refuses standalone invocation
-    # ("not meant to be run directly"), so pin a standalone askpass and force
-    # ssh-add to use it.
-    home.sessionVariables = {
-      SSH_ASKPASS = "${pkgs.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass";
-      SSH_ASKPASS_REQUIRE = "force";
-    };
+    # NB: SSH_ASKPASS / SSH_ASKPASS_REQUIRE are intentionally NOT set as session
+    # variables. Setting SSH_ASKPASS_REQUIRE=force session-wide made *every*
+    # ssh/ssh-add (e.g. `ssh pim@lavendel` in a terminal) pop the GUI askpass
+    # instead of prompting on the tty. The SshKey widget instead sets these env
+    # vars inline on its own `ssh-add` invocation (see SshKey.tsx), so the GUI
+    # passphrase popup appears ONLY when clicking the widget's Load button; plain
+    # terminal ssh keeps its normal tty prompt. The standalone askpass binary is
+    # still installed (home.packages above) and its path is baked into the mipbar
+    # bundle at build time (ASKPASS define in flake.nix).
 
     programs.hm-ricing-mode.apps.mipbar = {
       dest_dir = ".config/mipbar";
