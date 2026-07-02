@@ -1,6 +1,7 @@
 import { Gtk } from "ags/gtk4"
+import { createState } from "ags"
 import { execAsync } from "ags/process"
-import { createPoll } from "ags/time"
+import { createPoll, interval } from "ags/time"
 
 // Tri-state ssh-agent key indicator with a click-through popover.
 //
@@ -37,20 +38,35 @@ function normalizeState(s: string): State {
 }
 
 export default function SshKey() {
-  const state = createPoll("noagent", 5000, ["bash", "-c", POLL_SCRIPT], normalizeState)
+  // State is managed manually (not createPoll) so load/unload can force an
+  // immediate refresh — createPoll's accessor has no public re-poll method, so
+  // relying on its interval left the icon/button stale for up to 5s after an
+  // action, which made the just-unloaded key impossible to reload from the
+  // popover.
+  const [state, setState] = createState<State>("noagent")
   const fingerprint = createPoll("", 60000, ["bash", "-c", FP_SCRIPT], (s) => s.trim())
+
+  const refresh = () =>
+    execAsync(["bash", "-c", POLL_SCRIPT])
+      .then((out) => setState(normalizeState(out)))
+      .catch(() => {})
+
+  // Periodic poll (also fires immediately), consistent with other indicators.
+  interval(5000, refresh)
 
   const load = () =>
     // ssh-add runs detached (no controlling tty), so the passphrase prompt must
     // come from an askpass. SSH_ASKPASS is pinned to a standalone askpass by the
     // mipbar home-manager module and inherited here (gcr's own askpass refuses
     // standalone use); force ssh-add to use it. SSH_AUTH_SOCK is inherited.
-    // The 5s poll flips the icon once the key is in the agent.
     execAsync(["bash", "-c", "SSH_ASKPASS_REQUIRE=force ssh-add ~/.ssh/id_ed25519"])
-      .catch(() => {})
+      .then(refresh)
+      .catch(refresh)
 
   const unload = () =>
-    execAsync(["bash", "-c", "ssh-add -d ~/.ssh/id_ed25519"]).catch(() => {})
+    execAsync(["bash", "-c", "ssh-add -d ~/.ssh/id_ed25519"])
+      .then(refresh)
+      .catch(refresh)
 
   return (
     <menubutton class={state((s) => `StatusIcon SshKey ${s}`)}>
