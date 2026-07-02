@@ -74,3 +74,59 @@
       prevent a "loaded" match.
       → Verified: a listing with comment `pim@ojs` but the file's fingerprint still
       matches (grep is on the fingerprint, not the comment) → `loaded`.
+
+## 6. Signability & the `stale` state (post-plan: gcr listed but couldn't sign)
+
+- [x] 6.1 Discovered gcr kept the key in `ssh-add -l` but hung on `ssh-add -T` (SSH stalled
+      after "Server accepts key"); `ssh-add -d`/`-D`/re-add/agent-restart could not clear it.
+- [x] 6.2 Add a `timeout`-bounded `ssh-add -T` to the poll; report listed-but-unsignable as a
+      fourth state `stale`. Extend the poll script and `normalizeState` accordingly.
+- [x] 6.3 Add the `stale` icon (lock-with-alert) and `.stale` (red) CSS class.
+
+## 7. Popover UI & icon polarity (post-plan: no-op click read as broken)
+
+- [x] 7.1 Replace the bare click handler with a `menubutton` popover that names the state and
+      offers Load (unloaded/stale) / Unload (loaded) / nothing (no-agent); show the
+      fingerprint when loaded.
+- [x] 7.2 Switch state from `createPoll` to `createState` + a `refresh()` driven by
+      `interval`, re-polled immediately after Load/Unload (on success and failure).
+- [x] 7.3 Add an `inFlight` guard so each activation fires at most one `ssh-add` / one popup.
+- [x] 7.4 Swap the loaded/unloaded glyphs: open padlock = loaded (unlocked/available),
+      closed padlock = unloaded (locked away).
+
+## 8. askpass scoping & floating (post-plan: popup fired for all ssh; tiled)
+
+- [x] 8.1 Inject the standalone askpass path into the bundle at build time: `ASKPASS`
+      `ags bundle -d` define in `flake.nix`, declared in `env.d.ts`; use it inline in the
+      widget's Load command.
+- [x] 8.2 Remove the session-wide `SSH_ASKPASS` / `SSH_ASKPASS_REQUIRE` from
+      `home.sessionVariables` (they forced the GUI for *all* terminal ssh); set them inline
+      on the widget's `ssh-add` instead, with `< /dev/null` so it can't fall back to a tty.
+- [x] 8.3 Float/center the askpass window via a Hyprland window rule. It reports an empty
+      class, so match on its title; use the 0.53+ syntax
+      `windowrule = match:title ^(OpenSSH Authentication Passphrase request)$, float on, center on`.
+
+## 9. Plain ssh-agent bypass (post-plan: root-cause fix for the `stale` hang)
+
+- [x] 9.1 Enable `services.ssh-agent` (plain OpenSSH agent) in the mipbar module.
+- [x] 9.2 Point the graphical session at it via
+      `systemd.user.sessionVariables.SSH_AUTH_SOCK = "%t/ssh-agent"` and a Hyprland
+      `env = SSH_AUTH_SOCK,$XDG_RUNTIME_DIR/ssh-agent` line.
+- [x] 9.3 Mask gcr's ssh-agent socket + service via
+      `xdg.configFile."systemd/user/gcr-ssh-agent.{socket,service}".source =
+      config.lib.file.mkOutOfStoreSymlink "/dev/null"` (a plain `/dev/null` source fails HM
+      with "unsupported type").
+- [x] 9.4 Keep gnome-keyring for the Secret Service (Signal/granted-aws/libsecret); confirm
+      only the SSH role is dropped.
+
+## 10. Live verification (needs the running session)
+
+- [x] 10.1 After rebuild + fresh login: `SSH_AUTH_SOCK` points at the plain agent, gcr
+      ssh-agent masked, agent starts empty → indicator shows `unloaded`. (Confirmed live.)
+- [x] 10.2 Terminal `ssh <host>` prompts on the tty (not the GUI popup); widget Load shows
+      the GUI popup, floated. (Confirmed live after the askpass-scoping fix.)
+- [x] 10.3 Load → passphrase prompt → key signs → indicator flips to `loaded` and
+      `ssh pim@lavendel` works. (Confirmed live.)
+- [ ] 10.4 Re-verify the `stale` state no longer occurs in normal use with the plain agent
+      (it was a gcr artifact); keep the `stale` branch as a safety net. (Monitor over
+      normal sessions.)
