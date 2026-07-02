@@ -54,11 +54,11 @@ inputs,
         unset label
       fi
 
-      set -o allexport
-      source /tmp/openai-api-key
-      source /tmp/bedrockpim-api-keys-env
-      source /tmp/bedrock-keys-for-avante-env
-      set +o allexport
+      #set -o allexport
+      #source /tmp/openai-api-key
+      #source /tmp/bedrockpim-api-keys-env
+      #source /tmp/bedrock-keys-for-avante-env
+      #set +o allexport
 
       export PATH=~/.npm-packages/bin:$PATH
 
