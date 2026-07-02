@@ -108,22 +108,56 @@ window.Bar {
     }
 
     &.SshKey {
-      label {
+      // Only style the bar glyph, not labels inside the popover.
+      > button > label {
         font-size: 1.1em;
       }
 
       // Tri-state colour cue: loaded = green, unloaded = amber, no-agent = grey.
-      &.loaded label {
+      &.loaded > button > label {
         color: #a6da95;
       }
 
-      &.unloaded label {
+      &.unloaded > button > label {
         color: #eed49f;
       }
 
-      &.noagent label {
+      &.noagent > button > label {
         color: #{"alpha(@theme_fg_color, 0.4)"};
       }
+    }
+  }
+
+  .SshKeyPopover {
+    padding: 10px;
+    min-width: 240px;
+
+    .StatusRow {
+      padding: 2px 0;
+    }
+
+    .SshKeyState {
+      font-weight: bold;
+      margin-right: 12px;
+    }
+
+    .ActionSmall {
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.8em;
+      font-weight: normal;
+      background: #{"alpha(@theme_fg_color, 0.08)"};
+
+      &:hover {
+        background: #{"alpha(@theme_fg_color, 0.14)"};
+      }
+    }
+
+    .SshKeyFingerprint {
+      font-family: "Ubuntu Mono", "JetBrainsMono Nerd Font Mono", monospace;
+      font-size: 0.85em;
+      font-weight: normal;
+      margin-top: 6px;
     }
   }
 
