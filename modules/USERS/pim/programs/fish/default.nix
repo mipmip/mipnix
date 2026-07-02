@@ -177,9 +177,9 @@ inputs,
           end
         end
 
-        bass source /tmp/openai-api-key
-        bass source /tmp/bedrockpim-api-keys-env
-        bass source /tmp/bedrock-keys-for-avante-env
+        #bass source /tmp/openai-api-key
+        #bass source /tmp/bedrockpim-api-keys-env
+        #bass source /tmp/bedrock-keys-for-avante-env
 
         set -gx EDITOR nvim
 

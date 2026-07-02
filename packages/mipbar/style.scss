@@ -106,6 +106,25 @@ window.Bar {
     &.Camera image {
       -gtk-icon-size: 16px;
     }
+
+    &.SshKey {
+      label {
+        font-size: 1.1em;
+      }
+
+      // Tri-state colour cue: loaded = green, unloaded = amber, no-agent = grey.
+      &.loaded label {
+        color: #a6da95;
+      }
+
+      &.unloaded label {
+        color: #eed49f;
+      }
+
+      &.noagent label {
+        color: #{"alpha(@theme_fg_color, 0.4)"};
+      }
+    }
   }
 
   .SystemMonitorIcon {
