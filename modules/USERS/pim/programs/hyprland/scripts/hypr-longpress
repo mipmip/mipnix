@@ -147,6 +147,10 @@ def show_menu(screen_x, screen_y):
                 "-hover-select",
                 "-me-select-entry", "",
                 "-me-accept-entry", "MousePrimary",
+                # Close the menu when the user clicks outside it. This is rofi's
+                # default, but pass it explicitly so the "click-away dismisses"
+                # behaviour is intentional and immune to default changes.
+                "-click-to-exit",
             ],
             input=menu_input,
             capture_output=True,
