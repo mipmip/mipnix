@@ -1,11 +1,11 @@
 ---
 # mipnix-jbe6
 title: missing secrets
-status: draft
+status: completed
 type: task
 priority: normal
 created_at: 2026-04-21T20:59:43Z
-updated_at: 2026-04-21T20:59:56Z
+updated_at: 2026-07-02T07:40:23Z
 ---
 
 bass: line 1: /tmp/openai-api-key: No such file or directory

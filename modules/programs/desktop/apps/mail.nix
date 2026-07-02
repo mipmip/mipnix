@@ -11,7 +11,7 @@
       kdePackages.akonadiconsole
       kdePackages.akonadi-search
 
-      #pkgs.unstable.fastmail-desktop
+      pkgs.fastmail-desktop
     ];
   };
 }

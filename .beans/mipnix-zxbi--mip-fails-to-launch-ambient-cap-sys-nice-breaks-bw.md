@@ -1,7 +1,7 @@
 ---
 # mipnix-zxbi
 title: 'mip fails to launch: ambient CAP_SYS_NICE breaks bwrap sandbox'
-status: todo
+status: completed
 type: bug
 priority: normal
 tags:
@@ -9,7 +9,7 @@ tags:
     - bwrap
     - tmux
 created_at: 2026-06-09T12:50:21Z
-updated_at: 2026-06-09T12:50:21Z
+updated_at: 2026-07-02T07:32:30Z
 ---
 
 ## Symptom

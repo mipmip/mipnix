@@ -34,7 +34,9 @@
     home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    nixvim.url = "github:nix-community/nixvim";
+    # Track the nixvim release branch matching nixpkgs (26.05); `main` follows
+    # nixpkgs-unstable and warns about a version mismatch.
+    nixvim.url = "github:nix-community/nixvim/nixos-26.05";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
 
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
@@ -198,7 +200,13 @@
                 rsvg-convert -w 116 -h 84 "$svg" -o "''${svg%.svg}.png"
               done
 
-              ags bundle app.ts $out/bin/mipbar -d "SRC='$out/share'"
+              # ASKPASS: the SshKey widget's click-to-load runs `ssh-add` from
+              # the detached bar, which has no tty — it needs an askpass to
+              # prompt for the passphrase. Inject the path at build time so the
+              # widget never depends on SSH_ASKPASS being set in the session.
+              ags bundle app.ts $out/bin/mipbar \
+                -d "SRC='$out/share'" \
+                -d "ASKPASS='${pkgs-unstable.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass'"
 
               runHook postInstall
             '';

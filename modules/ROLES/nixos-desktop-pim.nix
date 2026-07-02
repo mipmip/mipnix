@@ -38,7 +38,7 @@
       # Desktop tools & hardware
       desktop-virt-virtualization
       desktop-virt-appimage
-      desktop-hw-bambu-labs
+      #desktop-hw-bambu-labs
       desktop-hw-printers
       desktop-utils-filesync
 
