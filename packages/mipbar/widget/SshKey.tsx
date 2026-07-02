@@ -34,8 +34,8 @@ fi`
 const FP_SCRIPT = `ssh-keygen -lf ~/.ssh/id_ed25519.pub 2>/dev/null | awk '{print $2}'`
 
 const ICON = {
-  loaded: "󰌾", // solid/closed lock
-  unloaded: "󰿆", // open lock
+  loaded: "󰿆", // open lock — key IS loaded (unlocked/available)
+  unloaded: "󰌾", // closed lock — key NOT loaded (locked away)
   stale: "󰦝", // lock with alert — listed but can't sign
   noagent: "󰗤", // cross
 } as const
@@ -66,22 +66,33 @@ export default function SshKey() {
   // Periodic poll (also fires immediately), consistent with other indicators.
   interval(5000, refresh)
 
-  const load = () =>
-    // ssh-add runs detached (no controlling tty), so the passphrase prompt must
-    // come from an askpass. ASKPASS is the standalone askpass path injected at
-    // bundle time (see flake.nix) — set it explicitly so we don't depend on the
-    // session having exported SSH_ASKPASS. SSH_AUTH_SOCK is inherited (the plain
-    // ssh-agent, via the Hyprland session env).
-    execAsync(["bash", "-c",
-      `SSH_ASKPASS='${ASKPASS}' SSH_ASKPASS_REQUIRE=force ssh-add ~/.ssh/id_ed25519`,
-    ])
+  // Guard against firing a second ssh-add (and thus a second askpass popup)
+  // while one is already in flight — e.g. a double click, or the popover button
+  // re-triggering. The askpass GUI must appear exactly once per click.
+  let inFlight = false
+  const runOnce = (cmd: string) => {
+    if (inFlight) return
+    inFlight = true
+    execAsync(["bash", "-c", cmd])
       .then(refresh)
       .catch(refresh)
+      .finally(() => {
+        inFlight = false
+      })
+  }
 
-  const unload = () =>
-    execAsync(["bash", "-c", "ssh-add -d ~/.ssh/id_ed25519"])
-      .then(refresh)
-      .catch(refresh)
+  const load = () =>
+    // ssh-add runs detached from the bar (no controlling tty), so the passphrase
+    // prompt must come from an askpass. The askpass env is set ONLY here (not as
+    // a session-wide variable) so the GUI popup appears solely on a widget click
+    // — a plain `ssh`/`ssh-add` in a terminal still prompts on its own tty.
+    // ASKPASS is the standalone askpass path injected at bundle time (flake.nix).
+    // SSH_AUTH_SOCK is inherited (the plain ssh-agent, via the session env).
+    runOnce(
+      `SSH_ASKPASS='${ASKPASS}' SSH_ASKPASS_REQUIRE=force ssh-add ~/.ssh/id_ed25519 < /dev/null`,
+    )
+
+  const unload = () => runOnce("ssh-add -d ~/.ssh/id_ed25519")
 
   return (
     <menubutton class={state((s) => `StatusIcon SshKey ${s}`)}>
