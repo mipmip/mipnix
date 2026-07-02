@@ -200,7 +200,13 @@
                 rsvg-convert -w 116 -h 84 "$svg" -o "''${svg%.svg}.png"
               done
 
-              ags bundle app.ts $out/bin/mipbar -d "SRC='$out/share'"
+              # ASKPASS: the SshKey widget's click-to-load runs `ssh-add` from
+              # the detached bar, which has no tty — it needs an askpass to
+              # prompt for the passphrase. Inject the path at build time so the
+              # widget never depends on SSH_ASKPASS being set in the session.
+              ags bundle app.ts $out/bin/mipbar \
+                -d "SRC='$out/share'" \
+                -d "ASKPASS='${pkgs-unstable.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass'"
 
               runHook postInstall
             '';
