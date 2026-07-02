@@ -113,13 +113,18 @@ window.Bar {
         font-size: 1.1em;
       }
 
-      // Tri-state colour cue: loaded = green, unloaded = amber, no-agent = grey.
+      // Colour cue: loaded = green, unloaded = amber, stale (listed but can't
+      // sign) = red, no-agent = grey.
       &.loaded > button > label {
         color: #a6da95;
       }
 
       &.unloaded > button > label {
         color: #eed49f;
+      }
+
+      &.stale > button > label {
+        color: #ed8796;
       }
 
       &.noagent > button > label {
