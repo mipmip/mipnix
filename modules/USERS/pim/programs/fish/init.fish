@@ -13,8 +13,8 @@ function fish_prompt
   echo -s (prompt_hostname) (set_color blue) (prompt_pwd) (set_color yellow) $prompt_symbol (set_color normal)
 end
 
-bass source /tmp/openai-api-key
-bass source /tmp/bedrockpim-api-keys-env
-bass source /tmp/bedrock-keys-for-avante-env
+#bass source /tmp/openai-api-key
+#bass source /tmp/bedrockpim-api-keys-env
+#bass source /tmp/bedrock-keys-for-avante-env
 
 bass export PATH=~/.npm-packages/bin:$PATH
