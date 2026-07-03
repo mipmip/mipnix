@@ -1,3 +1,15 @@
+> ⚠️ ROLLED BACK 2026-07-03: the implemented reconcile-on-workspace-event
+> approach made the session unstable (likely an event feedback loop despite the
+> debounce, and/or churn from moving 1–7 on every focus). Both touched files were
+> reverted to their pre-change state (commit 565f6f32): DP-3 pins restored in
+> workspaces.conf, original monitor-only listener restored in the rehome script.
+> The tasks below are LEFT AS-WAS for the record; do NOT treat them as applied.
+> The underlying bug (workspaces landing on the laptop) is still unresolved and
+> needs a different approach — investigate later, calmly, not on a Friday.
+> Candidates for the retry: don't reconcile the whole 1–7 set on every event
+> (only the focused workspace); or avoid the runtime move entirely and fix it at
+> the rule level.
+
 ## 1. Static config: remove the connector lie
 
 - [x] 1.1 In `modules/USERS/pim/programs/hyprland/hypr/workspaces.conf`, remove

@@ -1,22 +1,17 @@
 #!/usr/bin/env bash
 # workspace-monitor-rehome: keep external workspaces on the external monitor.
 #
-# The external monitor is a different physical display on a different port at
-# home vs. work, so it enumerates as DP-2 or DP-3. A static connector pin in
-# workspaces.conf therefore cannot be correct — a dead-connector rule strands
-# workspaces 1-7 on the laptop. The only stable predicate is "the monitor that
-# is NOT the laptop panel eDP-1", which can only be resolved at runtime. So
-# workspaces.conf carries NO monitor pin for 1-7 and this script is the SOLE
-# owner of their binding.
+# Bug this fixes: workspaces 1-7 are statically pinned to a connector name
+# (DP-3) in nwg-displays' workspaces.conf. The external monitor is a different
+# physical display on a different HDMI port at home vs. work, so it enumerates
+# as DP-2 or DP-3 and the static pin breaks — stranding workspaces 1-7 on the
+# laptop. The only stable predicate is "the monitor that is NOT the laptop
+# panel eDP-1".
 #
-# workspaces.conf is a repo-owned, immutable (nix-store) config — nwg-displays
-# does NOT rewrite it at runtime. nwg-displays owns monitor GEOMETRY
-# (monitors.conf) only.
-#
-# Reconcile runs at startup, on monitor add/remove, AND on workspace
-# focus/create (because with no static pin a fresh 1-7 workspace binds to the
-# focused monitor first, which may be the laptop). A debounce guards against the
-# reconcile's own moveworkspacetomonitor dispatches re-triggering it into a loop.
+# This script owns the workspace->monitor BINDING at runtime; nwg-displays
+# still owns monitor GEOMETRY (monitors.conf) and may keep writing port names
+# into workspaces.conf — that's fine, this re-applies the correct binding on
+# every monitor add/remove and once at startup.
 #
 # Mapping:
 #   workspaces 1-7  -> the connected external monitor (first non-eDP-1), if any
@@ -80,35 +75,12 @@ if [ ! -S "$SOCK" ]; then
   exit 1
 fi
 
-# Debounce for workspace-triggered reconciles: reconcile dispatches
-# moveworkspacetomonitor, which itself emits workspace/focusedmon events. Without
-# a guard those would re-enter this loop and could storm. We suppress workspace-
-# triggered reconciles that arrive within DEBOUNCE_MS of the last one. Monitor
-# add/remove events are rarer and important, so they always reconcile (and reset
-# the debounce clock). now_ms/last are plain vars — the whole `while` runs in one
-# pipeline subshell, so they persist across iterations.
-DEBOUNCE_MS=400
-last_ms=0
-now_ms() { echo $(( $(date +%s%N) / 1000000 )); }
-
 socat -U - "UNIX-CONNECT:$SOCK" 2>/dev/null | while read -r line; do
   case "$line" in
-    monitoradded*|monitorremoved*)
-      # Monitor topology changed: brief settle so hyprctl monitors reflects it.
+    monitoradded*|monitoraddedv2*|monitorremoved*|monitorremovedv2*)
+      # Brief settle so hyprctl monitors reflects the new topology.
       sleep 0.3
       reconcile
-      last_ms="$(now_ms)"
-      ;;
-    workspace\>\>*|workspacev2\>\>*|createworkspace\>\>*|createworkspacev2\>\>*|focusedmon\>\>*|focusedmonv2\>\>*)
-      # A 1-7 workspace may have just bound to the focused (possibly laptop)
-      # monitor; pull it back to the external one. No settle delay here (no
-      # topology change) so the correction is near-instant. Debounced so the
-      # reconcile's own emitted events don't re-trigger it.
-      cur_ms="$(now_ms)"
-      if [ "$(( cur_ms - last_ms ))" -ge "$DEBOUNCE_MS" ]; then
-        reconcile
-        last_ms="$(now_ms)"
-      fi
       ;;
   esac
 done
