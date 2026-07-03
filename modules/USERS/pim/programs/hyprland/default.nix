@@ -47,7 +47,14 @@ inputs,
       systemd.enable = false;
     };
 
-    home.packages = [ pkgs.elephant ];
+    # hyprpolkitagent: a polkit authentication agent for the Hyprland session.
+    # Without a running agent, polkit-mediated auth prompts have nowhere to
+    # appear — which is why Bitwarden greys out "Unlock with system
+    # authentication" (its biometric/system-auth unlock goes through polkit).
+    # Launched via exec-once in autostart.conf (this session does not populate
+    # graphical-session.target, so a systemd user service would not auto-start —
+    # same reason Walker uses exec-once).
+    home.packages = [ pkgs.elephant pkgs.hyprpolkitagent ];
 
     home.file = {
       ".config/wpaperd" = {
