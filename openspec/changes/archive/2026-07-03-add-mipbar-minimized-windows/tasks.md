@@ -23,9 +23,9 @@
 
 - [x] 3.1 `nix build .#mipbar` compiles (stage the new file so the flake source
       sees it).
-- [ ] 3.2 With windows minimized (currently 2 are in `special:minimized`): confirm
+- [x] 3.2 With windows minimized (currently 2 are in `special:minimized`): confirm
       the indicator appears with the correct count.
-- [ ] 3.3 Click a row: confirm the window returns to the current workspace and is
+- [x] 3.3 Click a row: confirm the window returns to the current workspace and is
       focused, and the count decrements.
-- [ ] 3.4 Restore the last one: confirm the indicator hides.
-- [ ] 3.5 "Restore all": confirm every minimized window returns.
+- [x] 3.4 Restore the last one: confirm the indicator hides.
+- [x] 3.5 "Restore all": confirm every minimized window returns.

@@ -5,8 +5,7 @@ status: scrapped
 type: task
 priority: low
 created_at: 2026-05-05T10:00:00Z
-updated_at: 2026-07-02T18:06:32Z
-parent: mipnix-ecy2
+updated_at: 2026-07-03T09:06:57Z
 ---
 
 When screensharing from Firefox, identify and jump to the specific tab that initiated the screenshare.

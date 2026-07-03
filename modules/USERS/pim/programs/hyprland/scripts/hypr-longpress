@@ -26,6 +26,11 @@ ACTIONS = [
     "Minimize",
     "Pin",
     *[f"Move to WS {i}" for i in range(1, 11)],
+    # Dismiss the menu without acting on the window. Selecting it closes rofi and
+    # falls through dispatch_action() as a no-op (no matching branch). Placed last
+    # so it is not adjacent to the destructive window "Close" at the top. Escape
+    # or clicking outside still dismiss too; this gives a mouse-clickable option.
+    "Close menu",
 ]
 
 logging.basicConfig(
