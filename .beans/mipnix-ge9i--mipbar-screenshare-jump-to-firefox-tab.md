@@ -1,11 +1,11 @@
 ---
 # mipnix-ge9i
 title: 'mipbar: screenshare jump to specific firefox tab'
-status: draft
+status: scrapped
 type: task
 priority: low
 created_at: 2026-05-05T10:00:00Z
-updated_at: 2026-06-09T10:40:13Z
+updated_at: 2026-07-02T18:06:32Z
 parent: mipnix-ecy2
 ---
 
