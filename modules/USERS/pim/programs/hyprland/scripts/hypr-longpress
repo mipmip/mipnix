@@ -126,7 +126,7 @@ def show_menu(screen_x, screen_y):
                 enabled: false;
             }}
             listview {{
-                lines: 15;
+                lines: {len(ACTIONS)};
                 scrollbar: false;
                 fixed-height: false;
                 spacing: 2px;

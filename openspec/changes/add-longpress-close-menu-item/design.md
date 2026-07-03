@@ -24,6 +24,14 @@ recognized selections, a "Close menu" selection falls through the `if/elif`
 chain and dispatches nothing — rofi has already closed by then. No new branch,
 no state, minimal surface.
 
+### Size the rofi list to the entry count (found during testing)
+
+Adding a 16th entry exposed a latent bug: the rofi theme hardcoded `lines: 15`
+with `fixed-height: false` and `scrollbar: false`, so the list was capped at 15
+visible rows and the 16th ("Close menu") was silently clipped — the item existed
+but never appeared. Changed the theme to `lines: {len(ACTIONS)}` so the menu
+always sizes to show every entry and cannot regress as actions are added/removed.
+
 ### Place it last
 
 The destructive window **Close** is the first entry. Putting "Close menu"
