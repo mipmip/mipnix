@@ -28,10 +28,17 @@ function getMinimized(hyprland: Hyprland.Hyprland): MinItem[] {
   const ws = hyprland.get_workspaces().find((w) => w.get_name() === MINIMIZED_WS)
   if (!ws) return []
   return ws.get_clients().map((c) => ({
-    address: c.get_address(),
+    // AstalHyprland's get_address() returns the address WITHOUT the `0x` prefix
+    // (e.g. "61fed…"), but `hyprctl dispatch … address:<addr>` requires the
+    // `0x` form or it fails with "No such window found". Normalize to `0x…`.
+    address: withHexPrefix(c.get_address()),
     title: c.get_title() || c.get_class() || "window",
     iconName: lookupIcon(c.get_class() || "") || "application-x-executable",
   }))
+}
+
+function withHexPrefix(addr: string): string {
+  return addr.startsWith("0x") ? addr : `0x${addr}`
 }
 
 export default function Minimized() {
