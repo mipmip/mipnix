@@ -131,6 +131,54 @@ window.Bar {
         color: #{"alpha(@theme_fg_color, 0.4)"};
       }
     }
+
+    &.Minimized {
+      .MinimizedIcon {
+        font-size: 1.05em;
+      }
+
+      .MinimizedCount {
+        margin-left: 3px;
+        font-size: 0.85em;
+      }
+    }
+  }
+
+  .MinimizedPopover {
+    padding: 6px;
+    min-width: 260px;
+
+    .MinimizedRow {
+      padding: 6px 8px;
+      border-radius: 6px;
+
+      image {
+        -gtk-icon-size: 16px;
+        margin-right: 8px;
+      }
+
+      label {
+        font-weight: normal;
+        font-size: 0.9em;
+      }
+
+      &:hover {
+        background: #{"alpha(@theme_fg_color, 0.1)"};
+      }
+    }
+
+    .RestoreAll {
+      margin-top: 4px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.8em;
+      font-weight: normal;
+      background: #{"alpha(@theme_fg_color, 0.08)"};
+
+      &:hover {
+        background: #{"alpha(@theme_fg_color, 0.14)"};
+      }
+    }
   }
 
   .SshKeyPopover {
