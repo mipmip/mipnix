@@ -30,14 +30,14 @@
             { mime = "application/oasis.opendocument.*"; run = "office"; }
             { mime = "application/ms-*"; run = "office"; }
             { mime = "application/msword"; run = "office"; }
-            { name = "*.docx"; run = "office"; }
+            { url = "*.docx"; run = "office"; }
           ];
           prepend_previewers = [
             { mime = "application/openxmlformats-officedocument.*"; run = "office"; }
             { mime = "application/oasis.opendocument.*"; run = "office"; }
             { mime = "application/ms-*"; run = "office"; }
             { mime = "application/msword"; run = "office"; }
-            { name = "*.docx"; run = "office"; }
+            { url = "*.docx"; run = "office"; }
           ];
         };
       };
