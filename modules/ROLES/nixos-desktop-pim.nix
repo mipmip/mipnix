@@ -18,6 +18,7 @@
 
       # Desktop foundation - Utils
       desktop-utils-fonts
+      desktop-utils-thumbnailers
 
       # Desktop environments
       desktop-de-gnome
