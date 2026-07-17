@@ -48,6 +48,22 @@ inputs,
 
     services.printing.enable = true;
 
+    # HP LaserJet Pro M201dw (USB) — uses the HPLIP PostScript PPD
+    services.printing.drivers = [ pkgs.hplip ];
+    hardware.printers.ensurePrinters = [
+      {
+        name = "HP_LaserJet_M201dw";
+        location = "USB";
+        description = "HP LaserJet Pro M201dw";
+        deviceUri = "usb://HP/LaserJet%20Pro%20M201dw?serial=VNC3631411";
+        model = "HP/hp-laserjet_pro_m201_m202-ps.ppd.gz";
+        ppdOptions = {
+          PageSize = "A4";
+        };
+      }
+    ];
+    hardware.printers.ensureDefaultPrinter = "HP_LaserJet_M201dw";
+
     hardware.bluetooth.enable = true;
     hardware.bluetooth.powerOnBoot = true;
     services.blueman.enable = true;
