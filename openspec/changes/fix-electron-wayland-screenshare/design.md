@@ -91,6 +91,28 @@ graphical session. Keeping both vars together documents intent and avoids split 
 
 **Rollback**: remove the line and rebuild; re-login. No state migration involved.
 
+## Correction (found during verification)
+
+The original single-variable diagnosis was **incomplete**. After adding `NIXOS_OZONE_WL=1`,
+Slack was verified running Wayland-native with the `WebRTCPipeWireCapturer` flag and *did*
+invoke `org.freedesktop.portal.ScreenCast` — but the portal refused the session:
+
+```
+Failed to request session: org.freedesktop.DBus.Error.AccessDenied:
+Portal operation not allowed: Unable to open /proc/<pid>/root
+```
+
+The portal identifies the caller by opening `/proc/<caller-pid>/root` (a `PTRACE_MODE_READ`-
+gated magic symlink). Under the systemd/NixOS default `kernel.yama.ptrace_scope = 1`, the
+portal (a same-user process that is not Slack's ancestor) is denied. The real fix is
+therefore **two** changes: the env var (so the capturer flag is injected) **and**
+`boot.kernel.sysctl."kernel.yama.ptrace_scope" = 0` (so the portal can authorize the
+session). `NIXOS_OZONE_WL` alone is necessary but not sufficient.
+
+**Trade-off:** `ptrace_scope = 0` allows any same-user process to ptrace another same-user
+process (intra-user only; no cross-user/root impact). This is the standard desktop setting
+for portal-mediated screen capture.
+
 ## Open Questions
 
-- None. Root cause is confirmed and the fix is a single session variable.
+- None. Both root causes confirmed; the fix is the env var plus `ptrace_scope = 0`.

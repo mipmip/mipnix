@@ -14,6 +14,7 @@
 
       #msmtp
       #teams
+      teams-for-linux
       #unstable.srain #IRC
 
       discord

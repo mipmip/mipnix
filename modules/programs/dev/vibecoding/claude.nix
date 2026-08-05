@@ -5,64 +5,53 @@
     programs.claude-code = {
       enable = true;
       package = unstable.claude-code;
+      commands = import ./_cc-commands.nix;
+      context = ''
+        # Markdown - Styleguide
+        - When creating a markdown table which is not wider then 90 chars, using space padding to visualy align table borders.
 
-      commands = {
 
-        "mip:1shotpoc" = ''
-          ---
-          description: creates a new project based on the existing context my way
-          ---
-          Can you create a set of artifacts I can use to let claude code
-          autonomously build the PoC which could serve as an alpha base for
-          later development.
+        # RTK - Rust Token Killer
 
-          We will use beans as internal ticket system for milestones and epics.
-          Run `beans init` to setup and `beans prime` to undestand how it
-          works. Claude Code should administer the milestones and epics.
-          Milestone title should start with an incremental two digit
-          number:starting with `01`
+        **Usage**: Token-optimized CLI proxy (60-90% savings on dev operations)
 
-          We will use OpenSpec for creating proposals and keeping track of all
-          tasks within an epic. OpenSpec needs to be fully setup before the
-          project can take off. start with `openspec init.
+        ## Meta Commands (always use rtk directly)
 
-          We need thourough testing and e2e testcases to prove our PoC is
-          working as it should.
+        ```bash
+        rtk gain              # Show token savings analytics
+        rtk gain --history    # Show command usage history with savings
+        rtk discover          # Analyze Claude Code history for missed opportunities
+        rtk proxy <cmd>       # Execute raw command without filtering (for debugging)
+        ```
 
-          The PoC need to work with nix and nix flakes from the start. Do
-          not use flake-utils but plain nix to setup supported architectures.
+        ## Installation Verification
 
-          We will use jj for version control. Pim will give you the url of the
-          remote repository. You should commit after every archival of a
-          openspec change. Commit as Pim Snel, no self promotion.
+        ```bash
+        rtk --version         # Should show: rtk X.Y.Z
+        rtk gain              # Should work (not "command not found")
+        which rtk             # Verify correct binary
+        ```
+
+        ⚠️ **Name collision**: If `rtk gain` fails, you may have reachingforthejack/rtk (Rust Type Kit) installed instead.
+
+        ## Hook-Based Usage
+
+        All other commands are automatically rewritten by the Claude Code hook.
+        Example: `git status` → `rtk git status` (transparent, 0 tokens overhead)
+
+        Refer to CLAUDE.md for full command reference.
         '';
+      settings =  {
+        includeCoAuthoredBy = false;
+        statusLine = {
+          command = "input=$(cat); echo \"[$(echo \"$input\" | jq -r '.model.display_name')] 📁 $(basename \"$(echo \"$input\" | jq -r '.workspace.current_dir')\")\"";
+          padding = 0;
+          type = "command";
+        };
 
-        "mip:flaker" = ''
-          ---
-          description: creates a flake.nix for the current project
-          ---
-          check which programming langauge is used for this project and use the instructions from https://github.com/mipmip/agent-do-it-my-way for make a flake for this project-type. If the language is not listed create a flake in the spirit of add-flake-to-nodejs-project.md.
-        '';
-
-        "mip:translate" = ''
-          ---
-          argument-hint: [message]
-          description: translates between Dutch and English
-          ---
-          Translate the following between Dutch and English. Auto-detect
-          the source language. Keep the tone and register of the original.
-
-          the following can be
-            - a text fragment -> translate in this session
-            - a file path -> translate the complete file overwriting the existing text
-            - a file path with range -> translate the text withing the range overwriting the existing text
-
-          $ARGUMENTS
-        '';
       };
 
     };
   };
-
 }
 
