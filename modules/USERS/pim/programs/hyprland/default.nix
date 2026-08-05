@@ -47,7 +47,23 @@ inputs,
       systemd.enable = false;
     };
 
-    home.packages = [ pkgs.elephant ];
+    # hyprpolkitagent: a polkit authentication agent for the Hyprland session.
+    # Without a running agent, polkit-mediated auth prompts have nowhere to
+    # appear — which is why Bitwarden greys out "Unlock with system
+    # authentication" (its biometric/system-auth unlock goes through polkit).
+    #
+    # The package installs only a libexec binary (no bin/) plus a systemd user
+    # unit. Starting it via the unit makes the Qt6 agent crash (SIGABRT) under
+    # the unit's restricted environment; launched directly from the Hyprland
+    # session it runs fine. So expose a small PATH wrapper and exec-once it from
+    # autostart.conf (this session doesn't populate graphical-session.target
+    # anyway, so the unit wouldn't auto-start — same reason Walker uses
+    # exec-once). The wrapper keeps the nix-store path out of the static conf.
+    home.packages = [
+      pkgs.elephant
+      (pkgs.writeShellScriptBin "hyprpolkitagent-start"
+        "exec ${pkgs.hyprpolkitagent}/libexec/hyprpolkitagent")
+    ];
 
     home.file = {
       ".config/wpaperd" = {

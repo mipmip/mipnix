@@ -26,6 +26,11 @@ ACTIONS = [
     "Minimize",
     "Pin",
     *[f"Move to WS {i}" for i in range(1, 11)],
+    # Dismiss the menu without acting on the window. Selecting it closes rofi and
+    # falls through dispatch_action() as a no-op (no matching branch). Placed last
+    # so it is not adjacent to the destructive window "Close" at the top. Escape
+    # or clicking outside still dismiss too; this gives a mouse-clickable option.
+    "Close menu",
 ]
 
 logging.basicConfig(
@@ -121,7 +126,7 @@ def show_menu(screen_x, screen_y):
                 enabled: false;
             }}
             listview {{
-                lines: 15;
+                lines: {len(ACTIONS)};
                 scrollbar: false;
                 fixed-height: false;
                 spacing: 2px;
@@ -147,6 +152,10 @@ def show_menu(screen_x, screen_y):
                 "-hover-select",
                 "-me-select-entry", "",
                 "-me-accept-entry", "MousePrimary",
+                # Close the menu when the user clicks outside it. This is rofi's
+                # default, but pass it explicitly so the "click-away dismisses"
+                # behaviour is intentional and immune to default changes.
+                "-click-to-exit",
             ],
             input=menu_input,
             capture_output=True,
