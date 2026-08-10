@@ -11,7 +11,7 @@
       kdePackages.akonadiconsole
       kdePackages.akonadi-search
 
-      pkgs.fastmail-desktop
+      #pkgs.fastmail-desktop
     ];
   };
 }
