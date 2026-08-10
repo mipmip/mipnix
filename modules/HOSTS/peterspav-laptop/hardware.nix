@@ -11,7 +11,7 @@ inputs,
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "vmd" "nvme" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelModules = [ "kvm-intel" "rtw89" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
