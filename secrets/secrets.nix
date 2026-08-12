@@ -10,6 +10,7 @@ let
   durer = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE+jRQYvOX+EI+QeB31JT994sYo+B1j18AxTjzuprQ2F";
   hurry = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPyh9gDCDN2rzAExllvavzVVr4XkKea63Wa+B7JO8+Qz";
   harry = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOmY6Jv/y1CSyVe0t1L+65NQjocDoDUShhriPp5yg6eh";
+  peterspav = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKJ7MltNQkkv0gvF+qkSnbvzpfX6eOmWtTKgb3e6rWlq";
 
   users = [ pim annemarie ];
   systems = [
@@ -19,11 +20,13 @@ let
     lavendel
     dapperehaan
     durer
+    peterspav
   ];
 
   trusted_systems = [
     lego2
     dapperehaan
+    peterspav
   ];
 
 in

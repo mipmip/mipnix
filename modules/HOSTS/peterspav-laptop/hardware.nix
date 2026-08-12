@@ -13,6 +13,7 @@ inputs,
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" "rtw89" ];
   boot.extraModulePackages = [ ];
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/27d5e57a-df27-464f-b8b0-fdc9595b5374";
@@ -29,5 +30,7 @@ inputs,
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  # RTL8852AE WiFi 6 (rtw89_8852ae) needs binary firmware from linux-firmware
+  hardware.enableRedistributableFirmware = true;
   };
 }
