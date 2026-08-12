@@ -40,55 +40,55 @@ inputs,
             id = 0;
             isDefault = true;
 
-            search = {
-              force = true;
-              default = "Kagi";
-              engines = {
-                "Kagi" = {
-                  urls = [{
-                    template = "https://kagi.com/search?q={searchTerms}";
-                  }];
-                  #icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-                  definedAliases = [ "@k" ];
-                };
-                "Nix Packages" = {
-                  urls = [{
-                    template = "https://search.nixos.org/packages";
-                    params = [
-                      { name = "type"; value = "packages"; }
-                      { name = "query"; value = "{searchTerms}"; }
-                    ];
-                  }];
-                  icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-                  definedAliases = [ "@np" ];
-                };
-                "wikipedia".metaData.alias = "@wiki";
-                "google".metaData.hidden = true;
-                "amazondotcom-us".metaData.hidden = true;
-                "bing".metaData.hidden = true;
-                "ebay".metaData.hidden = true;
-              };
-            };
+            #            search = {
+            #              force = true;
+            #              default = "Kagi";
+            #              engines = {
+            #                "Kagi" = {
+            #                  urls = [{
+            #                    template = "https://kagi.com/search?q={searchTerms}";
+            #                  }];
+            #                  #icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+            #                  definedAliases = [ "@k" ];
+            #                };
+            #                "Nix Packages" = {
+            #                  urls = [{
+            #                    template = "https://search.nixos.org/packages";
+            #                    params = [
+            #                      { name = "type"; value = "packages"; }
+            #                      { name = "query"; value = "{searchTerms}"; }
+            #                    ];
+            #                  }];
+            #                  icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+            #                  definedAliases = [ "@np" ];
+            #                };
+            #                "wikipedia".metaData.alias = "@wiki";
+            #                "google".metaData.hidden = true;
+            #                "amazondotcom-us".metaData.hidden = true;
+            #                "bing".metaData.hidden = true;
+            #                "ebay".metaData.hidden = true;
+            #              };
+            #            };
 
 
             settings = defaultSettings // {
             };
           };
 
-          adevinta = {
-            id = 1;
-            settings = defaultSettings // {
-              "browser.startup.homepage" = "https://automobile.it";
-            };
-          };
-
-          mahmoud = {
-            id = 2;
-            name = "mahmoud";
-            settings = {
-              "general.smoothScroll" = true;
-            };
-          };
+          #          adevinta = {
+          #            id = 1;
+          #            settings = defaultSettings // {
+          #              "browser.startup.homepage" = "https://automobile.it";
+          #            };
+          #          };
+          #
+          #          mahmoud = {
+          #            id = 2;
+          #            name = "mahmoud";
+          #            settings = {
+          #              "general.smoothScroll" = true;
+          #            };
+          #          };
         };
     };
   };
