@@ -1,4 +1,5 @@
 let
+  cichorei = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJZU9DZpGs+Ib/aN3n7u46wY8v9V4qHLcNzs/U+9iTgc";
   pim = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEY25ZaYRuKUJuVuzqK4c8dKkSxN6Cd9yhbDTa/5Njmh";
 
   annemarie = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBvyHG+v+V+LQcbxw1H0ZCnrPkHy90lGu/08avLFa48S";
@@ -14,6 +15,7 @@ let
 
   users = [ pim annemarie ];
   systems = [
+    cichorei
     hurry
     harry
     lego2
@@ -132,4 +134,7 @@ in
 
   "matrix-openclaw-password.age".publicKeys = [pim clawone];
   "voorzetramenshop-env.age".publicKeys = [ pim durer ];
+  "nebula-cichorei.crt.age".publicKeys = users ++ systems;
+  "nebula-cichorei.key.age".publicKeys = users ++ systems;
+
 }

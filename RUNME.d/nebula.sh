@@ -3,10 +3,24 @@ nebula_hosts(){
   with_age_identity show_nebula_ip_allocation
 }
 
+# Ask whether to overwrite an existing artifact. Returns success (overwrite) when
+# $FORCE is set, otherwise defers to an interactive gum confirm. Lets new_nebula_node
+# prompt per artifact when re-provisioning instead of aborting or silently skipping.
+_confirm_overwrite(){
+  local what="$1"
+  if [[ -n "$FORCE" ]]; then
+    echo "$what already exists — overwriting (FORCE)"
+    return 0
+  fi
+  gum confirm "$what already exists — overwrite?"
+}
+
 make_command "new_nebula_node" "Create new nebula node certificates"
 new_nebula_node(){
   with_age_identity _new_nebula_node_inner
 }
+# Re-provisioning: when the node or parts of it already exist, each conflict prompts
+# to overwrite. Set FORCE=1 to answer every overwrite prompt affirmatively.
 _new_nebula_node_inner(){
   # Check required tools
   if ! command -v gum &> /dev/null; then
@@ -37,11 +51,22 @@ _new_nebula_node_inner(){
     fi
   fi
 
-  # Check if node already exists
+  # If the node's certificates already exist, ask whether to regenerate (overwrite)
+  # them. Declining keeps the existing certs and continues with the remaining steps,
+  # so a partial or re-provisioning run can still fix secrets.nix and the wiring file.
+  REGEN_CERTS="yes"
   if [[ -f "./secrets/nebula-$NODE_NAME.crt.age" ]] || [[ -f "./secrets/nebula-$NODE_NAME.key.age" ]]; then
-    echo "Error: Certificates for node '$NODE_NAME' already exist"
-    exit 1
+    if _confirm_overwrite "Certificates for node '$NODE_NAME'"; then
+      REGEN_CERTS="yes"
+    else
+      echo "Keeping existing certificates for '$NODE_NAME'"
+      REGEN_CERTS="no"
+    fi
   fi
+
+  # Certificate generation (IP, groups, signing, encryption) only runs when the certs
+  # are absent or the operator confirmed an overwrite above.
+  if [[ "$REGEN_CERTS" == "yes" ]]; then
 
   show_nebula_ip_allocation
   SUGGESTED_IP=$(next_free_nebula_ip)
@@ -147,27 +172,140 @@ _new_nebula_node_inner(){
   fi
   chmod 600 "./secrets/nebula-$NODE_NAME.key.age"
 
+  fi  # end certificate (re)generation block
+
   echo "Updating secrets.nix..."
 
-  # Add entries to secrets.nix before the closing brace
-  sed -i "/^}$/i \  \"nebula-$NODE_NAME.crt.age\".publicKeys = users ++ systems;\n  \"nebula-$NODE_NAME.key.age\".publicKeys = users ++ systems;\n" ./secrets/secrets.nix
+  # Add the node's cert/key publicKeys entries before the closing brace (skip if present).
+  if grep -qF "\"nebula-$NODE_NAME.crt.age\".publicKeys" ./secrets/secrets.nix; then
+    echo "publicKeys entries for '$NODE_NAME' already present in secrets.nix"
+  else
+    sed -i "/^}$/i \  \"nebula-$NODE_NAME.crt.age\".publicKeys = users ++ systems;\n  \"nebula-$NODE_NAME.key.age\".publicKeys = users ++ systems;\n" ./secrets/secrets.nix
+  fi
+
+  # --- Register the machine's host key in secrets.nix (let-binding + systems) ---
+  # The node's agenix identity is its SSH ed25519 host public key. new_host runs on
+  # the target machine, so read it from /etc/ssh. Degrade gracefully if unavailable.
+  SECRETS_NOTE="cert/key entries"
+  HOST_KEY_FILE="/etc/ssh/ssh_host_ed25519_key.pub"
+  if [[ -r "$HOST_KEY_FILE" ]]; then
+    MACHINE_KEY=$(cut -d' ' -f1,2 < "$HOST_KEY_FILE")
+    if [[ "$MACHINE_KEY" == ssh-ed25519\ * ]]; then
+      # Add the "<node> = "ssh-ed25519 …";" let-binding. If it exists with the same key,
+      # skip silently; if it differs, prompt to overwrite (value only) unless FORCE.
+      EXISTING_KEY=$(grep -E "^\s*${NODE_NAME}\s*=\s*\"ssh-" ./secrets/secrets.nix | head -1 | sed -E 's/^\s*[^=]+=\s*"([^"]*)".*/\1/')
+      if [[ -z "$EXISTING_KEY" ]]; then
+        sed -i "/^let$/a\\  ${NODE_NAME} = \"${MACHINE_KEY}\";" ./secrets/secrets.nix
+        SECRETS_NOTE="cert/key entries + machine key"
+      elif [[ "$EXISTING_KEY" == "$MACHINE_KEY" ]]; then
+        echo "Machine key for '$NODE_NAME' already up to date in secrets.nix"
+      elif _confirm_overwrite "Machine key for '$NODE_NAME' (differs from current host key)"; then
+        # Replace only the quoted value on the node's binding line ('|' delimiter: key has '/').
+        sed -i -E "s|^(\s*${NODE_NAME}\s*=\s*\")[^\"]*(\".*)|\1${MACHINE_KEY}\2|" ./secrets/secrets.nix
+        SECRETS_NOTE="cert/key entries + machine key (updated)"
+      else
+        echo "Keeping existing machine key for '$NODE_NAME'"
+      fi
+      # Append the node to the systems list unless it is already a member. Anchor to
+      # "^  systems = [" so trusted_systems is not matched.
+      IN_SYSTEMS=$(awk '/^  systems = \[/{f=1;next} /^  \];/{f=0} f' ./secrets/secrets.nix | grep -E "^\s*${NODE_NAME}\s*$")
+      if [[ -n "$IN_SYSTEMS" ]]; then
+        echo "'$NODE_NAME' already in the systems list"
+      else
+        sed -i "/^  systems = \[/a\\    ${NODE_NAME}" ./secrets/secrets.nix
+        [[ "$SECRETS_NOTE" == *"machine key"* ]] && SECRETS_NOTE="${SECRETS_NOTE} + systems"
+      fi
+    else
+      echo "Warning: $HOST_KEY_FILE did not contain an ssh-ed25519 key; skipping machine key registration"
+    fi
+  else
+    echo "Warning: could not read $HOST_KEY_FILE; skipping machine key registration for '$NODE_NAME'"
+    echo "         Add the '$NODE_NAME' let-binding and systems entry to secrets/secrets.nix manually."
+  fi
+
+  # --- Generate the per-host nebula wiring file ---
+  # Resolve the host directory: prefer the one new_host exports, else glob by node name.
+  if [[ -n "$HOST_DIR" && -d "$HOST_DIR" ]]; then
+    NODE_HOST_DIR="${HOST_DIR%/}"
+  else
+    _matches=(modules/HOSTS/"$NODE_NAME"-*/)
+    if [[ ${#_matches[@]} -eq 1 && -d "${_matches[0]}" ]]; then
+      NODE_HOST_DIR="${_matches[0]%/}"
+    else
+      NODE_HOST_DIR=""
+    fi
+  fi
+
+  # Decide whether to (re)write the wiring file. An existing file prompts to overwrite.
+  WRITE_NEBULA="yes"
+  if [[ -z "$NODE_HOST_DIR" ]]; then
+    echo "Warning: could not resolve a unique host directory for '$NODE_NAME' under modules/HOSTS/"
+    echo "         Skipping nebula.nix generation — create it manually or re-run via new_host."
+    WRITE_NEBULA="no"
+  elif [[ -f "$NODE_HOST_DIR/nebula.nix" ]]; then
+    if _confirm_overwrite "$NODE_HOST_DIR/nebula.nix"; then
+      WRITE_NEBULA="yes"
+    else
+      echo "$NODE_HOST_DIR/nebula.nix left unchanged"
+      WRITE_NEBULA="no"
+    fi
+  fi
+
+  NEBULA_NIX_CREATED="no"
+  if [[ "$WRITE_NEBULA" == "yes" ]]; then
+    echo "Writing $NODE_HOST_DIR/nebula.nix..."
+    cat > "$NODE_HOST_DIR/nebula.nix" <<NEBEOF
+{ ... }:
+{
+  flake.modules.nixos.${NODE_NAME} = { config, ... }: {
+
+    age.secrets = {
+      "nebula-${NODE_NAME}-cert" = {
+        file = ../../../secrets/nebula-${NODE_NAME}.crt.age;
+        path = "/var/lib/nebula/nebula-${NODE_NAME}.crt";
+        owner = "nebula-mesh";
+        group = "root";
+        mode = "600";
+      };
+      "nebula-${NODE_NAME}-key" = {
+        file = ../../../secrets/nebula-${NODE_NAME}.key.age;
+        path = "/var/lib/nebula/nebula-${NODE_NAME}.key";
+        owner = "nebula-mesh";
+        group = "root";
+        mode = "600";
+      };
+    };
+
+    services.nebula.networks.mesh = {
+      cert = config.age.secrets."nebula-${NODE_NAME}-cert".path;
+      key = config.age.secrets."nebula-${NODE_NAME}-key".path;
+    };
+  };
+}
+NEBEOF
+    NEBULA_NIX_CREATED="yes"
+  fi
 
   # Success message
   echo
-  gum style --border normal --padding "1 2" --border-foreground 212 \
-    "✓ Created nebula certificates for $NODE_NAME" \
-    "" \
-    "Files created:" \
-    "  • secrets/nebula-$NODE_NAME.key.age" \
-    "  • secrets/nebula-$NODE_NAME.crt.age" \
-    "  • Updated secrets/secrets.nix" \
-    "" \
-    "Run './RUNME.sh rekey' to re-encrypt for all authorized systems" \
-    "" \
-    "Next steps:" \
-    "  1. Add age.secrets configuration in hosts/$NODE_NAME/nebula.nix" \
-    "  2. Configure services.nebula.networks.mesh in the same file" \
-    "  3. Commit changes to git" \
-    "  4. Rebuild the system configuration"
+  _summary=(
+    "✓ Provisioned nebula node $NODE_NAME"
+    ""
+    "Auto-created / updated:"
+    "  • secrets/nebula-$NODE_NAME.crt.age"
+    "  • secrets/nebula-$NODE_NAME.key.age"
+    "  • secrets/secrets.nix ($SECRETS_NOTE)"
+  )
+  if [[ "$NEBULA_NIX_CREATED" == "yes" ]]; then
+    _summary+=("  • $NODE_HOST_DIR/nebula.nix (age.secrets + mesh cert/key wiring)")
+  fi
+  _summary+=(
+    ""
+    "Remaining manual steps:"
+    "  1. Run './RUNME.sh rekey' to re-encrypt secrets for all systems"
+    "  2. Commit the changes to git"
+    "  3. Rebuild the system configuration"
+  )
+  gum style --border normal --padding "1 2" --border-foreground 212 "${_summary[@]}"
   echo
 }
