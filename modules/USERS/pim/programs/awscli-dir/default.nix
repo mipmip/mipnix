@@ -132,6 +132,13 @@ inputs,
          output = "table";
          group = "Technative";
        };
+       "technative-web_dns" = {
+         account_id = "technativebv";
+         region = "eu-central-1";
+         group = "Technative";
+         role_arn="arn:aws:iam::393573040164:role/landing_zone_devops_administrator";
+         source_profile="technative";
+       };
      }
      // builtins.listToAttrs (builtins.map (account: {
         name = "profile ${normalize_string account.customer_name}-${normalize_string (account_name account)}";
