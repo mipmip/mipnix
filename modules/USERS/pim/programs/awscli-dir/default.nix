@@ -133,7 +133,6 @@ inputs,
          group = "Technative";
        };
        "technative-web_dns" = {
-         account_id = "technativebv";
          region = "eu-central-1";
          group = "Technative";
          role_arn="arn:aws:iam::393573040164:role/landing_zone_devops_administrator";
