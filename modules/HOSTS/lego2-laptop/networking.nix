@@ -17,6 +17,12 @@ in
     networking.hostName = hostname;
     networking.networkmanager.enable = true;
     networking.firewall.enable = false;
+    networking.extraHosts =
+    ''
+      127.0.0.2 other-localhost
+      10.0.0.1 server
+    '';
+
 
     age = {
       secrets = {
@@ -36,12 +42,6 @@ in
         };
       };
     };
-
-    networking.extraHosts =
-    ''
-      127.0.0.2 other-localhost
-      10.0.0.1 server
-    '';
 
 
     services.nebula.networks.mesh = {

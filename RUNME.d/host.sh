@@ -202,9 +202,11 @@ in
 }
 NETEOF
 
-  # If role-nebula-node was selected, run nebula cert generation
+  # If role-nebula-node was selected, run nebula cert generation. Export HOST_DIR
+  # so new_nebula_node writes its generated nebula.nix into this host's directory.
   for role in "${SELECTED_ROLES[@]}"; do
     if [[ "$role" == "role-nebula-node" ]]; then
+      export HOST_DIR
       new_nebula_node
       break
     fi
