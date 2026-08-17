@@ -11,8 +11,11 @@ in
       inherit hostname;
       server = true;
       system = "aarch64-linux";
+      imports = with inputs.self.modules.homeManager; [
+        role-pim-cli-minimal
+        role-pim-cli-full
+      ];
     };
-
   };
 
   flake.nixosConfigurations = {
@@ -28,25 +31,34 @@ in
 
     imports = with inputs.self.modules.nixos; [
 
+      channel-default
+
       system-default
-      system-locale
+
       role-nebula-node
 
-      hm-nixos
-
-      nix-cli
-      nix-age
-
-      users-core
-
-      system-trusted-agenix
-
-      tui-security
-      tui-tmux
-
-      editors-vim
+      system-trusted-pim
 
       networking-nebula
+      #      system-default
+      #      system-locale
+      #      role-nebula-node
+      #
+      #      hm-nixos
+      #
+      #      nix-cli
+      #      nix-age
+      #
+      #      # users-core
+      #
+      #      system-trusted-agenix
+      #
+      #      tui-security
+      #      tui-tmux
+      #
+      #      editors-vim
+      #
+      #      networking-nebula
 
     ];
 

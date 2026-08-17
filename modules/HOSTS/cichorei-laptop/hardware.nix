@@ -14,6 +14,10 @@ inputs,
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
+  # Emulate aarch64 so we can build/deploy the Raspberry Pi hosts (harry, hurry)
+  # from this x86_64 machine. Requires a `nixos-rebuild switch` to take effect.
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/9a9b595b-ffde-43f4-9d4c-8c0070ed58b7";
       fsType = "ext4";
