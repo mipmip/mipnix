@@ -136,5 +136,6 @@ in
   "voorzetramenshop-env.age".publicKeys = [ pim durer ];
   "nebula-cichorei.crt.age".publicKeys = users ++ systems;
   "nebula-cichorei.key.age".publicKeys = users ++ systems;
+  "ssh-password-resticbackup.age".publicKeys = users ++ systems;
 
 }
