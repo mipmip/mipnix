@@ -30,7 +30,7 @@ deploy_remote(){
   # flake (every nixosConfiguration — dapperehaan, harry, …), which is slow for
   # a single-host deploy and aborts on any unrelated host's eval error. The
   # target's own build is gated separately before deploying.
-  if nix run github:serokell/deploy-rs -- --skip-checks ".#$TARGET"; then
+  if deploy --skip-checks ".#$TARGET"; then
     EXTRA_ARG="auto run after deploy_remote $TARGET"
     git_sync_machine
   else
