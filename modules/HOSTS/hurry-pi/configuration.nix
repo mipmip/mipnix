@@ -46,7 +46,6 @@ in
 
     # Additional packages for server
     environment.systemPackages = with pkgs; [
-      nebula
       libraspberrypi
       raspberrypi-eeprom
     ];
