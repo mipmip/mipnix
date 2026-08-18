@@ -56,7 +56,7 @@ in
     # activation. Pin to 18 (arm64 4K-page min, the upstream kernel default),
     # which is valid on both kernels. Lands in 60-nixos.conf, overriding 55-.
     # Safe to remove and let it return to 33 once harry runs the new kernel.
-    boot.kernel.sysctl."vm.mmap_rnd_bits" = 18;
+    #boot.kernel.sysctl."vm.mmap_rnd_bits" = 18;
 
   };
 
