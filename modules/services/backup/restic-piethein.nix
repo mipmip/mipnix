@@ -84,8 +84,11 @@
             # restic's sftp backend shells out to ssh; point it at the dedicated
             # key and pin the host key (StrictHostKeyChecking=yes uses the
             # /etc/ssh/ssh_known_hosts entry above).
+            # The restic module splices extraOptions into a shell command line
+            # unquoted, so the value (which contains spaces) MUST be single-quoted
+            # here or it word-splits and restic misreads "user@host" as a command.
             extraOptions = [
-              "sftp.command=ssh -i ${config.age.secrets.restic-ssh-key.path} -o StrictHostKeyChecking=yes -o BatchMode=yes ${user}@${host} -s sftp"
+              "sftp.command='ssh -i ${config.age.secrets.restic-ssh-key.path} -o StrictHostKeyChecking=yes -o BatchMode=yes ${user}@${host} -s sftp'"
             ];
             timerConfig = {
               OnCalendar = "hourly";
