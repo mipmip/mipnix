@@ -36,7 +36,7 @@
 
 - [x] 5.1 Import the role in `modules/HOSTS/hurry-pi/configuration.nix` (secrets declared by the module)
 - [x] 5.2 Add targets: `/var/lib/backups/vaultwarden` (h24 d14 m6), `.ssh` (h24 d7)
-- [ ] 5.3 Deploy; verify snapshots + check
+- [x] 5.3 Deploy; verify snapshots + check
 
 ## 6. Enable on durer (with DB dumps)
 
@@ -44,11 +44,11 @@
 - [x] 6.2 voorzetramenshop target: `pg_dump` via `runuser -u postgres` to a dump file, back up, cleanup (h24 d14 m6)
 - [x] 6.3 umami target: `docker exec umami-db … pg_dump` to a dump file, back up, cleanup (h24 d7)
 - [x] 6.4 `.ssh` target (h24 d7)
-- [ ] 6.5 Deploy; verify dumps are produced, snapshots exist, dumps are cleaned up, `restic check` passes
+- [x] 6.5 Deploy; verify dumps are produced, snapshots exist, dumps are cleaned up, `restic check` passes
 
 ## 7. Verification & retention
 
-- [ ] 7.1 Confirm timers are hourly/persistent and staggered across hosts (`systemctl list-timers`)
+- [x] 7.1 Confirm timers are hourly/persistent and staggered across hosts (`systemctl list-timers`)
 - [x] 7.2 Test-restore at least one file from one repo per host to prove recoverability
-- [ ] 7.3 Confirm `forget --prune` reduces snapshots per policy (incl. secondbrain's yearly-forever)
-- [ ] 7.4 Document the restore procedure (repo path, key, offline password) briefly
+- [x] 7.3 Confirm `forget --prune` reduces snapshots per policy (incl. secondbrain's yearly-forever)
+- [x] 7.4 Document the restore procedure (repo path, key, offline password) briefly

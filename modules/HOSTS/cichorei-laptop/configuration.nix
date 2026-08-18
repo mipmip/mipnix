@@ -60,6 +60,12 @@ in
           "--keep-hourly" "24" "--keep-daily" "7" "--keep-weekly" "5"
           "--keep-monthly" "12" "--keep-yearly" "9999"
         ];
+        cichorei-documents.paths = [ "/home/pim/Documenten" "/home/pim/Afbeeldingen" ];
+        cichorei-documents.keep = [
+          "--keep-hourly" "24" "--keep-daily" "7" "--keep-weekly" "5"
+          "--keep-monthly" "12" "--keep-yearly" "9999"
+        ];
+
 
         cichorei-ssh.paths = [ "/home/pim/.ssh" ];
         cichorei-ssh.keep = [ "--keep-hourly" "24" "--keep-daily" "7" ];
@@ -70,34 +76,10 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.networkmanager.enable = true;
-
-#  time.timeZone = "Europe/Amsterdam";
-#
-#  i18n.defaultLocale = "nl_NL.UTF-8";
-#
-#  i18n.extraLocaleSettings = {
-#    LC_ADDRESS = "nl_NL.UTF-8";
-#    LC_IDENTIFICATION = "nl_NL.UTF-8";
-#    LC_MEASUREMENT = "nl_NL.UTF-8";
-#    LC_MONETARY = "nl_NL.UTF-8";
-#    LC_NAME = "nl_NL.UTF-8";
-#    LC_NUMERIC = "nl_NL.UTF-8";
-#    LC_PAPER = "nl_NL.UTF-8";
-#    LC_TELEPHONE = "nl_NL.UTF-8";
-#    LC_TIME = "nl_NL.UTF-8";
-#  };
-
   services.xserver.enable = true;
 
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-
-#  services.xserver.xkb = {
-#    layout = "nl";
-#    variant = "us";
-#  };
-#
-#  console.keyMap = "nl";
 
   services.printing.enable = true;
 
@@ -131,7 +113,7 @@ in
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
-    vim 
+    vim
     wget
     tmux
     git
