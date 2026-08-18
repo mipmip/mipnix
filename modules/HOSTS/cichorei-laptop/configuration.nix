@@ -43,8 +43,28 @@ in
       hardware-keychron
       #networking-wifi
 
+      backup-restic-piethein
 
     ];
+
+    # Hourly restic backups to piethein. secondbrain is kept forever
+    # (dense recent + one-per-year indefinitely); .claude/.ssh a week.
+    mipnix.backup.piethein = {
+      enable = true;
+      datasets = {
+        cichorei-claude.paths = [ "/home/pim/.claude" ];
+        cichorei-claude.keep = [ "--keep-hourly" "24" "--keep-daily" "7" ];
+
+        cichorei-secondbrain.paths = [ "/home/pim/secondbrain" ];
+        cichorei-secondbrain.keep = [
+          "--keep-hourly" "24" "--keep-daily" "7" "--keep-weekly" "5"
+          "--keep-monthly" "12" "--keep-yearly" "9999"
+        ];
+
+        cichorei-ssh.paths = [ "/home/pim/.ssh" ];
+        cichorei-ssh.keep = [ "--keep-hourly" "24" "--keep-daily" "7" ];
+      };
+    };
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

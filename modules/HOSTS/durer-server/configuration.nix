@@ -181,11 +181,48 @@ in
       locations."/".proxyPass = "http://127.0.0.1:3002";
     };
 
+    # Hourly restic backups to piethein. Databases are dumped to a file first
+    # (a consistent snapshot), backed up, then the dump is removed.
+    mipnix.backup.piethein = {
+      enable = true;
+      datasets = {
+        durer-voorzetramenshop = {
+          paths = [ "/var/backups/restic/voorzetramenshop.sql" ];
+          keep = [ "--keep-hourly" "24" "--keep-daily" "14" "--keep-monthly" "6" ];
+          prepareCommand = ''
+            install -d -m 0700 /var/backups/restic
+            ${pkgs.util-linux}/bin/runuser -u postgres -- \
+              ${config.services.postgresql.package}/bin/pg_dump voorzetramenshop \
+              > /var/backups/restic/voorzetramenshop.sql
+          '';
+          cleanupCommand = "rm -f /var/backups/restic/voorzetramenshop.sql";
+        };
+        durer-umami = {
+          paths = [ "/var/backups/restic/umami.sql" ];
+          keep = [ "--keep-hourly" "24" "--keep-daily" "7" ];
+          # Dump from inside the container using its own POSTGRES_* env vars.
+          prepareCommand = ''
+            install -d -m 0700 /var/backups/restic
+            ${pkgs.docker}/bin/docker exec umami-db \
+              sh -c 'PGPASSWORD="$POSTGRES_PASSWORD" pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB"' \
+              > /var/backups/restic/umami.sql
+          '';
+          cleanupCommand = "rm -f /var/backups/restic/umami.sql";
+        };
+        durer-ssh = {
+          paths = [ "/home/pim/.ssh" ];
+          keep = [ "--keep-hourly" "24" "--keep-daily" "7" ];
+        };
+      };
+    };
+
     imports = (with inputs.self.modules.nixos; [
       channel-default
       system-default
       role-server
       role-nebula-node
+
+      backup-restic-piethein
     ]) ++ [
       inputs.voorzetramenshop.nixosModules.default
     ];
