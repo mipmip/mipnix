@@ -42,7 +42,22 @@ in
 
       networking-nebula
 
+      backup-restic-piethein
+
     ];
+
+    # Hourly restic backups to piethein. vaultwarden's backupDir is already a
+    # consistent sqlite snapshot; keep 2 weeks daily + 6 months.
+    mipnix.backup.piethein = {
+      enable = true;
+      datasets = {
+        hurry-vaultwarden.paths = [ "/var/lib/backups/vaultwarden" ];
+        hurry-vaultwarden.keep = [ "--keep-hourly" "24" "--keep-daily" "14" "--keep-monthly" "6" ];
+
+        hurry-ssh.paths = [ "/home/pim/.ssh" ];
+        hurry-ssh.keep = [ "--keep-hourly" "24" "--keep-daily" "7" ];
+      };
+    };
 
     # Additional packages for server
     environment.systemPackages = with pkgs; [

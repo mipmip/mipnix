@@ -136,6 +136,10 @@ in
   "voorzetramenshop-env.age".publicKeys = [ pim durer ];
   "nebula-cichorei.crt.age".publicKeys = users ++ systems;
   "nebula-cichorei.key.age".publicKeys = users ++ systems;
-  "ssh-password-resticbackup.age".publicKeys = users ++ systems;
+
+  # restic backups to piethein — shared across the backup source hosts.
+  # Keep an OFFLINE copy of both: a dead host cannot decrypt its own secrets.
+  "restic-ssh-key.age".publicKeys = [ pim cichorei hurry durer ];
+  "restic-repo-pw.age".publicKeys = [ pim cichorei hurry durer ];
 
 }
