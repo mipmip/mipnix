@@ -3,8 +3,12 @@
   age.secrets = {
     json = {
       file = ../../secrets/harry-cloudflared-tunnel.json.age;
-      owner = "cloudflared";
-      group = "cloudflared";
+      # root:root — systemd reads this via the tunnel service's LoadCredential
+      # (as root) and hands it to the DynamicUser service. There is no static
+      # `cloudflared` user, so chowning to it fails the agenixChown activation
+      # snippet and aborts the whole deploy.
+      owner = "root";
+      group = "root";
       mode = "600";
       path = "/run/secrets/.cloudflared/cloudflared-tunnel.json";
     };
