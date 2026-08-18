@@ -185,6 +185,9 @@ in
     # (a consistent snapshot), backed up, then the dump is removed.
     mipnix.backup.piethein = {
       enable = true;
+      # durer (cloud) has no route to piethein's LAN address, so tunnel through
+      # a relay Pi over nebula. hurry primary, harry failover.
+      proxyJump = [ "192.168.100.6" "192.168.100.7" ];
       datasets = {
         durer-voorzetramenshop = {
           paths = [ "/var/backups/restic/voorzetramenshop.sql" ];
