@@ -53,6 +53,18 @@ in
     # Enable SSH
     services.openssh.enable = true;
 
+    # Trust pim so deploy-rs can push store paths built locally on cichorei
+    # (e.g. under aarch64 emulation) that aren't signed by cache.nixos.org.
+    nix.settings.trusted-users = [ "root" "pim" ];
+
+    # NixOS's 55-nixos-aslr-entropy.conf sets vm.mmap_rnd_bits to the new
+    # kernel's max (33). During a `switch` (no reboot) systemd-sysctl applies
+    # that to the still-running old kernel, which rejects 33 and fails
+    # activation. Pin to 18 (arm64 4K-page min, the upstream kernel default),
+    # which is valid on both kernels. Lands in 60-nixos.conf, overriding 55-.
+    # Safe to remove and let it return to 33 once hurry runs the new kernel.
+    boot.kernel.sysctl."vm.mmap_rnd_bits" = 18;
+
   };
 
 }
