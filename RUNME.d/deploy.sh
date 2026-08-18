@@ -32,6 +32,8 @@ deploy_remote(){
   # target's own build is gated separately before deploying.
   if deploy --skip-checks ".#$TARGET"; then
     EXTRA_ARG="auto run after deploy_remote $TARGET"
+    # Tag the sync with the deployed host, not this build machine.
+    SYNC_TARGET="$TARGET"
     git_sync_machine
   else
     echo "deploy-rs failed for '$TARGET' (it has auto-rolled-back the target if activation was reached); skipping git sync"
