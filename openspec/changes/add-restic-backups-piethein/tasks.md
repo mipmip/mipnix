@@ -3,7 +3,7 @@
 - [x] 1.1 Confirm DSM SFTP file-service is enabled and `resticbackup` has R/W on the `ResticBackups` share (validated: restic init/backup/check succeeded)
 - [x] 1.2 Confirm `resticbackup` is **not** in the `administrators` group (validated: works without admin)
 - [x] 1.3 Generate a dedicated ed25519 backup keypair (done on cichorei; plaintext in scratchpad for offline copy)
-- [ ] 1.4 Append the backup **public** key to `resticbackup`'s `authorized_keys` on piethein (optionally with `restrict,from="<LAN/nebula CIDRs>"`)
+- [x] 1.4 Append the backup **public** key to `resticbackup`'s `authorized_keys` on piethein (optionally with `restrict,from="<LAN/nebula CIDRs>"`)
 
 ## 2. Secrets (agenix)
 
@@ -11,7 +11,7 @@
 - [x] 2.2 Add `restic-repo-pw.age` to `secrets/secrets.nix` with recipients `[ pim cichorei hurry durer ]`
 - [x] 2.3 Encrypt the backup **private** key into `secrets/restic-ssh-key.age` (4 recipients)
 - [x] 2.4 Generate a strong repo password and encrypt it into `secrets/restic-repo-pw.age` (4 recipients)
-- [ ] 2.5 Store the backup private key **and** repo password in an offline/independent location (password manager / paper)
+- [x] 2.5 Store the backup private key **and** repo password in an offline/independent location (password manager / paper)
 - [x] 2.6 Remove the abandoned `secrets/ssh-password-resticbackup.age` and its `secrets.nix` entry
 
 ## 3. Reusable role module
@@ -30,7 +30,7 @@
 
 - [x] 4.1 Import the role in `modules/HOSTS/cichorei-laptop/configuration.nix` (secrets declared by the module)
 - [x] 4.2 Add targets: `.claude` (h24 d7), `secondbrain` (h24 d7 w5 m12 y9999), `.ssh` (h24 d7)
-- [ ] 4.3 Rebuild cichorei; verify first backup auto-inits each repo; `restic snapshots` + `restic check`
+- [x] 4.3 Rebuild cichorei; verify first backup auto-inits each repo; `restic snapshots` + `restic check`
 
 ## 5. Enable on hurry
 
@@ -49,6 +49,6 @@
 ## 7. Verification & retention
 
 - [ ] 7.1 Confirm timers are hourly/persistent and staggered across hosts (`systemctl list-timers`)
-- [ ] 7.2 Test-restore at least one file from one repo per host to prove recoverability
+- [x] 7.2 Test-restore at least one file from one repo per host to prove recoverability
 - [ ] 7.3 Confirm `forget --prune` reduces snapshots per policy (incl. secondbrain's yearly-forever)
 - [ ] 7.4 Document the restore procedure (repo path, key, offline password) briefly
