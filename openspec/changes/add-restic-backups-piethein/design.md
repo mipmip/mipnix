@@ -75,6 +75,25 @@ its own agenix secrets are undecryptable once its host key is gone.
 - voorzetramenshop: native PostgreSQL, peer auth → `sudo -u postgres pg_dump voorzetramenshop`.
 - umami: PostgreSQL 14 in Docker → `docker exec umami-db pg_dump -U <user> <db>` (creds from `umami-env`).
 
+### D7: durer (cloud) reaches piethein via a nebula relay Pi, with failover
+
+durer is a Hetzner cloud host with no route to piethein's LAN address
+(`192.168.2.100`), and piethein is not on nebula. Rather than expose piethein to
+the internet or put it on nebula (Synology work we're avoiding), durer tunnels
+through a relay Pi that is on both nebula and the LAN. restic's `sftp.command`
+uses a generated `ProxyCommand` script that tries each relay in order
+(`ssh -W piethein:22 restic-relay@<nebula-ip>`), giving **hurry primary, harry
+failover**. Relay hosts set `relay = true`, which creates a locked-down
+`restic-relay` system user (`nologin`, key option
+`restrict,port-forwarding,permitopen="192.168.2.100:22"`) — it can *only* forward
+to piethein, nothing else. The relay never sees plaintext (restic encrypts
+end-to-end) and relay-only hosts need no backup secrets (not agenix recipients).
+- *Alternatives rejected*: expose piethein SFTP publicly (attack surface); put
+  piethein on nebula (ongoing Synology upkeep); durer → cloud store (new
+  target/cost — reasonable future option but out of scope here).
+- *Deploy order*: relays (hurry, harry) before durer, so the `restic-relay` user
+  exists when durer first connects.
+
 ## Risks / Trade-offs
 
 - **A compromised backup host can delete/overwrite repos on piethein** (SFTP allows

@@ -36,7 +36,16 @@ in
       role-nebula-node
       system-trusted-pim
       networking-nebula
+
+      backup-restic-piethein
     ];
+
+    # Relay only (no datasets): bridge durer (nebula) → piethein (LAN) as
+    # failover behind hurry. Needs no backup secrets.
+    mipnix.backup.piethein = {
+      enable = true;
+      relay = true;
+    };
 
     environment.systemPackages = with pkgs; [
       nfs-utils

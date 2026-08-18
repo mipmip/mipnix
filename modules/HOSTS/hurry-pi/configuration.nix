@@ -50,6 +50,7 @@ in
     # consistent sqlite snapshot; keep 2 weeks daily + 6 months.
     mipnix.backup.piethein = {
       enable = true;
+      relay = true; # bridge durer (nebula) → piethein (LAN)
       datasets = {
         hurry-vaultwarden.paths = [ "/var/lib/backups/vaultwarden" ];
         hurry-vaultwarden.keep = [ "--keep-hourly" "24" "--keep-daily" "14" "--keep-monthly" "6" ];
