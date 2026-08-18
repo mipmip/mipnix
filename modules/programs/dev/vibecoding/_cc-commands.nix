@@ -29,7 +29,6 @@
   '';
 
   "mip:ship" = ''
-
     ---
     description: Ship one OpenSpec change end-to-end (apply → gate → archive → commit → push → close bean)
     ---
