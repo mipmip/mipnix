@@ -7,6 +7,9 @@
       package = unstable.claude-code;
       commands = import ./_cc-commands.nix;
       context = ''
+        # Git - Commits
+        - Never add self-promoting trailers to commit messages. Do NOT include `Co-authored-by: Claude`, `Co-Authored-By: Claude`, `Generated with Claude Code`, or any similar attribution to Claude/Anthropic. Commits are authored by me alone.
+
         # Markdown - Styleguide
         - When creating a markdown table which is not wider then 90 chars, using space padding to visualy align table borders.
 
