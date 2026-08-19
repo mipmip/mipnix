@@ -120,11 +120,11 @@
     "beans-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1787174564,
-        "narHash": "sha256-u1/1bBvAM1PDxwvToPV3N5oLGAO1GegFGT62Raz9GXY=",
+        "lastModified": 1787181268,
+        "narHash": "sha256-2vSakTpw20yCESJyERaaDeS/si98dfQUsRMjbOXysq0=",
         "owner": "mipmip",
         "repo": "beans.nvim",
-        "rev": "5912c32d377bd2a3cba945ce6754d8b17de7e3ee",
+        "rev": "f12de4503d6c3446b6fca22145f68f2a88313bd7",
         "type": "github"
       },
       "original": {

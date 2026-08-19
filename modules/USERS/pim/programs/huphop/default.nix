@@ -35,7 +35,7 @@ inputs,
       hupConfig = {
         base_dir = "~";
         clone_pattern_tpl = "{{.BaseDir}}/{{.Short}}.{{.OwnerLower}}/{{.Repo}}";
-
+        search_strategy= "substring";
         providers = [
           {
             name = "github";
