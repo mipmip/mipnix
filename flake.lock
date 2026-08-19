@@ -649,11 +649,11 @@
         "nixpkgs": "nixpkgs_7"
       },
       "locked": {
-        "lastModified": 1787180587,
-        "narHash": "sha256-ZggwLxKBuxBJ7CD2iqWXo6RHoeutSkue2PlBEl4DJfQ=",
+        "lastModified": 1787182216,
+        "narHash": "sha256-5qOD+k4OjcclsaUW8QEprgAgXzVH3bVeNwxciySEl9Y=",
         "owner": "mipmip",
         "repo": "huphop",
-        "rev": "b5cff6d50ec3a1c0ec14eafe890c2932f6a1d441",
+        "rev": "117a397ebe4143b98af6f74b475b3ea67f0c1a13",
         "type": "github"
       },
       "original": {
