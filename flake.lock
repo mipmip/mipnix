@@ -117,6 +117,22 @@
         "type": "github"
       }
     },
+    "beans-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1787174564,
+        "narHash": "sha256-u1/1bBvAM1PDxwvToPV3N5oLGAO1GegFGT62Raz9GXY=",
+        "owner": "mipmip",
+        "repo": "beans.nvim",
+        "rev": "5912c32d377bd2a3cba945ce6754d8b17de7e3ee",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mipmip",
+        "repo": "beans.nvim",
+        "type": "github"
+      }
+    },
     "bmc": {
       "inputs": {
         "nixpkgs": "nixpkgs_3"
@@ -633,11 +649,11 @@
         "nixpkgs": "nixpkgs_7"
       },
       "locked": {
-        "lastModified": 1787044994,
-        "narHash": "sha256-4RFes/DHYlw2XH7+6D+k2as5/L9xyc3x2Owm9GLRV90=",
+        "lastModified": 1787174013,
+        "narHash": "sha256-ic3NWRXghtu2rzJCjLGWv4hbmBiDetnNYfhziwKIuoc=",
         "owner": "mipmip",
         "repo": "huphop",
-        "rev": "61f18cd80c889d349216faf4ea9d7e397704ee14",
+        "rev": "8053bf664bd3830b81a68406fbf2e541a7bd29fb",
         "type": "github"
       },
       "original": {
@@ -1549,6 +1565,7 @@
         "agenix": "agenix",
         "ags": "ags",
         "aoe": "aoe",
+        "beans-nvim": "beans-nvim",
         "bmc": "bmc",
         "darwin": "darwin_2",
         "deploy-rs": "deploy-rs",
