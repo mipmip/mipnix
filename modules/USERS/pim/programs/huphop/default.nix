@@ -46,9 +46,7 @@ inputs,
             clone_protocol = "ssh";
             auth = {
               cli = "gh";
-              # Legacy leftover name; gh-CLI auth is what actually works. Kept
-              # as-is intentionally — cleanup is out of scope for this change.
-              env = "SKULL2_GITHUB_TOKEN";
+              env = "HUPHOP_GITHUB_TOKEN";
             };
             all_owners = true;
             include_archived = false;
