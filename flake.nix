@@ -65,6 +65,8 @@
     mip.url = "github:mipmip/mip.rs";
     hypr-network-manager.url = "github:mipmip/hypr-network-manager";
     fred.url = "github:linden-project/fred";
+    huphop.url = "github:mipmip/huphop";
+
     aoe.url = "github:njbrake/agent-of-empires";
 
     voorzetramenshop.url = "git+ssh://git@github.com/mintglasinlood/voorzetramenshop.git";
