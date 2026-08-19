@@ -67,6 +67,11 @@
     fred.url = "github:linden-project/fred";
     huphop.url = "github:mipmip/huphop";
 
+    # Consumed as plain source (its flake only exposes full nixvim configs,
+    # not a bare plugin); built with buildVimPlugin in mipvim.
+    beans-nvim.url = "github:mipmip/beans.nvim";
+    beans-nvim.flake = false;
+
     aoe.url = "github:njbrake/agent-of-empires";
 
     voorzetramenshop.url = "git+ssh://git@github.com/mintglasinlood/voorzetramenshop.git";
@@ -144,6 +149,7 @@
               ];
             };
             extraSpecialArgs = {
+              inherit inputs;
               mipColors = import ./lib/colors.nix;
             };
           };

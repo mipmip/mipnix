@@ -1,6 +1,11 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 {
   extraPlugins = [
+
+    (pkgs.vimUtils.buildVimPlugin {
+      name = "beans-nvim";
+      src = inputs.beans-nvim;
+    })
 
     (pkgs.vimUtils.buildVimPlugin {
       name = "vim-mimosa";
@@ -25,6 +30,11 @@
   ];
   extraConfigLua =
     ''
+      -- beans.nvim: near-cursor wizard for the Beans flat-file issue tracker.
+      -- setup() with no args is the full intended experience; it auto-starts on
+      -- freshly created beans and registers :BeanWizard / <leader>bw.
+      require("beans").setup()
+
       vim.keymap.set("n", "<leader>mo", ":Mimosa<CR>")
       vim.keymap.set("n", "<leader>mn", ":MimosaNew<CR>")
       vim.keymap.set("n", "<leader>ms", ":MimosaNew svg<CR>")
