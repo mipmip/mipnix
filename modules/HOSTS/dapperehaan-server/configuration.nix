@@ -24,6 +24,9 @@ in
   flake.modules.nixos.dapperehaan = { config, pkgs, ... } : {
     system.stateVersion = "25.11";
 
+    # Allow pim to push unsigned store paths (deploy-rs). Matches durer/hurry/harry.
+    nix.settings.trusted-users = [ "root" "pim" ];
+
     imports = with inputs.self.modules.nixos; [
 
       channel-default

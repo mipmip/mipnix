@@ -66,7 +66,6 @@ in
           "--keep-monthly" "12" "--keep-yearly" "9999"
         ];
 
-
         cichorei-ssh.paths = [ "/home/pim/.ssh" ];
         cichorei-ssh.keep = [ "--keep-hourly" "24" "--keep-daily" "7" ];
       };
