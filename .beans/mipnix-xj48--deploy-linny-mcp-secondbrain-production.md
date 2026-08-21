@@ -1,11 +1,12 @@
 ---
 # mipnix-xj48
 title: deploy linny-mcp in production for secondbrain (dapperehaan behind durer)
-status: in-progress
+status: completed
+openspec-link: openspec/changes/archive/2026-08-21-deploy-linny-mcp-secondbrain
 type: task
 priority: normal
 created_at: 2026-08-21T00:00:00Z
-updated_at: 2026-08-21T00:00:00Z
+updated_at: 2026-08-21T18:15:00Z
 ---
 
 Run the linny-mcp server (github.com/linden-project/linny-mcp-server) in production
