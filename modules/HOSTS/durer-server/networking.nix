@@ -49,6 +49,9 @@ in
         };
       };
     };
+    # durer is the second nebula lighthouse (Hetzner, stable public IPv4).
+    mipnix.nebula.isLighthouse = true;
+
     services.nebula.networks.mesh = {
       cert = config.age.secrets."nebula-${hostname}-cert".path;
       key = config.age.secrets."nebula-${hostname}-key".path;

@@ -40,8 +40,6 @@ in
 
       system-trusted-pim
 
-      networking-nebula
-
       backup-restic-piethein
 
     ];

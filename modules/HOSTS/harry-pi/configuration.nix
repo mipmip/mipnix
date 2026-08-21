@@ -35,7 +35,6 @@ in
       system-default
       role-nebula-node
       system-trusted-pim
-      networking-nebula
 
       backup-restic-piethein
     ];

@@ -42,7 +42,6 @@ in
       hardware-chipsailing-fingerprint
 
       role-nebula-node
-      networking-nebula
       networking-wifi
       desktop-apps-dtp
 
