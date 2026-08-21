@@ -731,6 +731,26 @@
         "type": "github"
       }
     },
+    "linny-mcp": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1787325573,
+        "narHash": "sha256-Oh/s8IN9sy/m4w9yw/ZYhFTshFLc7cTSUImxCzilm0U=",
+        "owner": "linden-project",
+        "repo": "linny-mcp-server",
+        "rev": "bed714cf6ae1eaaaaa60a33749855bc22e1db425",
+        "type": "github"
+      },
+      "original": {
+        "owner": "linden-project",
+        "repo": "linny-mcp-server",
+        "type": "github"
+      }
+    },
     "microvm": {
       "inputs": {
         "nixpkgs": [
@@ -1580,6 +1600,7 @@
         "import-tree": "import-tree",
         "jjay": "jjay",
         "jsonify-aws-dotfiles": "jsonify-aws-dotfiles",
+        "linny-mcp": "linny-mcp",
         "microvm": "microvm",
         "mip": "mip",
         "mobile-nixos": "mobile-nixos",

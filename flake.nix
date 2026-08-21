@@ -65,6 +65,8 @@
     mip.url = "github:mipmip/mip.rs";
     hypr-network-manager.url = "github:mipmip/hypr-network-manager";
     fred.url = "github:linden-project/fred";
+    linny-mcp.url = "github:linden-project/linny-mcp-server";
+    linny-mcp.inputs.nixpkgs.follows = "nixpkgs";
     huphop.url = "github:mipmip/huphop";
 
     # Consumed as plain source (its flake only exposes full nixvim configs,

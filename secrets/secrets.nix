@@ -132,6 +132,11 @@ in
   "nebula-durer.crt.age".publicKeys = users ++ systems;
   "nebula-durer.key.age".publicKeys = users ++ systems;
 
+  # linny-mcp secondbrain hosting (dapperehaan). Bearer-token records + the
+  # read/write deploy key that git-sync uses to push to mipmip/secondbrain.
+  "linny-mcp-tokens.age".publicKeys = [ pim dapperehaan ];
+  "secondbrain-deploy-key.age".publicKeys = [ pim dapperehaan ];
+
   "matrix-openclaw-password.age".publicKeys = [pim clawone];
   "voorzetramenshop-env.age".publicKeys = [ pim durer ];
   "nebula-cichorei.crt.age".publicKeys = users ++ systems;
