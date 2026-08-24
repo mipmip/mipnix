@@ -3,7 +3,18 @@ inputs,
 ...
 }:
 {
-  flake.modules.homeManager.pim-hyprland = { pkgs, ... }: {
+  flake.modules.homeManager.pim-hyprland = { pkgs, lib, ... }: {
+
+    # Reload Hyprland after home-manager links new config files, so monitor/
+    # keybind/etc. changes apply deterministically on `home-manager switch`.
+    # Without this, Hyprland's own file-watcher can fire mid-swap and read stale
+    # config (e.g. leaving a monitor at its fallback `auto` position). Runs after
+    # onFilesChange (files already linked); no-op when Hyprland isn't running.
+    home.activation.reloadHyprland = lib.hm.dag.entryAfter [ "onFilesChange" ] ''
+      if ${pkgs.procps}/bin/pgrep -x Hyprland > /dev/null 2>&1; then
+        run ${pkgs.hyprland}/bin/hyprctl reload > /dev/null 2>&1 || true
+      fi
+    '';
 
     #wayland.windowManager.hyprland.systemd.enable = false;
 
