@@ -9,6 +9,8 @@
     # working tree (in the module StateDirectory) so git-sync never tries to sync it.
     sshCmd = "${pkgs.openssh}/bin/ssh -i ${deployKey} -o IdentitiesOnly=yes "
       + "-o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=/var/lib/linny-mcp/known_hosts";
+    lindexer = "${config.services.linny-mcp.package}/bin/lindexer";
+    idxJson = "${stateDir}/lindenIndex";
   in
   {
     imports = [ inputs.linny-mcp.nixosModules.linny-mcp ];
@@ -111,6 +113,29 @@
         OnBootSec = "1min";
         OnUnitActiveSec = "30s";
         Unit = "git-sync-secondbrain.service";
+      };
+    };
+
+    # linny-mcp serve only READS an index; it never builds one. Build the index
+    # up front (so serve never serves an empty index) then watch the corpus and
+    # rebuild on any change — git-sync pulls of remote edits AND agent writes.
+    # Generated index (sqlite + JSON) lives in the disposable stateDir, never in
+    # the git-tracked corpus.
+    systemd.services.linny-mcp-index = {
+      description = "linny-mcp corpus indexer (initial build + fsnotify watch)";
+      after = [ "secondbrain-clone.service" ];
+      requires = [ "secondbrain-clone.service" ];
+      before = [ "linny-mcp.service" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        User = "linny-mcp";
+        Group = "linny-mcp";
+        Restart = "on-failure";
+        RestartSec = 5;
+        # Full rebuild before serve; ExecStartPre completes before the unit is
+        # considered started, so linny-mcp.service (ordered after) sees a ready index.
+        ExecStartPre = "${lindexer} build -corpus ${corpus} -index ${idxJson} -state-dir ${stateDir}";
+        ExecStart = "${lindexer} watch -corpus ${corpus} -index ${idxJson} -state-dir ${stateDir}";
       };
     };
   };
