@@ -137,6 +137,30 @@ Verified against the pinned `pkgs.backrest` source (`proto/v1/config.proto`,
   `chmod 0600` + `.bak` rotation; migration006 persists an identity). It therefore
   cannot be a read-only store path — see the seed-once decision below.
 
+### Decision: SFTP transport via a wrapper script (space-free token)
+
+backrest word-splits each repo `flags` entry on whitespace before exec, so an
+inline `-o "sftp.command=ssh -i key …"` leaks `-i` as a top-level restic flag
+(`unknown shorthand flag: 'i'`) and every restic call fails. The `sftp.command`
+value must be a single space-free token, so it points at a
+`pkgs.writeShellScript` wrapper that runs the full `ssh … -s sftp "$@"` — the same
+reason `restic-piethein.nix` ships its relay as a script.
+
+### Decision: stamped re-seed (not strict seed-once)
+
+The seed writes config.json when it is missing **or** when the Nix-generated
+template's store path differs from a recorded stamp. Between deploys with an
+unchanged template, backrest owns the file (runtime writes persist); a template
+change (new repo, changed flags) re-seeds and backrest re-derives runtime bits.
+This keeps the declarative intent without clobbering runtime state every boot, and
+avoids a manual `rm config.json` on each config change.
+
+### Watch-item: restic version
+
+backrest 1.14.1 warns that the pinned restic 0.18.1 is below its preferred 0.19.1.
+Non-fatal so far; if browse/restore hits an unsupported flag, pin a newer restic
+(e.g. from `pkgs-unstable`) via `BACKREST_RESTIC_COMMAND`.
+
 ### Decision: seed-once config, not point-at-store
 
 Because backrest must own a writable `config.json`, the Nix-generated config is

@@ -22,8 +22,16 @@
 
     # restic SFTP command — direct on the LAN, no ProxyCommand. Host key is pinned
     # via programs.ssh.knownHosts.piethein below, so StrictHostKeyChecking=yes.
-    sftpCommand = "${pkgs.openssh}/bin/ssh -i ${keyPath} "
-      + "-o StrictHostKeyChecking=yes -o BatchMode=yes ${nasUser}@${nasHost} -s sftp";
+    #
+    # MUST be a single space-free token: backrest word-splits each `flags` entry
+    # before exec, so an inline "ssh -i key …" would leak "-i" as a top-level
+    # restic flag ("unknown shorthand flag: 'i'"). Same reason restic-piethein.nix
+    # ships its proxy as a script. So wrap the ssh invocation in a store script.
+    sftpWrapper = pkgs.writeShellScript "backrest-piethein-sftp" ''
+      exec ${pkgs.openssh}/bin/ssh -i ${keyPath} \
+        -o StrictHostKeyChecking=yes -o BatchMode=yes \
+        ${nasUser}@${nasHost} -s sftp "$@"
+    '';
 
     # Every piethein repo, derived from the aggregated flake.resticRepos registry.
     # The repo password is supplied to restic via RESTIC_PASSWORD_FILE (path only —
@@ -33,7 +41,7 @@
       id = name;
       uri = "sftp:${nasUser}@${nasHost}:/ResticBackups/${name}";
       env = [ "RESTIC_PASSWORD_FILE=${repoPwPath}" ];
-      flags = [ "-o" "sftp.command=${sftpCommand}" ];
+      flags = [ "-o" "sftp.command=${sftpWrapper}" ];
       # Backrest's config validation requires each repo to carry either a 64-char
       # guid or autoInitialize. These repos already exist (backups run), so
       # autoInitialize just lets backrest connect and derive the guid on first use;
@@ -56,15 +64,21 @@
       };
     });
 
-    # Seed the generated config into the writable state dir on first start only;
-    # backrest owns config.json thereafter (it rewrites + chmods it). Injects the
-    # base64(bcrypt(...)) login hash from the agenix secret.
+    # Seed the generated config into the writable state dir, re-seeding whenever the
+    # Nix-generated template changes (tracked by a stamp of its store path). Between
+    # deploys with an unchanged template, backrest owns config.json (its runtime
+    # writes — filled repo GUIDs, identity — persist). A template change (new repo,
+    # changed flags) overwrites; backrest simply re-derives the runtime bits.
+    # Injects the base64(bcrypt(...)) login hash from the agenix secret so it never
+    # lands in the world-readable store.
+    stampPath = "${stateDir}/.seed-template";
     seedScript = pkgs.writeShellScript "backrest-seed-config" ''
       set -eu
-      if [ ! -f ${configPath} ]; then
+      if [ ! -f ${configPath} ] || [ "$(cat ${stampPath} 2>/dev/null || true)" != "${configTemplate}" ]; then
         ${pkgs.jq}/bin/jq --arg h "$(cat ${authPath})" \
           '.auth.users[0].passwordBcrypt = $h' ${configTemplate} > ${configPath}
         chmod 600 ${configPath}
+        printf '%s' "${configTemplate}" > ${stampPath}
       fi
     '';
 
