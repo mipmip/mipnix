@@ -2,8 +2,44 @@
 
 let
   hostname = "durer";
+
+  # Single definition of this host's restic datasets; consumed both by the backup
+  # role below and (as bare repo names) by the aggregated `flake.resticRepos`. A
+  # function because the DB-dump commands need `pkgs`/`config`; `builtins.attrNames`
+  # never forces those values, so the registry calls it with empty args.
+  datasetsFor = { pkgs, config }: {
+    durer-voorzetramenshop = {
+      paths = [ "/var/backups/restic/voorzetramenshop.sql" ];
+      keep = [ "--keep-hourly" "24" "--keep-daily" "14" "--keep-monthly" "6" ];
+      prepareCommand = ''
+        install -d -m 0700 /var/backups/restic
+        ${pkgs.util-linux}/bin/runuser -u postgres -- \
+          ${config.services.postgresql.package}/bin/pg_dump voorzetramenshop \
+          > /var/backups/restic/voorzetramenshop.sql
+      '';
+      cleanupCommand = "rm -f /var/backups/restic/voorzetramenshop.sql";
+    };
+    durer-umami = {
+      paths = [ "/var/backups/restic/umami.sql" ];
+      keep = [ "--keep-hourly" "24" "--keep-daily" "7" ];
+      # Dump from inside the container using its own POSTGRES_* env vars.
+      prepareCommand = ''
+        install -d -m 0700 /var/backups/restic
+        ${pkgs.docker}/bin/docker exec umami-db \
+          sh -c 'PGPASSWORD="$POSTGRES_PASSWORD" pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB"' \
+          > /var/backups/restic/umami.sql
+      '';
+      cleanupCommand = "rm -f /var/backups/restic/umami.sql";
+    };
+    durer-ssh = {
+      paths = [ "/home/pim/.ssh" ];
+      keep = [ "--keep-hourly" "24" "--keep-daily" "7" ];
+    };
+  };
 in
 {
+  flake.resticRepos.durer = builtins.attrNames (datasetsFor { pkgs = { }; config = { }; });
+
   flake.homeConfigurations = {
 
     "pim@durer" = self.lib.makeHomeConf {
@@ -188,35 +224,7 @@ in
       # durer (cloud) has no route to piethein's LAN address, so tunnel through
       # a relay Pi over nebula. hurry primary, harry failover.
       proxyJump = [ "192.168.100.6" "192.168.100.7" ];
-      datasets = {
-        durer-voorzetramenshop = {
-          paths = [ "/var/backups/restic/voorzetramenshop.sql" ];
-          keep = [ "--keep-hourly" "24" "--keep-daily" "14" "--keep-monthly" "6" ];
-          prepareCommand = ''
-            install -d -m 0700 /var/backups/restic
-            ${pkgs.util-linux}/bin/runuser -u postgres -- \
-              ${config.services.postgresql.package}/bin/pg_dump voorzetramenshop \
-              > /var/backups/restic/voorzetramenshop.sql
-          '';
-          cleanupCommand = "rm -f /var/backups/restic/voorzetramenshop.sql";
-        };
-        durer-umami = {
-          paths = [ "/var/backups/restic/umami.sql" ];
-          keep = [ "--keep-hourly" "24" "--keep-daily" "7" ];
-          # Dump from inside the container using its own POSTGRES_* env vars.
-          prepareCommand = ''
-            install -d -m 0700 /var/backups/restic
-            ${pkgs.docker}/bin/docker exec umami-db \
-              sh -c 'PGPASSWORD="$POSTGRES_PASSWORD" pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB"' \
-              > /var/backups/restic/umami.sql
-          '';
-          cleanupCommand = "rm -f /var/backups/restic/umami.sql";
-        };
-        durer-ssh = {
-          paths = [ "/home/pim/.ssh" ];
-          keep = [ "--keep-hourly" "24" "--keep-daily" "7" ];
-        };
-      };
+      datasets = datasetsFor { inherit pkgs config; };
     };
 
     imports = (with inputs.self.modules.nixos; [

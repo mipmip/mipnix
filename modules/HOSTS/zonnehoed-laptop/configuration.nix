@@ -2,9 +2,21 @@
 
 let
   hostname = "zonnehoed";
+
+  # Single definition of this host's restic datasets; consumed both by the backup
+  # role below and (as bare repo names) by the aggregated `flake.resticRepos`.
+  datasets = {
+    zonnehoed-janine.paths = [ "/home/janine" ];
+    zonnehoed-janine.keep = [
+      "--keep-hourly" "24" "--keep-daily" "7" "--keep-weekly" "5"
+      "--keep-monthly" "12" "--keep-yearly" "9999"
+    ];
+  };
 in
 
 {
+
+  flake.resticRepos.zonnehoed = builtins.attrNames datasets;
 
   flake.homeConfigurations = {
 
@@ -36,13 +48,7 @@ in
     # Hourly restic backups to piethein (direct on LAN, like cichorei).
     mipnix.backup.piethein = {
       enable = true;
-      datasets = {
-        zonnehoed-janine.paths = [ "/home/janine" ];
-        zonnehoed-janine.keep = [
-          "--keep-hourly" "24" "--keep-daily" "7" "--keep-weekly" "5"
-          "--keep-monthly" "12" "--keep-yearly" "9999"
-        ];
-      };
+      inherit datasets;
     };
 
     # --- Extracted from /etc/nixos/configuration.nix ---

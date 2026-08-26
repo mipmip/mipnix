@@ -2,11 +2,24 @@
 
 let
   hostname = "hurry";
+
+  # Single definition of this host's restic datasets; consumed both by the backup
+  # role below and (as bare repo names) by the aggregated `flake.resticRepos`.
+  datasets = {
+    hurry-vaultwarden.paths = [ "/var/lib/backups/vaultwarden" ];
+    hurry-vaultwarden.keep = [ "--keep-hourly" "24" "--keep-daily" "14" "--keep-monthly" "6" ];
+
+    hurry-ssh.paths = [ "/home/pim/.ssh" ];
+    hurry-ssh.keep = [ "--keep-hourly" "24" "--keep-daily" "7" ];
+  };
 in
 
 
 
   {
+
+  flake.resticRepos.hurry = builtins.attrNames datasets;
+
   flake.homeConfigurations = {
     "pim@hurry" = self.lib.makeHomeConf {
       inherit hostname;
@@ -49,13 +62,7 @@ in
     mipnix.backup.piethein = {
       enable = true;
       relay = true; # bridge durer (nebula) → piethein (LAN)
-      datasets = {
-        hurry-vaultwarden.paths = [ "/var/lib/backups/vaultwarden" ];
-        hurry-vaultwarden.keep = [ "--keep-hourly" "24" "--keep-daily" "14" "--keep-monthly" "6" ];
-
-        hurry-ssh.paths = [ "/home/pim/.ssh" ];
-        hurry-ssh.keep = [ "--keep-hourly" "24" "--keep-daily" "7" ];
-      };
+      inherit datasets;
     };
 
     # Additional packages for server

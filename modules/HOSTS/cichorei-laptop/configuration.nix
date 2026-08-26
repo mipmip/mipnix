@@ -2,9 +2,32 @@
 
 let
   hostname = "cichorei";
+
+  # Single definition of this host's restic datasets; consumed both by the backup
+  # role below and (as bare repo names) by the aggregated `flake.resticRepos`.
+  datasets = {
+    cichorei-claude.paths = [ "/home/pim/.claude" ];
+    cichorei-claude.keep = [ "--keep-hourly" "24" "--keep-daily" "7" ];
+
+    cichorei-secondbrain.paths = [ "/home/pim/secondbrain" ];
+    cichorei-secondbrain.keep = [
+      "--keep-hourly" "24" "--keep-daily" "7" "--keep-weekly" "5"
+      "--keep-monthly" "12" "--keep-yearly" "9999"
+    ];
+    cichorei-documents.paths = [ "/home/pim/Documenten" "/home/pim/Afbeeldingen" ];
+    cichorei-documents.keep = [
+      "--keep-hourly" "24" "--keep-daily" "7" "--keep-weekly" "5"
+      "--keep-monthly" "12" "--keep-yearly" "9999"
+    ];
+
+    cichorei-ssh.paths = [ "/home/pim/.ssh" ];
+    cichorei-ssh.keep = [ "--keep-hourly" "24" "--keep-daily" "7" ];
+  };
 in
 
 {
+
+  flake.resticRepos.cichorei = builtins.attrNames datasets;
 
   flake.homeConfigurations = {
 
@@ -51,24 +74,7 @@ in
     # (dense recent + one-per-year indefinitely); .claude/.ssh a week.
     mipnix.backup.piethein = {
       enable = true;
-      datasets = {
-        cichorei-claude.paths = [ "/home/pim/.claude" ];
-        cichorei-claude.keep = [ "--keep-hourly" "24" "--keep-daily" "7" ];
-
-        cichorei-secondbrain.paths = [ "/home/pim/secondbrain" ];
-        cichorei-secondbrain.keep = [
-          "--keep-hourly" "24" "--keep-daily" "7" "--keep-weekly" "5"
-          "--keep-monthly" "12" "--keep-yearly" "9999"
-        ];
-        cichorei-documents.paths = [ "/home/pim/Documenten" "/home/pim/Afbeeldingen" ];
-        cichorei-documents.keep = [
-          "--keep-hourly" "24" "--keep-daily" "7" "--keep-weekly" "5"
-          "--keep-monthly" "12" "--keep-yearly" "9999"
-        ];
-
-        cichorei-ssh.paths = [ "/home/pim/.ssh" ];
-        cichorei-ssh.keep = [ "--keep-hourly" "24" "--keep-daily" "7" ];
-      };
+      inherit datasets;
     };
 
   boot.loader.systemd-boot.enable = true;
