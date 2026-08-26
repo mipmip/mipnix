@@ -13,6 +13,6 @@
       list at `lines: 15` (with `fixed-height: false`, `scrollbar: false`), so the
       16th entry was clipped and invisible. Changed the theme to `lines: {len(ACTIONS)}`
       so the menu always sizes to every entry (renders `lines: 16` now).
-- [ ] 2.4 Live: after `up_home` + restart, long-press a window, confirm the
+- [x] 2.4 Live: after `up_home` + restart, long-press a window, confirm the
       "Close menu" entry is now VISIBLE at the bottom, and selecting it closes the
       menu without affecting the window. (User to confirm.)

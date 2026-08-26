@@ -1,4 +1,5 @@
 let
+  zonnehoed = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMMk+lMbZgFFKQGOcoSj07nT4BZjDwI1c/y0PvoSZOw1";
   cichorei = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJZU9DZpGs+Ib/aN3n7u46wY8v9V4qHLcNzs/U+9iTgc";
   pim = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEY25ZaYRuKUJuVuzqK4c8dKkSxN6Cd9yhbDTa/5Njmh";
 
@@ -15,6 +16,7 @@ let
 
   users = [ pim annemarie ];
   systems = [
+    zonnehoed
     cichorei
     hurry
     harry
@@ -144,7 +146,10 @@ in
 
   # restic backups to piethein — shared across the backup source hosts.
   # Keep an OFFLINE copy of both: a dead host cannot decrypt its own secrets.
-  "restic-ssh-key.age".publicKeys = [ pim cichorei hurry durer ];
-  "restic-repo-pw.age".publicKeys = [ pim cichorei hurry durer ];
+  "restic-ssh-key.age".publicKeys = [ pim cichorei hurry durer zonnehoed ];
+  "restic-repo-pw.age".publicKeys = [ pim cichorei hurry durer zonnehoed ];
+
+  "nebula-zonnehoed.crt.age".publicKeys = users ++ systems;
+  "nebula-zonnehoed.key.age".publicKeys = users ++ systems;
 
 }

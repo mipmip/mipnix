@@ -9,7 +9,7 @@
       #pkgs.unstable.flare-signal
 
       #zoom-us
-      rustdesk
+      #rustdesk
       fractal
 
       #msmtp

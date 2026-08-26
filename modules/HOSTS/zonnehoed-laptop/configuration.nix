@@ -28,7 +28,22 @@ in
 
       system-default
 
+      role-nebula-node
+      backup-restic-piethein
+
     ];
+
+    # Hourly restic backups to piethein (direct on LAN, like cichorei).
+    mipnix.backup.piethein = {
+      enable = true;
+      datasets = {
+        zonnehoed-janine.paths = [ "/home/janine" ];
+        zonnehoed-janine.keep = [
+          "--keep-hourly" "24" "--keep-daily" "7" "--keep-weekly" "5"
+          "--keep-monthly" "12" "--keep-yearly" "9999"
+        ];
+      };
+    };
 
     # --- Extracted from /etc/nixos/configuration.nix ---
     # Review and remove what is already covered by shared modules above
