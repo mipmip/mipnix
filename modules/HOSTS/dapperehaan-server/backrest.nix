@@ -20,18 +20,15 @@
     repoPwPath = config.age.secrets.restic-repo-pw.path;
     authPath = config.age.secrets.backrest-auth.path;
 
-    # restic SFTP command — direct on the LAN, no ProxyCommand. Host key is pinned
-    # via programs.ssh.knownHosts.piethein below, so StrictHostKeyChecking=yes.
-    #
-    # MUST be a single space-free token: backrest word-splits each `flags` entry
-    # before exec, so an inline "ssh -i key …" would leak "-i" as a top-level
-    # restic flag ("unknown shorthand flag: 'i'"). Same reason restic-piethein.nix
-    # ships its proxy as a script. So wrap the ssh invocation in a store script.
-    sftpWrapper = pkgs.writeShellScript "backrest-piethein-sftp" ''
-      exec ${pkgs.openssh}/bin/ssh -i ${keyPath} \
-        -o StrictHostKeyChecking=yes -o BatchMode=yes \
-        ${nasUser}@${nasHost} -s sftp "$@"
-    '';
+    # restic reaches piethein over its own ssh (direct on the LAN). We supply the
+    # SSH identity + host-key policy through restic's `sftp.args`, NOT `sftp.command`:
+    #  - backrest auto-injects `-o sftp.args=-oBatchMode=yes` for sftp repos unless a
+    #    flag already mentions "sftp.args" (repo.go), and restic is fatal if BOTH
+    #    sftp.command and sftp.args are set ("cannot specify both") — so we own args.
+    #  - backrest shlex-splits each flag, so the multi-word value is double-quoted to
+    #    survive as a single token; restic then re-splits it into ssh args.
+    # Host key is pinned in /etc/ssh/ssh_known_hosts via programs.ssh.knownHosts below.
+    sshArgs = "-i ${keyPath} -oStrictHostKeyChecking=yes -oBatchMode=yes";
 
     # Every piethein repo, derived from the aggregated flake.resticRepos registry.
     # The repo password is supplied to restic via RESTIC_PASSWORD_FILE (path only —
@@ -41,7 +38,7 @@
       id = name;
       uri = "sftp:${nasUser}@${nasHost}:/ResticBackups/${name}";
       env = [ "RESTIC_PASSWORD_FILE=${repoPwPath}" ];
-      flags = [ "-o" "sftp.command=${sftpWrapper}" ];
+      flags = [ "-o" ''sftp.args="${sshArgs}"'' ];
       # Backrest's config validation requires each repo to carry either a 64-char
       # guid or autoInitialize. These repos already exist (backups run), so
       # autoInitialize just lets backrest connect and derive the guid on first use;
@@ -141,6 +138,8 @@
       wantedBy = [ "multi-user.target" ];
       # backrest can exit 0 on a failed bind, so never rate-limit restarts.
       startLimitIntervalSec = 0;
+      # restic's sftp backend shells out to `ssh`.
+      path = [ pkgs.openssh ];
       environment = {
         BACKREST_CONFIG = configPath;
         BACKREST_DATA = dataDir;

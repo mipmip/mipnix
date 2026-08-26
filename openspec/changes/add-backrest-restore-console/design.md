@@ -137,14 +137,24 @@ Verified against the pinned `pkgs.backrest` source (`proto/v1/config.proto`,
   `chmod 0600` + `.bak` rotation; migration006 persists an identity). It therefore
   cannot be a read-only store path — see the seed-once decision below.
 
-### Decision: SFTP transport via a wrapper script (space-free token)
+### Decision: SFTP via restic `sftp.args` (quoted), not `sftp.command`
 
-backrest word-splits each repo `flags` entry on whitespace before exec, so an
-inline `-o "sftp.command=ssh -i key …"` leaks `-i` as a top-level restic flag
-(`unknown shorthand flag: 'i'`) and every restic call fails. The `sftp.command`
-value must be a single space-free token, so it points at a
-`pkgs.writeShellScript` wrapper that runs the full `ssh … -s sftp "$@"` — the same
-reason `restic-piethein.nix` ships its relay as a script.
+Getting the SSH key + host-key policy to restic took three tries against backrest's
+behaviour (all confirmed in its source):
+1. Inline `sftp.command=ssh -i key …` fails — backrest `shlex.Split`s each flag, so
+   `-i` leaked as a top-level restic flag (`unknown shorthand flag: 'i'`).
+2. A single-token `sftp.command=<wrapper script>` fixed that, but backrest
+   auto-injects `-o sftp.args=-oBatchMode=yes` for sftp repos, and restic is fatal
+   when both `sftp.command` and `sftp.args` are set ("cannot specify both").
+3. Final: supply `-o sftp.args="-i <key> -oStrictHostKeyChecking=yes -oBatchMode=yes"`.
+   The value is double-quoted so `shlex.Split` keeps it as one token; restic then
+   re-splits it into ssh args. Because the flag contains the substring "sftp.args",
+   backrest skips its own injection (repo.go), so there is no conflict. restic's
+   `ssh` comes from the unit `path`.
+
+`autoInitialize = true` is correct for these pre-existing repos: backrest's `init`
+calls `Exists()` first and returns without running `restic init` when the repo is
+found (restic.go), so it only ever connects and derives the guid.
 
 ### Decision: stamped re-seed (not strict seed-once)
 
