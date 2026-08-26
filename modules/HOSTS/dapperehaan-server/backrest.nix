@@ -34,6 +34,11 @@
       uri = "sftp:${nasUser}@${nasHost}:/ResticBackups/${name}";
       env = [ "RESTIC_PASSWORD_FILE=${repoPwPath}" ];
       flags = [ "-o" "sftp.command=${sftpCommand}" ];
+      # Backrest's config validation requires each repo to carry either a 64-char
+      # guid or autoInitialize. These repos already exist (backups run), so
+      # autoInitialize just lets backrest connect and derive the guid on first use;
+      # it only ever *creates* a repo that is genuinely not found.
+      autoInitialize = true;
     };
 
     # version 6 == CurrentVersion for backrest 1.14.1 (a fresh v6 config skips all

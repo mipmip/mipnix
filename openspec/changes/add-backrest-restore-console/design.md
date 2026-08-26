@@ -124,8 +124,11 @@ Verified against the pinned `pkgs.backrest` source (`proto/v1/config.proto`,
     the config file) and leave `password` empty; `flags` carries the SFTP command.
   - `Auth`: `{ disabled, users[] }`; `User.passwordBcrypt` = **base64(bcrypt(pw))**.
 - **`version` MUST be `6`** (`CurrentVersion = len(migrations)`); a fresh
-  version-6 config skips all migrations, and repo `guid` is filled lazily on first
-  repo connect (exactly as a UI-added repo behaves).
+  version-6 config skips all migrations.
+- **Each repo MUST set `autoInitialize = true`** (or carry a 64-char `guid`) —
+  `validateRepo` (validate.go) rejects a repo with neither and backrest exits 1 on
+  startup. These repos already exist, so `autoInitialize` just lets backrest connect
+  and derive the guid itself; it only creates a repo that is genuinely not found.
 - **Env vars**: `BACKREST_CONFIG` (file), `BACKREST_DATA` (dir),
   `BACKREST_PORT` (full bind address — set `192.168.100.2:9898`),
   `BACKREST_RESTIC_COMMAND` (restic path). Default bind is `127.0.0.1:9898`, so the
