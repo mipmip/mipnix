@@ -67,6 +67,22 @@
         chmod 600 ${configPath}
       fi
     '';
+
+    # backrest binds the nebula IP directly, but on `ListenAndServe` failure it
+    # LOGS and exits 0 (backrest.go:151) — a clean exit systemd won't retry under
+    # Restart=on-failure. So wait for the mesh IP to be assigned before starting
+    # (avoids the bind race), and pair with Restart=always as a backstop.
+    waitScript = pkgs.writeShellScript "backrest-wait-nebula" ''
+      set -eu
+      for i in $(seq 1 60); do
+        if ${pkgs.iproute2}/bin/ip -4 addr show | grep -q '192\.168\.100\.2'; then
+          exit 0
+        fi
+        sleep 1
+      done
+      echo "nebula mesh IP 192.168.100.2 not up after 60s" >&2
+      exit 1
+    '';
   in
   {
     age.secrets = {
@@ -109,6 +125,8 @@
       after = [ "network-online.target" "nebula@mesh.service" ];
       wants = [ "network-online.target" ];
       wantedBy = [ "multi-user.target" ];
+      # backrest can exit 0 on a failed bind, so never rate-limit restarts.
+      startLimitIntervalSec = 0;
       environment = {
         BACKREST_CONFIG = configPath;
         BACKREST_DATA = dataDir;
@@ -123,10 +141,10 @@
         Group = user;
         StateDirectory = "backrest";
         StateDirectoryMode = "0700";
-        ExecStartPre = seedScript;
+        ExecStartPre = [ waitScript seedScript ];
         ExecStart = "${pkgs.backrest}/bin/backrest";
-        Restart = "on-failure";
-        RestartSec = 10;
+        Restart = "always";
+        RestartSec = 5;
 
         # Hardening. Restores land under the state dir; widen ReadWritePaths if a
         # different restore target is needed.
