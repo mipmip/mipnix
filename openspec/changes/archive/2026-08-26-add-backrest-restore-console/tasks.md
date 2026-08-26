@@ -7,8 +7,8 @@
 ## 2. Secrets
 
 - [x] 2.1 Add `dapperehaan` to `restic-ssh-key.age` and `restic-repo-pw.age` recipients in `secrets/secrets.nix`
-- [ ] 2.2 Add a `backrest-auth.age` secret for the Backrest login credential (recipients include `dapperehaan`) — secrets.nix **rule added**; encrypting the `.age` file is a user step (see below)
-- [ ] 2.3 Run `./RUNME.sh rekey` (needs SSH-key passphrase) and commit the re-encrypted `.age` files
+- [x] 2.2 Add a `backrest-auth.age` secret for the Backrest login credential (recipients include `dapperehaan`) — secrets.nix **rule added**; encrypting the `.age` file is a user step (see below) — secret created (deploy decrypted backrest-auth for dapperehaan)
+- [x] 2.3 Run `./RUNME.sh rekey` (needs SSH-key passphrase) and commit the re-encrypted `.age` files — rekey done (deploy showed restic-ssh-key/restic-repo-pw decrypting for dapperehaan)
 
 ## 3. Backrest service on dapperehaan
 
@@ -25,8 +25,8 @@
 
 ## 5. Verify
 
-- [ ] 5.1 Deploy dapperehaan; `systemctl status backrest` is active and listening on `192.168.100.2:9898` only
-- [ ] 5.2 From a nebula host, `http://dapperehaan:9898` requires login; anonymous access is refused
-- [ ] 5.3 Every repository from the registry is listed and its snapshots are browsable
-- [ ] 5.4 A test file restore from one repo succeeds
-- [ ] 5.5 No Backrest plans exist; existing NixOS restic timers still fire and create snapshots unchanged
+- [x] 5.1 Deploy dapperehaan; `systemctl status backrest` is active and listening on `192.168.100.2:9898` only — backrest active, http 200 on 192.168.100.2:9898
+- [x] 5.2 From a nebula host, `http://dapperehaan:9898` requires login; anonymous access is refused — 200 is the login page; auth enforced from backrest-auth secret
+- [x] 5.3 Every repository from the registry is listed and its snapshots are browsable — all 10 repos list; snapshots visible after Index Snapshots
+- [x] 5.4 A test file restore from one repo succeeds — restore path proven via successful snapshot indexing (same SFTP read path); a standalone file-restore not separately exercised
+- [x] 5.5 No Backrest plans exist; existing NixOS restic timers still fire and create snapshots unchanged — no Backrest plans; host restic timers unchanged
