@@ -68,6 +68,7 @@
     linny-mcp.url = "github:linden-project/linny-mcp-server";
     linny-mcp.inputs.nixpkgs.follows = "nixpkgs";
     huphop.url = "github:mipmip/huphop";
+    beandex.url = "github:mipmip/beandex";
 
     # Consumed as plain source (its flake only exposes full nixvim configs,
     # not a bare plugin); built with buildVimPlugin in mipvim.
