@@ -3,7 +3,7 @@ inputs,
 ...
 }:
 {
-  flake.modules.homeManager.pim-tmux = { pkgs, config, ... }:
+  flake.modules.homeManager.pim-tmux = { pkgs, config, lib, ... }:
     let
       # Launcher for the `prefix + B` tmux popup. Preflights for a beans project
       # (.beans.yml searched upward — NOT `beans check`'s exit code, which is 0
@@ -44,6 +44,29 @@ inputs,
           read -rn1
         fi
       '';
+
+      # Launcher for the `prefix + H` tmux popup: pick a nebula host with fzf and
+      # SSH into it as a window in a dedicated `nebula-prive` session (create-or-
+      # select, so re-picking a host reconnects rather than duplicating). Host list
+      # is baked from the single-source flake.nebulaNodes registry via
+      # self.lib.nebulaHosts. Escape / empty selection closes the popup, creating
+      # nothing.
+      nebula-ssh = pkgs.writeShellScriptBin "nebula-ssh" ''
+        set -eu
+        hosts="${lib.concatStringsSep "\n" inputs.self.lib.nebulaHosts}"
+        choice="''$(printf '%s\n' "''$hosts" | ${pkgs.fzf}/bin/fzf --reverse --prompt='ssh > ' --header='nebula hosts')" || exit 0
+        [ -z "''$choice" ] && exit 0
+        name="''${choice%% *}"
+        ip="''${choice##* }"
+        sess="nebula-prive"
+        tmux="${pkgs.tmux}/bin/tmux"
+        if ! "''$tmux" has-session -t "=''$sess" 2>/dev/null; then
+          "''$tmux" new-session -d -s "''$sess" -n "''$name" "ssh pim@''$ip"
+        elif ! "''$tmux" list-windows -t "=''$sess" -F '#W' | grep -qx "''$name"; then
+          "''$tmux" new-window -d -t "=''$sess" -n "''$name" "ssh pim@''$ip"
+        fi
+        "''$tmux" switch-client -t "=''$sess:''$name"
+      '';
     in
     {
     home.file = {
@@ -56,6 +79,7 @@ inputs,
     home.packages = with pkgs; [
       urlscan
       beans-tui-popup
+      nebula-ssh
     ];
 
     programs.tmux = {
@@ -106,6 +130,7 @@ inputs,
         bind T popup -E -w 80% -h 80% 'tj --columns --sort-activity --no-sound --no-notify --picker'
         bind B popup -E -d '#{pane_current_path}' -w 90% -h 90% 'beans-tui-popup'
         bind D popup -E -w 90% -h 90% 'beandex'
+        bind H popup -E -w 60% -h 60% 'nebula-ssh'
         bind P display-popup -d '#{pane_current_path}'
         bind O run-shell 'nohup open #{pane_current_path} >/dev/null 2>&1 &'
 

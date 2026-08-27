@@ -6,12 +6,7 @@ let
 in
 {
 
-  flake.modules.nixos.networking-nebula = {...} : {
-    networking.extraHosts =
-      ''
-        192.168.100.12 ${hostname}
-      '';
-  };
+  flake.nebulaNodes.durer = "192.168.100.12";
 
   flake.modules.nixos.durer = { config, pkgs, ... } : {
 

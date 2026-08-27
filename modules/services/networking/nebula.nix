@@ -28,6 +28,14 @@
 
     config = {
 
+      # Every node's /etc/hosts entry derived from the single-source registry
+      # (flake.nebulaNodes), so the mesh is name-resolvable and no IP literal is
+      # restated per host. Reads only literal strings from the flake output, so it
+      # does not force nixosConfigurations (no inputs.self recursion).
+      networking.extraHosts = lib.concatStrings (
+        lib.mapAttrsToList (name: ip: "${ip} ${name}\n") inputs.self.nebulaNodes
+      );
+
       age = {
         secrets = {
           "nebula-ca-cert" = {

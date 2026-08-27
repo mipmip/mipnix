@@ -5,15 +5,12 @@ let
   hostname = "zonnehoed";
 in
 {
+  flake.nebulaNodes.zonnehoed = "192.168.100.14";
+
   flake.modules.nixos.zonnehoed = { config, pkgs, ... } : {
 
     networking.hostName = hostname;
     networking.firewall.enable = false;
-
-    networking.extraHosts =
-      ''
-        192.168.100.14 ${hostname}
-      '';
 
     age = {
       secrets = {

@@ -2,6 +2,11 @@
 {
 
   flake.lib = {
+    # Nebula nodes as "<name> <ip>" lines for the tmux SSH host picker. Derived
+    # from the single-source flake.nebulaNodes registry (sorted by name); reads only
+    # literal strings, so no nixosConfigurations eval / inputs.self recursion.
+    nebulaHosts = lib.mapAttrsToList (name: ip: "${name} ${ip}") self.nebulaNodes;
+
     makeHomeConf = {
       nixpkgs-channel ? inputs.nixpkgs,
       username ? "pim",

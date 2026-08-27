@@ -5,6 +5,8 @@ let
   hostname = "cichorei";
 in
 {
+  flake.nebulaNodes.cichorei = "192.168.100.13";
+
   flake.modules.nixos.cichorei = { config, pkgs, ... } : {
 
     networking.hostName = hostname;
