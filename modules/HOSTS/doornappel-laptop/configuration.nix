@@ -10,6 +10,11 @@ in
 
     "pim@doornappel" = self.lib.makeHomeConf {
       inherit hostname;
+      imports = with inputs.self.modules.homeManager; [
+        role-pim-cli-full
+        role-pim-cli-minimal
+        role-pim-desktop
+      ];
     };
   };
 
@@ -27,6 +32,20 @@ in
     imports = with inputs.self.modules.nixos; [
 
       system-default
+      channel-default
+
+      role-devbox
+      role-desktop-pim
+#      role-nebula-node
+
+
+      system-trusted-pim
+
+      hardware-keychron
+      #networking-wifi
+
+      backup-restic-piethein
+
 
     ];
 
@@ -51,11 +70,6 @@ in
     modesetting.enable = true;
     open = false;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
-  };
-
-  services.xserver.xkb = {
-    layout = "nl";
-    variant = "us";
   };
 
   console.keyMap = "nl";
