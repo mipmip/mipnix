@@ -44,3 +44,8 @@ gitignore:
 followsymlinks: false
 
 edit_command: ghostty --working-directory=%WORKING_DIRECTORY
+
+# `drs --multiplex`: Enter runs this with the selected repo's directory, then quits.
+# drs-switch creates-or-selects a window (named after the dir basename) in a
+# dedicated `dirtyrepos` tmux session. Bound to `prefix + R` in tmux.
+switch_command: drs-switch %WORKING_DIRECTORY

@@ -67,6 +67,27 @@ inputs,
         fi
         "''$tmux" switch-client -t "=''$sess:''$name"
       '';
+
+      # switch_command target for `drs --multiplex` (bound to `prefix + R`). drs
+      # runs this with the selected repo's directory when Enter is pressed. Derives
+      # the window name from the dir basename and does create-or-select into a
+      # dedicated `dirtyrepos` session (same pattern as nebula-ssh above), so
+      # re-picking a repo reuses its window rather than duplicating it. Repos that
+      # share a basename intentionally collapse onto one window.
+      drs-switch = pkgs.writeShellScriptBin "drs-switch" ''
+        set -eu
+        dir="''${1:-}"
+        [ -z "''$dir" ] && exit 0
+        name="''$(basename "''$dir")"
+        sess="dirtyrepos"
+        tmux="${pkgs.tmux}/bin/tmux"
+        if ! "''$tmux" has-session -t "=''$sess" 2>/dev/null; then
+          "''$tmux" new-session -d -s "''$sess" -n "''$name" -c "''$dir"
+        elif ! "''$tmux" list-windows -t "=''$sess" -F '#W' | grep -qx "''$name"; then
+          "''$tmux" new-window -d -t "=''$sess" -n "''$name" -c "''$dir"
+        fi
+        "''$tmux" switch-client -t "=''$sess:''$name"
+      '';
     in
     {
     home.file = {
@@ -80,6 +101,7 @@ inputs,
       urlscan
       beans-tui-popup
       nebula-ssh
+      drs-switch
     ];
 
     programs.tmux = {
@@ -131,6 +153,7 @@ inputs,
         bind B popup -E -d '#{pane_current_path}' -w 90% -h 90% 'beans-tui-popup'
         bind D popup -E -w 90% -h 90% 'beandex'
         bind H popup -E -w 60% -h 60% 'nebula-ssh'
+        bind R popup -E -w 80% -h 80% 'drs --multiplex'
         bind P display-popup -d '#{pane_current_path}'
         bind O run-shell 'nohup open #{pane_current_path} >/dev/null 2>&1 &'
 
