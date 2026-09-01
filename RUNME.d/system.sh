@@ -47,6 +47,32 @@ up_home(){
 
 }
 
+make_command "up_machine_boot" "Rebuild NixOS system configuration"
+up_machine_boot(){
+
+  check_untracked
+
+  HOSTNAME=$(hostname)
+  # List of hostnames that need resource limitations
+  LIMITED_HOSTS="harry hurry"
+
+  if echo "$LIMITED_HOSTS" | grep -wq "$HOSTNAME"; then
+    sudo nixos-rebuild boot --flake .#$HOSTNAME --max-jobs 1 -j 1 --cores 1
+  else
+    sudo nixos-rebuild boot --flake .#$HOSTNAME
+  fi
+
+  # Only sync if nixos-rebuild succeeded
+  if [ $? -eq 0 ]; then
+    EXTRA_ARG="auto run after nixos-rebuild switch"
+    git_sync_machine
+  else
+    echo "nixos-rebuild failed, skipping git sync"
+    exit 1
+  fi
+}
+
+
 make_command "up_machine" "Rebuild NixOS system configuration"
 up_machine(){
 
