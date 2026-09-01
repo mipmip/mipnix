@@ -57,7 +57,7 @@
     jjay.url = "github:speclib/jjay";
     teejay.url = "github:mipmip/teejay";
     specgetty.url = "github:mipmip/specgetty";
-    openspec.url = "github:Fission-AI/OpenSpec";
+    #openspec.url = "github:Fission-AI/OpenSpec";
     verynix.url = "github:mipmip/verynix";
     rme.url = "github:mipmip/rme";
 

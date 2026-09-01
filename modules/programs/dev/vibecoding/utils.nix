@@ -5,7 +5,7 @@
       pkgs.unstable.rtk
       pkgs.unstable.beans
 
-      inputs.openspec.packages."${pkgs.stdenv.hostPlatform.system}".default
+      #inputs.openspec.packages."${pkgs.stdenv.hostPlatform.system}".default
 
       ## util programs used by agents
       tree
