@@ -1,4 +1,5 @@
 let
+  doornappel = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDXUaXKtaEQIvuIZ3KVh2kTbqiI3itVlnR/7qEkesXk1";
   zonnehoed = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMMk+lMbZgFFKQGOcoSj07nT4BZjDwI1c/y0PvoSZOw1";
   cichorei = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJZU9DZpGs+Ib/aN3n7u46wY8v9V4qHLcNzs/U+9iTgc";
   pim = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEY25ZaYRuKUJuVuzqK4c8dKkSxN6Cd9yhbDTa/5Njmh";
@@ -16,6 +17,7 @@ let
 
   users = [ pim annemarie ];
   systems = [
+    doornappel
     zonnehoed
     cichorei
     hurry
@@ -154,5 +156,8 @@ in
 
   "nebula-zonnehoed.crt.age".publicKeys = users ++ systems;
   "nebula-zonnehoed.key.age".publicKeys = users ++ systems;
+
+  "nebula-doornappel.crt.age".publicKeys = users ++ systems;
+  "nebula-doornappel.key.age".publicKeys = users ++ systems;
 
 }
