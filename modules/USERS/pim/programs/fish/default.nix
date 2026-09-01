@@ -45,6 +45,11 @@ inputs,
 
         abbr --add fd --set-cursor=° 'fd --color always ° | sort | less'
 
+        # jj publish: advance the closest bookmark to @- and push
+        abbr --add jp 'jj tug && jj git push'
+        # jj commit: describe @ and start a new change (built-in jj commit)
+        abbr --add jc --set-cursor=° 'jj commit -m "°"'
+
         function prompt_path_simple
           if test $PWD != $HOME
             path basename (pwd)

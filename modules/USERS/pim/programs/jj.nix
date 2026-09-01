@@ -21,6 +21,12 @@ config,
         ui = {
           default-command = ["log" "--no-pager"];
         };
+        revset-aliases = {
+          "closest_bookmark(to)" = "heads(::to & bookmarks())";
+        };
+        aliases = {
+          tug = ["bookmark" "move" "--from" "closest_bookmark(@-)" "--to" "@-"];
+        };
         #        git = {
         #          push-branch-prefix = "refs/heads/";
         #          push-default = "current";
