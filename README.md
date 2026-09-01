@@ -7,6 +7,7 @@ This is my mono-repository for my machines configuration and my dotfiles.
 - multi machine
 - flakes
 - Custom patched Suckless Terminal (st)
+- flake-parts
 
 ## Usage
 
