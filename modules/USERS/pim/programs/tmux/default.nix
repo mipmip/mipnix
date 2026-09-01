@@ -126,7 +126,7 @@ inputs,
 
         bind s choose-tree -sZ -O name
         bind S popup -E smg
-        bind G popup -E -w 80% -h 80% 'hup tui --mode multiplex --flatlist'
+        bind G popup -E -w 80% -h 80% 'hup tui --mode multiplex --flatlist --filter'
         bind T popup -E -w 80% -h 80% 'tj --columns --sort-activity --no-sound --no-notify --picker'
         bind B popup -E -d '#{pane_current_path}' -w 90% -h 90% 'beans-tui-popup'
         bind D popup -E -w 90% -h 90% 'beandex'
