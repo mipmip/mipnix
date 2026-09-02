@@ -71,9 +71,14 @@ inputs,
       # switch_command target for `drs --multiplex` (bound to `prefix + R`). drs
       # runs this with the selected repo's directory when Enter is pressed. Derives
       # the window name from the dir basename and does create-or-select into a
-      # dedicated `dirtyrepos` session (same pattern as nebula-ssh above), so
-      # re-picking a repo reuses its window rather than duplicating it. Repos that
-      # share a basename intentionally collapse onto one window.
+      # dedicated `dirtyrepos` session, so re-picking a repo reuses its window
+      # rather than duplicating it. Repos that share a basename intentionally
+      # collapse onto one window.
+      #
+      # The switch targets the window by its id (@N), NEVER by "session:name":
+      # repo basenames like "mip.rs" contain a dot, and tmux would parse the
+      # target "=dirtyrepos:mip.rs" as window "mip", pane "rs" -> "can't find
+      # pane: rs" -> switch fails. A window-id target is dot-safe.
       drs-switch = pkgs.writeShellScriptBin "drs-switch" ''
         set -eu
         dir="''${1:-}"
@@ -81,12 +86,16 @@ inputs,
         name="''$(basename "''$dir")"
         sess="dirtyrepos"
         tmux="${pkgs.tmux}/bin/tmux"
-        if ! "''$tmux" has-session -t "=''$sess" 2>/dev/null; then
-          "''$tmux" new-session -d -s "''$sess" -n "''$name" -c "''$dir"
-        elif ! "''$tmux" list-windows -t "=''$sess" -F '#W' | grep -qx "''$name"; then
-          "''$tmux" new-window -d -t "=''$sess" -n "''$name" -c "''$dir"
+        win=""
+        if "''$tmux" has-session -t "=''$sess" 2>/dev/null; then
+          while IFS=' ' read -r id wname; do
+            [ "''$wname" = "''$name" ] && { win="''$id"; break; }
+          done < <("''$tmux" list-windows -t "=''$sess" -F '#{window_id} #{window_name}')
+          [ -z "''$win" ] && win="''$("''$tmux" new-window -d -t "=''$sess" -n "''$name" -c "''$dir" -P -F '#{window_id}')"
+        else
+          win="''$("''$tmux" new-session -d -s "''$sess" -n "''$name" -c "''$dir" -P -F '#{window_id}')"
         fi
-        "''$tmux" switch-client -t "=''$sess:''$name"
+        "''$tmux" switch-client -t "''$win"
       '';
     in
     {
