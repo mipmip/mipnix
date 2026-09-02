@@ -46,6 +46,7 @@
         '';
       settings =  {
         includeCoAuthoredBy = false;
+        feedbackSurveyRate = 0;
         statusLine = {
           command = "input=$(cat); echo \"[$(echo \"$input\" | jq -r '.model.display_name')] 📁 $(basename \"$(echo \"$input\" | jq -r '.workspace.current_dir')\")\"";
           padding = 0;
