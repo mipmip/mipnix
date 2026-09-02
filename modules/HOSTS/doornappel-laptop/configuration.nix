@@ -10,10 +10,13 @@ in
 
     "pim@doornappel" = self.lib.makeHomeConf {
       inherit hostname;
-      imports = with inputs.self.modules.homeManager; [
+      imports = (with inputs.self.modules.homeManager; [
         role-pim-cli-full
         role-pim-cli-minimal
         role-pim-desktop
+      ]) ++ [
+        # Opt in to the hostname-derived wallpaper on this desktop.
+        { mip.hostWallpaper.enable = true; }
       ];
     };
   };

@@ -207,5 +207,11 @@ inputs,
       '';
 
     };
+
+    # rme (RUNME.sh launcher) completions. Fish lazy-loads this on first tab of
+    # `rme`; the dynamic `(rme --completions)` reflects the current directory's
+    # RUNME.sh, so suggestions stay per-directory correct without a static list.
+    xdg.configFile."fish/completions/rme.fish".text =
+      "complete -c rme -f -a '(rme --completions)'\n";
   };
 }

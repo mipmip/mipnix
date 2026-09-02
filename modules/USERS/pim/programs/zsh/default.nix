@@ -62,6 +62,12 @@ inputs,
 
       export PATH=~/.npm-packages/bin:$PATH
 
+      # rme (RUNME.sh launcher) completions. compinit is already run by oh-my-zsh,
+      # so compdef is available here. `rme --completions` is evaluated at tab-time,
+      # so suggestions reflect the current directory's RUNME.sh.
+      _rme() { compadd $(rme --completions) }
+      compdef _rme rme
+
       '';
     };
   };

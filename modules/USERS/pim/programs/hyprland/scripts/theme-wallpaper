@@ -17,20 +17,18 @@ if [[ -z "$MODE" ]]; then
     exit 1
 fi
 
+# Resolve the effective dark/light mode
 case "$MODE" in
-    dark)
-        TARGET="$WALLPAPER_BASE/wallpapers-dark"
-        ;;
-    light)
-        TARGET="$WALLPAPER_BASE/wallpapers-light"
+    dark|light)
+        EFFECTIVE="$MODE"
         ;;
     init)
-        # Initialize symlink based on current gsettings color-scheme
+        # Initialize based on current gsettings color-scheme
         CURRENT_SCHEME=$(gsettings get org.gnome.desktop.interface color-scheme 2>/dev/null || echo "'prefer-dark'")
         if [[ "$CURRENT_SCHEME" == *"light"* ]]; then
-            TARGET="$WALLPAPER_BASE/wallpapers-light"
+            EFFECTIVE="light"
         else
-            TARGET="$WALLPAPER_BASE/wallpapers-dark"
+            EFFECTIVE="dark"
         fi
         ;;
     *)
@@ -38,6 +36,32 @@ case "$MODE" in
         exit 1
         ;;
 esac
+
+# Host-wallpaper precedence (openspec add-host-wallpaper): a per-host image
+# replaces the shared theme dir on hosts where mip.hostWallpaper is in use.
+# Order: committed (resources/host-wallpapers) > downloaded > shared theme dir.
+# wpaperd needs a directory, so stage the chosen image alone in an active dir.
+HOST="$(hostname -s 2>/dev/null || cat /etc/hostname 2>/dev/null || echo unknown)"
+COMMITTED="$HOME/mipnix/resources/host-wallpapers/$HOST-$EFFECTIVE.jpg"
+DOWNLOADED="$HOME/.local/share/host-wallpaper/$EFFECTIVE/$HOST-$EFFECTIVE.jpg"
+ACTIVE_DIR="$HOME/.cache/host-wallpaper/$EFFECTIVE"
+
+HOST_IMG=""
+if [[ -f "$COMMITTED" ]]; then
+    HOST_IMG="$COMMITTED"
+elif [[ -f "$DOWNLOADED" ]]; then
+    HOST_IMG="$DOWNLOADED"
+fi
+
+if [[ -n "$HOST_IMG" ]]; then
+    mkdir -p "$ACTIVE_DIR"
+    rm -f "$ACTIVE_DIR"/* 2>/dev/null || true
+    ln -sf "$HOST_IMG" "$ACTIVE_DIR/$HOST-$EFFECTIVE.jpg"
+    TARGET="$ACTIVE_DIR"
+else
+    # Fallback: shared theme wallpapers (original behavior)
+    TARGET="$WALLPAPER_BASE/wallpapers-$EFFECTIVE"
+fi
 
 # Ensure cache directory exists
 mkdir -p "$(dirname "$SYMLINK_PATH")"
