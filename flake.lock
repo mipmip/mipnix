@@ -667,11 +667,11 @@
         "nixpkgs": "nixpkgs_8"
       },
       "locked": {
-        "lastModified": 1788299459,
-        "narHash": "sha256-ePEAwfUY+rZTkHNDDL1GtaQzSRGnmmPIUSPBMi3iRc4=",
+        "lastModified": 1788368169,
+        "narHash": "sha256-5RUqMU8Sp9SfnJE00FBUxeaP09w1A1Mc6nJyoVyj3zQ=",
         "owner": "mipmip",
         "repo": "huphop",
-        "rev": "7c32e68f3547a75daf6a57b888f4f37c1032e8f6",
+        "rev": "012931f0720fca8083287eda8e68a11cd18c0020",
         "type": "github"
       },
       "original": {
