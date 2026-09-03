@@ -73,6 +73,10 @@ in
     modesetting.enable = true;
     open = false;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
+    # Preserve VRAM across suspend/resume (installs nvidia-suspend/resume/hibernate
+    # services). Without it, resume fails with "[nvidia-drm] Failed to allocate
+    # NVKMS memory for GEM object" and the graphical session comes back corrupted.
+    powerManagement.enable = true;
   };
 
   console.keyMap = "nl";
