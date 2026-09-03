@@ -795,11 +795,11 @@
         "nixpkgs": "nixpkgs_12"
       },
       "locked": {
-        "lastModified": 1781559322,
-        "narHash": "sha256-Q38ej1i85UtxXhXqQZQWm//i3BjC5T9wMlrh5oxsyCA=",
+        "lastModified": 1788369010,
+        "narHash": "sha256-h7DxaQr6spcYgYU2CbZ3YU8/17W9P3pGVo3U0l7/g7o=",
         "owner": "mipmip",
         "repo": "mip.rs",
-        "rev": "af8868b1862d7d738b63b585f548cabe0741a1b7",
+        "rev": "d9122ec8ad9bfbf63edbd5a69da761c40212aa2f",
         "type": "github"
       },
       "original": {

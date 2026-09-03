@@ -5,20 +5,25 @@ inputs,
 {
   flake.modules.homeManager.pim-huphop = { lib, pkgs, ... }:
     let
-      # Model B switch wrapper: session per org, window per repo. huphop renders
-      # switch_command as a template then execs it WITHOUT a shell, so all
-      # branching must live here in a single executable. Only tmux server
+      # Model B switch wrapper: session per collection (or org), window per repo.
+      # huphop renders switch_command as a template then execs it WITHOUT a shell,
+      # so all branching must live here in a single executable. Only tmux server
       # commands are issued (no TTY needed) — it runs while huphop's TUI still
       # owns the terminal, then the TUI quits and the popup closes.
-      # Args: <short> <owner> <repo> <target-checkout-path>
+      #
+      # The session name is resolved by the caller's template (collection when in
+      # one, else <short>-><ownerLower>) and passed in as $1, so this wrapper is
+      # agnostic to how the name was chosen.
+      # Args: <session-name> <repo> <target-checkout-path>
       hup-tmux-switch = pkgs.writeShellScriptBin "hup-tmux-switch" ''
-        short="$1"; owner="$2"; repo="$3"; target="$4"
+        session="$1"; repo="$2"; target="$3"
 
         tmux="${pkgs.tmux}/bin/tmux"
 
         # Sanitise names out of tmux's session:window.pane target grammar.
-        sess="$(printf '%s->%s' "$short" "$owner" | tr ':.' '--')"
-        win="$(printf  '%s' "$repo"               | tr ':.' '--')"
+        # (Collection names are free text; a ':' or '.' would corrupt the target.)
+        sess="$(printf '%s' "$session" | tr ':.' '--')"
+        win="$(printf  '%s' "$repo"    | tr ':.' '--')"
 
         if ! "$tmux" has-session -t "=$sess" 2>/dev/null; then
           "$tmux" new-session -d -s "$sess" -n "$win" -c "$target"
@@ -64,7 +69,7 @@ inputs,
             header = [ ];
             footer = [ "switch_hint" "filter" ];
             switch_command =
-              "'${hup-tmux-switch}/bin/hup-tmux-switch' '{{.Short}}' '{{.OwnerLower}}' '{{.Repo}}' '{{.Target}}'";
+              "'${hup-tmux-switch}/bin/hup-tmux-switch' '{{if .Collection}}{{.Collection}}{{else}}{{.Short}}->{{.OwnerLower}}{{end}}' '{{.Repo}}' '{{.Target}}'";
           };
         };
       };
