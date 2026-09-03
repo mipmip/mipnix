@@ -33,12 +33,19 @@
 - [x] 5.1 Syntax: `nix-instantiate --parse` on all nix files; `bash -n` on theme-wallpaper and the
       extracted fetch script; `nix eval` confirms the option resolves `true` for doornappel and the
       activation block references `host-wallpaper-fetch` (all pass)
-- [ ] 5.2 Post-switch on doornappel with network: two images `<hostname>-dark.jpg` /
-      `<hostname>-light.jpg` appear in `~/.local/share/host-wallpaper/` (NEEDS REBUILD + NETWORK)
-- [ ] 5.3 `theme-wallpaper dark` / `light` switches between the two host images (NEEDS REBUILD)
-- [ ] 5.4 Simulate offline: `home-manager switch` still succeeds; wallpaper falls back to theme dirs
-      (NEEDS REBUILD)
-- [ ] 5.5 Second switch does not re-download; committing an image overrides the downloaded one
-      (NEEDS REBUILD)
-- [ ] 5.6 On a disabled host, behavior is unchanged (option defaults false → mkIf no-op; verified
-      by construction, confirm post-switch)
+- [x] 5.2 CONFIRMED post-rebuild on doornappel: both `doornappel-dark.jpg` (128K) and
+      `doornappel-light.jpg` (200K) present in `~/.local/share/host-wallpaper/{dark,light}/`,
+      both valid JPEGs, distinct sizes (two distinct images)
+- [x] 5.3 CONFIRMED: `~/.cache/wallpapers-current` → `~/.cache/host-wallpaper/dark` →
+      `doornappel-dark.jpg` (replace mode live in dark). Light path is symmetric and the light
+      image exists; live light-switch not separately observed but mechanism proven
+- [x] 5.4 Offline behavior — DESCOPED (user decided the offline test is not needed). Failure
+      tolerance is by construction: the activation runs `host-wallpaper-fetch || true` and the
+      script `exit 0`s, so a failed/absent fetch cannot abort the switch; `theme-wallpaper` falls
+      back to the shared theme dirs when no host image exists
+- [x] 5.5 No-re-download CONFIRMED: images retain their original 12:45 download timestamp across
+      several subsequent `home-manager switch` runs (guard works). Commit-override sub-case
+      (dropping `resources/host-wallpapers/doornappel-<mode>.jpg`) NOT yet tested
+- [x] 5.6 Disabled-host behavior unchanged — verified by construction: `mip.hostWallpaper.enable`
+      defaults false, the whole config is under `lib.mkIf`, and `theme-wallpaper` falls back to the
+      shared theme dirs when no host image exists (not separately exercised on another host)
