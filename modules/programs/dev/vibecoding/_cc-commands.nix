@@ -99,4 +99,66 @@
 
           $ARGUMENTS
   '';
+
+  "mip:tinychange-explore" = ''
+          ---
+          argument-hint: [intent]
+          description: Lean OpenSpec explore for a tiny change (installs the tinychange schema if missing)
+          ---
+          Start a lightweight exploration for a SMALL change using the `tinychange`
+          OpenSpec schema (lean specs -> tasks; no proposal or design). Keep it short —
+          this is a tiny change.
+
+          1. Ensure the schema is installed in THIS project. Run:
+               openspec schema which tinychange
+             If it is NOT found, install it by fetching and following the guide at
+             https://raw.githubusercontent.com/speclib/openspec-tinychange-schema/main/AGENT_INSTALL.md
+             (it copies openspec/schemas/tinychange/ into this project and validates it).
+             Do not proceed until `openspec schema validate tinychange` passes.
+
+          2. Explore briefly, then do a FULL scan of the existing specs
+             (`openspec spec list`; read the ones this change could touch) — even a
+             small change can shift the specs.
+
+          3. Create the change:
+               openspec new change <kebab-name> --schema tinychange
+             Write the spec delta under specs/ (ADDED/MODIFIED/REMOVED requirements with
+             scenarios) if behavior changes. If it is a pure refactor with NO spec impact,
+             set `skip_specs: true` in the change's .openspec.yaml instead of inventing a
+             requirement. Also write a short tasks.md (implementation + a verification step).
+
+          4. Note the schema source
+             https://github.com/speclib/openspec-tinychange-schema in the change so
+             collaborators can install it.
+
+          Stop once the artifacts exist. Do NOT implement — run /mip:tinychange-apply for that.
+
+          $ARGUMENTS
+  '';
+
+  "mip:tinychange-apply" = ''
+          ---
+          argument-hint: [change-name]
+          description: Implement + archive a tinychange change (specs -> tasks), then commit
+          ---
+          Apply a `tinychange` OpenSpec change end-to-end. Argument: the change name; if
+          omitted, use the sole active tinychange change or ask which one.
+
+          1. Implement from tasks.md. Reuse the schema-aware apply flow (the
+             openspec-apply-change skill) — it reads the tinychange schema and requires
+             only tasks. Make the edits, add a real verification step (build/parse/run,
+             not "looks right"), and check off each task (- [ ] -> - [x]).
+
+          2. Archive to sync the delta into the main specs:
+               openspec archive <change-name>
+             Confirm the delta lands in openspec/specs/ (skip_specs changes archive as-is).
+
+          3. Commit per this repo's convention: author Pim Snel, NO self-promoting trailers
+             (no Co-authored-by, no Generated-with). One change per commit. Do NOT push — a
+             nixos-rebuild verifies nix changes and the rebuild hook handles pushing.
+
+          Report: archived name, commit id, and anything left unverified.
+
+          $ARGUMENTS
+  '';
 }
