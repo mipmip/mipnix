@@ -69,7 +69,7 @@ inputs,
             header = [ ];
             footer = [ "switch_hint" "filter" ];
             switch_command =
-              "'${hup-tmux-switch}/bin/hup-tmux-switch' '{{if .Collection}}{{.Collection}}{{else}}{{.Short}}->{{.OwnerLower}}{{end}}' '{{.Repo}}' '{{.Target}}'";
+              "'${hup-tmux-switch}/bin/hup-tmux-switch' '{{if .Collection}}col->{{.Collection}}{{else}}{{.Short}}->{{.OwnerLower}}{{end}}' '{{.Repo}}' '{{.Target}}'";
           };
         };
       };
