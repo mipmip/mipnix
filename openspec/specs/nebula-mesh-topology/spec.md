@@ -2,7 +2,9 @@
 
 ## Purpose
 TBD - created by archiving change add-durer-second-lighthouse. Update Purpose after archive.
+
 ## Requirements
+
 ### Requirement: Single-source lighthouse registry
 
 The nebula mesh configuration SHALL declare its set of lighthouses in one place via
@@ -94,14 +96,23 @@ a `flake.nebulaNodes` registry: an attribute set mapping each active node's name
 its nebula VPN IP, assembled from per-host contributions merged across the module
 tree (the same pattern as `flake.deploy`). Each host SHALL declare its own IP exactly
 once through `flake.nebulaNodes.<name>`, and no other artifact SHALL repeat that
-name/IP pair.
+name/IP pair. A host that runs the nebula role (has signed mesh certificates and
+imports `role-nebula-node`) SHALL contribute a registry entry; a host that holds mesh
+certificates but is absent from the registry is a defect, not an opt-out.
 
 #### Scenario: Every active node appears in the registry
 
 - **WHEN** the flake is evaluated
 - **THEN** `flake.nebulaNodes` SHALL contain an entry for each active nebula node —
-  `durer`, `dapperehaan`, `hurry`, `harry`, `lavendel`, and `cichorei` — mapping its
-  name to its overlay IP
+  `dapperehaan`, `doornappel`, `durer`, `harry`, `hurry`, `lavendel`, `cichorei`, and
+  `zonnehoed` — mapping its name to its overlay IP
+
+#### Scenario: doornappel is registered at its certificate IP
+
+- **WHEN** the flake is evaluated
+- **THEN** `flake.nebulaNodes.doornappel` SHALL be `192.168.100.15`, matching the IP
+  carried by doornappel's signed nebula certificate and assigned to its
+  `nebula.mesh` interface
 
 #### Scenario: A node declares its IP once
 
@@ -114,13 +125,20 @@ name/IP pair.
 
 Each host's `networking.extraHosts` nebula self-entry SHALL be derived from its
 `flake.nebulaNodes` registry entry rather than from a hard-coded IP literal, so that
-changing a node's IP requires editing only the registry.
+changing a node's IP requires editing only the registry. Because every node's
+`extraHosts` is derived from the whole registry, an unregistered node SHALL be
+unresolvable by name from every other node.
 
 #### Scenario: extraHosts reflects the registry IP
 
 - **WHEN** `flake.nebulaNodes.durer` is `192.168.100.12`
 - **THEN** durer's `networking.extraHosts` SHALL contain `192.168.100.12 durer`
   produced from that registry entry, with no separately maintained IP literal
+
+#### Scenario: doornappel resolves by name across the mesh
+
+- **WHEN** `flake.nebulaNodes.doornappel` is `192.168.100.15`
+- **THEN** every mesh node's `/etc/hosts` SHALL contain `192.168.100.15 doornappel`
 
 ### Requirement: Registry helper for consumers
 
@@ -133,4 +151,3 @@ consumers never restate node names or IPs.
 - **WHEN** `self.lib.nebulaHosts` is evaluated
 - **THEN** it SHALL yield one entry per `flake.nebulaNodes` node carrying that node's
   name and overlay IP
-

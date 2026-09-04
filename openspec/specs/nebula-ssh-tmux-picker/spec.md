@@ -2,7 +2,9 @@
 
 ## Purpose
 TBD - created by archiving change add-nebula-ssh-tmux-picker. Update Purpose after archive.
+
 ## Requirements
+
 ### Requirement: Prefix+H host picker binding
 
 The `pim-tmux` home-manager module SHALL bind `Prefix + H` to a popup that lists
@@ -31,7 +33,13 @@ both servers and laptops — with no runtime certificate decryption.
 
 - **WHEN** the picker is opened
 - **THEN** the list SHALL include the server nodes (`durer`, `dapperehaan`, `hurry`,
-  `harry`) and the laptop nodes (`lavendel`, `cichorei`)
+  `harry`) and the laptop nodes (`lavendel`, `cichorei`, `zonnehoed`, `doornappel`)
+
+#### Scenario: Picking doornappel from another laptop
+
+- **WHEN** the user opens the picker on `cichorei` and selects `doornappel`
+- **THEN** a `doornappel` window SHALL be opened in the `nebula-prive` session
+  running `ssh pim@192.168.100.15`
 
 #### Scenario: Non-mesh hosts excluded
 
@@ -68,4 +76,3 @@ duplicate.
   `durer` window
 - **THEN** a new `hurry` window SHALL be added to the same `nebula-prive` session
   and the client SHALL switch to it
-
