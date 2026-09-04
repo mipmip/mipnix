@@ -14,14 +14,21 @@
 # every monitor add/remove and once at startup.
 #
 # Mapping:
-#   workspaces 1-7  -> the connected external monitor (first non-eDP-1), if any
-#   workspaces 8/9/0 -> always the laptop panel eDP-1
+#   workspaces 1-7   -> the connected external monitor (first non-eDP-1), if any
+#   workspaces 8/9/10 -> always the laptop panel eDP-1
+#
+# The third laptop workspace is id 10, displayed as "0" in mipbar and reached by
+# MOD+0. It is NOT workspace id 0: Hyprland workspace ids start at 1, so a
+# dispatch naming 0 is inert. This script previously carried "8 9 0" and its
+# `moveworkspacetomonitor 0 eDP-1` failed silently behind the >/dev/null 2>&1
+# below, leaving the workspace unbound (observed stranded on the external
+# monitor). See the change `fix-workspace-zero-identity`.
 
 set -u
 
 LAPTOP="eDP-1"
 EXTERNAL_WS="1 2 3 4 5 6 7"
-LAPTOP_WS="8 9 0"
+LAPTOP_WS="8 9 10"
 
 # Pick the external monitor name: first connected monitor that is not the laptop.
 # Empty string if only the laptop is connected.
@@ -46,7 +53,7 @@ reconcile() {
   fi
 
   if [ -n "$ext" ]; then
-    # External present: 1-7 -> external, 8/9/0 -> laptop (if laptop present).
+    # External present: 1-7 -> external, 8/9/10 -> laptop (if laptop present).
     for ws in $EXTERNAL_WS; do
       hyprctl dispatch moveworkspacetomonitor "$ws $ext" >/dev/null 2>&1
     done

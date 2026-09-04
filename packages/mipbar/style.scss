@@ -142,6 +142,12 @@ window.Bar {
         font-size: 0.85em;
       }
     }
+
+    &.AllWindows {
+      .AllWindowsIcon {
+        font-size: 1.05em;
+      }
+    }
   }
 
   .MinimizedPopover {
@@ -177,6 +183,30 @@ window.Bar {
 
       &:hover {
         background: #{"alpha(@theme_fg_color, 0.14)"};
+      }
+    }
+  }
+
+  .AllWindowsPopover {
+    padding: 6px;
+    min-width: 300px;
+
+    .AllWindowsRow {
+      padding: 6px 8px;
+      border-radius: 6px;
+
+      image {
+        -gtk-icon-size: 16px;
+        margin-right: 8px;
+      }
+
+      label {
+        font-weight: normal;
+        font-size: 0.9em;
+      }
+
+      &:hover {
+        background: #{"alpha(@theme_fg_color, 0.1)"};
       }
     }
   }
