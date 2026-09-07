@@ -161,4 +161,167 @@
 
           $ARGUMENTS
   '';
+
+  "mip:init" = ''
+    ---
+    argument-hint: [project description]
+    description: Initialize a new project with OpenSpec + Beans, wired for /mip:ship
+    ---
+    Bootstrap the CURRENT directory as a new project with OpenSpec and Beans,
+    scaffolded so `/mip:ship` works here without any further setup.
+
+    Throughout, `<repo>` means the project repository's directory name (e.g.
+    `widgets`). Every generated file uses that name — never the literal `mipnix`.
+
+    ## 1. Interview first — do not scaffold before asking
+
+    Ask all four, then restate the plan and get a go-ahead:
+
+    1. **What is this project about?** A paragraph or two. Feeds the `AGENTS.md`
+       overview and the initial beans milestones.
+    2. **Register with a central OpenSpec store?** Run `openspec store list`
+       first and show what is already registered so the user can pick one.
+       On yes, register this project with the chosen store (`openspec store
+       register`, or `openspec store setup` for a brand-new one). On no, use a
+       repo-local `openspec/` only — create and register nothing.
+    3. **Create a `flake.nix`?** For tests, a dev shell, or packaging. Only
+       create one if the user agrees; see step 5 for why it matters to shipping.
+    4. **`jj` or `git`?** Default `jj`. Decides which `ship-change.sh` variant
+       gets written. Ask for the remote URL if there is one.
+
+    ## 2. OpenSpec and Beans
+
+    - `openspec init`
+    - `beans init`, then set `prefix: <repo>-` in `.beans.yml`. `beans init`
+      accepts no prefix flag, so edit the file. Keep `id_length: 4` so ids read
+      `<repo>-rn3b`. Confirm with `beans check`.
+    - `beans prime` to learn the workflow, then create the initial milestones
+      from answer 1. Milestone titles start with an incrementing two-digit
+      number beginning `01`; epics hang under milestones.
+
+    ## 3. AGENTS.md, with CLAUDE.md as a symlink
+
+    Write `AGENTS.md`: a short overview from answer 1, a Commands section, and
+    the Beans section below verbatim apart from `<repo>`.
+
+    ~~~markdown
+    ## Beans
+
+    When I refer to issues like <repo>-rn3b checkout the task
+    in @.beans/<repo>-rn3b-*.md
+
+    In this project we will use these tasks as epics for making openspec proposals.
+
+    WHEN you create a proposal at a link to this task in the proposal.md.
+    WHEN a bean is used to create an proposal change the status to "in-progress"
+    WHEN a proposal is archived add the link to the archived proposal in the frontmatter of this task like this:
+
+    ```
+    openspec-link: openspec/changes/archive/....
+    ```
+
+    You are allowed to update these statuses in the task frontmatter:
+
+    - in-progress
+    - todo
+    - draft
+    - completed
+    - scrapped
+
+    When making changes you are allowed to update the date/time in `updated_at` in the task frontmatter
+
+    Besides updating status and openspec-link, you are NOT ALLOWED to modify the contents of the task file.
+    ~~~
+
+    Then `ln -s AGENTS.md CLAUDE.md`, so every agent reads one source of truth
+    and the two cannot drift.
+
+    ## 4. Make /mip:ship applicable
+
+    `/mip:ship` needs three things present. Create all of them.
+
+    **`CHANGELOG.md`** with an `## [Unreleased]` section — step 3 of `/mip:ship`
+    appends user-facing bullets there under `### Added` / `### Changed` /
+    `### Fixed`.
+
+    **`scripts/ship-change.sh`**, executable. It must refuse to run when tasks
+    are unchecked, gate before archiving, and commit/push in the chosen VCS:
+
+    ~~~bash
+    #!/usr/bin/env bash
+    # ship-change.sh <change-name> [commit-subject]
+    #
+    # Gated tail for shipping ONE implemented OpenSpec change:
+    #   stage -> gate (nix flake check) -> archive -> commit -> push.
+    # If the gate fails this aborts before archiving or committing.
+    set -euo pipefail
+
+    CHANGE="''${1:?usage: ship-change.sh <change-name> [commit-subject]}"
+    SUBJECT="''${2:-Implement ''${CHANGE}}"
+
+    ROOT="$(git rev-parse --show-toplevel)"
+    cd "$ROOT"
+
+    TASKS="openspec/changes/''${CHANGE}/tasks.md"
+    if [[ ! -d "openspec/changes/''${CHANGE}" ]]; then
+      echo "ship: no active change ''${CHANGE} under openspec/changes/" >&2
+      exit 1
+    fi
+    if [[ -f "$TASKS" ]] && grep -qE "^\s*- \[ \]" "$TASKS"; then
+      echo "ship: $TASKS still has unchecked tasks — finish the apply step first" >&2
+      exit 1
+    fi
+
+    echo "==> [1/5] stage working tree (so nix flake sees new files)"
+    git add -A
+
+    echo "==> [2/5] gate: nix flake check"
+    nix flake check
+
+    echo "==> [3/5] archive OpenSpec change: ''${CHANGE}"
+    openspec archive "''${CHANGE}" --yes
+
+    echo "==> [4/5] commit"
+    git add -A
+    # jj variant:
+    jj commit -m "''${SUBJECT}"
+    # git variant: git commit -m "''${SUBJECT}"
+
+    echo "==> [5/5] push main"
+    # jj variant:
+    jj bookmark set main -r @-
+    jj git push --bookmark main
+    # git variant: git push origin main
+
+    echo "==> shipped ''${CHANGE}"
+    ~~~
+
+    Write only the variant the user chose — delete the other and its comment
+    marker, do not ship a script with both paths in it.
+
+    ## 5. The gate
+
+    If a `flake.nix` was requested, `nix flake check` must run build, tests, and
+    a coverage gate of **>=70% overall and >=80% on core packages** — the gate
+    `/mip:ship` documents.
+
+    **Warn the user explicitly:** a project with no tests yet will FAIL that gate
+    on its first `/mip:ship`, and the ship will abort before archiving or
+    committing anything. That is intended — it means writing tests comes before
+    the first ship, and a failed gate never leaves a half-shipped change.
+
+    If the user declined a flake, still write `scripts/ship-change.sh` and
+    `CHANGELOG.md`, and say plainly that the gate step is inert until a flake
+    exists — offer `/mip:flaker` to create one.
+
+    ## 6. Report
+
+    List what was created, the beans prefix, whether a store was registered, and
+    the VCS in use. Mention that the `tinychange` schema (lean specs -> tasks,
+    for small changes) can be installed into this project from
+    https://github.com/speclib/openspec-tinychange-schema — then
+    /mip:tinychange-explore and /mip:tinychange-apply work here too.
+
+    $ARGUMENTS
+  '';
 }
