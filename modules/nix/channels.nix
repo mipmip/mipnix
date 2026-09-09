@@ -10,6 +10,7 @@
       nixpkgs.overlays = [
 
         inputs.self.overlays.apps
+        inputs.self.overlays.fonts
 
         (final: _prev: {
           unstable = initChannel inputs.unstable final;

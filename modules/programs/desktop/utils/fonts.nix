@@ -7,6 +7,7 @@
         dejavu_fonts
         open-sans
         inter
+        clear-sans
         rubik
         lato
         cinzel
