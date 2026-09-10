@@ -57,6 +57,12 @@
         listenAddress = "192.168.100.2";
         port = 8766;
         tokensFile = config.age.secrets."startaste-mcp-tokens".path;
+        # The MCP transport checks the Host header against an allow-list to
+        # defend against DNS rebinding. durer forwards the public name, which is
+        # not loopback and not the bind address, so it must be declared or every
+        # proxied request is refused with 421. Loopback and 192.168.100.2:8766
+        # are accepted without declaring them.
+        publicHostname = "taste.pimsnel.com";
       };
 
       # The dashboard has NO authentication of any kind, so it is bound to the
