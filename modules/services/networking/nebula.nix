@@ -59,7 +59,7 @@
       mipnix.nebula.lighthouses = {
         # technative (currently unreachable after a network refactor; kept listed
         # so nodes rejoin it automatically once it is reachable again).
-        "192.168.100.1" = "vaultwarden.tools.technative.cloud:4242";
+        #"192.168.200.1" = "vaultwarden.tools.technative.cloud:4242";
         # durer @ Hetzner (stable public IPv4 behind nuremberg.pimsnel.com).
         "192.168.100.12" = "nuremberg.pimsnel.com:4242";
       };
