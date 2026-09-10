@@ -67,7 +67,10 @@ fi
 SYSTEM="$(nix eval --impure --raw --expr 'builtins.currentSystem')"
 
 step "Gate 1/4: openspec validate"
-openspec validate --changes "$CHANGE"
+# `--changes` is a TYPE filter, not a name filter: it validates every change in
+# the repo and fails if any is invalid, which would make shipping one change
+# hostage to an unrelated broken one. Validate this change by name only.
+openspec validate "$CHANGE" --type change
 
 step "Gate 2/4: tasks complete"
 TASKS="$CHANGE_DIR/tasks.md"
