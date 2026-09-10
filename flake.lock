@@ -1743,11 +1743,11 @@
         "pyproject-nix": "pyproject-nix"
       },
       "locked": {
-        "lastModified": 1789069554,
-        "narHash": "sha256-6d+CYRI8RB8JeGELqiAENwqxKnwS2iz6BpEQJF4dbl0=",
+        "lastModified": 1789077486,
+        "narHash": "sha256-3P+s8V3CiqLVe1HUZZcXgfnkhcpkc77QFeo9sJIRm5Q=",
         "owner": "mipmip",
         "repo": "startaste",
-        "rev": "9368fefa9bd7f2ff764ce45ecdd8b12243ebbad9",
+        "rev": "dc14731f73abb87dd5457f192074d0e66cbde435",
         "type": "github"
       },
       "original": {
