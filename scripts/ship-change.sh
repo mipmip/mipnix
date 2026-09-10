@@ -11,6 +11,7 @@
 #   --flake-check        Also run `nix flake check`. Opt-in, not default — see NOTE.
 #   --allow-incomplete   Archive with unchecked tasks (they must be justified in the report).
 #   --push               Push main after committing. Off by default — see NOTE.
+#   --stage-all          Stage everything, including other changes' artifacts.
 #
 # NOTE on `nix flake check`: it currently fails on this repo for a reason unrelated
 # to any change being shipped. modules/HOSTS/pesto-pinephone/configuration.nix and
@@ -34,7 +35,7 @@ step() { printf '\n\033[1m==> %s\033[0m\n' "$*"; }
 CHANGE="$1"; shift
 SUBJECT="$1"; shift
 
-HOSTS=(); HOMES=(); FLAKE_CHECK=0; ALLOW_INCOMPLETE=0; PUSH=0
+HOSTS=(); HOMES=(); FLAKE_CHECK=0; ALLOW_INCOMPLETE=0; PUSH=0; STAGE_ALL=0
 while [ $# -gt 0 ]; do
   case "$1" in
     --host) [ $# -ge 2 ] || die "--host needs a value"; HOSTS+=("$2"); shift 2 ;;
@@ -42,6 +43,7 @@ while [ $# -gt 0 ]; do
     --flake-check)      FLAKE_CHECK=1; shift ;;
     --allow-incomplete) ALLOW_INCOMPLETE=1; shift ;;
     --push)             PUSH=1; shift ;;
+    --stage-all)        STAGE_ALL=1; shift ;;
     *) die "unknown option: $1" ;;
   esac
 done
@@ -65,6 +67,29 @@ if [ ${#HOSTS[@]} -eq 0 ] && [ ${#HOMES[@]} -eq 0 ]; then
 fi
 
 SYSTEM="$(nix eval --impure --raw --expr 'builtins.currentSystem')"
+
+step "Gate 0: no other change's artifacts in the tree"
+# `git add -A` at commit time once swallowed an unrelated in-flight edit into a
+# ship commit, which is worse than failing: it publishes work its author had not
+# finished. Check BEFORE gating and archiving, so a refusal costs nothing and
+# never leaves a change archived but uncommitted.
+#
+# Only openspec/changes/ is policed. Implementation files anywhere in the tree
+# are expected — they are what the change edits.
+STRAY=()
+while IFS= read -r f; do
+  case "$f" in
+    "openspec/changes/$CHANGE"/*|"openspec/changes/$CHANGE") ;;
+    openspec/changes/archive/*) ;;
+    openspec/changes/*) STRAY+=("$f") ;;
+  esac
+done < <(git status --porcelain | sed 's/^...//')
+
+if [ ${#STRAY[@]} -gt 0 ] && [ "$STAGE_ALL" -eq 0 ]; then
+  printf "ship-change: another change's artifacts are uncommitted:\n" >&2
+  printf '  %s\n' "${STRAY[@]}" >&2
+  die "commit or stash those first, or pass --stage-all"
+fi
 
 step "Gate 1/4: openspec validate"
 # `--changes` is a TYPE filter, not a name filter: it validates every change in
