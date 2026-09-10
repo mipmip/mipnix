@@ -17,6 +17,27 @@ inputs,
       autocd = true;
       autosuggestion.enable = false;
 
+      # Scrub Ghostty's GTK app-wrapper variables out of the shell environment.
+      # See the matching comment in ../fish/default.nix for the full reasoning.
+      # This goes in .zshenv (envExtra) rather than .zshrc so it runs before any
+      # profile/rc hook that might invoke a GLib program.
+      envExtra = ''
+        unset GST_PLUGIN_SYSTEM_PATH_1_0 GI_TYPELIB_PATH GDK_PIXBUF_MODULE_FILE
+
+        if [[ -n "$GIO_EXTRA_MODULES" ]]; then
+          _gio_kept=()
+          for _gio_dir in ''${(s.:.)GIO_EXTRA_MODULES}; do
+            [[ "$_gio_dir" == */gstreamer-1.0 ]] || _gio_kept+=("$_gio_dir")
+          done
+          if (( $#_gio_kept )); then
+            export GIO_EXTRA_MODULES="''${(j.:.)_gio_kept}"
+          else
+            unset GIO_EXTRA_MODULES
+          fi
+          unset _gio_kept _gio_dir
+        fi
+      '';
+
       sessionVariables = {
         BROWSER = "firefox";
         COLORTERM = "truecolor";

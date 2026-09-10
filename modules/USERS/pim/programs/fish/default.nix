@@ -208,6 +208,45 @@ inputs,
 
     };
 
+    # Scrub Ghostty's GTK app-wrapper variables out of the shell environment.
+    #
+    # Ghostty is a wrapped GTK application: its nixpkgs binary wrapper exports
+    # GST_PLUGIN_SYSTEM_PATH_1_0, GI_TYPELIB_PATH and GDK_PIXBUF_MODULE_FILE into
+    # its own process so *Ghostty* finds its GTK runtime. Those paths are
+    # build-time artefacts of Ghostty's closure, not session settings, and the
+    # shell Ghostty spawns inherits all of them — as does tmux, and everything
+    # started from a pane. A GTK app launched from here re-exports whatever it
+    # needs via its own wrapper, so dropping them is safe.
+    #
+    # GIO_EXTRA_MODULES additionally gets sanitised: GLib dlopens every directory
+    # on it and probes for the g_io_module_load symbol, so a GStreamer plugin dir
+    # on that list makes every GIO program print two lines per plugin
+    # ("undefined symbol: g_io_module_load" / "Failed to load module: libgst*.so").
+    # See bean mipnix-jdjf.
+    #
+    # This lives in conf.d, NOT in interactiveShellInit: fish sources conf.d files
+    # (sorted by filename) before config.fish, and NixOS ships
+    # vendor_conf.d/flatpak.fish which runs `flatpak --installations` — a GLib
+    # program that scans GIO_EXTRA_MODULES. The 00- prefix sorts this ahead of it.
+    xdg.configFile."fish/conf.d/00-gtk-env-scrub.fish".text = ''
+      set -e -g GST_PLUGIN_SYSTEM_PATH_1_0
+      set -e -g GI_TYPELIB_PATH
+      set -e -g GDK_PIXBUF_MODULE_FILE
+
+      if set -q GIO_EXTRA_MODULES
+        set -l gio_kept
+        for gio_dir in (string split ':' -- $GIO_EXTRA_MODULES)
+          string match -q -- '*/gstreamer-1.0' $gio_dir
+          or set -a gio_kept $gio_dir
+        end
+        if test (count $gio_kept) -gt 0
+          set -gx GIO_EXTRA_MODULES (string join ':' -- $gio_kept)
+        else
+          set -e -g GIO_EXTRA_MODULES
+        end
+      end
+    '';
+
     # rme (RUNME.sh launcher) completions. Fish lazy-loads this on first tab of
     # `rme`; the dynamic `(rme --completions)` reflects the current directory's
     # RUNME.sh, so suggestions stay per-directory correct without a static list.

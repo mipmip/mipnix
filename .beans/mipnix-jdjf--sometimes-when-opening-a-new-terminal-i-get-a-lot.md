@@ -1,11 +1,12 @@
 ---
 # mipnix-jdjf
 title: sometimes when opening a new terminal i get a lot of errors
-status: todo
+status: in-progress
 type: bug
 priority: normal
 created_at: 2026-09-03T13:35:20Z
-updated_at: 2026-09-03T13:35:50Z
+updated_at: 2026-09-10T00:00:00Z
+openspec-link: openspec/changes/archive/2026-09-10-fix-terminal-gtk-env-leak
 ---
 
 'g_io_module_load': /nix/store/ycmjl9xmbm4j7d08bsgf6a9pvzdr1iv1-gst-plugins-good-1.26.11/lib/gstreamer-1.0/libgstwavpack.so: undefined symbol: g_io_module_load
