@@ -53,9 +53,11 @@
 
 ## 5. MCP endpoint (after 1.2 and 1.3)
 
-- [ ] 5.1 Add the MCP unit bound to `192.168.100.2:8766` with `tokensFile` from
-      2.3; verify `/healthz` answers unauthenticated and `/mcp` rejects a
-      request with no bearer token
+- [ ] 5.1 Set `services.startaste.mcp.enable` with
+      `listenAddress = "192.168.100.2"`, `port = 8766` (the module's default)
+      and `tokensFile` from 2.3 — the unit comes from the upstream module
+      (startaste change `mcp-server`), do not define it here; verify `/healthz`
+      answers unauthenticated and `/mcp` rejects a request with no bearer token
 - [ ] 5.2 MANUAL: create the `taste.pimsnel.com` DNS A-record pointing at durer;
       verify it resolves before requesting a certificate
 - [ ] 5.3 Add the durer vhost modelled on
@@ -64,7 +66,8 @@
       verify `https://taste.pimsnel.com/healthz` returns over TLS
 - [ ] 5.4 Verify the streamable transport is not buffered: an SSE response
       streams incrementally rather than arriving in one block at the end
-- [ ] 5.5 MANUAL: mint a bearer token, configure a Claude Online/Mobile MCP
+- [ ] 5.5 MANUAL: mint a bearer token with `startaste mcp-token`, add its
+      record to `startaste-mcp-tokens.age`, configure a Claude Online/Mobile MCP
       client, and verify a tool call round-trips against the real data
 
 ## 6. Verification
