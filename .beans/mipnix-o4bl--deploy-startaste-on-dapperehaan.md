@@ -1,11 +1,12 @@
 ---
 # mipnix-o4bl
 title: deploy startaste on dapperehaan
-status: in-progress
+status: completed
 type: task
 priority: normal
 created_at: 2026-09-10T15:07:53Z
-updated_at: 2026-09-10T15:10:28Z
+updated_at: 2026-09-10T22:31:10Z
+openspec-link: openspec/changes/archive/2026-09-10-deploy-startaste-mcp
 ---
 
 Run startaste (`github.com/mipmip/startaste`) on dapperehaan: scheduled syncing

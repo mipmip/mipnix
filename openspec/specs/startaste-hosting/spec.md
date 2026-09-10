@@ -211,3 +211,28 @@ accessible inside the service sandbox, because the hardened units set
 - **WHEN** a sync run writes and the MCP server reads
 - **THEN** both SHALL operate on the same database file, and a read SHALL succeed
   while a sync holds a write transaction
+
+### Requirement: Concurrent readers require WAL
+
+Three units share one SQLite database: the sync timer writes while the MCP server
+and the dashboard read. The database SHALL therefore be in WAL journal mode, so a
+reader is not blocked by the writer's transaction.
+
+This is satisfied upstream — `startaste/db.py` sets
+`PRAGMAS = {"journal_mode": "wal", "busy_timeout": 10000}` and converts an
+existing rollback-journal database on open — so the deployment inherits it rather
+than configuring it. It is recorded here because enabling a second unit alongside
+sync depends on it.
+
+#### Scenario: Reader during a write
+
+- **WHEN** the MCP server or the dashboard reads while a sync run holds a write
+  transaction
+- **THEN** the read SHALL succeed rather than failing with a locked database
+
+#### Scenario: A pre-WAL database is not left behind
+
+- **WHEN** a database created in rollback-journal mode is opened
+- **THEN** it SHALL be converted to WAL, so a host that synced before WAL landed
+  does not keep blocking its readers
+

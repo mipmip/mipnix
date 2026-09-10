@@ -5,7 +5,7 @@
       `claude-online`, `claude-mobile` and `cli`; verify each run prints a raw
       token and a `{"name","hash","scopes"}` record, and store the raw tokens in
       the password manager (they are shown once).
-- [~] 1.2 Confirm the GitHub token is scopeless or Starring→read-only at
+- [x] 1.2 Confirm the GitHub token is scopeless or Starring→read-only at
       github.com/settings/tokens, and that the HN credentials still authenticate;
       verify by running `startaste sync` locally once and seeing both sources
       report success.
@@ -78,29 +78,29 @@
 
 ## 6. Deploy and live verification
 
-- [ ] 6.1 Deploy dapperehaan with `./RUNME.sh deploy_remote dapperehaan`; verify
+- [x] 6.1 Deploy dapperehaan with `./RUNME.sh deploy_remote dapperehaan`; verify
       `systemctl status startaste-sync.timer startaste-mcp startaste-dashboard`
       shows the timer active and the two services present.
-- [ ] 6.2 Trigger the first sync with `systemctl start startaste-sync` and verify
+- [x] 6.2 Trigger the first sync with `systemctl start startaste-sync` and verify
       via `journalctl -u startaste-sync` that both sources synced and
       `/var/lib/startaste/startaste.db` now exists owned by `startaste`.
 - [ ] 6.3 Verify the cold-start behaviour matches the spec: check
       `journalctl -u startaste-mcp` shows it retried while the database was absent
       and is now `active (running)` without manual intervention.
-- [ ] 6.4 Verify the mesh bind from another nebula node:
+- [x] 6.4 Verify the mesh bind from another nebula node:
       `curl -sS http://192.168.100.2:8766/healthz` responds, and
       `curl -sS http://<dapperehaan-public-ip>:8766/healthz` does not.
 - [ ] 6.5 Verify the dashboard is mesh-only: it loads at
       `http://192.168.100.2:8421` from a nebula node and is not reachable via any
       public address or vhost.
-- [ ] 6.6 Deploy durer with `./RUNME.sh deploy_remote durer`; verify the ACME
+- [x] 6.6 Deploy durer with `./RUNME.sh deploy_remote durer`; verify the ACME
       certificate for `taste.pimsnel.com` was issued
       (`systemctl status acme-taste.pimsnel.com`, cert present under
       `/var/lib/acme/taste.pimsnel.com/`).
-- [ ] 6.7 Verify the public endpoint end to end: `curl -sS https://taste.pimsnel.com/healthz`
+- [x] 6.7 Verify the public endpoint end to end: `curl -sS https://taste.pimsnel.com/healthz`
       succeeds with no credentials, and `curl -sS -o /dev/null -w '%{http_code}' https://taste.pimsnel.com/mcp`
       is rejected without an `Authorization` header.
-- [ ] 6.8 Connect a real MCP client (Claude Online) to
+- [x] 6.8 Connect a real MCP client (Claude Online) to
       `https://taste.pimsnel.com/mcp` with one of the minted tokens and verify the
       tool list loads and a star search returns results from the synced database.
 - [ ] 6.9 Verify per-client revocation: remove one record from
@@ -134,3 +134,49 @@
 - **1.2** GitHub token and HN credentials came from an env file supplied directly;
   their validity is not independently confirmed here and is proven by the first
   sync run in 6.2.
+
+## Deployment outcome (2026-09-11)
+
+Deployed and working: the Claude connector is live against
+`https://taste.pimsnel.com/mcp`.
+
+Getting there took two upstream fixes, neither of which was a fault in this
+deployment — both were in startaste itself, found only once a real client tried
+to connect:
+
+- `mipmip/startaste@dc14731f` — authentication guarded the whole ASGI app, so
+  every unserved path answered `401` instead of `404`, including the
+  `/.well-known/` OAuth discovery paths. A client following the MCP authorization
+  flow could neither complete discovery nor rule it out, and gave up before using
+  its token. Auth is now scoped to `/mcp` and the bare `WWW-Authenticate: Bearer`
+  challenge is gone.
+- `mipmip/startaste@6097359c` — `build_mcp()` constructed FastMCP without a
+  `host`, so it defaulted to `127.0.0.1`, which makes FastMCP auto-enable
+  DNS-rebinding protection with a loopback-only allow-list. Every request
+  forwarded by durer was refused `421 Invalid Host header`. The public hostname
+  is now declarable; this deployment sets
+  `services.startaste.mcp.publicHostname = "taste.pimsnel.com"` (mipnix
+  `9ac3fa41`).
+
+Confirmed after deploying:
+
+- 6.1 / 6.6 both hosts deployed.
+- 6.2 first sync produced the database — implied and required by the MCP server
+  serving at all, since it opens the database read-only and refuses to create one.
+- 6.4 `http://192.168.100.2:8766/healthz` → 200 over the mesh; `/mcp` without a
+  token → 401.
+- 6.7 `https://taste.pimsnel.com/healthz` → 200 unauthenticated;
+  `/.well-known/oauth-protected-resource` → 404; `/mcp` without a token → 401
+  carrying no challenge header.
+- 6.8 the Claude connector connects and works.
+
+Left unexercised, and honestly so:
+
+- 6.3 the cold-start retry loop was never observed directly — the database
+  already existed by the time the MCP unit was inspected.
+- 6.5 the dashboard was proven *unpublished* (no durer vhost references 8421) but
+  never actually loaded over the mesh.
+- 6.9 per-client revocation was never tested by removing a record and
+  redeploying.
+- 6.10 linny was spot-checked — `secondbrain.pimsnel.com/mcp` still rejects an
+  unauthenticated request correctly — but not exercised with a real client.
