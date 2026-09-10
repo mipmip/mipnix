@@ -27,14 +27,16 @@
 
 ## 3. Scheduled sync (can land before the MCP server exists)
 
-- [ ] 3.1 Create `/var/lib/startaste` with `systemd.tmpfiles.rules`, owned by
-      the service user, and point `STARTASTE_DATA` / `STARTASTE_DB` /
-      `STARTASTE_LOG` at it; verify the paths are in the unit's
-      `ReadWritePaths` and that the unit starts without `226/NAMESPACE`
-- [ ] 3.2 Add the `Type=oneshot` sync unit with the `EnvironmentFile` from 2.2;
-      verify `systemctl start` populates the database and the run appears in the
-      journal
-- [ ] 3.3 Add the timer (`OnBootSec` + `OnUnitActiveSec = "1h"`); verify
+- [ ] 3.1 Confirm the upstream module's defaults suit this host: it creates
+      `/var/lib/startaste` via tmpfiles, sets `STARTASTE_DATA` / `STARTASTE_DB`
+      / `STARTASTE_LOG`, and puts them in `ReadWritePaths`; verify the unit
+      starts without `226/NAMESPACE` and override `dataDir` only if needed
+- [ ] 3.2 Set `services.startaste.sync.enable` with `environmentFile` from 2.2
+      and `dataDir = "/var/lib/startaste"`; verify `systemctl start
+      startaste-sync` populates the database and the run appears in the journal.
+      The unit and its hardening come from the upstream module (startaste change
+      `nixos-service-module`) — do not define them here
+- [ ] 3.3 Set `services.startaste.sync.interval = "1h"`; verify
       `systemctl list-timers` shows the next elapse and that a second run does
       not start while one is in progress
 - [ ] 3.4 Verify a failing run is visible: temporarily point at an invalid
@@ -42,9 +44,10 @@
 
 ## 4. Dashboard, mesh only (after 1.2)
 
-- [ ] 4.1 Add the dashboard unit bound to `192.168.100.2:8421`; verify it is
-      reachable from another nebula host and refuses to answer on a public
-      interface
+- [ ] 4.1 Set `services.startaste.dashboard.enable` with
+      `listenAddress = "192.168.100.2"` (the module defaults to loopback);
+      verify it is reachable from another nebula host and refuses to answer on a
+      public interface
 - [ ] 4.2 Verify no durer vhost proxies to it, and that reading the dashboard
       during a sync run does not raise a locked-database error
 
