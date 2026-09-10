@@ -141,6 +141,12 @@ in
   "linny-mcp-tokens.age".publicKeys = [ pim dapperehaan ];
   "secondbrain-deploy-key.age".publicKeys = [ pim dapperehaan ];
 
+  # startaste hosting (dapperehaan). Source credentials for the sync timer
+  # (GITHUB_TOKEN + the HN account login) and the hashed bearer-token records
+  # for the MCP endpoint fronted at taste.pimsnel.com.
+  "startaste-env.age".publicKeys = [ pim dapperehaan ];
+  "startaste-mcp-tokens.age".publicKeys = [ pim dapperehaan ];
+
   "matrix-openclaw-password.age".publicKeys = [pim clawone];
   "voorzetramenshop-env.age".publicKeys = [ pim durer ];
   "nebula-cichorei.crt.age".publicKeys = users ++ systems;

@@ -67,6 +67,8 @@
     fred.url = "github:linden-project/fred";
     linny-mcp.url = "github:linden-project/linny-mcp-server";
     linny-mcp.inputs.nixpkgs.follows = "nixpkgs";
+    startaste.url = "github:mipmip/startaste";
+    startaste.inputs.nixpkgs.follows = "nixpkgs";
     huphop.url = "github:mipmip/huphop";
     beandex.url = "github:mipmip/beandex";
 

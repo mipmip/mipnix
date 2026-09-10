@@ -1307,6 +1307,22 @@
     },
     "nixpkgs_20": {
       "locked": {
+        "lastModified": 1776548001,
+        "narHash": "sha256-ZSK0NL4a1BwVbbTBoSnWgbJy9HeZFXLYQizjb2DPF24=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "b12141ef619e0a9c1c84dc8c684040326f27cdcc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_21": {
+      "locked": {
         "lastModified": 1773282481,
         "narHash": "sha256-b/GV2ysM8mKHhinse2wz+uP37epUrSE+sAKXy/xvBY4=",
         "owner": "NixOS",
@@ -1321,7 +1337,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_21": {
+    "nixpkgs_22": {
       "locked": {
         "lastModified": 1775639890,
         "narHash": "sha256-9O9gNidrdzcb7vgKGtff7QiLtr0IsVaCi0pAXm8anhQ=",
@@ -1544,6 +1560,24 @@
         "type": "github"
       }
     },
+    "pyproject-nix": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_20"
+      },
+      "locked": {
+        "lastModified": 1776715674,
+        "narHash": "sha256-Gs1VnEkCkkRZxJQAC/Dhz0Jbfi22mFXChbtNg9w/Ybg=",
+        "owner": "pyproject-nix",
+        "repo": "pyproject.nix",
+        "rev": "69f57f27e52a87c54e28138a75ec741cd46663c9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pyproject-nix",
+        "repo": "pyproject.nix",
+        "type": "github"
+      }
+    },
     "race": {
       "inputs": {
         "nixpkgs": "nixpkgs_15"
@@ -1624,6 +1658,7 @@
         "rme": "rme",
         "skull": "skull",
         "specgetty": "specgetty",
+        "startaste": "startaste",
         "teejay": "teejay",
         "unstable": "unstable",
         "unstable-hyprland": "unstable-hyprland",
@@ -1698,6 +1733,27 @@
       "original": {
         "type": "git",
         "url": "https://spectrum-os.org/git/spectrum"
+      }
+    },
+    "startaste": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "pyproject-nix": "pyproject-nix"
+      },
+      "locked": {
+        "lastModified": 1789069554,
+        "narHash": "sha256-6d+CYRI8RB8JeGELqiAENwqxKnwS2iz6BpEQJF4dbl0=",
+        "owner": "mipmip",
+        "repo": "startaste",
+        "rev": "9368fefa9bd7f2ff764ce45ecdd8b12243ebbad9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mipmip",
+        "repo": "startaste",
+        "type": "github"
       }
     },
     "systems": {
@@ -1777,7 +1833,7 @@
     },
     "teejay": {
       "inputs": {
-        "nixpkgs": "nixpkgs_20"
+        "nixpkgs": "nixpkgs_21"
       },
       "locked": {
         "lastModified": 1774970929,
@@ -1846,7 +1902,7 @@
     "verynix": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs_21"
+        "nixpkgs": "nixpkgs_22"
       },
       "locked": {
         "lastModified": 1776201780,
