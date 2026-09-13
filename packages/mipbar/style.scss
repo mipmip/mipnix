@@ -479,3 +479,146 @@ window.Bar {
     }
   }
 }
+
+// Displays popover. Like .ScreenPicker this is a top-level GTK surface, so it
+// lives outside `window.Bar`. Accent-driven colours (card border, focused tile,
+// port chip, FOCUSED pill, current-resolution mark) are injected inline per
+// monitor in Displays.tsx; mode-dependent neutrals come from theme.ts.
+.DisplaysPopover {
+  padding: 4px;
+
+  .DisplaysHeader {
+    padding: 6px 8px 8px 8px;
+
+    label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+    }
+  }
+
+  .DisplaysFooter {
+    padding: 4px 4px 2px 4px;
+  }
+
+  .ActionSmall {
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 10.5px;
+    font-weight: 600;
+  }
+
+  .DisplayCard {
+    padding: 10px 11px;
+    margin-bottom: 6px;
+    border-radius: 12px;
+    border: 1.5px solid transparent;
+
+    .DisplayHead {
+      margin-bottom: 8px;
+    }
+
+    .DeviceImage {
+      border-radius: 6px;
+      margin-right: 11px;
+    }
+
+    .DisplayModel {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .DisplaySpec {
+      font-size: 11px;
+      font-weight: 500;
+      margin-top: 1px;
+    }
+
+    .DisplayMeta {
+      margin-top: 4px;
+    }
+
+    .DisplayScale,
+    .DisplayState {
+      font-size: 10px;
+      font-weight: 500;
+      margin-top: 3px;
+    }
+
+    .ConnectorTag {
+      font-family: "Ubuntu Mono", monospace;
+      font-size: 10.5px;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+
+    .DisplayPos {
+      font-size: 10px;
+      font-weight: 500;
+      margin-left: 8px;
+    }
+
+    .PortChip {
+      padding: 3px 8px 3px 6px;
+      border-radius: 999px;
+      font-size: 10.5px;
+      font-weight: 600;
+    }
+
+    .FocusedPill {
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 8.5px;
+      font-weight: 700;
+      margin-left: 6px;
+    }
+  }
+
+  .ResolutionHeader {
+    padding: 2px 4px 4px 4px;
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .ResolutionRow {
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 11px;
+
+    .ResolutionMark {
+      font-size: 9px;
+      margin-right: 8px;
+    }
+
+    .ResolutionLabel {
+      font-weight: 600;
+      min-width: 78px;
+    }
+
+    .ResolutionRate {
+      font-weight: 500;
+      margin-left: 8px;
+    }
+
+    .NativeTag {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      margin-left: 6px;
+    }
+
+    // The pre-flight warning. Deliberately loud: Hyprland applies these
+    // silently and reports success, so this is the only chance the user gets
+    // to see the scale change coming.
+    .ScaleWarn {
+      font-size: 9.5px;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+
+    &.current .ResolutionLabel {
+      font-weight: 700;
+    }
+  }
+}

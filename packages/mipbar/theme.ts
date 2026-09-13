@@ -47,6 +47,48 @@ window.Bar .StatusIcon.Camera {
 .ScreenPicker .ConnectorTag {
   color: #85858c;
 }
+.DisplaysPopover .DisplaysHeader label,
+.DisplaysPopover .ResolutionHeader {
+  color: #85858c;
+}
+.DisplaysPopover .DisplayCard {
+  background: #242328;
+  border-color: #323238;
+}
+.DisplaysPopover .DisplayModel {
+  color: #f1f1f4;
+}
+.DisplaysPopover .DisplaySpec {
+  color: #b9b9c0;
+}
+.DisplaysPopover .DisplayScale,
+.DisplaysPopover .DisplayState,
+.DisplaysPopover .ConnectorTag,
+.DisplaysPopover .DisplayPos {
+  color: #85858c;
+}
+.DisplaysPopover .ResolutionRow {
+  color: #d8d8de;
+}
+.DisplaysPopover .ResolutionRow:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+.DisplaysPopover .ResolutionRow .ResolutionRate {
+  color: #85858c;
+}
+.DisplaysPopover .NativeTag {
+  color: #6fbf8f;
+}
+.DisplaysPopover .ScaleWarn {
+  color: #e0a44a;
+}
+.DisplaysPopover .ActionSmall {
+  color: #d8d8de;
+  background: rgba(255, 255, 255, 0.07);
+}
+.DisplaysPopover .ActionSmall:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
 `
 
 const light = `
@@ -100,6 +142,48 @@ window.Bar .StatusIcon.Camera {
 }
 .ScreenPicker .ConnectorTag {
   color: #b3aea4;
+}
+.DisplaysPopover .DisplaysHeader label,
+.DisplaysPopover .ResolutionHeader {
+  color: #a7a299;
+}
+.DisplaysPopover .DisplayCard {
+  background: #f6f6f9;
+  border-color: #e7e7ea;
+}
+.DisplaysPopover .DisplayModel {
+  color: #2d2d35;
+}
+.DisplaysPopover .DisplaySpec {
+  color: #5f5b54;
+}
+.DisplaysPopover .DisplayScale,
+.DisplaysPopover .DisplayState,
+.DisplaysPopover .ConnectorTag,
+.DisplaysPopover .DisplayPos {
+  color: #8a857c;
+}
+.DisplaysPopover .ResolutionRow {
+  color: #3a3a42;
+}
+.DisplaysPopover .ResolutionRow:hover {
+  background: rgba(0, 0, 0, 0.07);
+}
+.DisplaysPopover .ResolutionRow .ResolutionRate {
+  color: #8a857c;
+}
+.DisplaysPopover .NativeTag {
+  color: #2e8b57;
+}
+.DisplaysPopover .ScaleWarn {
+  color: #a86412;
+}
+.DisplaysPopover .ActionSmall {
+  color: #3a3a42;
+  background: rgba(0, 0, 0, 0.06);
+}
+.DisplaysPopover .ActionSmall:hover {
+  background: rgba(0, 0, 0, 0.12);
 }
 `
 

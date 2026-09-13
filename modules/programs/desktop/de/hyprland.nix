@@ -94,7 +94,10 @@
       hyprviz
       rose-pine-hyprcursor
 
-      nwg-displays
+      # nwg-displays removed: it saves by writing ~/.config/hypr/monitors.conf,
+      # which Home Manager installs as a read-only /nix/store symlink, so every
+      # save failed. Monitor geometry is declared in hypr/monitors.conf and
+      # rebuilt; runtime resolution changes live in mipbar's Displays menu.
       swaynotificationcenter
       wpaperd
 

@@ -179,6 +179,23 @@
           packages.mipvim = nixvim'.makeNixvimWithModule nixvimModule;
           checks.mipvim = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
 
+          # Unit tests for mipbar's pure helpers. widget/displays.ts imports
+          # nothing from GTK or AGS precisely so its arithmetic (scale snapping,
+          # mode deduplication, density) can be tested headless: esbuild strips
+          # the types, node runs the result.
+          checks.mipbar-displays = pkgs.runCommand "mipbar-displays-tests"
+            {
+              nativeBuildInputs = [ pkgs.esbuild pkgs.nodejs ];
+              src = ./packages/mipbar;
+            }
+            ''
+              cp -r $src/. ./mipbar
+              esbuild --bundle ./mipbar/widget/displayInfo.test.ts \
+                --outfile=./tests.js --platform=node --log-level=warning
+              node ./tests.js
+              touch $out
+            '';
+
           devShells.default = pkgs.mkShell {
             buildInputs = [
               (inputs.ags.packages.${system}.default.override {
@@ -206,6 +223,10 @@
               mkdir -p $out/bin
               mkdir -p $out/share
               cp -r * $out/share
+
+              # Tests are a build-time check (checks.mipbar-displays), not part
+              # of the shipped bundle.
+              rm -f $out/share/widget/*.test.ts
 
               # Rasterize device illustrations to PNG so the runtime never needs
               # an SVG pixbuf loader. deviceImage() loads these from $SRC/assets.

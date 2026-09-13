@@ -10,6 +10,7 @@ import Minimized from "./Minimized"
 import AllWindows from "./AllWindows"
 import Tray from "./Tray"
 import SystemMonitor from "./SystemMonitor"
+import Displays from "./Displays"
 import WindowTitle from "./WindowTitle"
 import QuickSettings from "./QuickSettings"
 
@@ -53,6 +54,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
           <Minimized />
           <AllWindows />
           <SshKey />
+          <Displays />
           <SystemMonitor />
           <QuickSettings />
         </box>
