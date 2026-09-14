@@ -51,6 +51,13 @@
       # TERRAFORM
       terraform-docs
       opentofu
+
+      # nivis: Terraform/OpenTofu provider resources as first-class Nix values.
+      # `inputs` comes from this file's outer function argument, the same way
+      # tui/tmux.nix reaches inputs.skull. Do NOT add `inputs` to the inner
+      # module args to get at it — that shadows the outer binding (the mistake
+      # desktop/apps/markdown.nix makes).
+      inputs.nivis.packages."${pkgs.stdenv.hostPlatform.system}".nivis
       terrascan
       terraformer
       tflint

@@ -72,6 +72,13 @@
     huphop.url = "github:mipmip/huphop";
     beandex.url = "github:mipmip/beandex";
 
+    # nivis: Terraform/OpenTofu provider resources as first-class Nix values.
+    # Unpinned on purpose — `nix flake update nivis` IS the upgrade procedure, so
+    # the ref has to move; a version tag never would. `follows` keeps it on this
+    # repo's nixpkgs instead of adding a 33rd nixpkgs revision to the lock.
+    nivis.url = "github:nivis-project/nivis";
+    nivis.inputs.nixpkgs.follows = "nixpkgs";
+
     # Consumed as plain source (its flake only exposes full nixvim configs,
     # not a bare plugin); built with buildVimPlugin in mipvim.
     beans-nvim.url = "github:mipmip/beans.nvim";

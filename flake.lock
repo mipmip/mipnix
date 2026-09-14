@@ -844,6 +844,26 @@
         "type": "github"
       }
     },
+    "nivis": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789383514,
+        "narHash": "sha256-2Zj/VAdP9wXCmVkbdCA2F69CeC7p8MhD9jeDft3tVqc=",
+        "owner": "nivis-project",
+        "repo": "nivis",
+        "rev": "d142ff5f1c76911361d12a6a52c6246723d89f60",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nivis-project",
+        "repo": "nivis",
+        "type": "github"
+      }
+    },
     "nix-formatter-pack": {
       "inputs": {
         "nixpkgs": [
@@ -1640,6 +1660,7 @@
         "mip": "mip",
         "mobile-nixos": "mobile-nixos",
         "myhotkeys": "myhotkeys",
+        "nivis": "nivis",
         "nix-index-database": "nix-index-database",
         "nix-on-droid": "nix-on-droid",
         "nixos-boot-grannyos": "nixos-boot-grannyos",
