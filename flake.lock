@@ -871,11 +871,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789397638,
-        "narHash": "sha256-iMaY6It7HwWQIEhw9L3oySc0huWK9fZo6dMPSl3Kvwc=",
+        "lastModified": 1789407572,
+        "narHash": "sha256-wUhh4XrjOUYXE8rtYHQJQrpQjrjtak66HDaxx9ZC7LQ=",
         "owner": "nivis-project",
         "repo": "nivis-tunnel",
-        "rev": "de08be24666791997c0b09d51b80627e3c4a0131",
+        "rev": "a2a6180c29d56c495f9e8810f6fad35434cf8da4",
         "type": "github"
       },
       "original": {

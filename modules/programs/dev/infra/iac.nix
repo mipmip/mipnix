@@ -6,16 +6,6 @@
       terraform = pkgs.writeShellScriptBin "terraform" ''
         exec ${pkgs.opentofu}/bin/tofu "''$@"
       '';
-
-      # The nivis-tunnel package publishes `bin/tunnel`, but upstream's README
-      # documents every invocation as `nivis-tunnel connect`, `nivis-tunnel
-      # keygen`, and so on. Rename it here so a command copied from the README
-      # works verbatim, and so a name as generic as `tunnel` does not claim a
-      # slot in the system PATH. Same shape as the terraform wrapper above.
-      # If upstream ever ships the binary under its documented name, drop this.
-      nivis-tunnel = pkgs.writeShellScriptBin "nivis-tunnel" ''
-        exec ${inputs.nivis-tunnel.packages."${pkgs.stdenv.hostPlatform.system}".tunnel}/bin/tunnel "''$@"
-      '';
     in
     {
     environment.systemPackages = with pkgs; [
@@ -71,7 +61,7 @@
 
       # Orchestrator side only. The agent belongs on a target and has its own
       # NixOS module upstream; the relay is durer's job (networking-nivis-tunnel-relay).
-      nivis-tunnel
+      inputs.nivis-tunnel.packages."${pkgs.stdenv.hostPlatform.system}".nivis-tunnel
       terrascan
       terraformer
       tflint
