@@ -264,6 +264,35 @@
             mkdir -p $out
             cp -r ${./packages/pimsnel-website}/* $out/
           '';
+
+          # prose-lint: the PostToolUse checker behind ~/.claude/rules. Built as
+          # a store-path executable with the interpreter baked into the shebang,
+          # so the hook never depends on python3 being on PATH the way
+          # SimpleEnglish's hooks depend on node. The filler list is a data file
+          # shared with claude.nix, which renders it into the rule markdown, so
+          # the words have one source of truth.
+          packages.prose-lint = pkgs.runCommand "prose-lint" { } ''
+            mkdir -p $out/bin
+            {
+              echo '#!${pkgs.python3}/bin/python3'
+              cat ${./packages/prose-lint/prose_lint.py}
+            } > $out/bin/prose-lint
+            substituteInPlace $out/bin/prose-lint \
+              --replace-fail '@FILLER_WORDS@' '${./packages/prose-lint/filler-words.json}'
+            chmod +x $out/bin/prose-lint
+          '';
+
+          checks.prose-lint = pkgs.runCommand "prose-lint-tests"
+            {
+              nativeBuildInputs = [ pkgs.python3 ];
+              src = ./packages/prose-lint;
+            }
+            ''
+              cp -r $src/. ./prose-lint
+              cd ./prose-lint
+              python3 test_prose_lint.py
+              touch $out
+            '';
         };
     };
 }
