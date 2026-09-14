@@ -234,6 +234,11 @@ in
       role-nebula-node
 
       backup-restic-piethein
+
+      # Rendezvous for nivis-tunnel. durer is the natural host: stable public
+      # IPv4, already reachable, and already a nebula lighthouse — so this is
+      # the second rendezvous service on the machine.
+      networking-nivis-tunnel-relay
     ]) ++ [
       inputs.voorzetramenshop.nixosModules.default
     ];

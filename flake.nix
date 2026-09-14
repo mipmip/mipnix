@@ -112,6 +112,13 @@
     deploy-rs.url = "github:serokell/deploy-rs";
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
 
+    # nivis-tunnel: reach a machine that has no inbound port. The agent on a
+    # target and the orchestrator both dial outward to a relay, which pairs them
+    # and copies bytes; Noise runs end to end, so the relay holds no key
+    # material and cannot read what it carries. durer runs the relay.
+    nivis-tunnel.url = "github:nivis-project/nivis-tunnel";
+    nivis-tunnel.inputs.nixpkgs.follows = "nixpkgs";
+
   };
 
   outputs = inputs@{ flake-parts, ... }:
