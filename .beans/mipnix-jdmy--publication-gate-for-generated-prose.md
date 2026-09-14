@@ -1,14 +1,15 @@
 ---
 # mipnix-jdmy
 title: publication gate for generated prose
-status: in-progress
+status: completed
+openspec-link: openspec/changes/archive/2026-09-14-add-publication-gate
 type: feature
 priority: normal
 tags:
     - claude-code
     - writing
 created_at: 2026-09-14T16:16:32Z
-updated_at: 2026-09-14T18:04:20Z
+updated_at: 2026-09-14T18:30:53Z
 blocked_by:
     - mipnix-pdlz
 ---
