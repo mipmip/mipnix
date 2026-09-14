@@ -1,14 +1,15 @@
 ---
 # mipnix-fjpq
 title: make the nivis CLI available alongside terraform and tofu
-status: in-progress
+status: completed
+openspec-link: openspec/changes/archive/2026-09-14-add-nivis-cli
 type: feature
 priority: normal
 tags:
     - nix
     - iac
 created_at: 2026-09-14T13:57:52Z
-updated_at: 2026-09-14T14:10:17Z
+updated_at: 2026-09-14T14:26:44Z
 ---
 
 Ship the `nivis` CLI (github.com/nivis-project/nivis — my own "experimental
