@@ -49,6 +49,14 @@
       # ntfyTopicURL deferred -> .beans/mipnix-2dyz
     };
 
+    # The server reads the tokens file ONCE at startup and never reloads it.
+    # Re-encrypting the secret leaves the unit definition byte-identical, so a
+    # `switch` would keep the old scopes live in memory. Trigger on the
+    # ciphertext's store path, which changes whenever the secret is re-encrypted.
+    systemd.services.linny-mcp.restartTriggers = [
+      config.age.secrets."linny-mcp-tokens".file
+    ];
+
     # Corpus + state dirs owned by the service user. The stateDir subdir must
     # exist before start: the hardened unit's ReadWritePaths bind-mounts it, so a
     # missing path fails namespace setup (226/NAMESPACE) before exec.
