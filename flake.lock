@@ -376,6 +376,22 @@
         "type": "github"
       }
     },
+    "dutch-style-guide": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1761174787,
+        "narHash": "sha256-wPt97or2Z7450r3FmIltsa/xnC32c4EZGgld9rLyfzM=",
+        "owner": "lboshuizen",
+        "repo": "dutch-style-guide",
+        "rev": "f8cc3440b019e68f97ee11396dc0286f7bd50f08",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lboshuizen",
+        "repo": "dutch-style-guide",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -659,6 +675,22 @@
       "original": {
         "owner": "nix-community",
         "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "humanizer": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1788725873,
+        "narHash": "sha256-tC7vHxHDzTRgpsF7i6YnKWhAbrkeclspRJVK1osRE24=",
+        "owner": "blader",
+        "repo": "humanizer",
+        "rev": "9862685f575c65a8247f90369951df1b3416e3d6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "blader",
+        "repo": "humanizer",
         "type": "github"
       }
     },
@@ -1665,11 +1697,13 @@
         "darwin": "darwin_2",
         "deploy-rs": "deploy-rs",
         "dirty-repo-scanner": "dirty-repo-scanner",
+        "dutch-style-guide": "dutch-style-guide",
         "flake-parts": "flake-parts_2",
         "fred": "fred",
         "hm-ricing-mode": "hm-ricing-mode",
         "home-manager": "home-manager_2",
         "home-manager-pine64": "home-manager-pine64",
+        "humanizer": "humanizer",
         "huphop": "huphop",
         "hypr-network-manager": "hypr-network-manager",
         "import-tree": "import-tree",

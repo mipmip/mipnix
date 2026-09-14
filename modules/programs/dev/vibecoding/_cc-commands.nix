@@ -1,4 +1,49 @@
 {
+  "mip:prosegate" = ''
+          ---
+          description: gate prose before it leaves my hands, in Dutch or English
+          ---
+          Check prose before it goes to someone else. Arguments are file paths;
+          with none, use the prose files that differ from HEAD
+          (`git diff --name-only HEAD -- '*.md' '*.txt' '*.html' '*.rst' '*.adoc'`,
+          plus untracked ones).
+
+          Run the two halves in order and keep them apart. The first can fail
+          the gate; the second never can.
+
+          ## 1. The hard half
+
+          Run `prose-lint` over every file. If it exits non-zero, STOP. Report
+          the hits and offer to fix them, and do not start the reading half.
+          These rules are decidable and are the only thing allowed to say no.
+
+          Do not repair a typography hit by substitution. Each one needs its own
+          answer: a colon, a comma, parentheses, a sentence break, or a plain
+          hyphen when the dash sat in a numeric range. Choose per hit, from the
+          meaning.
+
+          ## 2. The reading half
+
+          Read each remaining file against the `humanizer` skill, and for Dutch
+          text also against `writing-clearly-and-concisely-dutch`. Read both
+          through `~/.claude/rules/prose-review-amendments.md`, which says where
+          they do not apply here. Work out the language from the text; do not
+          ask and do not expect a marker.
+
+          Report every finding with the passage it sits in and what the guide
+          says about it. Report each occurrence separately, even of the same
+          pattern, because the repair differs per passage.
+
+          Change nothing on your own. This half reports; the reader decides. If
+          the user agrees to a repair, make it as an ordinary edit, and the hard
+          half will check it on the way out.
+
+          ## 3. The verdict
+
+          Say plainly whether the gate passed, and list what is left for the
+          reader to judge.
+  '';
+
   "mip:1shotpoc" = ''
           ---
           description: creates a new project based on the existing context my way

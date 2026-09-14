@@ -84,6 +84,17 @@
     beans-nvim.url = "github:mipmip/beans.nvim";
     beans-nvim.flake = false;
 
+    # Writing guides for the publication gate, consumed as plain source: both
+    # ship skill files, neither is a flake. humanizer (MIT) is the base for both
+    # languages, being written to be language-neutral; the Dutch guide
+    # (CC-BY-4.0) supplements it. Where either conflicts with our own rules, the
+    # amendments file in ~/.claude/rules wins. See the prose-publication-gate spec.
+    humanizer.url = "github:blader/humanizer";
+    humanizer.flake = false;
+
+    dutch-style-guide.url = "github:lboshuizen/dutch-style-guide";
+    dutch-style-guide.flake = false;
+
     aoe.url = "github:njbrake/agent-of-empires";
 
     voorzetramenshop.url = "git+ssh://git@github.com/mintglasinlood/voorzetramenshop.git";

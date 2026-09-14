@@ -30,7 +30,60 @@
       # Writing rules, one file per concern. Every markdown file in
       # ~/.claude/rules/ is loaded as memory automatically, which is why these
       # do not live in the `context` blob below.
+      # humanizer keeps its SKILL.md at the repository root, so one file is
+      # enough. The Dutch guide's SKILL.md refers to the 25 KB reference beside
+      # it by name, so that one needs the whole directory.
+      skills = {
+        humanizer = "${inputs.humanizer}/SKILL.md";
+        writing-clearly-and-concisely-dutch =
+          "${inputs.dutch-style-guide}/skills/writing-clearly-and-concisely-dutch";
+      };
+
       rules = {
+        prose-review-amendments = ''
+          # Where the imported writing guides do not apply
+
+          Two guides are installed as skills: `humanizer` for any language, and
+          `writing-clearly-and-concisely-dutch` for Dutch. Read them through the
+          amendments below. A guide adopted without stating its exceptions makes
+          the text worse in the places where its advice is wrong for this
+          material.
+
+          ## A technical term keeps its accepted name
+
+          The Dutch guide treats an English word as a red flag whenever a Dutch
+          alternative exists, and rejects "it is a technical term" as an excuse.
+          That does not apply here. When a term is the accepted name for the
+          thing in its field, it stays: flake, input, lock, closure, derivation,
+          store path, commit, merge, pull request.
+
+          Translate a word that is merely borrowed, not one that names the
+          thing. "Performance" becomes "prestaties" in ordinary prose; a
+          `nix flake update` does not become "nix vlok bijwerken".
+
+          ## The vocabulary list is English only
+
+          humanizer's rule 12 lists overused English words, and says itself that
+          it is the skill's only vocabulary list. Do not look for Dutch
+          equivalents of it. Every other rule in humanizer applies to both
+          languages, as its rule 1 states.
+
+          ## A local rule wins
+
+          Where a guide conflicts with the rules in `prose-typography.md` or
+          `prose-filler-words.md`, the local rule wins. The Dutch guide is itself
+          an example: it uses the em dash nineteen times, including in its own
+          rule headings. Follow what it says about sentence construction, not
+          what its punctuation does.
+
+          ## Prose meant to be copied goes to a file
+
+          When the user asks for prose to send to someone else, write it to a
+          file and say where it is, rather than showing it only in a reply. A
+          reply cannot be checked before it appears; a file can. Then run the
+          gate on it.
+        '';
+
         prose-typography = ''
           # Prose typography
 
