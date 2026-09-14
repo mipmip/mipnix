@@ -1,14 +1,15 @@
 ---
 # mipnix-pdlz
 title: always-on prose rules for Claude Code, enforced on file writes
-status: in-progress
+status: completed
+openspec-link: openspec/changes/archive/2026-09-14-add-prose-rules
 type: feature
 priority: normal
 tags:
     - claude-code
     - writing
 created_at: 2026-09-14T16:16:12Z
-updated_at: 2026-09-14T16:45:13Z
+updated_at: 2026-09-14T16:55:13Z
 ---
 
 Give Claude Code a structured, always-on set of writing rules in home-manager,
