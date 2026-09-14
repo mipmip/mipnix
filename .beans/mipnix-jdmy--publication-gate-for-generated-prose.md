@@ -1,14 +1,14 @@
 ---
 # mipnix-jdmy
 title: publication gate for generated prose
-status: todo
+status: in-progress
 type: feature
 priority: normal
 tags:
     - claude-code
     - writing
 created_at: 2026-09-14T16:16:32Z
-updated_at: 2026-09-14T16:16:54Z
+updated_at: 2026-09-14T18:04:20Z
 blocked_by:
     - mipnix-pdlz
 ---
