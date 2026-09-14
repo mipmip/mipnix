@@ -1,11 +1,12 @@
 ---
 # mipnix-ub5r
 title: relay for nivis-tunnel on durer
-status: in-progress
+status: completed
 type: task
 priority: normal
 created_at: 2026-09-14T14:52:55Z
-updated_at: 2026-09-14T14:52:55Z
+updated_at: 2026-09-14T15:33:23Z
+openspec-link: openspec/changes/archive/2026-09-14-nivis-tunnel-relay-on-durer
 ---
 
 Run the nivis-tunnel rendezvous relay on durer.
@@ -13,37 +14,46 @@ Run the nivis-tunnel rendezvous relay on durer.
 ## Why here
 
 durer is the natural host: a Hetzner box with a stable public IPv4, already
-reachable, already deployed with deploy-rs. The relay is one outbound-idle
-process that opens a single TCP port.
+reachable, already deployed with deploy-rs, and already a nebula lighthouse — so
+a rendezvous service is a familiar shape on that machine even if the protocol is
+new.
 
-It is also already a nebula lighthouse, so this is the second rendezvous service
-on the machine — the shape is familiar even if the protocol is not.
+## Summary of Changes
 
-## What it is
-
-nivis-tunnel reaches a machine that has no inbound port: the agent on the target
-and the orchestrator both dial outward to a relay, which pairs them by stream id
-and copies bytes. Noise runs end to end, so the relay holds no key material and
-cannot read what it carries. That is why hosting one is cheap to reason about.
-
-Blocks `nivis-tunnel-zzv6` upstream: rung 0 against a real cloud host needs a
-relay at a reachable address, and everything after it needs rung 0.
-
-## Scope
+OpenSpec change `nivis-tunnel-relay-on-durer`, capability `nivis-tunnel-relay`.
 
 - `nivis-tunnel` as a flake input, following mipnix nixpkgs like the others.
-- A service module wrapping `inputs.nivis-tunnel.nixosModules.relay`.
-- Enabled on durer with `openFirewall`, port 7843.
+- `networking-nivis-tunnel-relay`, wrapping the upstream relay module. The
+  upstream module defaults `openFirewall` to false on purpose; here it is turned
+  on deliberately, because a relay nobody can reach is useless.
+- durer imports it. Port 7843 — 80 and 443 belong to the web stack.
 
-## What it costs
+## Verified on the running machine
 
-One internet-facing TCP port on a machine that also serves the shop. The relay
-authenticates nobody by design — anyone may connect and claim a stream id — but
-it cannot read the traffic it carries, holds no secrets, runs as a DynamicUser
-with no capabilities, and refuses connections past a parked bound rather than
-absorbing them.
+- the unit is `active` with 0 restarts, listening on `[::]:7843`
+- the port answers from outside, on `nuremberg.pimsnel.com`
+- **a real rendezvous over the public internet**: a local agent and a local
+  client, both dialling durer, were paired; the Noise handshake completed and a
+  payload round-tripped intact
+- a bare TCP probe was refused with a legible reason and without logging an
+  unvalidated stream id
+- the deploy was additive: nginx, postgresql, docker and nebula@mesh all kept
+  running, because `switch-to-configuration` restarts only units whose
+  definitions changed
 
-## Acceptance
+## What this unblocks
 
-`nc -vz durer 7843` from outside connects, and the agent on a Hetzner demo host
-reaches it. The relay's own log shows the rendezvous.
+`nivis-tunnel-zzv6` upstream: rung 0 against a real cloud host was blocked on a
+relay at a reachable address. There is now one.
+
+## What it costs, restated
+
+One internet-facing TCP port on the machine that also serves the shop. The relay
+authenticates nobody by design, but holds no key material, cannot read what it
+carries, runs as a DynamicUser with no capabilities, and refuses connections
+past a parked bound rather than absorbing them.
+
+The residual risk is upstream's `nivis-tunnel-9t50`: someone who guesses a
+stream id could claim the agent role and receive a pushed closure. Until that is
+addressed, ssh's own host key checking on the orchestrator side is the
+mitigation.
