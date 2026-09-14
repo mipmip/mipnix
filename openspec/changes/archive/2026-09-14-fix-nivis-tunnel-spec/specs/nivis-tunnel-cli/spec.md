@@ -1,11 +1,4 @@
-# nivis-tunnel-cli Specification
-
-## Purpose
-Puts the orchestrator half of nivis-tunnel on devbox hosts, so reaching a
-machine that has no inbound port is a command on PATH rather than a `nix run`,
-and so it is invoked under the name its own documentation uses.
-
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: nivis-tunnel Present In The Infrastructure Toolchain
 The system SHALL install the orchestrator command of nivis-tunnel on every host
@@ -37,13 +30,3 @@ again, the system SHALL rename it rather than install it as published.
 - **WHEN** the commands a devbox host gains from this change are inspected
 - **THEN** `nivis-tunnel` SHALL be among them
 - **AND** `tunnel` SHALL NOT be
-
-### Requirement: Orchestrator Side Only
-The system SHALL install only the orchestrator command. The agent, which belongs
-on a target machine and has its own NixOS module upstream, and the relay, which
-durer already runs through `nivis-tunnel-relay`, SHALL NOT be installed by this
-capability.
-
-#### Scenario: What a devbox host does not gain
-- **WHEN** the commands a devbox host gains from this change are inspected
-- **THEN** neither the agent nor the relay SHALL be among them
