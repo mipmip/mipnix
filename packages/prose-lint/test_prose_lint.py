@@ -204,6 +204,92 @@ class HookProtocol(unittest.TestCase):
         self.assertEqual(err, "")
 
 
+class CommandLineMode(unittest.TestCase):
+    """Task 1.1 and 1.2: runnable by hand, and not filtered by file type."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.dir = Path(self.tmp.name)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def write(self, name, text):
+        path = self.dir / name
+        path.write_text(text, encoding="utf-8")
+        return path
+
+    def run_cli(self, *args):
+        proc = subprocess.run(
+            [sys.executable, str(SCRIPT), *args],
+            input="",
+            capture_output=True,
+            text=True,
+        )
+        return proc.returncode, proc.stderr
+
+    def test_file_with_violation_exits_nonzero(self):
+        path = self.write("a.md", "A sentence \u2014 with a dash.\n")
+        code, err = self.run_cli(str(path))
+        self.assertEqual(code, 1)
+        self.assertIn("em dash", err)
+
+    def test_clean_file_exits_zero(self):
+        path = self.write("a.md", "A clean sentence, nothing wrong.\n")
+        code, err = self.run_cli(str(path))
+        self.assertEqual(code, 0)
+        self.assertEqual(err, "")
+
+    def test_several_files_each_reported(self):
+        a = self.write("a.md", "One \u2014 here.\n")
+        b = self.write("b.md", "Two \u2014 there.\n")
+        code, err = self.run_cli(str(a), str(b))
+        self.assertEqual(code, 1)
+        self.assertIn("a.md", err)
+        self.assertIn("b.md", err)
+
+    def test_one_bad_among_good_still_fails(self):
+        a = self.write("a.md", "Clean enough.\n")
+        b = self.write("b.md", "Bad \u2014 here.\n")
+        code, _ = self.run_cli(str(a), str(b))
+        self.assertEqual(code, 1)
+
+    def test_named_source_file_is_checked(self):
+        path = self.write("mod.nix", "# a comment \u2014 with a dash\n")
+        code, err = self.run_cli(str(path))
+        self.assertEqual(code, 1)
+        self.assertIn("em dash", err)
+
+    def test_same_source_file_via_hook_is_still_skipped(self):
+        path = self.write("mod.nix", "# a comment \u2014 with a dash\n")
+        event = {"hook_event_name": "PostToolUse",
+                 "tool_input": {"file_path": str(path)}}
+        code, err = run_hook(event)
+        self.assertEqual(code, 0)
+        self.assertEqual(err, "")
+
+    def test_filler_alone_does_not_fail_cli(self):
+        path = self.write("a.md", "Dat is eigenlijk best goed.\n")
+        code, err = self.run_cli(str(path))
+        self.assertEqual(code, 0)
+        self.assertIn("filler", err)
+
+    def test_unreadable_file_fails_with_a_message(self):
+        code, err = self.run_cli(str(self.dir / "nope.md"))
+        self.assertEqual(code, 1)
+        self.assertIn("cannot read", err)
+
+    def test_no_args_with_empty_stdin_still_exits_zero(self):
+        code, err = self.run_cli()
+        self.assertEqual(code, 0)
+        self.assertEqual(err, "")
+
+    def test_help(self):
+        code, err = self.run_cli("--help")
+        self.assertEqual(code, 0)
+        self.assertIn("usage", err)
+
+
 class WordList(unittest.TestCase):
     def test_list_loads_and_is_not_empty(self):
         self.assertGreater(len(WORDS), 5)

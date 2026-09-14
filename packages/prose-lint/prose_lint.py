@@ -161,7 +161,42 @@ def run(event):
     return 2 if blocking else 0
 
 
+def run_paths(paths):
+    """Command-line mode. A named file is checked whatever its extension: the
+    suffix filter exists to stop the hook firing on source files by itself, not
+    to refuse a direct request."""
+    words = load_filler_words()
+    failed = False
+    for raw in paths:
+        path = Path(raw)
+        try:
+            text = path.read_text(encoding="utf-8")
+        except Exception as exc:
+            sys.stderr.write(f"prose-lint: cannot read {path}: {exc}\n")
+            failed = True
+            continue
+        blocking, filler = check_text(text, words)
+        report(path, blocking, filler)
+        if blocking:
+            failed = True
+    return 1 if failed else 0
+
+
 def main():
+    args = [a for a in sys.argv[1:] if a not in ("--", "")]
+    if args:
+        if args[0] in ("-h", "--help"):
+            sys.stderr.write(
+                "usage: prose-lint [FILE...]\n"
+                "  With files, check each and exit 1 if any hits a blocking rule.\n"
+                "  With none, read a Claude Code hook event from standard input.\n"
+            )
+            return 0
+        try:
+            return run_paths(args)
+        except Exception as exc:
+            sys.stderr.write(f"prose-lint: {exc}\n")
+            return 1
     try:
         event = json.load(sys.stdin)
     except Exception:

@@ -18,6 +18,10 @@
     in
     {
 
+    # The checker is also a tool you can run yourself: `prose-lint FILE...`.
+    # Same derivation the hook uses, so there is one of it, not two.
+    home.packages = [ proseLint ];
+
     programs.claude-code = {
       enable = true;
       package = unstable.claude-code;
