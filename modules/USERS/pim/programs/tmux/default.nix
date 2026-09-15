@@ -129,6 +129,11 @@ inputs,
           cmd = "popup -E -w 80% -h 80% 'drs --multiplex'"; }
         { group = "tools"; key = "P";   desc = "shell at the pane path";
           cmd = "display-popup -d '#{pane_current_path}'"; }
+        # No wrapper: spg walks up from its working directory for openspec/ and
+        # offers its project picker when there is none, so nothing flashes past
+        # in a directory that has no project.
+        { group = "tools"; key = "A";   desc = "specgetty, openspec projects";
+          cmd = "popup -E -d '#{pane_current_path}' -w 90% -h 90% 'spg'"; }
 
         { group = "tmux";  key = "s";   desc = "session and window tree";
           cmd = "choose-tree -sZ -O name"; }

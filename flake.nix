@@ -56,7 +56,7 @@
     dirty-repo-scanner.url = "github:mipmip/dirty-repo-scanner";
     jjay.url = "github:speclib/jjay";
     teejay.url = "github:mipmip/teejay";
-    specgetty.url = "github:mipmip/specgetty";
+    specgetty.url = "github:speclib/specgetty";
     #openspec.url = "github:Fission-AI/OpenSpec";
     verynix.url = "github:mipmip/verynix";
     rme.url = "github:mipmip/rme";

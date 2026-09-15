@@ -1782,15 +1782,15 @@
         "nixpkgs": "nixpkgs_19"
       },
       "locked": {
-        "lastModified": 1775149955,
-        "narHash": "sha256-F3cKUE75Lf6sX3eXRBPVvuQd5stqPHhgP20xTkj90tk=",
-        "owner": "mipmip",
+        "lastModified": 1789502116,
+        "narHash": "sha256-DPf55wW+K1yiHqFJnU5RxqG4y8q6kSe7Rj79XmN+E2I=",
+        "owner": "speclib",
         "repo": "specgetty",
-        "rev": "6b30460dbfa9e5a1190e617463cb11d8f0d87b27",
+        "rev": "5624fbb39aa67b8ccf430ed2619ee8d3140a0dbc",
         "type": "github"
       },
       "original": {
-        "owner": "mipmip",
+        "owner": "speclib",
         "repo": "specgetty",
         "type": "github"
       }
