@@ -69,6 +69,9 @@ inputs,
         base_dir = "~";
         clone_pattern_tpl = "{{.BaseDir}}/{{.Short}}.{{.OwnerLower}}/{{.Repo}}";
         search_strategy= "substring";
+        # Clone colocated: `jj git clone --colocate`, so a real top-level .git
+        # remains and `hup sync` plus every git tool keep working on the checkout.
+        clone_vcs = "jj";
         providers = [
           {
             name = "github";
