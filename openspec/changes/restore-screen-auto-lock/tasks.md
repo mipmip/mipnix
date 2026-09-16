@@ -1,15 +1,30 @@
+> **Status 2026-09-16: code complete, verification outstanding.**
+> Every configuration task is done and both affected hosts build clean
+> (`nixosConfigurations.cichorei`, `nixosConfigurations.doornappel`,
+> `homeConfigurations."pim@cichorei"`, `checks.x86_64-linux.mipvim`,
+> `openspec validate`). What is left is sections 2, 6, 7 and 8: acts at a
+> physical keyboard that no tool can perform, and that exist precisely to catch
+> the lockout this change is built to remove. The change is NOT archived until
+> they pass.
+>
+> **Ordering hazard, read before switching.** This change is split across the
+> NixOS side (the hyprlock PAM stack) and the home-manager side (the hypridle
+> autostart line). `nixos-rebuild switch` MUST land before any new Hyprland
+> session reads the new `autostart.conf`. In the other order, hypridle arms a
+> 10 minute lock against a hyprlock that still cannot authenticate.
+
 > Work the sections in order. Section 1 must be rebuilt and verified before
 > section 3 arms any automatic trigger, otherwise the first automatic lock is
 > also the first test of an authentication path that currently always fails.
 
 ## 1. Make hyprlock authenticatable
 
-- [ ] 1.1 In `modules/programs/desktop/de/hyprland.nix`, set
+- [x] 1.1 In `modules/programs/desktop/de/hyprland.nix`, set
       `programs.hyprlock.enable = true;`. Add a comment recording why: NixOS
       ships default PAM stacks for `swaylock`/`i3lock`/`vlock`/`xlock` but not
       for hyprlock, so without this the locker falls through to
       `/etc/pam.d/other`, which is `pam_warn` + `pam_deny`.
-- [ ] 1.2 Remove `hyprlock` from `environment.systemPackages` in the same file.
+- [x] 1.2 Remove `hyprlock` from `environment.systemPackages` in the same file.
       `programs.hyprlock.enable` installs the package already.
 - [ ] 1.3 Rebuild `cichorei`. Confirm `/etc/pam.d/hyprlock` now exists and
       contains a `pam_unix` auth line.
@@ -27,44 +42,44 @@
 
 ## 3. Idle and sleep policy
 
-- [ ] 3.1 Add `hypridle` to `environment.systemPackages` in
+- [x] 3.1 Add `hypridle` to `environment.systemPackages` in
       `modules/programs/desktop/de/hyprland.nix` and remove `swayidle`, which
       nothing references once the dead `autostart.conf` line is gone.
-- [ ] 3.2 Create `modules/USERS/pim/programs/hyprland/hypr/hypridle.conf` with
+- [x] 3.2 Create `modules/USERS/pim/programs/hyprland/hypr/hypridle.conf` with
       the policy from `design.md`: `lock_cmd = pidof hyprlock || hyprlock`,
       `before_sleep_cmd = loginctl lock-session`,
       `after_sleep_cmd = hyprctl dispatch dpms on`, a 600 second listener that
       locks, and a 900 second listener that turns DPMS off with an `on-resume`
       that turns it back on. Do not put an `on-resume` on the lock listener.
-- [ ] 3.3 In `modules/USERS/pim/programs/hyprland/hypr/autostart.conf`, replace
+- [x] 3.3 In `modules/USERS/pim/programs/hyprland/hypr/autostart.conf`, replace
       the commented `swayidle` line at line 7 with `exec-once = hypridle`, and
       update the surrounding comment to state the actual policy (lock at 10 min,
       display off at 15, never suspend on idle).
-- [ ] 3.4 Note in a comment near the `exec-once` why the NixOS
+- [x] 3.4 Note in a comment near the `exec-once` why the NixOS
       `services.hypridle` module is not used: its unit is
       `WantedBy = graphical-session.target`, which this session does not
       populate, the same reason Walker and hyprpolkitagent are exec-once'd.
 
 ## 4. Declare the no-idle-suspend intent
 
-- [ ] 4.1 In `modules/programs/desktop/de/hyprland.nix`, add
+- [x] 4.1 In `modules/programs/desktop/de/hyprland.nix`, add
       `services.logind.settings.Login.IdleAction = "ignore";` with a comment
       explaining that this changes nothing today (it matches the systemd
       default) and exists so the machine's refusal to sleep on idle is a stated
       property of the repo rather than an inherited default.
-- [ ] 4.2 Confirm the option name resolves against the pinned nixpkgs. The
+- [x] 4.2 Confirm the option name resolves against the pinned nixpkgs. The
       deprecated `services.logind.extraConfig` form must not be used.
 
 ## 5. Fix the keybinds
 
-- [ ] 5.1 In `modules/USERS/pim/programs/hyprland/hypr/binds.conf`, change
+- [x] 5.1 In `modules/USERS/pim/programs/hyprland/hypr/binds.conf`, change
       `bind = $mainMod, L, exec, hyprlock` to
       `bind = $mainMod, L, exec, pidof hyprlock || hyprlock`.
-- [ ] 5.2 Change `bind = $mainMod SHIFT, L, exec, hyprlock && systemctl suspend`
+- [x] 5.2 Change `bind = $mainMod SHIFT, L, exec, hyprlock && systemctl suspend`
       to `bind = $mainMod SHIFT, L, exec, systemctl suspend`, with a comment that
       hypridle's `before_sleep_cmd` does the locking. The old form suspended only
       after the user had already unlocked.
-- [ ] 5.3 Leave the binds resolving to `hyprlock` directly rather than
+- [x] 5.3 Leave the binds resolving to `hyprlock` directly rather than
       `loginctl lock-session`, so the manual lock works even if hypridle is not
       running. See the keybind decision in `design.md`.
 
