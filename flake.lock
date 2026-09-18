@@ -1782,11 +1782,11 @@
         "nixpkgs": "nixpkgs_19"
       },
       "locked": {
-        "lastModified": 1789502116,
-        "narHash": "sha256-DPf55wW+K1yiHqFJnU5RxqG4y8q6kSe7Rj79XmN+E2I=",
+        "lastModified": 1789727522,
+        "narHash": "sha256-PLuCjWy2BczmLJ/odOpyPk0/DB2h251SRns+Z7bNazA=",
         "owner": "speclib",
         "repo": "specgetty",
-        "rev": "5624fbb39aa67b8ccf430ed2619ee8d3140a0dbc",
+        "rev": "d2f290ba829d0bcee9106b1cef285490a6480fbb",
         "type": "github"
       },
       "original": {
