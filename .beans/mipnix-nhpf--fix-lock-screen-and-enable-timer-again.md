@@ -1,11 +1,11 @@
 ---
 # mipnix-nhpf
 title: fix lock screen and enable timer again
-status: todo
+status: in-progress
 type: task
 priority: normal
 created_at: 2026-06-03T21:42:52Z
-updated_at: 2026-07-02T07:33:54Z
+updated_at: 2026-09-16T14:21:04Z
 ---
 
 
