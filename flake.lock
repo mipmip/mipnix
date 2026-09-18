@@ -788,11 +788,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1787325573,
-        "narHash": "sha256-Oh/s8IN9sy/m4w9yw/ZYhFTshFLc7cTSUImxCzilm0U=",
+        "lastModified": 1789730439,
+        "narHash": "sha256-VTlBqtQzaCUfeFcRjWYVrPs7uutl0J5QoscBd0GSV7c=",
         "owner": "linden-project",
         "repo": "linny-mcp-server",
-        "rev": "bed714cf6ae1eaaaaa60a33749855bc22e1db425",
+        "rev": "ee628a0b08a126fba8b166f31eabd3b59e55938e",
         "type": "github"
       },
       "original": {
