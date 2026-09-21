@@ -12,7 +12,7 @@
       `env = HYPRSHOT_DIR,$HOME/Afbeeldingen/Schermafbeeldingen`. Comment why it
       is here and not `-o` on the bind: it covers `hyprshot` typed in a terminal
       as well, and it keeps the wrapper from having to know the save location.
-- [ ] 1.2 Switch the home profile and reload the Hyprland config
+- [x] 1.2 Switch the home profile and reload the Hyprland config
       (`hyprctl reload`). Take a screenshot with the existing `Ctrl+Shift+R`
       bind and confirm the file appears under
       `~/Afbeeldingen/Schermafbeeldingen/` and that hyprshot created the folder
@@ -20,10 +20,10 @@
 
 ## 2. Move the existing screenshots out of the pictures folder
 
-- [ ] 2.1 Move `~/Afbeeldingen/*_hyprshot.png` into
+- [x] 2.1 Move `~/Afbeeldingen/*_hyprshot.png` into
       `~/Afbeeldingen/Schermafbeeldingen/`. There were 21 at the time of
       writing; check the count first and confirm nothing else matches the glob.
-- [ ] 2.2 Confirm `~/Afbeeldingen` now holds only ordinary pictures.
+- [x] 2.2 Confirm `~/Afbeeldingen` now holds only ordinary pictures.
 
 ## 3. Settle the default-action question by hand
 
@@ -32,13 +32,13 @@
 > `default_action` symbol in the swaync 0.12.6 binary. Verify it before building
 > on it.
 
-- [ ] 3.1 In a terminal, run:
+- [x] 3.1 In a terminal, run:
       `notify-send "test" "click the card" -A default=OK -t 10000`
       The command blocks.
-- [ ] 3.2 Click the notification body, not any button. Confirm the terminal
+- [x] 3.2 Click the notification body, not any button. Confirm the terminal
       prints `default` and the command exits. Record whether swaync drew a
       visible button, and whether the whole card was clickable.
-- [ ] 3.3 If the body was NOT clickable, stop and revise `design.md`: the action
+- [x] 3.3 If the body was NOT clickable, stop and revise `design.md`: the action
       becomes a named one (`-A reveal=Tonen`), the gesture becomes a button
       press, and the `actionable-notification` scenarios in the spec need their
       wording adjusted. Everything else in the change is unaffected.
