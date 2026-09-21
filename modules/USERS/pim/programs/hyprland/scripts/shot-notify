@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# shot-notify: announce a saved screenshot with a notification you can click.
+#
+# Usage: shot-notify PATH        (invoked by hyprshot, not by hand)
+#
+# Wired in binds.conf as:
+#   hyprshot -m region --silent -- ~/.config/hypr/scripts/shot-notify
+#
+# --silent suppresses hyprshot's own notification, which is unclickable by
+# construction: it calls notify-send without any -A, and the freedesktop spec
+# only makes a notification activatable when it carries an action. This script
+# sends the replacement, so there is still exactly one toast per capture.
+#
+# Two constraints drive the shape of this script:
+#
+#   1. hyprshot calls this hook SYNCHRONOUSLY, in save_geometry, before it
+#      would have sent its own notification.
+#   2. `notify-send -A` implies --wait: it blocks until the user clicks or the
+#      notification times out.
+#
+# Left alone those two mean every capture parks a hyprshot process for the
+# notification lifetime, and hyprshot's own checkRunning guard then makes a
+# second capture during that window behave unpredictably. So the marker file is
+# written in the foreground (it is fast, and the Ctrl+Shift+E keybind must keep
+# working even when the notification cannot be sent) and the notification is
+# detached with setsid. A bare `&` would leave it in hyprshot's process group;
+# setsid --fork takes it out and returns immediately.
+
+set -euo pipefail
+
+self=$(readlink -f "$0")
+here=$(dirname "$self")
+
+# Second entry point: the detached half. Re-invoking ourselves keeps the
+# notification logic in this file rather than in a quoted string or a third
+# script.
+if [[ "${1:-}" == "--wait-and-reveal" ]]; then
+    file=${2:-}
+    [[ -n "$file" ]] || exit 0
+
+    token=$(mktemp)
+    trap 'rm -f "$token"' EXIT
+
+    # -A default=... makes the notification BODY the click target: swaync
+    # renders a default action as the card itself (its notification-default-
+    # action style) and puts any other action in alt_actions_box as a button.
+    # --activation-token-fd catches the XDG activation token swaync mints when
+    # the action fires; shot-reveal-last needs it to focus the window.
+    action=$(notify-send "Schermafbeelding opgeslagen" \
+                 "$(basename "$file")" \
+                 -i "$file" \
+                 -a Hyprshot \
+                 -t 5000 \
+                 -A default=Tonen \
+                 --activation-token-fd 3 3>"$token") || exit 0
+
+    [[ "$action" == "default" ]] || exit 0
+
+    # Pass the path explicitly rather than letting shot-reveal-last read the
+    # marker: with two notifications on screen, clicking the older one must
+    # reveal the file IT announced, not the newest capture.
+    # Called, not exec'd: exec would replace this process and the EXIT trap
+    # above would never fire, leaking the token file.
+    "$here/shot-reveal-last" "$file" "$(cat "$token")"
+
+    # Explicit: without it execution falls through into the hook path below,
+    # which re-detaches this script with "--wait-and-reveal" as the file name
+    # and loops forever.
+    exit 0
+fi
+
+# First entry point: the hyprshot hook.
+file="${1:-}"
+[[ -n "$file" ]] || exit 0
+
+cache="${XDG_CACHE_HOME:-$HOME/.cache}/hyprshot"
+mkdir -p "$cache"
+printf '%s\n' "$file" > "$cache/last"
+
+setsid --fork "$self" --wait-and-reveal "$file" >/dev/null 2>&1 </dev/null

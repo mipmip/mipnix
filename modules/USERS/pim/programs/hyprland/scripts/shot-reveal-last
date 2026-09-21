@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# shot-reveal-last: open the file manager on a screenshot, with the file selected.
+#
+# Usage: shot-reveal-last [PATH] [ACTIVATION_TOKEN]
+#
+# With no PATH it reveals whatever ~/.cache/hyprshot/last names, which is the
+# most recent capture. shot-notify passes both arguments; the Ctrl+Shift+E
+# keybind passes neither.
+#
+# Why DBus rather than `nautilus --select`:
+#   - org.freedesktop.FileManager1 is the "Show in Files" contract, so nothing
+#     here names a file manager. $fileManager in 00-vars.conf can change
+#     without touching this script.
+#   - The service is DBus-activated, so the file manager need not be running.
+#   - It reuses an open window instead of spawning a second one.
+#
+# ACTIVATION_TOKEN goes into the StartupId argument. Under Wayland an
+# application cannot focus itself, it needs a token minted by whoever the user
+# interacted with. swaync hands one out when a notification action fires
+# (notify-send --activation-token-fd), and forwarding it here is the difference
+# between the file manager coming to the front and it opening behind the
+# current window with only an urgency hint. An empty string is the documented
+# "no startup notification" value, and is what the keybind path passes.
+#
+# No percent-encoding of the path: the save folder has no spaces and hyprshot
+# names files %Y-%m-%d-%H%M%S_hyprshot.png, so the file:// URI needs none.
+
+set -euo pipefail
+
+MARKER="${XDG_CACHE_HOME:-$HOME/.cache}/hyprshot/last"
+
+path="${1:-}"
+token="${2:-}"
+
+# Every failure is a notification and a clean exit, never a silent one and
+# never a non-zero status: this runs from a keybind, where a shell error has
+# nowhere to go.
+give_up() {
+    notify-send "Schermafbeelding" "$1" -a Hyprshot -t 5000 || true
+    exit 0
+}
+
+if [[ -z "$path" ]]; then
+    [[ -f "$MARKER" ]] || give_up "Nog geen schermafbeelding gemaakt."
+    path=$(< "$MARKER")
+    [[ -n "$path" ]] || give_up "Nog geen schermafbeelding gemaakt."
+fi
+
+[[ "$path" == /* ]] || give_up "Geen absoluut pad: $path"
+[[ -e "$path" ]] || give_up "Dit bestand bestaat niet meer: $(basename "$path")"
+
+gdbus call --session \
+    --dest org.freedesktop.FileManager1 \
+    --object-path /org/freedesktop/FileManager1 \
+    --method org.freedesktop.FileManager1.ShowItems \
+    "['file://$path']" "$token" >/dev/null
