@@ -244,11 +244,24 @@ inputs,
         set -g monitor-activity off
         set -g visual-activity off
 
+        # The server keeps the environment it was started with, which here has no
+        # WAYLAND_DISPLAY at all. Programs in a pane then fall back to the
+        # default `wayland-0` socket, while this session's is `wayland-1`, so
+        # they conclude there is no Wayland session. That is what makes clipboard
+        # tools report themselves missing while installed: atotto/clipboard (used
+        # by beans) only considers wl-copy when WAYLAND_DISPLAY is set, and
+        # otherwise falls through to xclip/xsel, which are installed nowhere.
+        # `-a` appends, keeping tmux's default list.
+        set -ga update-environment WAYLAND_DISPLAY
+
         #COPYPASTE
         set-window-option -g mode-keys vi
         bind-key -T copy-mode-vi v send -X begin-selection
         bind-key -T copy-mode-vi V send -X select-line
-        bind-key -T copy-mode-vi y send -X copy-pipe-and-cancel 'xclip -in -selection clipboard'
+        # By store path, as nautilus-copy-path does: no PATH dependency and no
+        # need for wl-clipboard to be in systemPackages. Replaces xclip, an X11
+        # tool that is installed on no host here, so every yank failed silently.
+        bind-key -T copy-mode-vi y send -X copy-pipe-and-cancel '${pkgs.wl-clipboard}/bin/wl-copy'
 
         unbind C-a
 
