@@ -105,11 +105,11 @@
       `age.secrets.restic-ssh-key` and `restic-repo-pw`, and
       `backup-restic-piethein` declares the same two. Identical values merge;
       differing paths do not. Resolve if they differ.
-- [ ] 6.5 Deploy dapperehaan. Confirm the syncthing service is running as `pim`,
+- [x] 6.5 Deploy dapperehaan. Confirm the syncthing service is running as `pim`,
       `/home/pim/Work` exists, and the device ID it reports matches the registry.
-- [ ] 6.6 Confirm the restic timer exists and its first run succeeds against an
+- [x] 6.6 Confirm the restic timer exists and its first run succeeds against an
       empty folder.
-- [ ] 6.7 Confirm `dapperehaan-work` now appears in the Backrest console's
+- [x] 6.7 Confirm `dapperehaan-work` now appears in the Backrest console's
       repository list.
 
 ## 7. Add the laptops
