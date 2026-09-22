@@ -22,6 +22,12 @@ inputs,
     { device = "/dev/disk/by-uuid/9a9b595b-ffde-43f4-9d4c-8c0070ed58b7";
       fsType = "ext4";
     };
+  boot.initrd.luks.devices."cryptroot" = {
+    device = "/dev/disk/by-partuuid/7d07de39-da65-4115-9a6a-8e1be9715265";
+    allowDiscards = true;
+  };
+
+#nvme0n1p2 ext4   9a9b595b-ffde-43f4-9d4c-8c0070ed58b7 7d07de39-da65-4115-9a6a-8e1be9715265
 
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/423A-C0E8";
