@@ -6,6 +6,10 @@ in
 
 {
 
+  # Syncthing Work pool membership. The ID is the hash of this host's
+  # certificate in secrets/syncthing-doornappel.crt.age; the two travel together.
+  flake.syncthingDevices.doornappel = "KHB7YUO-3WQ3JD3-I4UWDF5-MYFXPMZ-A26YTQF-FTLG27W-TLS6MKW-OQJBPQF";
+
   flake.homeConfigurations = {
 
     "pim@doornappel" = self.lib.makeHomeConf {
@@ -48,9 +52,15 @@ in
       #networking-wifi
 
       backup-restic-piethein
+      syncthing-work-pool
 
 
     ];
+
+    # Member of the Work pool: /home/pim/Work is kept in step with the other
+    # members over nebula. This host does NOT back the folder up; dapperehaan
+    # holds the authoritative copy and is the only member that talks to piethein.
+    mipnix.syncthing.pool.enable = true;
 
     # --- Extracted from /etc/nixos/configuration.nix ---
     # Review and remove what is already covered by shared modules above

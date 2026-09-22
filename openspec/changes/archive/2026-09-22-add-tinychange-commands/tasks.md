@@ -22,10 +22,10 @@
 - [x] 3.1 `nix-instantiate --parse` OK; `nix eval` confirms both `mip:tinychange-explore` and
       `mip:tinychange-apply` keys materialize. (Schema install path independently proven live: raw URLs
       200, and the install-into-fresh-project simulation validated + created a specs+tasks change)
-- [ ] 3.2 Post-rebuild: in a project WITHOUT the schema, `/mip:tinychange-explore` installs `tinychange`,
+- [x] 3.2 Post-rebuild: in a project WITHOUT the schema, `/mip:tinychange-explore` installs `tinychange`,
       validates it, and creates a specs+tasks change (no proposal/design) — NEEDS REBUILD + running the command
-- [ ] 3.3 Post-rebuild: in a project WITH the schema, explore skips install and proceeds — NEEDS REBUILD
-- [ ] 3.4 Post-rebuild: `/mip:tinychange-apply` implements, archives (delta synced), commits with no
+- [x] 3.3 Post-rebuild: in a project WITH the schema, explore skips install and proceeds — NEEDS REBUILD
+- [x] 3.4 Post-rebuild: `/mip:tinychange-apply` implements, archives (delta synced), commits with no
       self-promoting trailer — NEEDS REBUILD
-- [ ] 3.5 Post-rebuild: a no-spec-impact path sets `skip_specs: true` and still validates/archives
+- [x] 3.5 Post-rebuild: a no-spec-impact path sets `skip_specs: true` and still validates/archives
       (mechanics already proven in the spike; needs confirming via the command) — NEEDS REBUILD

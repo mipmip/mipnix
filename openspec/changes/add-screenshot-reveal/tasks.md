@@ -42,7 +42,7 @@
       becomes a named one (`-A reveal=Tonen`), the gesture becomes a button
       press, and the `actionable-notification` scenarios in the spec need their
       wording adjusted. Everything else in the change is unaffected.
-- [ ] 3.4 Confirm the activation token arrives too. Re-run with
+- [x] 3.4 Confirm the activation token arrives too. Re-run with
       `--activation-token-fd 3 3>/tmp/token`, click, and check `/tmp/token` is
       non-empty. If it is empty, `ShowItems` gets an empty `StartupId` and the
       revealed window may not take focus; note it and continue.
@@ -104,9 +104,9 @@
 
 ## 7. Verify the whole path by hand
 
-- [ ] 7.1 `Ctrl+Shift+R`, select a region. Confirm exactly ONE notification
+- [x] 7.1 `Ctrl+Shift+R`, select a region. Confirm exactly ONE notification
       appears, with the capture as its thumbnail.
-- [ ] 7.2 Click it. Confirm Nautilus opens the screenshot folder, with the new
+- [x] 7.2 Click it. Confirm Nautilus opens the screenshot folder, with the new
       file selected, and that the window is focused rather than only marked
       urgent.
 - [ ] 7.3 Confirm the image is still on the clipboard: paste it somewhere.

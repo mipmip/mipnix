@@ -166,4 +166,22 @@ in
   "nebula-doornappel.crt.age".publicKeys = users ++ systems;
   "nebula-doornappel.key.age".publicKeys = users ++ systems;
 
+  # Syncthing device identities for the Work pool. A device ID is a hash of the
+  # certificate, so these files ARE the pool membership: lose one and that host
+  # becomes a different device that every other member has to be told about.
+  #
+  # Narrower than the nebula certificates (users ++ systems) on purpose: only the
+  # host itself needs its own identity, so the recipient set is that host plus
+  # pim. pim is kept as a recipient for the same reason the restic secrets above
+  # say to keep an offline copy: a dead host cannot decrypt its own secrets, and
+  # restoring the identity beats re-registering a new device ID everywhere.
+  "syncthing-cichorei.crt.age".publicKeys = [ pim cichorei ];
+  "syncthing-cichorei.key.age".publicKeys = [ pim cichorei ];
+
+  "syncthing-doornappel.crt.age".publicKeys = [ pim doornappel ];
+  "syncthing-doornappel.key.age".publicKeys = [ pim doornappel ];
+
+  "syncthing-dapperehaan.crt.age".publicKeys = [ pim dapperehaan ];
+  "syncthing-dapperehaan.key.age".publicKeys = [ pim dapperehaan ];
+
 }

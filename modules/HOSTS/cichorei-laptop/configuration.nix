@@ -29,6 +29,10 @@ in
 
   flake.resticRepos.cichorei = builtins.attrNames datasets;
 
+  # Syncthing Work pool membership. The ID is the hash of this host's
+  # certificate in secrets/syncthing-cichorei.crt.age; the two travel together.
+  flake.syncthingDevices.cichorei = "53LSRMP-6ZRRXFG-72BW46P-ABPGGXO-5O3VL34-5GFOIMO-VISOTBZ-437T5QO";
+
   flake.homeConfigurations = {
 
     "pim@cichorei" = self.lib.makeHomeConf {
@@ -67,8 +71,14 @@ in
       #networking-wifi
 
       backup-restic-piethein
+      syncthing-work-pool
 
     ];
+
+    # Member of the Work pool: /home/pim/Work is kept in step with the other
+    # members over nebula. This host does NOT back the folder up; dapperehaan
+    # holds the authoritative copy and is the only member that talks to piethein.
+    mipnix.syncthing.pool.enable = true;
 
     # Hourly restic backups to piethein. secondbrain is kept forever
     # (dense recent + one-per-year indefinitely); .claude/.ssh a week.
