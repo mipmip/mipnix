@@ -114,20 +114,20 @@
 
 ## 7. Add the laptops
 
-- [ ] 7.1 Add the module, `mipnix.syncthing.pool.enable = true` and the registry
+- [x] 7.1 Add the module, `mipnix.syncthing.pool.enable = true` and the registry
       line to cichorei. Deploy.
-- [ ] 7.2 Confirm cichorei connects to dapperehaan, and that the connection is
+- [x] 7.2 Confirm cichorei connects to dapperehaan, and that the connection is
       over the mesh rather than the LAN.
-- [ ] 7.3 Repeat for doornappel. Deploy.
-- [ ] 7.4 Confirm all three are mutually connected, and that no member needed an
+- [x] 7.3 Repeat for doornappel. Deploy.
+- [x] 7.4 Confirm all three are mutually connected, and that no member needed an
       approval click anywhere.
 
 ## 8. Verify the pool by hand
 
-- [ ] 8.1 Create a file in `~/Work` on cichorei. Confirm it appears on doornappel
+- [x] 8.1 Create a file in `~/Work` on cichorei. Confirm it appears on doornappel
       and on dapperehaan.
-- [ ] 8.2 Modify it on doornappel. Confirm the change reaches the other two.
-- [ ] 8.3 Create `~/Work/scratch/node_modules/` with a file inside on cichorei.
+- [x] 8.2 Modify it on doornappel. Confirm the change reaches the other two.
+- [x] 8.3 Create `~/Work/scratch/node_modules/` with a file inside on cichorei.
       Confirm it does NOT appear on the other two.
 - [ ] 8.4 Stop syncthing on dapperehaan. Confirm cichorei and doornappel still
       sync with each other. Start it again and confirm it converges. This is the
@@ -144,13 +144,13 @@
 > These are the reason the hub is configured the way it is. Test them
 > deliberately rather than trusting the options.
 
-- [ ] 9.1 Edit a file directly on dapperehaan. Confirm the edit does NOT
+- [x] 9.1 Edit a file directly on dapperehaan. Confirm the edit does NOT
       propagate to either laptop. That is `receiveonly` working.
-- [ ] 9.2 Delete a file on cichorei. Confirm it disappears on doornappel and on
+- [x] 9.2 Delete a file on cichorei. Confirm it disappears on doornappel and on
       dapperehaan, AND that the previous contents are retained under
       dapperehaan's versioning directory. That is the hour-long window being
       closed.
-- [ ] 9.3 Overwrite a file on cichorei with different contents. Confirm the
+- [x] 9.3 Overwrite a file on cichorei with different contents. Confirm the
       previous version is retained on dapperehaan.
 - [ ] 9.4 Wait for a restic run, then delete a file across the pool. Confirm the
       file is still present in the last snapshot and recoverable through
@@ -166,7 +166,7 @@
 - [x] 10.1 Update `modules/programs/desktop/utils/filesync.nix`: its commented-out
       `syncthing` package line now reads as the plan when it is not. Either
       remove it or point it at the module.
-- [ ] 10.2 `openspec validate add-syncthing-work-pool --strict`.
+- [x] 10.2 `openspec validate add-syncthing-work-pool --strict`.
 - [ ] 10.3 Record in `secrets/RESTORE.md`, or alongside it, how to restore
       `dapperehaan-work` and what the versioning directory on the hub is for. A
       restore path nobody has written down is not a restore path.

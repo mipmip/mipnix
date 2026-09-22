@@ -1,0 +1,31 @@
+# Behaviour of the screenshot annotator, reached from the Bewerken button on the
+# capture notification. It lives here rather than as flags on shot-annotate's
+# command line, so the script carries only what varies per invocation: the path.
+#
+# The capture is already saved, already on the clipboard and already recorded as
+# the most recent shot before satty ever opens. That is what makes `escape` a
+# safe discard: abandoning an annotation costs nothing, because there is no
+# unsaved state to lose.
+
+[general]
+
+# Enter saves over the original and closes, in one keystroke. Escape closes and
+# writes nothing. Both verified by hand against a throwaway copy.
+actions-on-enter = ["save-to-file", "exit"]
+actions-on-escape = ["exit"]
+
+# Leave as soon as the save action has run, rather than sitting open.
+early-exit = true
+
+# The clipboard has to follow the annotation. Without this a paste after
+# annotating silently yields the UNannotated capture, with nothing on screen to
+# say so.
+copy-command = "wl-copy"
+
+# shot-notify already sent the one notification this capture gets. satty
+# notifying again on save would break the "exactly one notification per capture"
+# guarantee the screenshot-capture spec makes.
+disable-notifications = true
+
+# An arrow is what a screenshot usually needs.
+initial-tool = "arrow"

@@ -103,6 +103,11 @@
 
       #hyprland
       hyprshot
+
+      # Screenshot annotation, reached from the Bewerken button on the capture
+      # notification (see hypr/scripts/shot-annotate). Its behaviour lives in
+      # satty/config.toml rather than in flags on the command line.
+      satty
       hyprnome
       hyprcursor
       hyprmon

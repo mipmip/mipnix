@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# shot-annotate: open the screenshot annotator on a capture, in place.
+#
+# Usage: shot-annotate PATH [ACTIVATION_TOKEN]
+#
+# Invoked by shot-notify when the Bewerken button on a capture notification is
+# pressed. Not normally run by hand.
+#
+# Annotating happens AFTER the capture is saved, copied to the clipboard and
+# recorded as the most recent shot. That ordering is the whole safety argument:
+# satty operates on a file that is already safe, so abandoning an annotation
+# costs nothing and there is no unsaved-capture state to lose. Escape therefore
+# discards, and the original survives untouched.
+#
+# In place, same filename, no -annotated suffix. Two things depend on it:
+# ~/.cache/hyprshot/last already names this file, so Ctrl+Shift+E keeps working
+# with no coordination between the two scripts; and the screenshot folder does
+# not fill up with pairs of nearly-identical images.
+#
+# Behaviour (save on Enter, discard on Escape, clipboard refresh, notifications
+# off) lives in ~/.config/satty/config.toml, not here. This script carries only
+# what varies per invocation.
+#
+# ACTIVATION_TOKEN: under Wayland an application cannot focus itself, it needs a
+# token from whoever the user interacted with. swaync mints one when a
+# notification action fires. satty is GTK, so it reads the token from the
+# environment as XDG_ACTIVATION_TOKEN, unlike the FileManager1 ShowItems call in
+# shot-reveal-last, which takes it as a StartupId argument. Without it satty
+# opens behind the current window with only an urgency hint, which is the wrong
+# outcome for a tool you just asked for by clicking a button.
+
+set -euo pipefail
+
+file="${1:-}"
+token="${2:-}"
+
+# Every failure is a notification and a clean exit: this runs detached from a
+# notification action, where a shell error has nowhere to go.
+give_up() {
+    notify-send "Schermafbeelding" "$1" -a Hyprshot -t 5000 || true
+    exit 0
+}
+
+[[ -n "$file" ]] || give_up "Geen bestand opgegeven om te bewerken."
+[[ -e "$file" ]] || give_up "Dit bestand bestaat niet meer: $(basename "$file")"
+
+XDG_ACTIVATION_TOKEN="$token" exec satty \
+    --filename "$file" \
+    --output-filename "$file"
