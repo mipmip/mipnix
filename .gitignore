@@ -12,3 +12,7 @@ home/pim/_hm-modules/programs/neovim/nvim/lazy-lock.json
 .temp.seed
 /.aider*
 *.swp
+
+# Python bytecode
+__pycache__/
+*.pyc

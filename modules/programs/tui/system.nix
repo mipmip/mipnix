@@ -18,6 +18,7 @@
       psmisc
       file
       fastfetch
+      deploy-rs
     ];
   };
 }

@@ -3,7 +3,7 @@
 {
 
   fileSystems."/mnt/seafile" = {
-    device = "192.168.178.37:/volume1/seafile";
+    device = "192.168.2.100:/volume1/seafile";
     fsType = "nfs";
   };
 

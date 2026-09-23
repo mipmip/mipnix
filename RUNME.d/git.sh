@@ -5,7 +5,10 @@ git_sync_machine(){
     exit 1
   fi
   git commit -m "$EXTRA_ARG" -a
-  TAG_NAME="$(hostname)-$(date --iso-8601)"
+  # Tag with the machine the change targets. Remote deploys set SYNC_TARGET to
+  # the deployed host; local rebuilds leave it unset and fall back to the
+  # machine running the command (which is the one being rebuilt).
+  TAG_NAME="${SYNC_TARGET:-$(hostname)}-$(date --iso-8601)"
   # Remove existing tag locally and remotely if it exists
   git tag -d "$TAG_NAME" 2>/dev/null || true
   git push origin --delete "$TAG_NAME" 2>/dev/null || true

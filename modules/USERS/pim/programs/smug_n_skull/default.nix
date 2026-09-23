@@ -47,7 +47,14 @@ inputs,
 
   in {
 
-    home.packages = [ pkgs.figlet pkgs.lolcat ];
+    home.packages = [
+        pkgs.figlet
+        pkgs.lolcat
+
+        #inputs.huphop.packages."${pkgs.stdenv.hostPlatform.system}".huphop
+
+
+      ];
 
     programs = {
       skull = {

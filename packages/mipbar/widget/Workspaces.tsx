@@ -15,6 +15,7 @@ type ClientInfo = {
 
 type WorkspaceItem = {
   id: number
+  label: string
   isGroupStart: boolean
   isLaptop: boolean
   clients: ClientInfo[]
@@ -22,8 +23,24 @@ type WorkspaceItem = {
   accent: string
 }
 
-const WORKSPACE_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
-const LAPTOP_IDS = new Set([8, 9, 0])
+// The button labelled "0" is workspace id 10. Hyprland workspace ids start at 1,
+// so there is no id 0 to look up or dispatch to — "0" is a display label only.
+// Keeping the two apart is what stops the button from querying a workspace that
+// cannot exist (which is what made it render no app icons and go nowhere on
+// click). See the change `fix-workspace-zero-identity`.
+const WORKSPACES: { id: number; label: string }[] = [
+  { id: 1, label: "1" },
+  { id: 2, label: "2" },
+  { id: 3, label: "3" },
+  { id: 4, label: "4" },
+  { id: 5, label: "5" },
+  { id: 6, label: "6" },
+  { id: 7, label: "7" },
+  { id: 8, label: "8" },
+  { id: 9, label: "9" },
+  { id: 10, label: "0" },
+]
+const LAPTOP_IDS = new Set([8, 9, 10])
 
 function isDark(): boolean {
   try {
@@ -40,7 +57,7 @@ function getWorkspaceItems(hyprland: Hyprland.Hyprland): WorkspaceItem[] {
     if (w.id >= 0) workspaceMap.set(w.id, w)
   }
 
-  return WORKSPACE_IDS.map((id) => {
+  return WORKSPACES.map(({ id, label }) => {
     const workspace = workspaceMap.get(id)
     const clients: ClientInfo[] = workspace
       ? workspace.get_clients().map((c) => ({
@@ -57,7 +74,7 @@ function getWorkspaceItems(hyprland: Hyprland.Hyprland): WorkspaceItem[] {
     const monitor = workspace?.get_monitor()?.get_name() ?? null
     const accent = monitor ? monitorAccent(monitor, dark) : "transparent"
 
-    return { id, isGroupStart, isLaptop: LAPTOP_IDS.has(id), clients, monitor, accent }
+    return { id, label, isGroupStart, isLaptop: LAPTOP_IDS.has(id), clients, monitor, accent }
   })
 }
 
@@ -110,7 +127,7 @@ export default function Workspaces() {
             >
               <box orientation={Gtk.Orientation.VERTICAL} spacing={4} halign={Gtk.Align.CENTER}>
                 <box halign={Gtk.Align.CENTER}>
-                  <label label={String(item.id)} />
+                  <label label={item.label} />
                   {item.clients.map((client) => (
                     <image
                       class="AppIcon"

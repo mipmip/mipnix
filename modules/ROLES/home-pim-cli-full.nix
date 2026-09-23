@@ -27,6 +27,8 @@ inputs,
       pim-bmc
       pim-awscli-dir
       pim-smug-skull
+      pim-huphop
+      pim-beandex
       pim-pandoc
       pim-sc-im
       #pim-vim

@@ -24,9 +24,12 @@ inputs,
       pim-thunderbird
       pim-freedesktop
       pim-hyprland
+      pim-host-wallpaper
       pim-mipbar
       pim-hypr-longpress
       pim-fonts
+      pim-nautilus-copy-path
+      pim-satty
 
       pim-shellstuff-desktop
 

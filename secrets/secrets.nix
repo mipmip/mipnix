@@ -1,4 +1,7 @@
 let
+  doornappel = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDXUaXKtaEQIvuIZ3KVh2kTbqiI3itVlnR/7qEkesXk1";
+  zonnehoed = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMMk+lMbZgFFKQGOcoSj07nT4BZjDwI1c/y0PvoSZOw1";
+  cichorei = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJZU9DZpGs+Ib/aN3n7u46wY8v9V4qHLcNzs/U+9iTgc";
   pim = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEY25ZaYRuKUJuVuzqK4c8dKkSxN6Cd9yhbDTa/5Njmh";
 
   annemarie = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBvyHG+v+V+LQcbxw1H0ZCnrPkHy90lGu/08avLFa48S";
@@ -14,6 +17,9 @@ let
 
   users = [ pim annemarie ];
   systems = [
+    doornappel
+    zonnehoed
+    cichorei
     hurry
     harry
     lego2
@@ -130,9 +136,52 @@ in
   "nebula-durer.crt.age".publicKeys = users ++ systems;
   "nebula-durer.key.age".publicKeys = users ++ systems;
 
+  # linny-mcp secondbrain hosting (dapperehaan). Bearer-token records + the
+  # read/write deploy key that git-sync uses to push to mipmip/secondbrain.
+  "linny-mcp-tokens.age".publicKeys = [ pim dapperehaan ];
+  "secondbrain-deploy-key.age".publicKeys = [ pim dapperehaan ];
+
+  # startaste hosting (dapperehaan). Source credentials for the sync timer
+  # (GITHUB_TOKEN + the HN account login) and the hashed bearer-token records
+  # for the MCP endpoint fronted at taste.pimsnel.com.
+  "startaste-env.age".publicKeys = [ pim dapperehaan ];
+  "startaste-mcp-tokens.age".publicKeys = [ pim dapperehaan ];
+
   "matrix-openclaw-password.age".publicKeys = [pim clawone];
   "voorzetramenshop-env.age".publicKeys = [ pim durer ];
-  "nebula-peterspav.crt.age".publicKeys = users ++ systems;
-  "nebula-peterspav.key.age".publicKeys = users ++ systems;
+  "nebula-cichorei.crt.age".publicKeys = users ++ systems;
+  "nebula-cichorei.key.age".publicKeys = users ++ systems;
+
+  # restic backups to piethein — shared across the backup source hosts.
+  # Keep an OFFLINE copy of both: a dead host cannot decrypt its own secrets.
+  "restic-ssh-key.age".publicKeys = [ pim cichorei hurry durer zonnehoed dapperehaan ];
+  "restic-repo-pw.age".publicKeys = [ pim cichorei hurry durer zonnehoed dapperehaan ];
+
+  # Backrest UI login credential: base64(bcrypt(password)). Only dapperehaan (+ pim).
+  "backrest-auth.age".publicKeys = [ pim dapperehaan ];
+
+  "nebula-zonnehoed.crt.age".publicKeys = users ++ systems;
+  "nebula-zonnehoed.key.age".publicKeys = users ++ systems;
+
+  "nebula-doornappel.crt.age".publicKeys = users ++ systems;
+  "nebula-doornappel.key.age".publicKeys = users ++ systems;
+
+  # Syncthing device identities for the Work pool. A device ID is a hash of the
+  # certificate, so these files ARE the pool membership: lose one and that host
+  # becomes a different device that every other member has to be told about.
+  #
+  # Narrower than the nebula certificates (users ++ systems) on purpose: only the
+  # host itself needs its own identity, so the recipient set is that host plus
+  # pim. pim is kept as a recipient for the same reason the restic secrets above
+  # say to keep an offline copy: a dead host cannot decrypt its own secrets, and
+  # restoring the identity beats re-registering a new device ID everywhere.
+  "syncthing-cichorei.crt.age".publicKeys = [ pim cichorei ];
+  "syncthing-cichorei.key.age".publicKeys = [ pim cichorei ];
+
+  "syncthing-doornappel.crt.age".publicKeys = [ pim doornappel ];
+  "syncthing-doornappel.key.age".publicKeys = [ pim doornappel ];
+
+  "syncthing-dapperehaan.crt.age".publicKeys = [ pim dapperehaan ];
+  "syncthing-dapperehaan.key.age".publicKeys = [ pim dapperehaan ];
 
 }

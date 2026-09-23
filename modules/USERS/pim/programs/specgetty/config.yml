@@ -7,8 +7,8 @@ scandirs:
 
     - $HOME/c*
     - $HOME/tc*
-    - $HOME/nixos
-    - $HOME/.vim/plugged
+    - $HOME/gh.*
+    - $HOME/mipnix
     - $HOME/secondbrain
 
   # a list of specific directories to exclude from the scan

@@ -1,0 +1,116 @@
+{
+inputs,
+...
+}:
+{
+  flake.modules.homeManager.pim-huphop = { lib, pkgs, ... }:
+    let
+      # Model B switch wrapper: session per collection (or org), window per repo.
+      # huphop renders switch_command as a template then execs it WITHOUT a shell,
+      # so all branching must live here in a single executable. Only tmux server
+      # commands are issued (no TTY needed) — it runs while huphop's TUI still
+      # owns the terminal, then the TUI quits and the popup closes.
+      #
+      # The session name is resolved by the caller's template (collection when in
+      # one, else <short>-><ownerLower>) and passed in as $1, so this wrapper is
+      # agnostic to how the name was chosen.
+      # Args: <session-name> <repo> <target-checkout-path>
+      hup-tmux-switch = pkgs.writeShellScriptBin "hup-tmux-switch" ''
+        session="$1"; repo="$2"; target="$3"
+
+        tmux="${pkgs.tmux}/bin/tmux"
+
+        # Sanitise names out of tmux's session:window.pane target grammar.
+        # (Collection names are free text; a ':' or '.' would corrupt the target.)
+        sess="$(printf '%s' "$session" | tr ':.' '--')"
+        win="$(printf  '%s' "$repo"    | tr ':.' '--')"
+
+        # $left is set ONLY on the two branches that create a window, and stays
+        # empty when the window already existed — that emptiness is what keeps the
+        # layout below from re-splitting a window the user has since rearranged.
+        #
+        # Panes are addressed by pane ID (%N), never by index: pane-base-index is 1
+        # here, and this runs detached where "the active pane" is not a safe
+        # referent. Same technique the nebula-ssh wrapper uses for window ids.
+        left=""
+
+        if ! "$tmux" has-session -t "=$sess" 2>/dev/null; then
+          left="$("$tmux" new-session -d -s "$sess" -n "$win" -c "$target" -P -F '#{pane_id}')"
+        elif ! "$tmux" list-windows -t "=$sess" -F '#W' | grep -qx "$win"; then
+          left="$("$tmux" new-window -d -t "=$sess" -n "$win" -c "$target" -P -F '#{pane_id}')"
+        fi
+
+        # Three panes: left half, right half split top/bottom.
+        #
+        #   +------------------+------------------+
+        #   |                  |       top        |
+        #   |       left       +------------------+
+        #   |                  |      bottom      |
+        #   +------------------+------------------+
+        #
+        # Explicit splits rather than `select-layout main-vertical`: the shape is
+        # main-vertical, but main-pane-width is a global 80 *columns* here that
+        # smug's layouts depend on, so getting 50% out of it would mean either
+        # per-window state or changing that global. Each split carries -c "$target"
+        # so all three panes start in the checkout, and -d so none steals focus.
+        if [ -n "$left" ]; then
+          right="$("$tmux" split-window -d -h -l 50% -t "$left" -c "$target" -P -F '#{pane_id}')"
+          "$tmux" split-window -d -v -l 50% -t "$right" -c "$target"
+          "$tmux" select-pane -t "$left"
+        fi
+
+        "$tmux" switch-client -t "=$sess:$win"
+      '';
+
+      # Reproduces the current working ~/.config/huphop/config.yaml verbatim,
+      # except the multiplex switch_command, which points at the wrapper above
+      # by store path (hermetic — no PATH dependency).
+      hupConfig = {
+        base_dir = "~";
+        clone_pattern_tpl = "{{.BaseDir}}/{{.Short}}.{{.OwnerLower}}/{{.Repo}}";
+        search_strategy= "substring";
+        # Clone colocated: `jj git clone --colocate`, so a real top-level .git
+        # remains and `hup sync` plus every git tool keep working on the checkout.
+        clone_vcs = "jj";
+        providers = [
+          {
+            name = "github";
+            type = "github";
+            short = "gh";
+            username = "mipmip";
+            web_url = "https://github.com";
+            clone_protocol = "ssh";
+            auth = {
+              cli = "gh";
+              env = "HUPHOP_GITHUB_TOKEN";
+            };
+            all_owners = true;
+            include_archived = false;
+            include_forks = true;
+          }
+        ];
+
+        default_mode = "management";
+        modes = {
+          management = {
+            header = [ "breadcrumb" ];
+            footer = [ "filter" "facet_status" "status_message" "position_indicator" "action_menu" ];
+          };
+          multiplex = {
+            header = [ ];
+            footer = [ "switch_hint" "filter" ];
+            switch_command =
+              "'${hup-tmux-switch}/bin/hup-tmux-switch' '{{if .Collection}}col->{{.Collection}}{{else}}{{.Short}}->{{.OwnerLower}}{{end}}' '{{.Repo}}' '{{.Target}}'";
+          };
+        };
+      };
+    in
+    {
+      home.packages = [
+        inputs.huphop.packages."${pkgs.stdenv.hostPlatform.system}".default
+      ];
+
+      xdg.configFile."huphop/config.yaml".source =
+        (pkgs.formats.yaml { }).generate "huphop-config.yaml" hupConfig;
+    };
+}

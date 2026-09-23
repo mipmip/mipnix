@@ -5,6 +5,7 @@
       pkgs.unstable.firefox
       librewolf
       chromium
+      google-chrome
 
     ];
 

@@ -5,12 +5,7 @@ let
   hostname = "harry";
 in
 {
-  flake.modules.nixos.networking-nebula = {...} : {
-    networking.extraHosts =
-      ''
-        192.168.100.7 ${hostname}
-      '';
-  };
+  flake.nebulaNodes.harry = "192.168.100.7";
 
   flake.modules.nixos.harry = { config, pkgs, ... } : {
 
@@ -35,9 +30,10 @@ in
         };
       };
     };
+
     services.nebula.networks.mesh = {
-      cert = config.age.secrets.nebula-lego2-cert.path;
-      key = config.age.secrets.nebula-lego2-key.path;
+      cert = config.age.secrets.nebula-harry-cert.path;
+      key = config.age.secrets.nebula-harry-key.path;
     };
   };
 }

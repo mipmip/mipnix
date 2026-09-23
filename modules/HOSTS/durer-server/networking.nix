@@ -6,12 +6,7 @@ let
 in
 {
 
-  flake.modules.nixos.networking-nebula = {...} : {
-    networking.extraHosts =
-      ''
-        192.168.100.12 ${hostname}
-      '';
-  };
+  flake.nebulaNodes.durer = "192.168.100.12";
 
   flake.modules.nixos.durer = { config, pkgs, ... } : {
 
@@ -49,6 +44,9 @@ in
         };
       };
     };
+    # durer is the second nebula lighthouse (Hetzner, stable public IPv4).
+    mipnix.nebula.isLighthouse = true;
+
     services.nebula.networks.mesh = {
       cert = config.age.secrets."nebula-${hostname}-cert".path;
       key = config.age.secrets."nebula-${hostname}-key".path;

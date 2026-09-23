@@ -56,8 +56,8 @@
     dirty-repo-scanner.url = "github:mipmip/dirty-repo-scanner";
     jjay.url = "github:speclib/jjay";
     teejay.url = "github:mipmip/teejay";
-    specgetty.url = "github:mipmip/specgetty";
-    openspec.url = "github:Fission-AI/OpenSpec";
+    specgetty.url = "github:speclib/specgetty";
+    #openspec.url = "github:Fission-AI/OpenSpec";
     verynix.url = "github:mipmip/verynix";
     rme.url = "github:mipmip/rme";
 
@@ -65,6 +65,36 @@
     mip.url = "github:mipmip/mip.rs";
     hypr-network-manager.url = "github:mipmip/hypr-network-manager";
     fred.url = "github:linden-project/fred";
+    linny-mcp.url = "github:linden-project/linny-mcp-server";
+    linny-mcp.inputs.nixpkgs.follows = "nixpkgs";
+    startaste.url = "github:mipmip/startaste";
+    startaste.inputs.nixpkgs.follows = "nixpkgs";
+    huphop.url = "github:mipmip/huphop";
+    beandex.url = "github:mipmip/beandex";
+
+    # nivis: Terraform/OpenTofu provider resources as first-class Nix values.
+    # Unpinned on purpose — `nix flake update nivis` IS the upgrade procedure, so
+    # the ref has to move; a version tag never would. `follows` keeps it on this
+    # repo's nixpkgs instead of adding a 33rd nixpkgs revision to the lock.
+    nivis.url = "github:nivis-project/nivis";
+    nivis.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Consumed as plain source (its flake only exposes full nixvim configs,
+    # not a bare plugin); built with buildVimPlugin in mipvim.
+    beans-nvim.url = "github:mipmip/beans.nvim";
+    beans-nvim.flake = false;
+
+    # Writing guides for the publication gate, consumed as plain source: both
+    # ship skill files, neither is a flake. humanizer (MIT) is the base for both
+    # languages, being written to be language-neutral; the Dutch guide
+    # (CC-BY-4.0) supplements it. Where either conflicts with our own rules, the
+    # amendments file in ~/.claude/rules wins. See the prose-publication-gate spec.
+    humanizer.url = "github:blader/humanizer";
+    humanizer.flake = false;
+
+    dutch-style-guide.url = "github:lboshuizen/dutch-style-guide";
+    dutch-style-guide.flake = false;
+
     aoe.url = "github:njbrake/agent-of-empires";
 
     voorzetramenshop.url = "git+ssh://git@github.com/mintglasinlood/voorzetramenshop.git";
@@ -92,6 +122,13 @@
 
     deploy-rs.url = "github:serokell/deploy-rs";
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
+
+    # nivis-tunnel: reach a machine that has no inbound port. The agent on a
+    # target and the orchestrator both dial outward to a relay, which pairs them
+    # and copies bytes; Noise runs end to end, so the relay holds no key
+    # material and cannot read what it carries. durer runs the relay.
+    nivis-tunnel.url = "github:nivis-project/nivis-tunnel";
+    nivis-tunnel.inputs.nixpkgs.follows = "nixpkgs";
 
   };
 
@@ -142,6 +179,7 @@
               ];
             };
             extraSpecialArgs = {
+              inherit inputs;
               mipColors = import ./lib/colors.nix;
             };
           };
@@ -165,6 +203,23 @@
         {
           packages.mipvim = nixvim'.makeNixvimWithModule nixvimModule;
           checks.mipvim = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
+
+          # Unit tests for mipbar's pure helpers. widget/displays.ts imports
+          # nothing from GTK or AGS precisely so its arithmetic (scale snapping,
+          # mode deduplication, density) can be tested headless: esbuild strips
+          # the types, node runs the result.
+          checks.mipbar-displays = pkgs.runCommand "mipbar-displays-tests"
+            {
+              nativeBuildInputs = [ pkgs.esbuild pkgs.nodejs ];
+              src = ./packages/mipbar;
+            }
+            ''
+              cp -r $src/. ./mipbar
+              esbuild --bundle ./mipbar/widget/displayInfo.test.ts \
+                --outfile=./tests.js --platform=node --log-level=warning
+              node ./tests.js
+              touch $out
+            '';
 
           devShells.default = pkgs.mkShell {
             buildInputs = [
@@ -194,6 +249,10 @@
               mkdir -p $out/share
               cp -r * $out/share
 
+              # Tests are a build-time check (checks.mipbar-displays), not part
+              # of the shipped bundle.
+              rm -f $out/share/widget/*.test.ts
+
               # Rasterize device illustrations to PNG so the runtime never needs
               # an SVG pixbuf loader. deviceImage() loads these from $SRC/assets.
               for svg in $out/share/assets/*.svg; do
@@ -216,6 +275,35 @@
             mkdir -p $out
             cp -r ${./packages/pimsnel-website}/* $out/
           '';
+
+          # prose-lint: the PostToolUse checker behind ~/.claude/rules. Built as
+          # a store-path executable with the interpreter baked into the shebang,
+          # so the hook never depends on python3 being on PATH the way
+          # SimpleEnglish's hooks depend on node. The filler list is a data file
+          # shared with claude.nix, which renders it into the rule markdown, so
+          # the words have one source of truth.
+          packages.prose-lint = pkgs.runCommand "prose-lint" { } ''
+            mkdir -p $out/bin
+            {
+              echo '#!${pkgs.python3}/bin/python3'
+              cat ${./packages/prose-lint/prose_lint.py}
+            } > $out/bin/prose-lint
+            substituteInPlace $out/bin/prose-lint \
+              --replace-fail '@FILLER_WORDS@' '${./packages/prose-lint/filler-words.json}'
+            chmod +x $out/bin/prose-lint
+          '';
+
+          checks.prose-lint = pkgs.runCommand "prose-lint-tests"
+            {
+              nativeBuildInputs = [ pkgs.python3 ];
+              src = ./packages/prose-lint;
+            }
+            ''
+              cp -r $src/. ./prose-lint
+              cd ./prose-lint
+              python3 test_prose_lint.py
+              touch $out
+            '';
         };
     };
 }

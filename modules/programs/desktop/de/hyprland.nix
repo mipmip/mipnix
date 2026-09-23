@@ -5,6 +5,14 @@
       dconf.enable = true;
       xwayland.enable = true;
 
+      # The screen locker for this session. `enable` is what installs
+      # security.pam.services.hyprlock. NixOS ships default PAM stacks for
+      # swaylock/i3lock/vlock/xlock but NOT for hyprlock, so without this the
+      # locker falls through to /etc/pam.d/other, which is pam_warn + pam_deny
+      # and therefore rejects every password by construction. It also installs
+      # the package, so hyprlock is not listed in systemPackages below.
+      hyprlock.enable = true;
+
       hyprland = {
         enable = true;
         package = pkgs.hyprland;
@@ -17,6 +25,14 @@
     };
 
     security.polkit.enable = true;
+
+    # The machine must never put itself to sleep; sleeping is a deliberate act
+    # (lid close, the suspend keybind, an explicit systemctl suspend). This
+    # matches the systemd default, so it changes nothing today. It is declared
+    # so the property belongs to this repo rather than to an upstream default,
+    # and so it is discoverable next to the lock policy it belongs with.
+    # Idle LOCKING is a separate concern, owned by hypridle (see hypridle.conf).
+    services.logind.settings.Login.IdleAction = "ignore";
 
     # SVG support in GTK apps. This Hyprland session is launched by GDM and does
     # NOT run a full GNOME/KDE session, so nothing sets GDK_PIXBUF_MODULE_FILE
@@ -86,15 +102,22 @@
       pamixer
 
       #hyprland
-      hyprlock
       hyprshot
+
+      # Screenshot annotation, reached from the Bewerken button on the capture
+      # notification (see hypr/scripts/shot-annotate). Its behaviour lives in
+      # satty/config.toml rather than in flags on the command line.
+      satty
       hyprnome
       hyprcursor
       hyprmon
       hyprviz
       rose-pine-hyprcursor
 
-      nwg-displays
+      # nwg-displays removed: it saves by writing ~/.config/hypr/monitors.conf,
+      # which Home Manager installs as a read-only /nix/store symlink, so every
+      # save failed. Monitor geometry is declared in hypr/monitors.conf and
+      # rebuilt; runtime resolution changes live in mipbar's Displays menu.
       swaynotificationcenter
       wpaperd
 
@@ -106,7 +129,17 @@
 
       #ashell  # replaced by mipbar
 
-      swayidle
+      # Idle daemon. Owns the idle timers AND the sleep transition: it holds a
+      # logind sleep inhibitor, which is what lets the session lock BEFORE the
+      # machine goes down rather than after it comes back. Replaces swayidle,
+      # which was only ever wired here for idle timeouts.
+      #
+      # Deliberately NOT services.hypridle.enable: that module's user unit is
+      # WantedBy graphical-session.target, which this session never populates
+      # (no uwsm/systemd integration), so the unit would never start while
+      # looking managed. Started from autostart.conf instead, the same way and
+      # for the same reason as Walker and hyprpolkitagent.
+      hypridle
 
       cliphist
 

@@ -2,6 +2,11 @@
 {
 
   flake.lib = {
+    # Nebula nodes as "<name> <ip>" lines for the tmux SSH host picker. Derived
+    # from the single-source flake.nebulaNodes registry (sorted by name); reads only
+    # literal strings, so no nixosConfigurations eval / inputs.self recursion.
+    nebulaHosts = lib.mapAttrsToList (name: ip: "${name} ${ip}") self.nebulaNodes;
+
     makeHomeConf = {
       nixpkgs-channel ? inputs.nixpkgs,
       username ? "pim",
@@ -76,6 +81,30 @@
 
             inputs.self.modules.nixos.${hostname}
           ];
+      };
+
+    # Build a single deploy-rs node for a host. The node name matches the
+    # nixosConfigurations name (`hostname`); `ip` is the SSH target address.
+    makeDeployNode = {
+      hostname,
+      ip,
+      system ? "x86_64-linux",
+      sshUser ? "pim",
+      autoRollback ? true,
+      magicRollback ? true,
+      ...
+      }:
+      {
+        nodes.${hostname} = {
+          hostname = ip;
+          inherit sshUser autoRollback magicRollback;
+
+          profiles.system = {
+            user = "root";
+            path = inputs.deploy-rs.lib.${system}.activate.nixos
+              self.nixosConfigurations.${hostname};
+          };
+        };
       };
   };
 }
