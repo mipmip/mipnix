@@ -166,6 +166,9 @@ in
   "nebula-doornappel.crt.age".publicKeys = users ++ systems;
   "nebula-doornappel.key.age".publicKeys = users ++ systems;
 
+  "nebula-peterspav.crt.age".publicKeys = users ++ systems;
+  "nebula-peterspav.key.age".publicKeys = users ++ systems;
+
   # Syncthing device identities for the Work pool. A device ID is a hash of the
   # certificate, so these files ARE the pool membership: lose one and that host
   # becomes a different device that every other member has to be told about.
