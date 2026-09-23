@@ -132,4 +132,7 @@ in
 
   "matrix-openclaw-password.age".publicKeys = [pim clawone];
   "voorzetramenshop-env.age".publicKeys = [ pim durer ];
+  "nebula-peterspav.crt.age".publicKeys = users ++ systems;
+  "nebula-peterspav.key.age".publicKeys = users ++ systems;
+
 }
