@@ -6,6 +6,10 @@ in
 
 {
 
+  # Syncthing Work pool membership. The ID is the hash of this host's
+  # certificate in secrets/syncthing-peterspav.crt.age; the two travel together.
+  flake.syncthingDevices.peterspav = "SRBW73T-KLXJZCI-2NJEO7W-ZVPZWBL-2YSCPZY-W4L6PXT-LAX42DV-FZVGSAX";
+
   flake.homeConfigurations = {
 
     "pim@peterspav" = self.lib.makeHomeConf {
@@ -43,7 +47,14 @@ in
       hardware-keychron
       #networking-wifi
 
+      syncthing-work-pool
+
     ];
+
+    # Member of the Work pool: /home/pim/Work is kept in step with the other
+    # members over nebula. This host does NOT back the folder up; dapperehaan
+    # holds the authoritative copy and is the only member that talks to piethein.
+    mipnix.syncthing.pool.enable = true;
 
     # --- Extracted from /etc/nixos/configuration.nix ---
     # Review and remove what is already covered by shared modules above

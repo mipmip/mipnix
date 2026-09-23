@@ -22,6 +22,7 @@ in
 
     "pim@zonnehoed" = self.lib.makeHomeConf {
       inherit hostname;
+      nixpkgs-channel = inputs.nixpkgs-zonnehoed;
     };
   };
 
@@ -30,6 +31,8 @@ in
     zonnehoed = self.lib.makeNixos {
       inherit hostname;
       system = "x86_64-linux";
+      # Pinned independently of the shared nixpkgs — see nixpkgs-zonnehoed in flake.nix.
+      channel = inputs.nixpkgs-zonnehoed;
     };
   };
 

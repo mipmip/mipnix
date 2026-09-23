@@ -70,24 +70,24 @@
       through into the hook path and the script re-detaches itself forever.
 - [x] 4.6 Leave `-i "$file"` alone. The round icon-sized thumbnail is the chosen
       behaviour; the body-image alternative is out of scope.
-- [ ] 4.7 Switch and `hyprctl reload`.
+- [x] 4.7 Switch and `hyprctl reload`.
 
 ## 5. Verify the flow by hand
 
-- [ ] 5.1 `Ctrl+Shift+R`, select a region. Confirm the notification now shows a
+- [x] 5.1 `Ctrl+Shift+R`, select a region. Confirm the notification now shows a
       visible `Bewerken` button below the body.
-- [ ] 5.2 Click the body. Confirm Nautilus opens with the file selected, exactly
+- [x] 5.2 Click the body. Confirm Nautilus opens with the file selected, exactly
       as before, and that no annotation tool opens.
-- [ ] 5.3 Take another. Click `Bewerken`. Confirm satty opens on that capture and
+- [x] 5.3 Take another. Click `Bewerken`. Confirm satty opens on that capture and
       that its window has focus rather than only an urgency hint.
-- [ ] 5.4 Draw a mark and save. Confirm the file at the original path now holds
+- [x] 5.4 Draw a mark and save. Confirm the file at the original path now holds
       the annotated image.
-- [ ] 5.5 Confirm no second file was created in
+- [x] 5.5 Confirm no second file was created in
       `~/Afbeeldingen/Schermafbeeldingen/`.
 - [ ] 5.6 Paste into something that accepts images. Confirm the ANNOTATED image
       is pasted, not the original.
-- [ ] 5.7 Press `Ctrl+Shift+E`. Confirm it reveals the annotated file.
-- [ ] 5.8 `Ctrl+Shift+W` on a window. Confirm the same button appears and the
+- [x] 5.7 Press `Ctrl+Shift+E`. Confirm it reveals the annotated file.
+- [x] 5.8 `Ctrl+Shift+W` on a window. Confirm the same button appears and the
       same flow works.
 
 ## 6. Verify the safety properties

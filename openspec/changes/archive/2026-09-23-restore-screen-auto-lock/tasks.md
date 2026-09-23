@@ -26,19 +26,19 @@
       `/etc/pam.d/other`, which is `pam_warn` + `pam_deny`.
 - [x] 1.2 Remove `hyprlock` from `environment.systemPackages` in the same file.
       `programs.hyprlock.enable` installs the package already.
-- [ ] 1.3 Rebuild `cichorei`. Confirm `/etc/pam.d/hyprlock` now exists and
+- [x] 1.3 Rebuild `cichorei`. Confirm `/etc/pam.d/hyprlock` now exists and
       contains a `pam_unix` auth line.
 
 ## 2. Verify authentication by hand, with an escape hatch
 
-- [ ] 2.1 Open an SSH session to `cichorei` from another machine and leave it
+- [x] 2.1 Open an SSH session to `cichorei` from another machine and leave it
       open. `pkill hyprlock` from there is the way out if the lock screen will
       not accept the password.
-- [ ] 2.2 Press `SUPER+L`. Confirm the account password unlocks the session.
-- [ ] 2.3 While the lock screen is up, observe whether the clock, the date and
+- [x] 2.2 Press `SUPER+L`. Confirm the account password unlocks the session.
+- [x] 2.3 While the lock screen is up, observe whether the clock, the date and
       the `Password...` placeholder render as text or as boxes. Record the
       result; it decides section 6.
-- [ ] 2.4 Confirm an incorrect password does not unlock.
+- [x] 2.4 Confirm an incorrect password does not unlock.
 
 ## 3. Idle and sleep policy
 
@@ -85,9 +85,9 @@
 
 ## 6. Lock screen legibility
 
-- [ ] 6.1 If section 2.3 recorded readable text, close this section as resolved
+- [x] 6.1 If section 2.3 recorded readable text, close this section as resolved
       and record in the bean that the box-glyph symptom no longer reproduces.
-- [ ] 6.2 If boxes still appear, investigate before changing anything: check
+- [x] 6.2 If boxes still appear, investigate before changing anything: check
       whether hyprlock sees fontconfig at all (compare `fc-match "Noto Sans"` in
       the session against what hyprlock resolves), and whether the pango markup
       in the `placeholder_text` is involved. Only then adjust
@@ -95,30 +95,30 @@
 
 ## 7. Verify the whole policy
 
-- [ ] 7.1 Rebuild and reload. Confirm `pgrep hypridle` reports a running daemon.
-- [ ] 7.2 Idle for 10 minutes without touching the machine. Confirm the screen
+- [x] 7.1 Rebuild and reload. Confirm `pgrep hypridle` reports a running daemon.
+- [x] 7.2 Idle for 10 minutes without touching the machine. Confirm the screen
       locks and the machine is still reachable over SSH.
-- [ ] 7.3 Keep idling to 15 minutes. Confirm the display powers down, the
+- [x] 7.3 Keep idling to 15 minutes. Confirm the display powers down, the
       machine is still reachable over SSH, and input brings back the lock screen
       rather than the desktop.
-- [ ] 7.4 Confirm activity before 10 minutes resets the timer and nothing locks.
-- [ ] 7.5 Close the lid, wait for suspend, reopen. Confirm the lock screen is
+- [x] 7.4 Confirm activity before 10 minutes resets the timer and nothing locks.
+- [x] 7.5 Close the lid, wait for suspend, reopen. Confirm the lock screen is
       present and the display is on.
-- [ ] 7.6 Run `loginctl lock-session` from a terminal. Confirm it locks, which
+- [x] 7.6 Run `loginctl lock-session` from a terminal. Confirm it locks, which
       proves the DBus lock verb works for any future caller.
-- [ ] 7.7 Press `SUPER+SHIFT+L`. Confirm the machine locks and then suspends,
+- [x] 7.7 Press `SUPER+SHIFT+L`. Confirm the machine locks and then suspends,
       in that order.
-- [ ] 7.8 Leave the session idle overnight. Confirm in the morning that the
+- [x] 7.8 Leave the session idle overnight. Confirm in the morning that the
       machine is locked and was never suspended (`journalctl -b -u systemd-suspend`
       or `last -x | head` shows no suspend entries).
 
 ## 8. Roll out to the second host
 
-- [ ] 8.1 Rebuild `doornappel` only after section 7 passes on `cichorei`.
-- [ ] 8.2 Repeat 7.1, 7.2 and 7.5 on `doornappel`.
+- [x] 8.1 Rebuild `doornappel` only after section 7 passes on `cichorei`.
+- [x] 8.2 Repeat 7.1, 7.2 and 7.5 on `doornappel`.
 
 ## 9. Close the loop
 
-- [ ] 9.1 Update `.beans/mipnix-nhpf--fix-lock-screen-and-enable-timer-again.md`
+- [x] 9.1 Update `.beans/mipnix-nhpf--fix-lock-screen-and-enable-timer-again.md`
       frontmatter: `status: completed`, refresh `updated_at`, and add the
       `openspec-link` to the archived change.

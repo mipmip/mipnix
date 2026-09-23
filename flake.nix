@@ -7,6 +7,13 @@
     nixpkgs-mama-moving.url = "github:NixOS/nixpkgs/nixos-26.05";
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+
+    # zonnehoed pins its own nixpkgs so it moves independently of the shared one:
+    # `nix flake update nixpkgs` leaves this untouched, and zonnehoed only upgrades
+    # on an explicit `nix flake update nixpkgs-zonnehoed`. Starts on the same branch
+    # as `nixpkgs` (26.05) so the two only diverge once deliberately bumped.
+    nixpkgs-zonnehoed.url = "github:NixOS/nixpkgs/nixos-26.05";
+
     nixpkgs-2511.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-2505.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-inkscape13.url = "github:leiserfg/nixpkgs?ref=staging";

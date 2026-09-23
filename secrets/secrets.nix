@@ -187,4 +187,7 @@ in
   "syncthing-dapperehaan.crt.age".publicKeys = [ pim dapperehaan ];
   "syncthing-dapperehaan.key.age".publicKeys = [ pim dapperehaan ];
 
+  "syncthing-peterspav.crt.age".publicKeys = [ pim peterspav ];
+  "syncthing-peterspav.key.age".publicKeys = [ pim peterspav ];
+
 }

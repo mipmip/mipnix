@@ -1206,6 +1206,22 @@
         "type": "indirect"
       }
     },
+    "nixpkgs-zonnehoed": {
+      "locked": {
+        "lastModified": 1790113641,
+        "narHash": "sha256-D2aaQetafdpHxbwA4ldAxs51UX0b11pXL+JL/5L8VrM=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "1bc55b9def8165e82073919945c3239903fe4dc2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-26.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs_10": {
       "locked": {
         "lastModified": 1780243769,
@@ -1728,6 +1744,7 @@
         "nixpkgs-mama": "nixpkgs-mama",
         "nixpkgs-mama-moving": "nixpkgs-mama-moving",
         "nixpkgs-pine64": "nixpkgs-pine64",
+        "nixpkgs-zonnehoed": "nixpkgs-zonnehoed",
         "nixvim": "nixvim",
         "pre-commit-hooks": "pre-commit-hooks",
         "race": "race",
