@@ -7,13 +7,16 @@ TBD - created by archiving change add-tmux-bind-registry. Update Purpose after a
 
 ### Requirement: Custom tmux bindings are declared once in a registry
 
-The tmux home-manager module SHALL expose a registry of custom key bindings.
+The tmux home-manager module SHALL take its custom key bindings from the
+flake-wide hotkey registry, filtered to the tmux target. The module SHALL NOT
+hold a list of bindings of its own.
+
 Each entry SHALL carry the key, a human-readable description, the tmux command
 to run, and the group it belongs to. From that single declaration the module
 SHALL emit both the `bind` line that binds the key and the entry that appears in
 the help menu, so the two cannot disagree.
 
-The registry SHALL cover only the bindings this configuration declares. tmux
+The tmux target SHALL cover only the bindings this configuration declares. tmux
 defaults, bindings from `tmux-sensible`, the tmux defaults that the gpakosz
 `_apply_bindings` pass rewrites in place, and bindings a tmux plugin makes for
 itself SHALL NOT appear in it.
@@ -31,6 +34,19 @@ itself SHALL NOT appear in it.
 - **WHEN** a new binding is added to the registry
 - **THEN** it SHALL appear in the help menu without any further change
 - **AND** no list of bindings SHALL exist anywhere else in the module
+
+#### Scenario: A binding added elsewhere reaches tmux
+
+- **WHEN** a module other than the tmux module contributes an entry targeting
+  tmux
+- **THEN** that binding SHALL be bound and SHALL appear in the help menu
+- **AND** the tmux module SHALL NOT have been edited
+
+#### Scenario: The same declaration reaches the cheatsheets
+
+- **WHEN** a tmux binding is registered
+- **THEN** it SHALL also appear in the generated cheatsheet files
+- **AND** no tmux binding SHALL be described a second time anywhere
 
 #### Scenario: Foreign bindings are not listed
 
@@ -130,8 +146,9 @@ on tmux itself SHALL form another.
 
 ### Requirement: Registered bindings keep their current behaviour
 
-Moving the existing bindings into the registry SHALL NOT change what any key
-does. Each key SHALL stay bound to the command it is bound to today.
+Moving the existing bindings out of the module-local list and into the
+flake-wide registry SHALL NOT change what any key does. Each key SHALL stay
+bound to the command it is bound to today.
 
 #### Scenario: Every existing key is unchanged
 
@@ -143,6 +160,12 @@ does. Each key SHALL stay bound to the command it is bound to today.
 
 - **WHEN** the module is inspected after the change
 - **THEN** `beans-tui-popup`, `nebula-ssh` and `drs-switch` SHALL be unchanged
+
+#### Scenario: The menu is unchanged
+
+- **WHEN** `prefix + ?` is opened after the change
+- **THEN** the same bindings SHALL be listed, in the same groups, with the same
+  separator and the same accelerators as before, plus the new cheatsheet entry
 
 ### Requirement: Registry values that would corrupt tmux command syntax are handled
 

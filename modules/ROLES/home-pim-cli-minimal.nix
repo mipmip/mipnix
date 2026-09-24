@@ -12,6 +12,7 @@ inputs,
       pim-fzf
 
       pim-tmux
+      pim-keyb
       pim-shellstuff-cli
 
       pim-shared-shell-aliases

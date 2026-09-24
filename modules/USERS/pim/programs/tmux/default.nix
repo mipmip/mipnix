@@ -98,103 +98,18 @@ inputs,
         "''$tmux" switch-client -t "''$win"
       '';
 
-      # ---- custom bindings registry ---------------------------------------
-      #
-      # A binding is declared once here and emitted twice: as the `bind` line
-      # that binds the key, and as an entry in the `prefix + ?` menu. Both
-      # emitters read the same fields, so the menu cannot drift from the keys.
-      #
-      # `group` splits the menu: "tools" launches an application, "tmux" nudges
-      # tmux itself, and a separator is drawn between the two.
-      #
-      # Only bindings this config declares belong here. tmux's own defaults,
-      # tmux-sensible, and the defaults that gpakosz's `_apply_bindings` pass
-      # rewrites in place stay out, as does `u` (urlview): the plugin binds that
-      # key itself from an async `run-shell` with its own store paths, so
-      # listing it would mean copying plugin internals and racing the plugin.
-      customBinds = [
-        { group = "tools"; key = "S";   desc = "smug session picker";
-          cmd = "popup -E smg"; }
-        { group = "tools"; key = "G";   desc = "huphop repo switcher";
-          cmd = "popup -E -w 80% -h 80% 'hup tui --mode multiplex --flatlist --filter'"; }
-        { group = "tools"; key = "T";   desc = "tj pane watchlist";
-          cmd = "popup -E -w 80% -h 80% 'tj --columns --sort-activity --no-sound --no-notify --picker'"; }
-        { group = "tools"; key = "B";   desc = "beans task TUI";
-          cmd = "popup -E -d '#{pane_current_path}' -w 90% -h 90% 'beans-tui-popup'"; }
-        { group = "tools"; key = "D";   desc = "beandex, beans across repos";
-          cmd = "popup -E -w 90% -h 90% 'beandex'"; }
-        { group = "tools"; key = "H";   desc = "nebula host ssh";
-          cmd = "popup -E -w 60% -h 60% 'nebula-ssh'"; }
-        { group = "tools"; key = "R";   desc = "dirty repo scanner";
-          cmd = "popup -E -w 80% -h 80% 'drs --multiplex'"; }
-        { group = "tools"; key = "P";   desc = "shell at the pane path";
-          cmd = "display-popup -d '#{pane_current_path}'"; }
-        # No wrapper: spg walks up from its working directory for openspec/ and
-        # offers its project picker when there is none, so nothing flashes past
-        # in a directory that has no project.
-        { group = "tools"; key = "A";   desc = "specgetty, openspec projects";
-          cmd = "popup -E -d '#{pane_current_path}' -w 90% -h 90% 'spg'"; }
+      # Custom bindings come from the flake-wide hotkey registry, filtered to
+      # the tmux target; they are declared in binds.nix beside this file. The
+      # same declaration emits the `bind` lines, the `prefix + ?` menu and the
+      # cheatsheets, so none of the three can drift from the others. Escaping,
+      # padding and the description rules that tmux fails silently on live in
+      # flake.lib.hotkeys.
+      hk = inputs.self.lib.hotkeys;
 
-        { group = "tmux";  key = "s";   desc = "session and window tree";
-          cmd = "choose-tree -sZ -O name"; }
-        { group = "tmux";  key = "Tab"; desc = "last window";
-          cmd = "last-window"; }
-        { group = "tmux";  key = ";";   desc = "last pane, zoomed";
-          cmd = "last-pane -Z"; }
-        { group = "tmux";  key = "b";   desc = "toggle the status bar";
-          cmd = ''run-shell "tmux setw -g status \$(tmux show -g -w status | grep -q off && echo on || echo off)"''; }
-        { group = "tmux";  key = "O";   desc = "open the pane path in files";
-          cmd = "run-shell 'nohup open #{pane_current_path} >/dev/null 2>&1 &'"; }
-      ];
+      bindLines = hk.toTmuxBinds inputs.self.hotkeys;
 
-      # Two descriptions tmux cannot represent, both failing silently rather
-      # than loudly, so they are caught here instead:
-      #   - a leading `-` is parsed as a flag, and is also tmux's marker for an
-      #     unselectable entry;
-      #   - an apostrophe closes the single-quoted menu name early, which
-      #     swallows the entries after it.
-      checkedBinds =
-        let
-          bad = lib.filter
-            (b: lib.hasPrefix "-" b.desc || lib.hasInfix "'" b.desc)
-            customBinds;
-        in if bad == [ ]
-           then customBinds
-           else throw ("tmux bind registry: description for key "
-                       + (lib.head bad).key
-                       + " must not start with '-' or contain an apostrophe");
+      bindsMenu = hk.toTmuxMenu inputs.self.hotkeys;
 
-      # `;` is tmux's command separator and has to arrive escaped. `\;` is right
-      # for a bind line; in the menu's key column only the single-quoted `'\;'`
-      # form survives. Bare `;`, `\;`, `';'`, `";"` and `"\;"` all truncate the
-      # display-menu command at that argument, silently dropping every entry
-      # after it. Measured on tmux 3.6a, see the change's design.md.
-      escKey = key: if key == ";" then "\\;" else key;
-
-      bindLine = b: "bind ${escKey b.key} ${b.cmd}";
-
-      # Keys are padded so the descriptions line up in the menu.
-      padKey = key:
-        let n = 5 - builtins.stringLength key;
-        in key + lib.concatStrings (lib.genList (_: " ") (if n > 0 then n else 1));
-
-      # display-menu takes (name, key, command) triples, and renders a lone
-      # empty name as a separator line. The command goes in a `{ }` block so
-      # tmux keeps it verbatim: several of these carry `#{pane_current_path}`,
-      # which a double-quoted argument would expand once at config-parse time
-      # and freeze to whatever pane was current then.
-      menuItem = b: "'${padKey b.key}${b.desc}' '${escKey b.key}' { ${b.cmd} }";
-
-      inGroup = g: lib.filter (b: b.group == g) checkedBinds;
-
-      bindLines = lib.concatMapStringsSep "\n" bindLine checkedBinds;
-
-      bindsMenu =
-        "bind ? display-menu -T ' custom bindings ' -x C -y C \\\n  "
-        + lib.concatStringsSep " \\\n  "
-            ((map menuItem (inGroup "tools"))
-             ++ [ "''" ]
-             ++ (map menuItem (inGroup "tmux")));
     in
     {
     home.file = {
@@ -265,8 +180,8 @@ inputs,
 
         unbind C-a
 
-        # Every custom binding below comes from the registry in the `let` block
-        # above, which also generates the `prefix + ?` menu listing them.
+        # Every custom binding below comes from the hotkey registry (binds.nix),
+        # which also generates the `prefix + ?` menu listing them.
         ${bindLines}
 
         # Replaces tmux's raw `list-keys` on `?` with a navigable menu of the

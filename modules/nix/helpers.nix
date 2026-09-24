@@ -2,6 +2,12 @@
 {
 
   flake.lib = {
+    # Selectors, renderers and emitters for the flake.hotkeys registry. Kept
+    # beside the registry rather than inside any consumer, so that a schema
+    # change is one library edit and never a change inside six application
+    # modules. Reads literal strings only, like nebulaHosts above.
+    hotkeys = import ../../lib/hotkeys.nix { inherit lib; };
+
     # Nebula nodes as "<name> <ip>" lines for the tmux SSH host picker. Derived
     # from the single-source flake.nebulaNodes registry (sorted by name); reads only
     # literal strings, so no nixosConfigurations eval / inputs.self recursion.
@@ -40,7 +46,11 @@
 
         pkgs = import nixpkgs-channel {
           inherit system;
-          #overlays = [ (import ../overlays) ];
+          # Tools that nixpkgs does not carry, keyb among them. A standalone
+          # home configuration builds its own package set, so the overlay that
+          # NixOS hosts get through modules/nix/channels.nix has to be applied
+          # here as well.
+          overlays = [ inputs.self.overlays.tools ];
           config.allowUnfree = true;
         };
         extraSpecialArgs = {

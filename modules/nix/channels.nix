@@ -11,6 +11,7 @@
 
         inputs.self.overlays.apps
         inputs.self.overlays.fonts
+        inputs.self.overlays.tools
 
         (final: _prev: {
           unstable = initChannel inputs.unstable final;

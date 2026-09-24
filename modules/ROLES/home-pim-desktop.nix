@@ -31,6 +31,9 @@ inputs,
       pim-nautilus-copy-path
       pim-satty
 
+      pim-rbw
+      pim-ragenx
+
       pim-shellstuff-desktop
 
     ];

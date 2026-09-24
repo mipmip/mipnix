@@ -1684,6 +1684,29 @@
         "type": "github"
       }
     },
+    "ragenx": {
+      "inputs": {
+        "agenix": [
+          "agenix"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1788256523,
+        "narHash": "sha256-zjPQk5rlLVYvojexKE/IYAeG2hxh+CWQr4Rtd9fTSYA=",
+        "owner": "torreirow",
+        "repo": "ragenx",
+        "rev": "7534bc9b0d950a249848e8a1fe6ccd470bcfa756",
+        "type": "github"
+      },
+      "original": {
+        "owner": "torreirow",
+        "repo": "ragenx",
+        "type": "github"
+      }
+    },
     "rme": {
       "inputs": {
         "nixpkgs": "nixpkgs_16"
@@ -1748,6 +1771,7 @@
         "nixvim": "nixvim",
         "pre-commit-hooks": "pre-commit-hooks",
         "race": "race",
+        "ragenx": "ragenx",
         "rme": "rme",
         "skull": "skull",
         "specgetty": "specgetty",

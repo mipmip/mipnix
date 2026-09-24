@@ -3,7 +3,50 @@ inputs,
 ...
 }:
 {
-  flake.modules.homeManager.pim-hyprland = { pkgs, lib, ... }: {
+  flake.modules.homeManager.pim-hyprland = { pkgs, lib, ... }:
+    let
+      # binds.conf is generated from the hotkey registry (binds.nix beside this
+      # file), so a Hyprland key is declared once and reaches the compositor,
+      # the myhotkeys sheet and the keyb sheet from that one declaration.
+      #
+      # Only the bindings are generated. $mainMod belongs to this file because
+      # nothing else defines it, and the commented-out examples below are kept
+      # verbatim: they are notes about bindings that are not in force, which the
+      # registry has nothing to say about.
+      bindsConf = pkgs.writeText "hypr-binds.conf" ''
+        ###################
+        ### KEYBINDINGS ###
+        ###################
+
+        # See https://wiki.hypr.land/Configuring/Keywords/
+        #
+        # GENERATED from modules/USERS/pim/programs/hyprland/binds.nix.
+        # Edit the registry, not this file.
+
+        $mainMod = SUPER # Sets "Windows" key as main modifier
+
+        ${inputs.self.lib.hotkeys.toHyprland inputs.self.hotkeys}
+
+        # Example special workspace (scratchpad)
+        #bind = $mainMod, S, togglespecialworkspace, magic
+        #bind = $mainMod SHIFT, S, movetoworkspace, special:magic
+
+        #bindm = Control_L SHIFT, left, movewindow
+        #bindm = Control_L SHIFT, right, movewindow
+
+        ## Noctalia Shell IPC keybindings
+        #bind = $mainMod, A, exec, noctalia-shell ipc launcher
+        #bind = $mainMod SHIFT, E, exec, noctalia-shell ipc session-menu
+        #bind = $mainMod, V, exec, noctalia-shell ipc volume
+
+        ## Requires playerctl
+        #bindl = , XF86AudioNext, exec, playerctl next
+        #bindl = , XF86AudioPause, exec, playerctl play-pause
+        #bindl = , XF86AudioPlay, exec, playerctl play-pause
+        #bindl = , XF86AudioPrev, exec, playerctl previous
+      '';
+    in
+    {
 
     # Reload Hyprland after home-manager links new config files, so monitor/
     # keybind/etc. changes apply deterministically on `home-manager switch`.
@@ -33,6 +76,7 @@ inputs,
         source = ./scripts;
         recursive = true;
       };
+      ".config/hypr/binds.conf".source = bindsConf;
     };
 
     programs.hm-ricing-mode.apps.hypr = {

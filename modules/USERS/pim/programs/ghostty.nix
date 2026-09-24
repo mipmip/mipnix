@@ -3,6 +3,18 @@ inputs,
 ...
 }:
 {
+  # Ghostty keybindings, declared once and rendered into ghostty's own key
+  # spelling by the emitter: `Return` becomes `enter`, and the letters are
+  # lowercased.
+  flake.hotkeys = [
+    { kind = "chord"; app = "Ghostty"; target = "ghostty"; scopes = [ "terminal" ];
+      mods = [ "ctrl" "shift" ]; key = "C"; action = "copy_to_clipboard";
+      desc = "Copy to clipboard"; }
+    { kind = "chord"; app = "Ghostty"; target = "ghostty"; scopes = [ "terminal" ];
+      mods = [ "ctrl" "shift" ]; key = "V"; action = "paste_from_clipboard";
+      desc = "Paste from clipboard"; }
+  ];
+
   flake.modules.homeManager.pim-ghostty = {
     programs.hm-ricing-mode.apps.ghostty = {
       dest_dir = ".config/ghostty";
@@ -25,10 +37,7 @@ inputs,
         mouse-hide-while-typing = true;
         copy-on-select = "clipboard";
         gtk-tabs-location = "hidden";
-        keybind = [
-          "ctrl+shift+c=copy_to_clipboard"
-          "ctrl+shift+v=paste_from_clipboard"
-        ];
+        keybind = inputs.self.lib.hotkeys.toGhostty inputs.self.hotkeys;
       };
     };
   };
