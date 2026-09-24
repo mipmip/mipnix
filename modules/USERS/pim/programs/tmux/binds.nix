@@ -51,6 +51,28 @@
       action = "popup -E -d '#{pane_current_path}' -w 90% -h 90% 'spg'"; }
 
     { kind = "prefixed"; app = "tmux"; target = "tmux"; scopes = [ "terminal" ];
+      group = "tools"; key = "F"; desc = "float the pane in a popup";
+      action = "run-shell -b 'tmux-float toggle'"; }
+
+    # `f` stays tmux's find-window -Z, which is worth more than the mnemonic.
+    #
+    # The width keys are conditional: they act only while the popup's own
+    # client is attached to the float session, and fall through to what they
+    # were bound to otherwise. `+` had nothing, `-` had tmux's delete-buffer.
+    #
+    # Both are kept out of the prefix + ? menu. They do nothing outside the
+    # float, so a flat list would invite firing them for no effect, and a menu
+    # row for `-` would be rendered dim and unselectable anyway, because the row
+    # name begins with the key.
+    { kind = "prefixed"; app = "tmux"; target = "tmux"; scopes = [ "terminal" ];
+      group = "tmux"; key = "+"; desc = "float wider"; menu = false;
+      action = ''if -F '#{==:#{session_name},_float}' "run-shell -b 'tmux-float resize +10'"''; }
+
+    { kind = "prefixed"; app = "tmux"; target = "tmux"; scopes = [ "terminal" ];
+      group = "tmux"; key = "-"; desc = "float narrower"; menu = false;
+      action = ''if -F '#{==:#{session_name},_float}' "run-shell -b 'tmux-float resize -10'" delete-buffer''; }
+
+    { kind = "prefixed"; app = "tmux"; target = "tmux"; scopes = [ "terminal" ];
       group = "tmux"; key = "s"; desc = "session and window tree";
       action = "choose-tree -sZ -O name"; }
 

@@ -403,7 +403,7 @@ let
   # separator drawn between the groups.
   toTmuxMenu = entries:
     let
-      bound = forTarget "tmux" entries;
+      bound = lib.filter (e: e.menu) (forTarget "tmux" entries);
       inGroup = g: lib.filter (e: e.group == g) bound;
     in
     "bind ? display-menu -T ' custom bindings ' -x C -y C \\\n  "
@@ -457,7 +457,11 @@ let
   # fine everywhere else.
   targetRules = {
     tmux = entry:
-      lib.optional (entry.desc != null && lib.hasPrefix "-" entry.desc)
+      lib.optional (entry.menu && entry.key != null && lib.hasPrefix "-" entry.key)
+        ("${entryLabel entry}: a menu row's name begins with its key, and tmux "
+         + "renders a name beginning with '-' as dim and unselectable. Set "
+         + "menu = false for this binding.")
+      ++ lib.optional (entry.desc != null && lib.hasPrefix "-" entry.desc)
         "${entryLabel entry}: a tmux description must not start with '-'"
       ++ lib.optional (entry.desc != null && lib.hasInfix "'" entry.desc)
         "${entryLabel entry}: a tmux description must not contain an apostrophe";

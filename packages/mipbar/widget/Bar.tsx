@@ -6,6 +6,7 @@ import Workspaces from "./Workspaces"
 import Screenshare from "./Screenshare"
 import Camera from "./Camera"
 import SshKey from "./SshKey"
+import Caffeine from "./Caffeine"
 import Minimized from "./Minimized"
 import AllWindows from "./AllWindows"
 import Tray from "./Tray"
@@ -54,6 +55,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
           <Minimized />
           <AllWindows />
           <SshKey />
+          <Caffeine />
           <Displays />
           <SystemMonitor />
           <QuickSettings />

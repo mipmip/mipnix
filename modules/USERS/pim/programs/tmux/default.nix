@@ -98,6 +98,12 @@ inputs,
         "''$tmux" switch-client -t "''$win"
       '';
 
+      # Launcher for the `prefix + F` float toggle and the `+` / `-` width keys.
+      # Kept as a file rather than an inline string: it is long enough that the
+      # `''${}` escaping a Nix indented string needs would obscure the shell.
+      tmux-float = pkgs.writeShellScriptBin "tmux-float"
+        (builtins.readFile ./float.sh);
+
       # Custom bindings come from the flake-wide hotkey registry, filtered to
       # the tmux target; they are declared in binds.nix beside this file. The
       # same declaration emits the `bind` lines, the `prefix + ?` menu and the
@@ -124,6 +130,7 @@ inputs,
       beans-tui-popup
       nebula-ssh
       drs-switch
+      tmux-float
     ];
 
     programs.tmux = {

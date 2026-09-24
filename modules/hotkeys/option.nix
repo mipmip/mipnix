@@ -141,6 +141,20 @@ let
         description = "Sub-grouping within a target, used by the tmux menu.";
       };
 
+      menu = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = ''
+          Whether this entry belongs in the menu its target generates. Set it
+          false for a binding that only means something in a context the menu
+          cannot represent, such as a key that acts only while a popup is open:
+          a flat list invites the reader to fire it, and firing it does nothing.
+
+          Independent of `document`. An entry kept out of the menu still reaches
+          the cheatsheets unless it is undocumented as well.
+        '';
+      };
+
       document = lib.mkOption {
         type = lib.types.bool;
         default = true;

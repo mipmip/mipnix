@@ -107,6 +107,22 @@ window.Bar {
       -gtk-icon-size: 16px;
     }
 
+    &.Caffeine {
+      > button > label {
+        font-size: 1.1em;
+      }
+
+      // Amber while awake is being held, grey when idle behaves normally, the
+      // same on/off cue the other indicators use.
+      &.on > button > label {
+        color: #eed49f;
+      }
+
+      &.off > button > label {
+        color: #6e738d;
+      }
+    }
+
     &.SshKey {
       // Only style the bar glyph, not labels inside the popover.
       > button > label {
