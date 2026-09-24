@@ -33,7 +33,7 @@ in
     };
   };
 
-  flake.modules.nixos.doornappel = { config, pkgs, ... } : {
+  flake.modules.nixos.doornappel = { config, pkgs, lib, ... } : {
     system.stateVersion = "25.11";
 
     imports = with inputs.self.modules.nixos; [
@@ -90,6 +90,9 @@ in
   };
 
   console.keyMap = "nl";
+
+  boot.initrd.systemd.contents."/etc/vconsole.conf".source =
+    lib.mkForce (pkgs.writeText "vconsole.conf" "KEYMAP=us\n");
 
   services.printing.enable = true;
 
