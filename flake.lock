@@ -883,11 +883,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789423870,
-        "narHash": "sha256-6RklG4YjdhJTSKybo+JcKiNWJqLWwIJavDZ2dyYA9jA=",
+        "lastModified": 1790343046,
+        "narHash": "sha256-1XXiliphVJLhoLfS2KSseUkJzXgggMzRM72OA56mqFM=",
         "owner": "nivis-project",
         "repo": "nivis",
-        "rev": "8d2004c4dbd85769dd3a281ef905b9f5e58b4b52",
+        "rev": "85fc04ff3c1b86ba587bc0275fe770a96fba20f2",
         "type": "github"
       },
       "original": {
@@ -1823,11 +1823,11 @@
         "nixpkgs": "nixpkgs_19"
       },
       "locked": {
-        "lastModified": 1790149218,
-        "narHash": "sha256-z3f0dO23WNvObAG8ph5w9LM6YjdTY0q9f5CgWDL4eL0=",
+        "lastModified": 1790156600,
+        "narHash": "sha256-gdEtHOA4ccraj8Ihhp8c05LwfiB0CKcwvJfEfDLmX+U=",
         "owner": "speclib",
         "repo": "specgetty",
-        "rev": "4cc38c6a90e50d77b07ae470e2ccb151b33b3b1a",
+        "rev": "0637c937d3f89ace046717ed906a6ddffd1b4132",
         "type": "github"
       },
       "original": {
