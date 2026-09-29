@@ -1,8 +1,16 @@
 {
   "mfa": {
-    "enabled": true
+    "enabled": true,
+    "totp_script": "rbw code \"AWS Technative\"",
+    "profile_scripts": {
+      "wa-snel-wasnel-main": "rbw code \"AWS SNEL mipmip\""
+    },
+    "copy_command": "wl-copy",
+    "paste_command": "wl-paste"
   },
   "console": {
-    "firefox_containers": true
+    "firefox_containers": true,
+    "chrome_profiles": false,
+    "chrome_binary": "chromium"
   }
 }
