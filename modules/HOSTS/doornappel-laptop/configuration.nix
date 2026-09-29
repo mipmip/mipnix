@@ -48,6 +48,7 @@ in
 
       system-trusted-pim
       secrets-honeybadger
+      nix-github-token
 
       hardware-keychron
       #networking-wifi

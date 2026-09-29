@@ -8,6 +8,7 @@ inputs,
       extraOptions = ''
         experimental-features = nix-command flakes
         keep-failed = true
+        !include /home/pim/.config/nix/access-tokens.conf
       '';
 
       package = pkgs.nixVersions.stable;

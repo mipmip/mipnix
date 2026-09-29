@@ -136,7 +136,7 @@ in
 
   "openai-api-key-plain-mama.key.age".publicKeys = users ++ systems;
 
-  "ghi-token.age".publicKeys = users; ## should configure ghi in home manager
+  "ghi-token.age".publicKeys = users ++ personal_laptops;
 
   "nebula-dapperehaan.crt.age".publicKeys = users ++ systems;
   "nebula-dapperehaan.key.age".publicKeys = users ++ systems;
