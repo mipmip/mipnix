@@ -43,6 +43,7 @@ in
       role-desktop-pim
       role-nebula-node
       system-trusted-pim
+      secrets-honeybadger
 
       hardware-keychron
       #networking-wifi

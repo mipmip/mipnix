@@ -35,6 +35,12 @@ let
     peterspav
   ];
 
+  personal_laptops = [
+    cichorei
+    doornappel
+    peterspav
+  ];
+
 in
 {
 
@@ -42,6 +48,8 @@ in
   "openai-api-key-plain.age".publicKeys = [ pim ] ++ trusted_systems;
   "kagi-api-key-plain.age".publicKeys = users ++ systems;
   "tavily-api-key-plain.age".publicKeys = [ pim ] ++ trusted_systems;
+
+  "honeybadger-conf.age".publicKeys = [ pim ] ++ personal_laptops;
 
   "bedrock-annemarie-api-keys-env.age".publicKeys = [
     pim

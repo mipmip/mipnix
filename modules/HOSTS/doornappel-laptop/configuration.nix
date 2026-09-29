@@ -47,6 +47,7 @@ in
 
 
       system-trusted-pim
+      secrets-honeybadger
 
       hardware-keychron
       #networking-wifi
