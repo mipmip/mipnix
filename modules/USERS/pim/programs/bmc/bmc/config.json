@@ -1,10 +1,6 @@
 {
   "mfa": {
     "enabled": true,
-    "totp_script": "rbw code \"AWS TechNative\"",
-    "profile_scripts": {
-      "wa-snel-wasnel-main": "rbw code \"AWS SNEL mipmip\""
-    },
     "copy_command": "wl-copy",
     "paste_command": "wl-paste"
   },
