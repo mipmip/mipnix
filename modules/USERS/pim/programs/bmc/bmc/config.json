@@ -2,7 +2,12 @@
   "mfa": {
     "enabled": true,
     "copy_command": "wl-copy",
-    "paste_command": "wl-paste"
+    "paste_command": "wl-paste",
+
+    "totp_script": "rbw code \"AWS TechNative\"",
+    "profile_scripts": {
+      "wasnel": "rbw code \"AWS SNEL mipmip\""
+    },
   },
   "console": {
     "firefox_containers": true,
