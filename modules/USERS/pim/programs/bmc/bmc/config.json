@@ -7,7 +7,7 @@
     "totp_script": "rbw code \"AWS TechNative\"",
     "profile_scripts": {
       "wasnel": "rbw code \"AWS SNEL mipmip\""
-    },
+    }
   },
   "console": {
     "firefox_containers": true,
