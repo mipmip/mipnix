@@ -8,6 +8,7 @@
         open-sans
         inter
         clear-sans
+        (google-fonts.override { fonts = [ "Hind" ]; })
         rubik
         lato
         cinzel
