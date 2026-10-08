@@ -22,71 +22,78 @@ inputs,
       };
     };
 
-    xdg.desktopEntries = {
-
-      st = {
-        name           = "st";
-        comment        = "st suckless terminal";
-        genericName    = "st terminal";
-        exec           = "st";
-        categories     = [ "TerminalEmulator" ];
-        terminal       = false;
-        startupNotify  = true;
-        type           = "Application";
-        icon           = "org.gnome.Console";
-        settings       = {
-          Keywords = "shell;prompt;command;commandline;cmd;";
-          StartupWMClass = "xterm-256color";
-        };
+    xdg = {
+      mimeApps.enable = true;
+      mimeApps.defaultApplications = {
+        "application/pdf" = [ "org.pwmt.zathura.desktop" ];
       };
 
-      gvim = {
-        name           = "gvim";
-        comment        = "Edit text files";
-        genericName    = "Text editor";
-        exec           = "gvim --remote-tab-silent %F";
-        categories     = [
-          "Utility"
-          "TextEditor"
-        ];
-        terminal       = false;
-        startupNotify  = true;
-        type           = "Application";
-        icon           = "gvim";
-        settings       = {
-          Keywords = "Text;editor;";
-        };
-      };
+      desktopEntries = {
 
-      firefox-extra = {
-        name           = "Firefox Extra";
-        comment        = "Extra Firefox with other icon";
-        genericName    = "Extra Web Browser";
-        exec           = "firefox";
-        categories     = [ "Network" ];
-        terminal       = false;
-        startupNotify  = true;
-        type           = "Application";
-        icon           = "ffextra";
-        settings       = {
-          Keywords = "browser;";
-          StartupWMClass = "ffextra";
+        st = {
+          name           = "st";
+          comment        = "st suckless terminal";
+          genericName    = "st terminal";
+          exec           = "st";
+          categories     = [ "TerminalEmulator" ];
+          terminal       = false;
+          startupNotify  = true;
+          type           = "Application";
+          icon           = "org.gnome.Console";
+          settings       = {
+            Keywords = "shell;prompt;command;commandline;cmd;";
+            StartupWMClass = "xterm-256color";
+          };
         };
-      };
 
-      quiqr-desktop = {
-        name           = "Quiqr Desktop";
-        comment        = "Quiqr Desktop";
-        genericName    = "quiqr desktop";
-        exec           = "st";
-        categories     = [ "TerminalEmulator" ];
-        terminal       = false;
-        startupNotify  = true;
-        type           = "Application";
-        icon           = "org.quiqr.quiqr-desktop";
-        settings       = {
-          Keywords = "shell;prompt;command;commandline;cmd;";
-          StartupWMClass = "quiqr";
+        gvim = {
+          name           = "gvim";
+          comment        = "Edit text files";
+          genericName    = "Text editor";
+          exec           = "gvim --remote-tab-silent %F";
+          categories     = [
+            "Utility"
+            "TextEditor"
+          ];
+          terminal       = false;
+          startupNotify  = true;
+          type           = "Application";
+          icon           = "gvim";
+          settings       = {
+            Keywords = "Text;editor;";
+          };
+        };
+
+        firefox-extra = {
+          name           = "Firefox Extra";
+          comment        = "Extra Firefox with other icon";
+          genericName    = "Extra Web Browser";
+          exec           = "firefox";
+          categories     = [ "Network" ];
+          terminal       = false;
+          startupNotify  = true;
+          type           = "Application";
+          icon           = "ffextra";
+          settings       = {
+            Keywords = "browser;";
+            StartupWMClass = "ffextra";
+          };
+        };
+
+        quiqr-desktop = {
+          name           = "Quiqr Desktop";
+          comment        = "Quiqr Desktop";
+          genericName    = "quiqr desktop";
+          exec           = "st";
+          categories     = [ "TerminalEmulator" ];
+          terminal       = false;
+          startupNotify  = true;
+          type           = "Application";
+          icon           = "org.quiqr.quiqr-desktop";
+          settings       = {
+            Keywords = "shell;prompt;command;commandline;cmd;";
+            StartupWMClass = "quiqr";
+          };
         };
       };
     };
