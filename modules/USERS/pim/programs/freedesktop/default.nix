@@ -26,6 +26,9 @@ inputs,
       mimeApps.enable = true;
       mimeApps.defaultApplications = {
         "application/pdf" = [ "org.pwmt.zathura.desktop" ];
+        "image/png" = [ "org.gnome.Loupe.desktop" ];
+        "image/jpg" = [ "org.gnome.Loupe.desktop" ];
+        "image/jpeg" = [ "org.gnome.Loupe.desktop" ];
       };
 
       desktopEntries = {
