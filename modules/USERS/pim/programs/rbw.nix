@@ -1,6 +1,6 @@
 { ... }:
 {
-  flake.modules.homeManager.pim-rbw = { pkgs, ... }: {
+  flake.modules.homeManager.pim-rbw = { config, pkgs, ... }: {
 
     # rbw, an unofficial Bitwarden CLI. ragenx reads the ssh key it hands to
     # agenix out of rbw, so the two travel together.
@@ -15,6 +15,19 @@
         lock_timeout = 7200;
         pinentry = pkgs.pinentry-tty;
       };
+    };
+
+    systemd.user.services.rbw-agent = {
+      Unit = {
+        Description = "rbw agent, the unlock daemon for the Bitwarden CLI";
+        PartOf = [ "default.target" ];
+      };
+      Service = {
+        Type = "simple";
+        ExecStart = "${config.programs.rbw.package}/bin/rbw-agent --no-daemonize";
+        Restart = "on-failure";
+      };
+      Install.WantedBy = [ "default.target" ];
     };
   };
 }
