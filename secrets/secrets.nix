@@ -169,8 +169,8 @@ in
 
   # restic backups to piethein — shared across the backup source hosts.
   # Keep an OFFLINE copy of both: a dead host cannot decrypt its own secrets.
-  "restic-ssh-key.age".publicKeys = [ pim cichorei hurry durer zonnehoed dapperehaan ];
-  "restic-repo-pw.age".publicKeys = [ pim cichorei hurry durer zonnehoed dapperehaan ];
+  "restic-ssh-key.age".publicKeys = [ pim cichorei hurry durer zonnehoed dapperehaan stinkie ];
+  "restic-repo-pw.age".publicKeys = [ pim cichorei hurry durer zonnehoed dapperehaan stinkie ];
 
   # Backrest UI login credential: base64(bcrypt(password)). Only dapperehaan (+ pim).
   "backrest-auth.age".publicKeys = [ pim dapperehaan ];
