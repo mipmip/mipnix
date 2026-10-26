@@ -6,7 +6,7 @@ import { getThemeCss } from "./theme"
 import {
   startNotificationCapture,
   stopNotificationCapture,
-} from "./state/lastNotification"
+} from "./state/notifications"
 import Bar from "./widget/Bar"
 
 function isDark(): boolean {

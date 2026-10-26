@@ -3,7 +3,11 @@ export type NotificationAction = {
   label: string
 }
 
-export type LastNotification = {
+export type NotificationRecord = {
+  key: string
+  id: number
+  caller: string
+  cookie: number
   appName: string
   appIcon: string
   summary: string
@@ -13,12 +17,24 @@ export type LastNotification = {
   receivedAt: number
 }
 
+export type NotifyReply = {
+  caller: string
+  cookie: number
+  id: number
+}
+
+export const MAX_NOTIFICATIONS = 50
+
 type Hint = {
   data?: unknown
 }
 
 function text(value: unknown): string {
   return typeof value === "string" ? value : ""
+}
+
+function count(value: unknown, fallback: number): number {
+  return typeof value === "number" && Number.isFinite(value) ? value : fallback
 }
 
 export function isAbsolutePath(value: string): boolean {
@@ -44,23 +60,23 @@ function parseActions(raw: unknown): NotificationAction[] {
   return actions
 }
 
-function actionIds(notification: LastNotification): Set<string> {
+function actionIds(notification: NotificationRecord): Set<string> {
   return new Set(notification.actions.map((action) => action.id))
 }
 
-export function isScreenshot(notification: LastNotification): boolean {
+export function isScreenshot(notification: NotificationRecord): boolean {
   const ids = actionIds(notification)
   return ids.has("default") && ids.has("annotate")
 }
 
 export function screenshotPath(
-  notification: LastNotification,
+  notification: NotificationRecord,
   fallback: string,
 ): string {
   return isAbsolutePath(notification.image) ? notification.image : fallback
 }
 
-export function themedIcon(notification: LastNotification): string | null {
+export function themedIcon(notification: NotificationRecord): string | null {
   if (notification.image !== "" && !isAbsolutePath(notification.image)) {
     return notification.image
   }
@@ -70,10 +86,17 @@ export function themedIcon(notification: LastNotification): string | null {
   return null
 }
 
+function payloadData(message: Record<string, unknown>): unknown[] | null {
+  const payload = message.payload
+  if (payload === null || typeof payload !== "object") return null
+  const data = (payload as { data?: unknown }).data
+  return Array.isArray(data) ? data : null
+}
+
 export function parseNotifyLine(
   line: string,
   now: number = Date.now(),
-): LastNotification | null {
+): NotificationRecord | null {
   if (!line.includes('"member":"Notify"')) return null
   if (!line.includes('"interface":"org.freedesktop.Notifications"')) return null
 
@@ -90,11 +113,12 @@ export function parseNotifyLine(
   if (entry.member !== "Notify") return null
   if (entry.interface !== "org.freedesktop.Notifications") return null
 
-  const payload = entry.payload
-  if (payload === null || typeof payload !== "object") return null
-  const data = (payload as { data?: unknown }).data
-  if (!Array.isArray(data) || data.length < 8) return null
+  const data = payloadData(entry)
+  if (data === null || data.length < 8) return null
 
+  const caller = text(entry.sender)
+  const cookie = count(entry.cookie, 0)
+  const replacesId = count(data[1], 0)
   const appName = text(data[0])
   const appIcon = text(data[2])
   const summary = text(data[3])
@@ -108,6 +132,10 @@ export function parseNotifyLine(
     (isAbsolutePath(appIcon) ? appIcon : "")
 
   return {
+    key: `${caller}:${cookie}:${now}`,
+    id: replacesId,
+    caller,
+    cookie,
     appName,
     appIcon,
     summary,
@@ -115,6 +143,35 @@ export function parseNotifyLine(
     image,
     actions,
     receivedAt: now,
+  }
+}
+
+export function parseNotifyReply(line: string): NotifyReply | null {
+  if (!line.includes('"reply_cookie"')) return null
+
+  let message: unknown
+  try {
+    message = JSON.parse(line)
+  } catch {
+    return null
+  }
+  if (message === null || typeof message !== "object") return null
+
+  const entry = message as Record<string, unknown>
+  if (entry.type !== "method_return") return null
+
+  const cookie = entry.reply_cookie
+  if (typeof cookie !== "number" || !Number.isFinite(cookie)) return null
+
+  const data = payloadData(entry)
+  if (data === null || data.length === 0) return null
+  const id = data[0]
+  if (typeof id !== "number" || !Number.isInteger(id) || id < 0) return null
+
+  return {
+    caller: text(entry.destination),
+    cookie,
+    id,
   }
 }
 
@@ -159,8 +216,10 @@ export function relativeTime(then: number, now: number = Date.now()): string {
   return days === 1 ? "1 dag geleden" : `${days} dagen geleden`
 }
 
-export function serializeNotification(notification: LastNotification): string {
-  return JSON.stringify(notification)
+export function serializeNotifications(
+  notifications: NotificationRecord[],
+): string {
+  return JSON.stringify(notifications)
 }
 
 function isAction(value: unknown): value is NotificationAction {
@@ -169,7 +228,17 @@ function isAction(value: unknown): value is NotificationAction {
   return typeof action.id === "string" && typeof action.label === "string"
 }
 
-export function isLastNotification(value: unknown): value is LastNotification {
+function isStoredNotification(
+  value: unknown,
+): value is Record<string, unknown> & {
+  appName: string
+  appIcon: string
+  summary: string
+  body: string
+  image: string
+  actions: NotificationAction[]
+  receivedAt: number
+} {
   if (value === null || typeof value !== "object") return false
   const notification = value as Record<string, unknown>
   return (
@@ -185,25 +254,58 @@ export function isLastNotification(value: unknown): value is LastNotification {
   )
 }
 
-export function parseCache(value: string): LastNotification | null {
+function toRecord(
+  notification: Record<string, unknown> & {
+    appName: string
+    appIcon: string
+    summary: string
+    body: string
+    image: string
+    actions: NotificationAction[]
+    receivedAt: number
+  },
+  index: number,
+): NotificationRecord {
+  const receivedAt = notification.receivedAt
+  return {
+    key:
+      typeof notification.key === "string" && notification.key !== ""
+        ? notification.key
+        : `${receivedAt}-${index}`,
+    id: count(notification.id, 0),
+    caller:
+      typeof notification.caller === "string" ? notification.caller : "",
+    cookie: count(notification.cookie, 0),
+    appName: notification.appName,
+    appIcon: notification.appIcon,
+    summary: notification.summary,
+    body: notification.body,
+    image: notification.image,
+    actions: notification.actions.map((action) => ({
+      id: action.id,
+      label: action.label,
+    })),
+    receivedAt,
+  }
+}
+
+export function parseCache(value: string): NotificationRecord[] {
   let parsed: unknown
   try {
     parsed = JSON.parse(value)
   } catch {
-    return null
+    return []
   }
-  if (!isLastNotification(parsed)) return null
 
-  return {
-    appName: parsed.appName,
-    appIcon: parsed.appIcon,
-    summary: parsed.summary,
-    body: parsed.body,
-    image: parsed.image,
-    actions: parsed.actions.map((action) => ({
-      id: action.id,
-      label: action.label,
-    })),
-    receivedAt: parsed.receivedAt,
+  const entries = Array.isArray(parsed) ? parsed : [parsed]
+  const notifications: NotificationRecord[] = []
+
+  for (let index = 0; index < entries.length; index++) {
+    const entry = entries[index]
+    if (!isStoredNotification(entry)) continue
+    notifications.push(toRecord(entry, index))
+    if (notifications.length >= MAX_NOTIFICATIONS) break
   }
+
+  return notifications
 }

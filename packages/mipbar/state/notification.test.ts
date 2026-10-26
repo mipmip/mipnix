@@ -2,12 +2,13 @@ import {
   isScreenshot,
   parseCache,
   parseNotifyLine,
+  parseNotifyReply,
   plainText,
   relativeTime,
   screenshotPath,
-  serializeNotification,
+  serializeNotifications,
   themedIcon,
-  type LastNotification,
+  type NotificationRecord,
 } from "./notification"
 
 let checks = 0
@@ -37,13 +38,26 @@ function group(name: string, body: () => void): void {
 }
 
 const NOW = 1792767879570
+const SENDER = ":1.100"
+const COOKIE = 42
 
-function notifyLine(data: unknown[]): string {
+function notifyLine(data: unknown[], sender = SENDER, cookie = COOKIE): string {
   return JSON.stringify({
     type: "method_call",
+    sender,
+    cookie,
     interface: "org.freedesktop.Notifications",
     member: "Notify",
     payload: { type: "susssasa{sv}i", data },
+  })
+}
+
+function replyLine(caller: string, cookie: number, id: number): string {
+  return JSON.stringify({
+    type: "method_return",
+    destination: caller,
+    reply_cookie: cookie,
+    payload: { type: "u", data: [id] },
   })
 }
 
@@ -67,25 +81,37 @@ const screenshot = parseNotifyLine(
   NOW,
 )
 
+const shot = screenshot as NotificationRecord
+
 group("parseNotifyLine", () => {
   ok(screenshot !== null, "screenshot line parses")
-  eq(screenshot?.appName, "Hyprshot", "application name")
-  eq(screenshot?.summary, "Schermafbeelding opgeslagen", "summary")
-  eq(screenshot?.body, "2026-10-23-120000_hyprshot.png", "body")
+  eq(shot.appName, "Hyprshot", "application name")
+  eq(shot.summary, "Schermafbeelding opgeslagen", "summary")
+  eq(shot.body, "2026-10-23-120000_hyprshot.png", "body")
   eq(
-    screenshot?.image,
+    shot.image,
     "/home/pim/Pictures/Screenshots/2026-10-23-120000_hyprshot.png",
     "image path hint",
   )
   eq(
-    screenshot?.actions,
+    shot.actions,
     [
       { id: "default", label: "Tonen" },
       { id: "annotate", label: "Bewerken" },
     ],
     "actions",
   )
-  eq(screenshot?.receivedAt, NOW, "arrival time")
+  eq(shot.receivedAt, NOW, "arrival time")
+  eq(shot.id, 0, "new notification has no replaces id")
+  eq(shot.caller, SENDER, "caller")
+  eq(shot.cookie, COOKIE, "cookie")
+  eq(shot.key, `${SENDER}:${COOKIE}:${NOW}`, "record key")
+
+  const replaced = parseNotifyLine(
+    notifyLine(["App", 7, "", "summary", "", [], {}, 0], SENDER, 43),
+    NOW,
+  )
+  eq(replaced?.id, 7, "replaces id")
 
   eq(
     parseNotifyLine(
@@ -98,13 +124,7 @@ group("parseNotifyLine", () => {
     null,
     "non-Notify message",
   )
-  eq(
-    parseNotifyLine(
-      '{"type":"method_return","member":"Notify","interface":"org.freedesktop.Notifications"}',
-    ),
-    null,
-    "Notify reply",
-  )
+  eq(parseNotifyLine(replyLine(SENDER, COOKIE, 293)), null, "Notify reply")
   eq(
     parseNotifyLine(
       '{"member":"Notify","interface":"org.freedesktop.Notifications"',
@@ -122,14 +142,41 @@ group("parseNotifyLine", () => {
     null,
     "wrong member after substring",
   )
+  eq(
+    parseNotifyLine(
+      notifyLine(["App", 0, "", "summary", "body", [], {}]),
+    ),
+    null,
+    "too few arguments",
+  )
+})
+
+group("parseNotifyReply", () => {
+  eq(
+    parseNotifyReply(replyLine(SENDER, COOKIE, 293)),
+    { caller: SENDER, cookie: COOKIE, id: 293 },
+    "notification id",
+  )
+  eq(parseNotifyReply('{"type":"method_return"'), null, "truncated reply")
+  eq(parseNotifyReply(notifyLine([])), null, "call is not a reply")
+  eq(
+    parseNotifyReply(
+      JSON.stringify({
+        type: "method_return",
+        destination: SENDER,
+        reply_cookie: COOKIE,
+        payload: { type: "u", data: ["293"] },
+      }),
+    ),
+    null,
+    "non-numeric id",
+  )
 })
 
 group("screenshot detection", () => {
-  ok(screenshot !== null && isScreenshot(screenshot), "action pair is a screenshot")
+  ok(isScreenshot(shot), "action pair is a screenshot")
   eq(
-    screenshot === null
-      ? null
-      : screenshotPath(screenshot, "/home/pim/.cache/hyprshot/last"),
+    screenshotPath(shot, "/home/pim/.cache/hyprshot/last"),
     "/home/pim/Pictures/Screenshots/2026-10-23-120000_hyprshot.png",
     "uses the notification path",
   )
@@ -178,38 +225,27 @@ group("screenshot detection", () => {
   )
 
   const oddActions = parseNotifyLine(
-    notifyLine([
-      "App",
-      0,
-      "",
-      "summary",
-      "",
-      ["default"],
-      {},
-      0,
-    ]),
+    notifyLine(["App", 0, "", "summary", "", ["default"], {}, 0]),
     NOW,
   )
   eq(oddActions?.actions, [], "odd action list is ignored")
-  ok(oddActions !== null && !isScreenshot(oddActions), "incomplete action pair is no screenshot")
+  ok(
+    oddActions !== null && !isScreenshot(oddActions),
+    "incomplete action pair is no screenshot",
+  )
 })
 
 group("icons", () => {
   const absoluteIcon = parseNotifyLine(
-    notifyLine([
-      "App",
-      0,
-      "/tmp/app-icon.png",
-      "summary",
-      "",
-      [],
-      {},
-      0,
-    ]),
+    notifyLine(["App", 0, "/tmp/app-icon.png", "summary", "", [], {}, 0]),
     NOW,
   )
   eq(absoluteIcon?.image, "/tmp/app-icon.png", "absolute app icon is the image")
-  eq(absoluteIcon === null ? null : themedIcon(absoluteIcon), null, "absolute icon is not themed")
+  eq(
+    absoluteIcon === null ? null : themedIcon(absoluteIcon),
+    null,
+    "absolute icon is not themed",
+  )
 
   const alias = parseNotifyLine(
     notifyLine([
@@ -271,25 +307,34 @@ group("relativeTime", () => {
 })
 
 group("cache", () => {
-  const encoded = serializeNotification(screenshot as LastNotification)
-  eq(parseCache(encoded), screenshot, "round trip")
-  eq(parseCache('{"appName":"App"'), null, "truncated cache")
-  eq(parseCache("{}"), null, "incomplete cache")
-  eq(
-    parseCache(
-      JSON.stringify({
-        appName: "App",
-        appIcon: "",
-        summary: "summary",
-        body: "",
-        image: "",
-        actions: [{ id: "default" }],
-        receivedAt: NOW,
-      }),
-    ),
-    null,
-    "action without label",
-  )
+  const encoded = serializeNotifications([shot])
+  eq(parseCache(encoded), [shot], "round trip")
+  eq(parseCache(JSON.stringify(shot)), [shot], "legacy single record")
+  eq(parseCache('{"appName":"App"'), [], "truncated cache")
+  eq(parseCache("{}"), [], "incomplete cache")
+  eq(parseCache("[]"), [], "empty cache")
+  eq(parseCache(encoded).length, 1, "one record")
+
+  const many = Array.from({ length: 60 }, (_, index) => ({
+    ...shot,
+    key: `key-${index}`,
+    summary: `summary ${index}`,
+    receivedAt: NOW + index,
+  }))
+  eq(parseCache(serializeNotifications(many)).length, 50, "cache is capped")
+  eq(parseCache(serializeNotifications(many))[0].summary, "summary 0", "cache keeps order")
+
+  const invalid = JSON.parse(encoded)
+  invalid.push({
+    appName: "App",
+    appIcon: "",
+    summary: "summary",
+    body: "",
+    image: "",
+    actions: [{ id: "default" }],
+    receivedAt: NOW,
+  })
+  eq(parseCache(JSON.stringify(invalid)).length, 1, "invalid entry is dropped")
 })
 
 console.log(

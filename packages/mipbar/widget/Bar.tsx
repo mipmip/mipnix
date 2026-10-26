@@ -14,7 +14,7 @@ import SystemMonitor from "./SystemMonitor"
 import Displays from "./Displays"
 import WindowTitle from "./WindowTitle"
 import QuickSettings from "./QuickSettings"
-import LastNotification from "./LastNotification"
+import Notifications from "./Notifications"
 
 export default function Bar(gdkmonitor: Gdk.Monitor) {
   const time = createPoll("", 60000, 'bash -c \'LC_TIME=nl_NL.UTF-8 date +"W%V · %a %-d %b · %H:%M"\'')
@@ -45,7 +45,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
         </box>
         <box $type="end" halign={Gtk.Align.END}>
           <Tray />
-          <LastNotification />
+          <Notifications />
           <menubutton>
             <label label={time} />
             <popover>

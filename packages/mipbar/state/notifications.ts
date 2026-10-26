@@ -3,14 +3,18 @@ import GLib from "gi://GLib"
 import { createState } from "ags"
 import { subprocess } from "ags/process"
 import {
+  MAX_NOTIFICATIONS,
   parseCache,
   parseNotifyLine,
-  serializeNotification,
-  type LastNotification,
+  parseNotifyReply,
+  serializeNotifications,
+  type NotificationRecord,
+  type NotifyReply,
 } from "./notification"
 
 const CACHE_DIR = `${GLib.get_user_cache_dir()}/mipbar`
-const CACHE_FILE = `${CACHE_DIR}/last-notification.json`
+const CACHE_FILE = `${CACHE_DIR}/notifications.json`
+const LEGACY_CACHE_FILE = `${CACHE_DIR}/last-notification.json`
 const LAST_CAPTURE = `${GLib.get_user_cache_dir()}/hyprshot/last`
 const HYPR_SCRIPTS = `${GLib.get_user_config_dir()}/hypr/scripts`
 
@@ -35,17 +39,12 @@ function readText(path: string): string | null {
   }
 }
 
-function readCache(): LastNotification | null {
-  const content = readText(CACHE_FILE)
-  return content === null ? null : parseCache(content)
-}
-
-function writeCache(notification: LastNotification | null): void {
+function writeCache(notifications: NotificationRecord[]): void {
   try {
     GLib.mkdir_with_parents(CACHE_DIR, 0o700)
     const target = Gio.File.new_for_path(CACHE_FILE)
 
-    if (notification === null) {
+    if (notifications.length === 0) {
       if (target.query_exists(null)) target.delete(null)
       return
     }
@@ -58,7 +57,7 @@ function writeCache(notification: LastNotification | null): void {
       null,
     )
     stream.write_all(
-      new TextEncoder().encode(serializeNotification(notification)),
+      new TextEncoder().encode(serializeNotifications(notifications)),
       null,
     )
     stream.close(null)
@@ -68,16 +67,68 @@ function writeCache(notification: LastNotification | null): void {
   }
 }
 
+function readCache(): NotificationRecord[] {
+  const current = readText(CACHE_FILE)
+  if (current !== null) return parseCache(current)
+
+  const legacy = readText(LEGACY_CACHE_FILE)
+  if (legacy === null) return []
+
+  const migrated = parseCache(legacy)
+  writeCache(migrated)
+
+  try {
+    const file = Gio.File.new_for_path(LEGACY_CACHE_FILE)
+    if (file.query_exists(null)) file.delete(null)
+  } catch {}
+
+  return migrated
+}
+
 export function lastCapturePath(): string {
   return readText(LAST_CAPTURE)?.trim() ?? ""
 }
 
-export const [lastNotification, setLastNotification] =
-  createState<LastNotification | null>(readCache())
+export const [notifications, setNotifications] = createState<
+  NotificationRecord[]
+>(readCache())
 
-export function clearLastNotification(): void {
-  setLastNotification(null)
-  writeCache(null)
+const pending = new Map<string, string>()
+
+function publish(list: NotificationRecord[]): void {
+  const capped = list.slice(0, MAX_NOTIFICATIONS)
+  setNotifications(capped)
+  writeCache(capped)
+}
+
+function add(record: NotificationRecord): void {
+  const current = notifications.get()
+  const kept =
+    record.id > 0 ? current.filter((item) => item.id !== record.id) : current
+  publish([record, ...kept])
+
+  if (record.id === 0) {
+    pending.set(`${record.caller}:${record.cookie}`, record.key)
+  }
+}
+
+function assignId(reply: NotifyReply): void {
+  const pendingKey = `${reply.caller}:${reply.cookie}`
+  const key = pending.get(pendingKey)
+  if (key === undefined) return
+
+  pending.delete(pendingKey)
+  const current = notifications.get()
+  if (!current.some((item) => item.key === key)) return
+
+  publish(
+    current.map((item) => (item.key === key ? { ...item, id: reply.id } : item)),
+  )
+}
+
+export function clearNotifications(): void {
+  pending.clear()
+  publish([])
 }
 
 let monitor: ReturnType<typeof subprocess> | null = null
@@ -101,9 +152,13 @@ export function startNotificationCapture(): void {
       CAPTURE_COMMAND,
       (line) => {
         const notification = parseNotifyLine(line)
-        if (notification === null) return
-        setLastNotification(notification)
-        writeCache(notification)
+        if (notification !== null) {
+          add(notification)
+          return
+        }
+
+        const reply = parseNotifyReply(line)
+        if (reply !== null) assignId(reply)
       },
       (line) => console.error(`mipbar: notification capture: ${line}`),
     )
