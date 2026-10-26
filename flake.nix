@@ -245,6 +245,19 @@
               touch $out
             '';
 
+          checks.mipbar-last-notification = pkgs.runCommand "mipbar-last-notification-tests"
+            {
+              nativeBuildInputs = [ pkgs.esbuild pkgs.nodejs ];
+              src = ./packages/mipbar;
+            }
+            ''
+              cp -r $src/. ./mipbar
+              esbuild --bundle ./mipbar/state/notification.test.ts \
+                --outfile=./tests.js --platform=node --log-level=warning
+              node ./tests.js
+              touch $out
+            '';
+
           devShells.default = pkgs.mkShell {
             buildInputs = [
               (inputs.ags.packages.${system}.default.override {
@@ -276,6 +289,7 @@
               # Tests are a build-time check (checks.mipbar-displays), not part
               # of the shipped bundle.
               rm -f $out/share/widget/*.test.ts
+              rm -f $out/share/state/*.test.ts
 
               # Rasterize device illustrations to PNG so the runtime never needs
               # an SVG pixbuf loader. deviceImage() loads these from $SRC/assets.

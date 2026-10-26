@@ -18,9 +18,9 @@
 - [x] 3.1 Start the inhibit and verify `systemd-inhibit --list` shows an entry with `mipbar` as the holder, `idle` as what, and `block` as the mode
 - [x] 3.2 Verify logind's `BlockInhibited` property reads `idle` while the inhibit is held
 - [x] 3.3 Stop the inhibit and verify `BlockInhibited` returns to empty and no `mipbar` entry remains listed
-- [ ] 3.4 Turn keep-awake on, leave the session untouched past 10 minutes, and verify the screen does not lock
-- [ ] 3.5 Leave it untouched past 15 minutes and verify the display stays powered
-- [ ] 3.6 Turn keep-awake off and verify the screen locks at the usual threshold again
+- [x] 3.4 Turn keep-awake on, leave the session untouched past 10 minutes, and verify the screen does not lock
+- [x] 3.5 Leave it untouched past 15 minutes and verify the display stays powered
+- [x] 3.6 Turn keep-awake off and verify the screen locks at the usual threshold again
 
 ## 4. What it must not affect
 

@@ -3,6 +3,10 @@ import { exec, execAsync } from "ags/process"
 import { subprocess } from "ags/process"
 import style from "./style.scss"
 import { getThemeCss } from "./theme"
+import {
+  startNotificationCapture,
+  stopNotificationCapture,
+} from "./state/lastNotification"
 import Bar from "./widget/Bar"
 
 function isDark(): boolean {
@@ -35,6 +39,8 @@ app.start({
     // Apply initial theme
     app.apply_css(getThemeCss(isDark()))
 
+    startNotificationCapture()
+
     // Watch for color scheme changes
     subprocess(
       "gsettings monitor org.gnome.desktop.interface color-scheme",
@@ -47,6 +53,7 @@ app.start({
       () => {
         // External monitor added — restart to pick it up
         setTimeout(() => {
+          stopNotificationCapture()
           execAsync("bash -c 'mipbar &'")
           app.quit()
         }, 3000)
@@ -60,6 +67,7 @@ app.start({
 
       if (!hasExternal) {
         // External gone — all bars become stale, restart for laptop bar
+        stopNotificationCapture()
         execAsync("bash -c 'sleep 0.5 && mipbar &'")
         app.quit()
       }
