@@ -141,6 +141,10 @@ in
 
   "ghi-token.age".publicKeys = users ++ personal_laptops;
 
+  # japi wifi PSK, consumed by networking.networkmanager.ensureProfiles
+  # on stinkie. Only pim (to rekey) and stinkie (to use it) need it.
+  "wifi-japi-psk.age".publicKeys = [ pim stinkie ];
+
   "nebula-dapperehaan.crt.age".publicKeys = users ++ systems;
   "nebula-dapperehaan.key.age".publicKeys = users ++ systems;
 

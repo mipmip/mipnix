@@ -1,11 +1,32 @@
+{ inputs, ... }:
 {
-...
-}:
-{
-  flake.modules.nixos.stinkie = { config, ... }: {
+  flake.modules.nixos.stinkie = { config, pkgs, ... }:
+  let
+    # immich 3.1.0, taken from the flake's already-locked `unstable` input.
+    #
+    # The pinned channel (26.05) ships 2.7.5, which upstream has declared end of
+    # life and nixpkgs now marks insecure (CVE-2026-59258, CVE-2026-82272), so
+    # it refuses to evaluate and blocks every rebuild of this host.
+    #
+    # Only the package comes from unstable. The NixOS module stays on the pinned
+    # channel: the two differ by six lines (a doc change on `host`, and a dropped
+    # MPLCONFIGDIR workaround) and their option sets are identical. postgresql
+    # and vectorchord also stay pinned, and vectorchord is 1.1.1 on both
+    # channels, which is what the database already runs, so no extension
+    # migration is involved.
+    #
+    # immich migrates its own schema on first start. That is one-way: rolling the
+    # system closure back to 2.7.5 would leave a database it cannot read, so
+    # deploy-rs magic rollback does not cover it. Take a pg_dumpall first.
+    unstablePkgs = import inputs.unstable {
+      inherit (pkgs.stdenv.hostPlatform) system;
+      config.allowUnfree = true;
+    };
+  in {
 
     services.immich = {
       enable = true;
+      package = unstablePkgs.immich;
 
       # Media lives on the LUKS disk, never on a network share. The directory
       # has to exist with the right owner before the service starts, because the
