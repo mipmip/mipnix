@@ -1,4 +1,0 @@
-schema: spec-driven
-created: 2026-10-16
-goal: Pin opencode 2 from the upstream flake, with the src override its build
-  needs, and migrate the v2 config keys
