@@ -1,0 +1,4 @@
+schema: spec-driven
+created: 2026-10-16
+goal: Move the shop to v1.studio-mint.shop, follow the repo rename, and host the
+  two new static sites on the apex, www and v2

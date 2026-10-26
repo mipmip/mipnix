@@ -1,0 +1,4 @@
+schema: spec-driven
+created: 2026-10-16
+goal: Make the commands, global context and writing rules a single nix source of
+  truth serving both Claude Code and opencode
