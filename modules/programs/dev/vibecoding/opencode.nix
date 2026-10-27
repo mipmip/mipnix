@@ -3,27 +3,51 @@
     let
       agentRules = import ./_agent-rules.nix { inherit lib; };
 
-      # opencode 2, pinned to a tag of anomalyco/opencode in flake.nix. See the
-      # comment on the input for why it does not follow this repository's
-      # nixpkgs.
+      opencodeUnwrapped =
+        inputs.unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.opencode;
+
+      # opencode keeps the OAuth credential in its database, not in auth.json,
+      # so @mellena1/opencode-go-usage cannot find it on its own. This script
+      # copies the active row's access token to $XDG_RUNTIME_DIR on every start.
       #
-      # The `src` override is load-bearing, not cosmetic. Upstream's
-      # nix/node_modules.nix builds its source with a fileset that omits the
-      # repository-root `script/` directory, while packages/cli/script/build.ts
-      # imports `../../../script/native-arch` from it, so the upstream flake
-      # cannot build its own CLI:
+      # It encodes opencode's auth schema: the `credential` table, the
+      # `integration_id`/`active` columns, and the `access` field of the JSON
+      # `value`. A future opencode that moves any of those makes the extraction
+      # come up empty, which hides the widget and leaves opencode working.
       #
-      #   error: Cannot find module '../../../script/native-arch'
-      #          from '/build/source/packages/cli/script/build.ts'
-      #
-      # Replacing `src` on the final derivation hands the build the unpruned
-      # flake source. The fixed-output node_modules derivation keeps its own
-      # pruned source, which is right: `bun install` reads bun.lock and
-      # package.json and has no use for `script/`. Re-test on every tag bump;
-      # if upstream repairs the fileset this becomes redundant and can go.
-      opencode =
-        inputs.opencode.packages.${pkgs.stdenv.hostPlatform.system}.opencode
-          .overrideAttrs (_: { src = inputs.opencode; });
+      # Every failure exits 0 with no file: a missing runtime directory, an
+      # absent database, no active row, or JSON without an access token.
+      extractGoUsageToken = pkgs.writeShellScript "opencode-go-usage-token" ''
+        token_file="''${XDG_RUNTIME_DIR:-}/opencode-go-key"
+
+        [ -n "''${XDG_RUNTIME_DIR:-}" ] || exit 0
+        rm -f "$token_file" 2>/dev/null || exit 0
+
+        database="''${XDG_DATA_HOME:-$HOME/.local/share}/opencode/opencode.db"
+        [ -r "$database" ] || exit 0
+
+        access="$(${pkgs.sqlite}/bin/sqlite3 -readonly "$database" \
+          "select value from credential where integration_id = 'opencode' and active = 1 limit 1" \
+          2>/dev/null | ${pkgs.jq}/bin/jq -r '.access // empty' 2>/dev/null)"
+        [ -n "$access" ] || exit 0
+
+        umask 077
+        temporary="$token_file.tmp.$$"
+        { printf '%s' "$access" > "$temporary"; } 2>/dev/null || { rm -f "$temporary" 2>/dev/null; exit 0; }
+        mv -f "$temporary" "$token_file" 2>/dev/null || rm -f "$temporary" 2>/dev/null
+        exit 0
+      '';
+
+      # makeBinaryWrapper has no --run, so the extraction needs a shell wrapper
+      # around the binary wrapper that nixpkgs already puts on the executable.
+      opencode = pkgs.symlinkJoin {
+        name = "opencode-${opencodeUnwrapped.version}-with-go-usage";
+        paths = [ opencodeUnwrapped ];
+        nativeBuildInputs = [ pkgs.makeWrapper ];
+        postBuild = ''
+          wrapProgram $out/bin/opencode --run ${lib.escapeShellArg (toString extractGoUsageToken)}
+        '';
+      };
     in
     {
     programs.opencode = {
@@ -65,12 +89,18 @@
 
         # Not "auto". A store-installed binary cannot replace itself, and
         # upstream's wrapper, unlike the nixpkgs one, does not set
-        # OPENCODE_DISABLE_AUTOUPDATE. Updating is a tag change in flake.nix.
+        # OPENCODE_DISABLE_AUTOUPDATE. Updating is `nix flake update unstable`.
         update = "disable";
 
         plugins = [
           "@tarquinen/opencode-dcp@latest"
           "@mohak34/opencode-notifier@latest"
+          "${inputs.opencode-beans.packages.${pkgs.stdenv.hostPlatform.system}.default}/plugins/beans-stats"
+          "${inputs.opencode-openspec-sidepanel.packages.${pkgs.stdenv.hostPlatform.system}.default}/plugins/openspec-stats"
+          {
+            package = "@mellena1/opencode-go-usage@latest";
+            options.apiKey = "{file:{env:XDG_RUNTIME_DIR}/opencode-go-key}";
+          }
         ];
         providers = {
           anthropic = {

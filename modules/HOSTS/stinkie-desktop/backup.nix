@@ -37,12 +37,21 @@ let
       cleanupCommand = "rm -f /var/backups/restic/immich.sql";
     };
 
-    # The external library and immich's own managed tree, both under the one
-    # mount. Thumbnails and transcodes are regenerable and add churn, but they
-    # dedupe well and excluding them would reintroduce exactly the per-file
-    # reasoning this split is meant to avoid.
+    # Named explicitly rather than backing up the whole /mnt/immich-data mount,
+    # because the mount also holds cathalijne-archief: 295 GB synced from
+    # piethein for a second immich user. Those originals already live on the NAS
+    # under /volume1/CathalijneArchief, nothing uploads into that tree, and
+    # including it would roughly quadruple this repo to re-store files the NAS
+    # already has. The backup role has no exclude option, so the exclusion is
+    # expressed by listing what to include.
+    #
+    # Anything added under /mnt/immich-data later is therefore NOT backed up
+    # until it is named here.
     stinkie-immich-media = {
-      paths = [ "/mnt/immich-data" ];
+      paths = [
+        "/mnt/immich-data/immich"             # managed: thumbs, transcodes, uploads
+        "/mnt/immich-data/aperture-originals" # pim's photos
+      ];
       keep = [
         "--keep-hourly" "24" "--keep-daily" "7" "--keep-weekly" "5"
         "--keep-monthly" "12" "--keep-yearly" "9999"

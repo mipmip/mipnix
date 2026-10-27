@@ -59,3 +59,21 @@ current prefixes until it is restarted.
 - **WHEN** the picker connects to a host whose tmux server was started without
   the marker
 - **THEN** the server SHALL keep its existing prefixes until it is restarted
+
+### Requirement: Second prefix visible in the status bar
+
+A tmux server started with `NEBULA_TMUX=1` SHALL show the additional prefix key
+in its status bar next to the primary prefix key. A server started without that
+marker SHALL continue to show only the primary prefix key. The marker server
+SHALL use 👻 as its leading status-bar marker; a server without it SHALL keep 🤠.
+
+#### Scenario: Popup server shows both prefixes
+
+- **WHEN** the remote server was started from the popup and accepts `C-s` as
+  `prefix2`
+- **THEN** its status bar SHALL show both `C-a` and `C-s`, with 👻 as its marker
+
+#### Scenario: Direct server shows only the primary prefix
+
+- **WHEN** the server was started from a direct ssh shell or the console
+- **THEN** its status bar SHALL show `C-a` without `C-s`, with 🤠 as its marker

@@ -59,14 +59,34 @@ in
     boot.loader.systemd-boot.enable = true;
     boot.loader.efi.canTouchEfiVariables = true;
 
-    # The GTX 1050 driver survives the desktop removal because immich's
-    # machine-learning worker wants CUDA. videoDrivers is what gates the whole
-    # nvidia module in nixpkgs, not services.xserver.enable, so listing it here
-    # with X switched off is the supported headless form.
+    # The GTX 1050 driver survives the desktop removal for NVENC transcoding,
+    # and for CUDA once a card and an onnxruntime that can use it are in place.
+    # videoDrivers is what gates the whole nvidia module in nixpkgs, not
+    # services.xserver.enable, so listing it here with X switched off is the
+    # supported headless form.
     hardware.graphics.enable = true;
     services.xserver.videoDrivers = [ "nvidia" ];
     hardware.nvidia = {
-      modesetting.enable = true;
+      # OFF deliberately: it kills the text console on this machine.
+      #
+      # modesetting exists so NVIDIA can drive displays. With it on, nixpkgs
+      # sets nvidia-drm.modeset=1 and (driver >= 545) nvidia-drm.fbdev=1, and
+      # nvidia-drm claims the console when it loads ~100s into boot. It then
+      # declines to provide a framebuffer, because every connector on the card
+      # reports "disconnected" (a detection quirk; the monitor is attached, but
+      # DVI-D without hotplug-detect, or a KVM, reads as absent):
+      #
+      #   Console: switching to colour frame buffer device 100x37   <- simpledrm
+      #   [drm] Initialized nvidia-drm ... on minor 1
+      #   Console: switching to colour dummy device 80x25           <- console lost
+      #
+      # The screen then keeps showing whatever simpledrm drew last, frozen, with
+      # no cursor and no echo, while getty is still running behind it.
+      #
+      # stinkie is headless and needs the console only for the LUKS passphrase
+      # and emergencies, so leaving the firmware framebuffer in charge is
+      # strictly better. CUDA and NVENC do not need KMS.
+      modesetting.enable = false;
       open = false;
       package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
       powerManagement.enable = false;

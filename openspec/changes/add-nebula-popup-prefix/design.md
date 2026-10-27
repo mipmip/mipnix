@@ -43,11 +43,21 @@ still works. Replacing the prefix was rejected because the same server can be
 attached from the console, where the change would be surprising.
 
 **Decide at server start, from the tmux configuration.** The shared config gets
-`if-shell '[ -n "$NEBULA_TMUX" ]' 'set -g prefix2 C-s'`. This covers every way
-tmux starts from the popup shell, including `t`, `smug`, and a bare `tmux`.
-Putting the override in the `t` alias was rejected because it would handle only
-that alias, and because setting an option on a running server has to deal with
-the server already existing.
+`if-shell '[ -n "$NEBULA_TMUX" ]' 'set -g prefix2 C-s ; set -g @prefix_extra C-s'`.
+This covers every way tmux starts from the popup shell, including `t`, `smug`,
+and a bare `tmux`. Putting the override in the `t` alias was rejected because it
+would handle only that alias, and because setting an option on a running server
+has to deal with the server already existing.
+
+**Show the second prefix in the status bar.** Gpakosz's status-right renders
+`#{prefix_key}` from `show-options -g prefix`, so it would keep showing only the
+primary prefix. tmux exposes user options to formats but not the value of
+`prefix2`, so the config sets `@prefix_extra C-s` next to `prefix2 C-s`, and the
+status-right appends `#{?@prefix_extra, #{@prefix_extra},}`. Repeating the key in
+one `if-shell` keeps the two in sync. The alternative, a shell command that
+reads both options, needs nested quoting inside `#()` and was rejected.
+The same option selects the leading marker, `#{?@prefix_extra,👻,🤠}`, so a
+popup session is recognizable at a glance while local servers keep 🤠.
 
 **Keep the shell in the popup.** The ssh command starts `"$SHELL" -l` rather
 than attaching tmux directly. The popup stays a shell, so the user starts tmux

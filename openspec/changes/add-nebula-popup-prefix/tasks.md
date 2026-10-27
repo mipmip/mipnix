@@ -10,6 +10,12 @@
   shared configuration and verify on a scratch socket that a server started
   with the variable reports `prefix2 C-s`, while one started without it reports
   the default
+- [x] 2.2 Show the second prefix in the status bar by setting `@prefix_extra`
+  alongside `prefix2` and appending a conditional to the status-right, then
+  verify on a scratch socket that a marker server shows `C-a` and `C-s` while a
+  plain server shows only `C-a`
+- [x] 2.3 Use `👻` as the status-bar marker on a marker server and keep `🤠`
+  elsewhere, then verify both on a scratch socket
 
 ## 3. Validation
 
@@ -23,7 +29,9 @@
   reports `C-a`
 - [ ] 4.2 Deploy to the remaining nebula hosts and verify the same on one of
   them
-- [ ] 4.3 Verify that a direct ssh shell or a console session does not gain
+- [x] 4.3 Verify that a direct ssh shell or a console session does not gain
   `C-s` as `prefix2`
-- [ ] 4.4 Verify that a server left running from before the deploy keeps its
+- [x] 4.4 Verify that a server left running from before the deploy keeps its
   old prefixes until it is restarted
+- [x] 4.5 Deploy the status-bar change to the test host and verify that a marker
+  server shows both prefixes while a plain server shows only the primary one

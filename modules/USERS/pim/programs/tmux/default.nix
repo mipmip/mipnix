@@ -201,7 +201,7 @@ inputs,
 
         unbind C-a
 
-        if-shell '[ -n "$NEBULA_TMUX" ]' 'set -g prefix2 C-s'
+        if-shell '[ -n "$NEBULA_TMUX" ]' 'set -g prefix2 C-s ; set -g @prefix_extra C-s'
 
         # Every custom binding below comes from the hotkey registry (binds.nix),
         # which also generates the `prefix + ?` menu listing them.
