@@ -18,7 +18,7 @@ setup_aws_key(){
   chmod 600 ~/.aws/config
 
   copy_aws_other_accounts
-  technativeawsupdate
+  txn_aws_update
 }
 
 make_command "txn_aws_update" "update AWS account info from technative"
