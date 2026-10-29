@@ -134,6 +134,10 @@ in
   "nebula-fairphonepim.crt.age".publicKeys = users ++ systems;
   "nebula-fairphonepim.key.age".publicKeys = users ++ systems;
 
+  # Tim's phone; nebula app on Android, no nixos host of its own.
+  "nebula-timphone.crt.age".publicKeys = users ++ systems;
+  "nebula-timphone.key.age".publicKeys = users ++ systems;
+
   "nebula-lavendel.crt.age".publicKeys = users ++ systems;
   "nebula-lavendel.key.age".publicKeys = users ++ systems;
 
