@@ -301,6 +301,8 @@
                 -d "SRC='$out/share'" \
                 -d "ASKPASS='${pkgs-unstable.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass'"
 
+              ln -s ${pkgs-unstable.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass $out/bin/askpass
+
               runHook postInstall
             '';
           };
