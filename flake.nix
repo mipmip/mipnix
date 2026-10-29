@@ -245,7 +245,20 @@
               touch $out
             '';
 
-          checks.mipbar-last-notification = pkgs.runCommand "mipbar-last-notification-tests"
+          checks.mipbar-camera = pkgs.runCommand "mipbar-camera-tests"
+            {
+              nativeBuildInputs = [ pkgs.esbuild pkgs.nodejs ];
+              src = ./packages/mipbar;
+            }
+            ''
+              cp -r $src/. ./mipbar
+              esbuild --bundle ./mipbar/widget/cameraUsers.test.ts \
+                --outfile=./tests.js --platform=node --log-level=warning
+              node ./tests.js
+              touch $out
+            '';
+
+          checks.mipbar-last-notification =pkgs.runCommand "mipbar-last-notification-tests"
             {
               nativeBuildInputs = [ pkgs.esbuild pkgs.nodejs ];
               src = ./packages/mipbar;

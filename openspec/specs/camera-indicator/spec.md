@@ -1,3 +1,9 @@
+# camera-indicator Specification
+
+## Purpose
+Show in mipbar when a camera is in use, which applications use it, and let the user jump to them.
+
+## Requirements
 ### Requirement: camera-hidden-by-default
 The camera indicator SHALL NOT be visible when no camera is in use.
 
