@@ -34,6 +34,7 @@ inputs,
       profiles =
         let defaultSettings = {
           "browser.startup.homepage" = "about:blank";
+          "media.webrtc.camera.allow-pipewire" = true;
         };
         in {
           default = {
