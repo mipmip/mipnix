@@ -15,6 +15,7 @@ let
   harry = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOmY6Jv/y1CSyVe0t1L+65NQjocDoDUShhriPp5yg6eh";
   peterspav = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKJ7MltNQkkv0gvF+qkSnbvzpfX6eOmWtTKgb3e6rWlq";
   stinkie = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOXSNqH7tKmt4dOPw6OZDuGt46BuljdDfQxTyaCXCm1L";
+  delliebellie = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILCTWalBejH0pOGHaY3rDvzVhUnxOrYfsd1t7K23b/sg";
 
   users = [ pim annemarie ];
   systems = [
@@ -29,6 +30,7 @@ let
     durer
     peterspav
     stinkie
+    delliebellie
   ];
 
   trusted_systems = [
@@ -42,6 +44,7 @@ let
     doornappel
     peterspav
     stinkie
+    delliebellie
   ];
 
 in
@@ -210,5 +213,8 @@ in
 
   "syncthing-stinkie.crt.age".publicKeys = [ pim stinkie ];
   "syncthing-stinkie.key.age".publicKeys = [ pim stinkie ];
+
+  "nebula-delliebellie.crt.age".publicKeys = users ++ systems;
+  "nebula-delliebellie.key.age".publicKeys = users ++ systems;
 
 }
