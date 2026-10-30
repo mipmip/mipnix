@@ -551,6 +551,24 @@
         "type": "github"
       }
     },
+    "hip": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_7"
+      },
+      "locked": {
+        "lastModified": 1793352676,
+        "narHash": "sha256-RQeRUsSTCDrYzXKZ5Oeunt8cuMXM98X50icW2rMIUH4=",
+        "owner": "mipmip",
+        "repo": "hip",
+        "rev": "2b7cd69ccbc62d226de5bfad28ea9f71b69ef5a6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mipmip",
+        "repo": "hip",
+        "type": "github"
+      }
+    },
     "hm-ricing-mode": {
       "inputs": {
         "nixpkgs": [
@@ -594,7 +612,7 @@
     },
     "home-manager-pine64": {
       "inputs": {
-        "nixpkgs": "nixpkgs_7"
+        "nixpkgs": "nixpkgs_8"
       },
       "locked": {
         "lastModified": 1667907331,
@@ -645,24 +663,6 @@
       "original": {
         "owner": "blader",
         "repo": "humanizer",
-        "type": "github"
-      }
-    },
-    "huphop": {
-      "inputs": {
-        "nixpkgs": "nixpkgs_8"
-      },
-      "locked": {
-        "lastModified": 1788368169,
-        "narHash": "sha256-5RUqMU8Sp9SfnJE00FBUxeaP09w1A1Mc6nJyoVyj3zQ=",
-        "owner": "mipmip",
-        "repo": "huphop",
-        "rev": "012931f0720fca8083287eda8e68a11cd18c0020",
-        "type": "github"
-      },
-      "original": {
-        "owner": "mipmip",
-        "repo": "huphop",
         "type": "github"
       }
     },
@@ -1443,20 +1443,6 @@
     },
     "nixpkgs_7": {
       "locked": {
-        "lastModified": 1767364772,
-        "narHash": "sha256-fFUnEYMla8b7UKjijLnMe+oVFOz6HjijGGNS1l7dYaQ=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "16c7794d0a28b5a37904d55bcca36003b9109aaa",
-        "type": "github"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
-      }
-    },
-    "nixpkgs_8": {
-      "locked": {
         "lastModified": 1786862985,
         "narHash": "sha256-FBJRXmbGXiSUDvYEbfLYRkckayyZ6SK1UEqhCrIZ2Cs=",
         "owner": "NixOS",
@@ -1469,6 +1455,20 @@
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
+      }
+    },
+    "nixpkgs_8": {
+      "locked": {
+        "lastModified": 1767364772,
+        "narHash": "sha256-fFUnEYMla8b7UKjijLnMe+oVFOz6HjijGGNS1l7dYaQ=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "16c7794d0a28b5a37904d55bcca36003b9109aaa",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
       }
     },
     "nixpkgs_9": {
@@ -1737,11 +1737,11 @@
         "dutch-style-guide": "dutch-style-guide",
         "flake-parts": "flake-parts_2",
         "fred": "fred",
+        "hip": "hip",
         "hm-ricing-mode": "hm-ricing-mode",
         "home-manager": "home-manager",
         "home-manager-pine64": "home-manager-pine64",
         "humanizer": "humanizer",
-        "huphop": "huphop",
         "hypr-network-manager": "hypr-network-manager",
         "import-tree": "import-tree",
         "jjay": "jjay",

@@ -10,7 +10,7 @@ inputs,
 
     # beandex refuses to run without a config file, so manage it declaratively.
     # Single scan path: ~ at depth 2, matching pim's repo layout
-    # (~/<short>.<owner>/<repo>, per the huphop clone pattern).
+    # (~/<short>.<owner>/<repo>, per the hip clone pattern).
     xdg.configFile."beandex/config.yaml".text = ''
       scan_paths:
         - path: "~"

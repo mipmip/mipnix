@@ -16,8 +16,8 @@
       action = "popup -E smg"; }
 
     { kind = "prefixed"; app = "tmux"; target = "tmux"; scopes = [ "terminal" ];
-      group = "tools"; key = "G"; desc = "huphop repo switcher";
-      action = "popup -E -w 80% -h 80% 'hup tui --mode multiplex --flatlist --filter'"; }
+      group = "tools"; key = "G"; desc = "hip repo switcher";
+      action = "popup -E -w 80% -h 80% 'hip tui --mode multiplex --flatlist --filter'"; }
 
     { kind = "prefixed"; app = "tmux"; target = "tmux"; scopes = [ "terminal" ];
       group = "tools"; key = "T"; desc = "tj pane watchlist";

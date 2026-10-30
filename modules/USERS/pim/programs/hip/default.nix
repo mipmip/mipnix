@@ -3,19 +3,19 @@ inputs,
 ...
 }:
 {
-  flake.modules.homeManager.pim-huphop = { lib, pkgs, ... }:
+  flake.modules.homeManager.pim-hip = { lib, pkgs, ... }:
     let
       # Model B switch wrapper: session per collection (or org), window per repo.
-      # huphop renders switch_command as a template then execs it WITHOUT a shell,
+      # hip renders switch_command as a template then execs it WITHOUT a shell,
       # so all branching must live here in a single executable. Only tmux server
-      # commands are issued (no TTY needed) — it runs while huphop's TUI still
+      # commands are issued (no TTY needed) — it runs while hip's TUI still
       # owns the terminal, then the TUI quits and the popup closes.
       #
       # The session name is resolved by the caller's template (collection when in
       # one, else <short>-><ownerLower>) and passed in as $1, so this wrapper is
       # agnostic to how the name was chosen.
       # Args: <session-name> <repo> <target-checkout-path>
-      hup-tmux-switch = pkgs.writeShellScriptBin "hup-tmux-switch" ''
+      hip-tmux-switch = pkgs.writeShellScriptBin "hip-tmux-switch" ''
         session="$1"; repo="$2"; target="$3"
 
         tmux="${pkgs.tmux}/bin/tmux"
@@ -62,15 +62,15 @@ inputs,
         "$tmux" switch-client -t "=$sess:$win"
       '';
 
-      # Reproduces the current working ~/.config/huphop/config.yaml verbatim,
+      # Reproduces the current working ~/.config/hip/config.yaml verbatim,
       # except the multiplex switch_command, which points at the wrapper above
       # by store path (hermetic — no PATH dependency).
-      hupConfig = {
+      hipConfig = {
         base_dir = "~";
         clone_pattern_tpl = "{{.BaseDir}}/{{.Short}}.{{.OwnerLower}}/{{.Repo}}";
         search_strategy= "substring";
         # Clone colocated: `jj git clone --colocate`, so a real top-level .git
-        # remains and `hup sync` plus every git tool keep working on the checkout.
+        # remains and `hip sync` plus every git tool keep working on the checkout.
         clone_vcs = "jj";
         providers = [
           {
@@ -82,7 +82,7 @@ inputs,
             clone_protocol = "ssh";
             auth = {
               cli = "gh";
-              env = "HUPHOP_GITHUB_TOKEN";
+              env = "HIP_GITHUB_TOKEN";
             };
             all_owners = true;
             include_archived = false;
@@ -100,17 +100,17 @@ inputs,
             header = [ ];
             footer = [ "switch_hint" "filter" ];
             switch_command =
-              "'${hup-tmux-switch}/bin/hup-tmux-switch' '{{if .Collection}}col->{{.Collection}}{{else}}{{.Short}}->{{.OwnerLower}}{{end}}' '{{.Repo}}' '{{.Target}}'";
+              "'${hip-tmux-switch}/bin/hip-tmux-switch' '{{if .Collection}}col->{{.Collection}}{{else}}{{.Short}}->{{.OwnerLower}}{{end}}' '{{.Repo}}' '{{.Target}}'";
           };
         };
       };
     in
     {
       home.packages = [
-        inputs.huphop.packages."${pkgs.stdenv.hostPlatform.system}".default
+        inputs.hip.packages."${pkgs.stdenv.hostPlatform.system}".default
       ];
 
-      xdg.configFile."huphop/config.yaml".source =
-        (pkgs.formats.yaml { }).generate "huphop-config.yaml" hupConfig;
+      xdg.configFile."hip/config.yaml".source =
+        (pkgs.formats.yaml { }).generate "hip-config.yaml" hipConfig;
     };
 }

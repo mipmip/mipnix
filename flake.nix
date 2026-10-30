@@ -76,7 +76,7 @@
     linny-mcp.inputs.nixpkgs.follows = "nixpkgs";
     startaste.url = "github:mipmip/startaste";
     startaste.inputs.nixpkgs.follows = "nixpkgs";
-    huphop.url = "github:mipmip/huphop";
+    hip.url = "github:mipmip/hip";
     beandex.url = "github:mipmip/beandex";
 
     # The two halves of the prefix + M monitoring popup. Both were invoked as

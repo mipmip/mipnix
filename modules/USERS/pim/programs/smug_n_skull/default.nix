@@ -51,7 +51,7 @@ inputs,
         pkgs.figlet
         pkgs.lolcat
 
-        #inputs.huphop.packages."${pkgs.stdenv.hostPlatform.system}".huphop
+        #inputs.hip.packages."${pkgs.stdenv.hostPlatform.system}".hip
 
 
       ];
