@@ -19,9 +19,9 @@
 
 ## 4. Verify on the host
 
-- [ ] 4.1 Deploy with `rme deploy_remote dapperehaan`.
-- [ ] 4.2 Start the service once by hand and follow the journal until it finishes.
-- [ ] 4.3 Compare the owners under `/var/lib/hip-backup/repos` with `gh api user/orgs`; investigate any organization that has repositories but no checkouts.
-- [ ] 4.4 Confirm no fork and no `nix-community` repository was cloned, and checkouts have no `.jj`.
-- [ ] 4.5 Check disk use on dapperehaan against the 13 GB estimate.
-- [ ] 4.6 Run the `dapperehaan-repos` restic backup once and confirm it appears in Backrest.
+- [x] 4.1 Deploy with `rme deploy_remote dapperehaan`.
+- [x] 4.2 Start the service once by hand and follow the journal until it finishes.
+- [x] 4.3 Compare the owners under `/var/lib/hip-backup/repos` with `gh api user/orgs`; investigate any organization that has repositories but no checkouts.
+- [x] 4.4 Confirm no fork and no `nix-community` repository was cloned, and checkouts have no `.jj`.
+- [x] 4.5 Check disk use on dapperehaan against the 13 GB estimate.
+- [x] 4.6 Run the `dapperehaan-repos` restic backup once and confirm it appears in Backrest.
