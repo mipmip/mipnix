@@ -12,7 +12,7 @@
 
 ## 3. Secret
 
-- [ ] 3.1 Add `"studio-mint-v3-env.age".publicKeys = [ pim durer ];` to `secrets/secrets.nix` and create the secret with a fresh `AUTH_SECRET` (`openssl rand -base64 32`), `AUTH_URL=https://v3.studio-mint.shop`, v1's current `EMAIL_SERVER` and `EMAIL_FROM="Studio MINT <noreply@studio-mint.shop>"`; verify by decrypting that the four keys are present, `DATABASE_URL` and `MAINTENANCE_MODE` are absent, and `AUTH_SECRET` differs from v1's
+- [x] 3.1 Add `"studio-mint-v3-env.age".publicKeys = [ pim durer ];` to `secrets/secrets.nix` and create the secret with a fresh `AUTH_SECRET` (`openssl rand -base64 32`), `AUTH_URL=https://v3.studio-mint.shop`, v1's current `EMAIL_SERVER` and `EMAIL_FROM="Studio MINT <noreply@studio-mint.shop>"`; verify by decrypting that the four keys are present, `DATABASE_URL` and `MAINTENANCE_MODE` are absent, and `AUTH_SECRET` differs from v1's
 
 ## 4. durer configuration
 
@@ -23,9 +23,9 @@
 ## 5. Deploy and verify on durer
 
 - [ ] 5.1 Deploy with `rme deploy_remote durer`; verify `studio-mint-v3-migrate.service` finished and `studio-mint-v3.service` is active, and that `curl -sI https://v3.studio-mint.shop/` returns 503 and `/inloggen` returns 200 with a valid certificate
-- [ ] 5.2 Check that v1 and the static sites are untouched; verify `v1.studio-mint.shop`, `studio-mint.shop` and `v2.studio-mint.shop` answer as before
-- [ ] 5.3 Create the first admin with the SQL from design.md and log in by magic link; verify you land in `/admin`, and that the development credentials `admin@studio-mint.shop` / `mint-dev-admin` are refused
-- [ ] 5.4 Start the `durer-studio-mint-v3` backup once by hand; verify a snapshot exists in `/ResticBackups/durer-studio-mint-v3` and the dump file is gone afterwards
+- [x] 5.2 Check that v1 and the static sites are untouched; verify `v1.studio-mint.shop`, `studio-mint.shop` and `v2.studio-mint.shop` answer as before
+- [x] 5.3 Create the first admin with the SQL from design.md and log in by magic link; verify you land in `/admin`, and that the development credentials `admin@studio-mint.shop` / `mint-dev-admin` are refused
+- [x] 5.4 Start the `durer-studio-mint-v3` backup once by hand; verify a snapshot exists in `/ResticBackups/durer-studio-mint-v3` and the dump file is gone afterwards
 
 ## Workflow follow-up
 
