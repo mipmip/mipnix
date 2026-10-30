@@ -2,12 +2,12 @@
 
 ## 1. IAM user in nivis
 
-- [ ] 1.1 In `nivis/stack/060_ses_studio_mint_shop/domain.nix` (repository `wasnel-awsaccount-104144963194-main`), add `aws_iam_user` `studio-mint-v3-smtp`, an `aws_iam_user_policy` allowing only `ses:SendRawEmail` on the `studio-mint.shop` identity ARN with `ses:FromAddress` `*@studio-mint.shop`, and an `aws_iam_access_key`; verify `./nivis/stackctl production 060_ses_studio_mint_shop plan` shows exactly these three to add and no change to the identity or DKIM records
-- [ ] 1.2 Apply and commit in that repository; verify `aws iam list-attached-user-policies` / `get-user-policy` for `studio-mint-v3-smtp` shows only the one statement
+- [x] 1.1 In `nivis/stack/060_ses_studio_mint_shop/domain.nix` (repository `wasnel-awsaccount-104144963194-main`), add `aws_iam_user` `studio-mint-v3-smtp`, an `aws_iam_user_policy` allowing only `ses:SendRawEmail` on the `studio-mint.shop` identity ARN with `ses:FromAddress` `*@studio-mint.shop`, and an `aws_iam_access_key`; verify `./nivis/stackctl production 060_ses_studio_mint_shop plan` shows exactly these three to add and no change to the identity or DKIM records
+- [x] 1.2 Apply and commit in that repository; verify `aws iam list-attached-user-policies` / `get-user-policy` for `studio-mint-v3-smtp` shows only the one statement
 
 ## 2. Secret and deploy
 
-- [ ] 2.1 Read the access key `id` and `ses_smtp_password_v4` from the nivis state and set `EMAIL_SERVER=smtp://<id>:<url-encoded password>@email-smtp.eu-central-1.amazonaws.com:587` and `EMAIL_FROM="Studio MINT <noreply@studio-mint.shop>"` in `secrets/studio-mint-v3-env.age`; verify by decrypting that the other keys are unchanged
+- [x] 2.1 Read the access key `id` and `ses_smtp_password_v4` from the nivis state and set `EMAIL_SERVER=smtp://<id>:<url-encoded password>@email-smtp.eu-central-1.amazonaws.com:587` and `EMAIL_FROM="Studio MINT <noreply@studio-mint.shop>"` in `secrets/studio-mint-v3-env.age`; verify by decrypting that the other keys are unchanged
 - [ ] 2.2 Deploy durer with `rme deploy_remote durer`; verify on durer with `swaks` (or `openssl s_client -starttls smtp`) using the new credentials that SES accepts a test mail from `noreply@studio-mint.shop` to the maintainer
 
 ## 3. Production access
