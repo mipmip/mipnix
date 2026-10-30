@@ -1,14 +1,15 @@
-# huphop-tmux-switcher Specification
+# hip-tmux-switcher Specification
 
 ## Purpose
-TBD - created by archiving change add-huphop-tmux-switcher. Update Purpose after archive.
+Repository switching from tmux with hip: a `prefix + G` popup that clones a
+repository when needed and opens it in a tmux session and window of its own.
 
 ## Requirements
 
-### Requirement: huphop configuration managed by home-manager
+### Requirement: hip configuration managed by home-manager
 
-The huphop configuration SHALL be generated from Nix and installed at
-`~/.config/huphop/config.yaml` via `xdg.configFile`, taking ownership of the file
+The hip configuration SHALL be generated from Nix and installed at
+`~/.config/hip/config.yaml` via `xdg.configFile`, taking ownership of the file
 from the previous hand-written copy. The generated content SHALL reproduce the
 current working configuration (base_dir, clone-path template, the `github`
 provider with `all_owners: true`, and the `management` and `multiplex` modes),
@@ -16,9 +17,9 @@ differing only in the multiplex `switch_command`.
 
 #### Scenario: Config is materialised on switch
 
-- **WHEN** home-manager applies the huphop module
-- **THEN** `~/.config/huphop/config.yaml` is a symlink into the Nix store
-- **AND** `hup config check` reports the configuration as valid
+- **WHEN** home-manager applies the hip module
+- **THEN** `~/.config/hip/config.yaml` is a symlink into the Nix store
+- **AND** `hip config check` reports the configuration as valid
 
 #### Scenario: Existing working settings preserved
 
@@ -28,16 +29,16 @@ differing only in the multiplex `switch_command`.
   `include_forks: true`), and both mode definitions match the prior working file
 - **AND** only the multiplex `switch_command` value differs
 
-### Requirement: tmux binding opens the huphop multiplex switcher
+### Requirement: tmux binding opens the hip multiplex switcher
 
 tmux SHALL bind `prefix + G` to a popup that runs
-`hup tui --mode multiplex --flatlist`, alongside the existing `prefix + S` smug
+`hip tui --mode multiplex --flatlist`, alongside the existing `prefix + S` smug
 popup. The popup SHALL use `popup -E` so it closes when the TUI exits.
 
 #### Scenario: Opening the switcher
 
 - **WHEN** the user presses `prefix + G` inside tmux
-- **THEN** a popup opens showing the huphop flat cross-provider repo list
+- **THEN** a popup opens showing the hip flat cross-provider repo list
 - **AND** the popup closes automatically after a repository is selected and the
   TUI exits
 
@@ -100,7 +101,7 @@ panes exactly as the user left them.
 #### Scenario: Repo not yet cloned
 
 - **WHEN** the selected repo has no local checkout
-- **THEN** huphop clones it before the wrapper runs
+- **THEN** hip clones it before the wrapper runs
 - **AND** the resulting checkout path is used as the window's working directory
 - **AND** as the starting directory of all three panes
 
@@ -125,10 +126,10 @@ panes exactly as the user left them.
 - **AND** only switches the current client to it
 
 ### Requirement: Collection-aware multiplex session naming
-The multiplex `switch_command` SHALL name the tmux session after the active huphop collection when
+The multiplex `switch_command` SHALL name the tmux session after the active hip collection when
 one is active, and SHALL fall back to the existing `{{.Short}}->{{.OwnerLower}}` naming otherwise.
-This requires the huphop input at a version that exposes `{{.Collection}}` in the `switch_command`
-template context (huphop ≥ 1.4).
+This requires the hip input at a version that exposes `{{.Collection}}` in the `switch_command`
+template context (present in every hip release).
 
 #### Scenario: Inside a collection
 - **WHEN** the user switches to a repo while a collection is active
@@ -139,13 +140,13 @@ template context (huphop ≥ 1.4).
 - **WHEN** the user switches to a repo with no active collection (flat view or owner drill-down)
 - **THEN** the target tmux session SHALL be named `<short>-><ownerLower>` exactly as before
 
-#### Scenario: huphop version prerequisite
+#### Scenario: hip version prerequisite
 - **WHEN** the config is materialised
-- **THEN** the huphop package SHALL be a version whose `switch_command` template context includes
+- **THEN** the hip package SHALL be a version whose `switch_command` template context includes
   `Collection`, so the `{{if .Collection}}…{{end}}` template evaluates without error
 
 ### Requirement: Session/window names remain target-safe
-The `hup-tmux-switch` wrapper SHALL accept the resolved session name as its first argument and
+The `hip-tmux-switch` wrapper SHALL accept the resolved session name as its first argument and
 SHALL sanitize `:` and `.` out of session and window names so they cannot corrupt tmux's
 `session:window.pane` target grammar.
 
@@ -161,28 +162,28 @@ SHALL sanitize `:` and `.` out of session and window names so they cannot corrup
 
 ### Requirement: Clones are colocated jj checkouts by default
 
-The generated huphop configuration SHALL set the global `clone_vcs` to `jj`, so every
-repository huphop clones (from the management TUI or from the multiplex switcher's
+The generated hip configuration SHALL set the global `clone_vcs` to `jj`, so every
+repository hip clones (from the management TUI or from the multiplex switcher's
 clone-then-switch path) is created with `jj git clone --colocate`. A real top-level
-`.git` remains, so `hup sync` and every git tool keep working on the checkout.
+`.git` remains, so `hip sync` and every git tool keep working on the checkout.
 
 The setting is global rather than per-provider: there is a single `github` provider, and
 a global default also covers any provider added later. Per-provider `clone_vcs` and
 per-repo `vcs_rules` stay available if one repository ever needs plain git.
 
-This requires the huphop input at a version whose config schema accepts `clone_vcs`
-(huphop >= 1.1), and `jj` on the PATH of the process running `hup`, since the clone fails with
+This requires the hip input at a version whose config schema accepts `clone_vcs`
+(present in every hip release), and `jj` on the PATH of the process running `hip`, since the clone fails with
 an actionable error otherwise. `jj` is already installed by the `pim-git` home-manager
 module.
 
-The `hup-tmux-switch` wrapper SHALL NOT change: the VCS choice belongs to huphop's clone
+The `hip-tmux-switch` wrapper SHALL NOT change: the VCS choice belongs to hip's clone
 engine, which runs before `switch_command` is executed, so the tmux wiring stays agnostic
 to how the checkout was created.
 
 #### Scenario: Cloning a repository not yet present
 
 - **WHEN** a repository without a local checkout is selected in either TUI mode
-- **THEN** huphop clones it with `jj git clone --colocate`
+- **THEN** hip clones it with `jj git clone --colocate`
 - **AND** the checkout contains both a `.jj` and a top-level `.git` directory
 
 #### Scenario: Switching into a freshly cloned repo
@@ -194,10 +195,10 @@ to how the checkout was created.
 #### Scenario: Existing checkouts untouched
 
 - **WHEN** a repository already has a local checkout cloned with plain git
-- **THEN** huphop clones nothing and the checkout is left as it is
+- **THEN** hip clones nothing and the checkout is left as it is
 - **AND** selecting it in the multiplex switcher behaves exactly as before
 
 #### Scenario: Config stays valid
 
-- **WHEN** home-manager materialises `~/.config/huphop/config.yaml`
-- **THEN** `hup config check` reports the configuration as valid with `clone_vcs: jj`
+- **WHEN** home-manager materialises `~/.config/hip/config.yaml`
+- **THEN** `hip config check` reports the configuration as valid with `clone_vcs: jj`
