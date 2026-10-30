@@ -12,7 +12,7 @@
 
 ## 3. Production access
 
-- [ ] 3.1 File the production-access request with `aws sesv2 put-account-details` (transactional, website `https://studio-mint.shop`); verify `aws sesv2 get-account` shows the review as pending, and later `ProductionAccessEnabled: true`
+- [x] 3.1 File the production-access request with `aws sesv2 put-account-details` (transactional, website `https://studio-mint.shop`); verify `aws sesv2 get-account` shows the review as pending, and later `ProductionAccessEnabled: true`
 
 ## 4. End-to-end on staging
 
