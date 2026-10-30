@@ -221,4 +221,7 @@ in
   "nebula-delliebellie.crt.age".publicKeys = users ++ systems;
   "nebula-delliebellie.key.age".publicKeys = users ++ systems;
 
+  "syncthing-delliebellie.crt.age".publicKeys = [ pim delliebellie ];
+  "syncthing-delliebellie.key.age".publicKeys = [ pim delliebellie ];
+
 }
