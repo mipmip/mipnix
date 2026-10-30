@@ -225,4 +225,6 @@ in
   "syncthing-delliebellie.crt.age".publicKeys = [ pim delliebellie ];
   "syncthing-delliebellie.key.age".publicKeys = [ pim delliebellie ];
 
+  "hip-backup-github-token.age".publicKeys = [ pim dapperehaan ];
+
 }
