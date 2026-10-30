@@ -8,7 +8,7 @@
 ## 2. Secret and deploy
 
 - [x] 2.1 Read the access key `id` and `ses_smtp_password_v4` from the nivis state and set `EMAIL_SERVER=smtp://<id>:<url-encoded password>@email-smtp.eu-central-1.amazonaws.com:587` and `EMAIL_FROM="Studio MINT <noreply@studio-mint.shop>"` in `secrets/studio-mint-v3-env.age`; verify by decrypting that the other keys are unchanged
-- [ ] 2.2 Deploy durer with `rme deploy_remote durer`; verify on durer with `swaks` (or `openssl s_client -starttls smtp`) using the new credentials that SES accepts a test mail from `noreply@studio-mint.shop` to the maintainer
+- [x] 2.2 Deploy durer with `rme deploy_remote durer`; verify on durer with `swaks` (or `openssl s_client -starttls smtp`) using the new credentials that SES accepts a test mail from `noreply@studio-mint.shop` to the maintainer
 
 ## 3. Production access
 
