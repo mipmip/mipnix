@@ -11,8 +11,8 @@ deploy_remote(){
   # target if it does not confirm reachability after activation. The node is
   # defined in modules/HOSTS/<host>-server/deploy.nix (flake.deploy.nodes.<host>).
   #
-  # When bumping a private input (e.g. studio-mint-v1, studio-mint-apex,
-  # studio-mint-v2), run
+  # When bumping a private input (e.g. studio-mint-v1, studio-mint-v3,
+  # studio-mint-apex, studio-mint-v2), run
   #   nix flake update studio-mint-v1
   # FIRST, as your user with the SSH agent loaded, so deploy-rs evaluates an
   # already-locked input. Order is load-bearing.

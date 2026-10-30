@@ -19,6 +19,17 @@ let
       '';
       cleanupCommand = "rm -f /var/backups/restic/voorzetramenshop.sql";
     };
+    durer-studio-mint-v3 = {
+      paths = [ "/var/backups/restic/studio-mint-v3.sql" ];
+      keep = [ "--keep-hourly" "24" "--keep-daily" "14" "--keep-monthly" "6" ];
+      prepareCommand = ''
+        install -d -m 0700 /var/backups/restic
+        ${pkgs.util-linux}/bin/runuser -u postgres -- \
+          ${config.services.postgresql.package}/bin/pg_dump studio_mint_v3 \
+          > /var/backups/restic/studio-mint-v3.sql
+      '';
+      cleanupCommand = "rm -f /var/backups/restic/studio-mint-v3.sql";
+    };
     durer-umami = {
       paths = [ "/var/backups/restic/umami.sql" ];
       keep = [ "--keep-hourly" "24" "--keep-daily" "7" ];
@@ -192,6 +203,18 @@ in
     # Merges with the environment set by the voorzetramenshop module.
     systemd.services.voorzetramenshop.environment.AUTH_TRUST_HOST = "true";
 
+    age.secrets."studio-mint-v3-env" = {
+      file = ../../../secrets/studio-mint-v3-env.age;
+    };
+
+    services.studio-mint-v3 = {
+      enable = true;
+      domain = "v3.studio-mint.shop";
+      port = 3003;
+      maintenanceMode = true;
+      environmentFile = config.age.secrets."studio-mint-v3-env".path;
+    };
+
     # --- umami analytics (migrated as-is from AWS; see MIGRATION.md) ---
     # Runs the SAME container image as the old AWS host plus its OWN
     # PostgreSQL 14 container. We do NOT reuse durer's host Postgres (v17,
@@ -274,6 +297,7 @@ in
       networking-nivis-tunnel-relay
     ]) ++ [
       inputs.studio-mint-v1.nixosModules.default
+      inputs.studio-mint-v3.nixosModules.default
     ];
   };
 }

@@ -499,6 +499,24 @@
         "systems": "systems_4"
       },
       "locked": {
+        "lastModified": 1791914995,
+        "narHash": "sha256-Zf/xfQEAasnwnmEfHqW/4hjDE/s44yn2hD4RuVIZRjA=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "b7a79d3fea1e214f6d668d521cecec0c01e26544",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_3": {
+      "inputs": {
+        "systems": "systems_5"
+      },
+      "locked": {
         "lastModified": 1731533236,
         "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
         "owner": "numtide",
@@ -1779,6 +1797,7 @@
         "studio-mint-apex": "studio-mint-apex",
         "studio-mint-v1": "studio-mint-v1",
         "studio-mint-v2": "studio-mint-v2",
+        "studio-mint-v3": "studio-mint-v3",
         "teejay": "teejay",
         "unstable": "unstable",
         "unstable-hyprland": "unstable-hyprland",
@@ -1929,6 +1948,27 @@
         "url": "ssh://git@github.com/mintglasinlood/v2.studio-mint.shop.git"
       }
     },
+    "studio-mint-v3": {
+      "inputs": {
+        "flake-utils": "flake-utils_2",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793368500,
+        "narHash": "sha256-ElRUF2hFosqkJI6rLya6UiuBaYVPaZ56oCsiDDWr+YE=",
+        "ref": "refs/heads/main",
+        "rev": "84062f782b84e4dfd6d2847b9f911ea5c6a92538",
+        "revCount": 5,
+        "type": "git",
+        "url": "ssh://git@github.com/mintglasinlood/v3.studio-mint.shop.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/mintglasinlood/v3.studio-mint.shop.git"
+      }
+    },
     "systems": {
       "locked": {
         "lastModified": 1681028828,
@@ -1975,6 +2015,21 @@
       }
     },
     "systems_4": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_5": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
@@ -2079,7 +2134,7 @@
     },
     "verynix": {
       "inputs": {
-        "flake-utils": "flake-utils_2",
+        "flake-utils": "flake-utils_3",
         "nixpkgs": "nixpkgs_22"
       },
       "locked": {

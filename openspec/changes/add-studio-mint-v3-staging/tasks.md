@@ -2,13 +2,13 @@
 
 ## 1. DNS in nivis
 
-- [ ] 1.1 Add an A record `v3.studio-mint.shop` → `178.104.252.76` (TTL 3600) to `nivis/stack/010_route53/zones/studio-mint.shop.nix` in `wasnel-awsaccount-104144963194-main`; verify `AWS_PROFILE=wasnel ./nivis/stackctl production 010_route53 plan` shows exactly one record to add
-- [ ] 1.2 Apply it with `./nivis/stackctl production 010_route53 apply` and commit in that repo; verify `dig +short v3.studio-mint.shop` returns `178.104.252.76`
+- [x] 1.1 Add an A record `v3.studio-mint.shop` → `178.104.252.76` (TTL 3600) to `nivis/stack/010_route53/zones/studio-mint.shop.nix` in `wasnel-awsaccount-104144963194-main`; verify `AWS_PROFILE=wasnel ./nivis/stackctl production 010_route53 plan` shows exactly one record to add
+- [x] 1.2 Apply it with `./nivis/stackctl production 010_route53 apply` and commit in that repo; verify `dig +short v3.studio-mint.shop` returns `178.104.252.76`
 
 ## 2. Flake input
 
-- [ ] 2.1 Add input `studio-mint-v3` (`git+ssh://git@github.com/mintglasinlood/v3.studio-mint.shop.git`, `inputs.nixpkgs.follows = "nixpkgs"`) to `flake.nix` and run `nix flake update studio-mint-v3` as the user; verify `nix flake show` on the input lists `nixosModules.default` and `packages.x86_64-linux.studio-mint-v3`
-- [ ] 2.2 Name `studio-mint-v3` in the private-input comment of `RUNME.d/deploy.sh`; verify the file still passes `bash -n`
+- [x] 2.1 Add input `studio-mint-v3` (`git+ssh://git@github.com/mintglasinlood/v3.studio-mint.shop.git`, `inputs.nixpkgs.follows = "nixpkgs"`) to `flake.nix` and run `nix flake update studio-mint-v3` as the user; verify `nix flake show` on the input lists `nixosModules.default` and `packages.x86_64-linux.studio-mint-v3`
+- [x] 2.2 Name `studio-mint-v3` in the private-input comment of `RUNME.d/deploy.sh`; verify the file still passes `bash -n`
 
 ## 3. Secret
 
@@ -16,9 +16,9 @@
 
 ## 4. durer configuration
 
-- [ ] 4.1 In `modules/HOSTS/durer-server/configuration.nix`, declare `age.secrets."studio-mint-v3-env"`, enable `services.studio-mint-v3` (domain `v3.studio-mint.shop`, port 3003, `maintenanceMode = true`, `environmentFile` from the secret) and import `inputs.studio-mint-v3.nixosModules.default`; verify `nix eval .#nixosConfigurations.durer.config.services.studio-mint-v3.port` prints 3003 and the v1 options evaluate unchanged
-- [ ] 4.2 Add the `durer-studio-mint-v3` dataset to `datasetsFor` (pg_dump of `studio_mint_v3`, v1's retention); verify `nix eval .#resticRepos.durer` lists `durer-studio-mint-v3`
-- [ ] 4.3 Build the closure on lego2 with `nix build .#nixosConfigurations.durer.config.system.build.toplevel`; verify it builds and contains the v3 package
+- [x] 4.1 In `modules/HOSTS/durer-server/configuration.nix`, declare `age.secrets."studio-mint-v3-env"`, enable `services.studio-mint-v3` (domain `v3.studio-mint.shop`, port 3003, `maintenanceMode = true`, `environmentFile` from the secret) and import `inputs.studio-mint-v3.nixosModules.default`; verify `nix eval .#nixosConfigurations.durer.config.services.studio-mint-v3.port` prints 3003 and the v1 options evaluate unchanged
+- [x] 4.2 Add the `durer-studio-mint-v3` dataset to `datasetsFor` (pg_dump of `studio_mint_v3`, v1's retention); verify `nix eval .#resticRepos.durer` lists `durer-studio-mint-v3`
+- [x] 4.3 Build the closure on lego2 with `nix build .#nixosConfigurations.durer.config.system.build.toplevel`; verify it builds and contains the v3 package
 
 ## 5. Deploy and verify on durer
 

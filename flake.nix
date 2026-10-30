@@ -119,6 +119,9 @@
     studio-mint-v1.url = "git+ssh://git@github.com/mintglasinlood/v1.studio-mint.shop.git";
     studio-mint-v1.inputs.nixpkgs.follows = "nixpkgs";
 
+    studio-mint-v3.url = "git+ssh://git@github.com/mintglasinlood/v3.studio-mint.shop.git";
+    studio-mint-v3.inputs.nixpkgs.follows = "nixpkgs";
+
     # The two static sites. Plain HTML, so no flake of their own: each arrives
     # as a bare store path and flake.nix turns it into a served directory, the
     # same way packages/pimsnel-website is handled.

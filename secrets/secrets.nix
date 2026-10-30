@@ -171,6 +171,7 @@ in
 
   "matrix-openclaw-password.age".publicKeys = [pim clawone];
   "voorzetramenshop-env.age".publicKeys = [ pim durer ];
+  "studio-mint-v3-env.age".publicKeys = [ pim durer ];
   "nebula-cichorei.crt.age".publicKeys = users ++ systems;
   "nebula-cichorei.key.age".publicKeys = users ++ systems;
 
