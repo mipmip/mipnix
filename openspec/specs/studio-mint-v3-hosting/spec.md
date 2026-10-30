@@ -47,6 +47,10 @@ One agenix secret `studio-mint-v3-env.age`, decryptable by `pim` and `durer`, SH
 - **WHEN** both env files are decrypted
 - **THEN** the `AUTH_SECRET` of v3 differs from the one of v1
 
+#### Scenario: Mail goes through SES with v3's own credentials
+- **WHEN** the env file is decrypted
+- **THEN** `EMAIL_SERVER` points at `email-smtp.eu-central-1.amazonaws.com:587` with the credentials of the IAM user `studio-mint-v3-smtp`, and `EMAIL_FROM` is `Studio MINT <noreply@studio-mint.shop>`
+
 ### Requirement: DNS name for v3
 The Route 53 zone `studio-mint.shop`, managed in nivis, SHALL hold an A record `v3.studio-mint.shop` pointing at durer's public address, before the first deploy that enables the vhost.
 
@@ -71,3 +75,21 @@ Staging SHALL NOT contain the development seed admin or its published password. 
 #### Scenario: Development credentials do not work
 - **WHEN** someone tries `admin@studio-mint.shop` with the development password on staging
 - **THEN** the login fails
+
+### Requirement: SMTP credentials may only send as studio-mint.shop
+The IAM user behind v3's SMTP credentials SHALL be allowed `ses:SendRawEmail` on the `studio-mint.shop` identity in `eu-central-1` and nothing else, and SHALL be managed in nivis.
+
+#### Scenario: Sending as the shop
+- **WHEN** the shop sends from `noreply@studio-mint.shop` with these credentials
+- **THEN** SES accepts the mail and signs it with the domain's DKIM key
+
+#### Scenario: Any other use
+- **WHEN** the credentials are used for another identity or another AWS action
+- **THEN** AWS refuses the request
+
+### Requirement: The SES account sends outside the sandbox
+The SES account in `eu-central-1` SHALL have production access for transactional mail, so the shop can mail any customer address.
+
+#### Scenario: Mail to an unverified customer address
+- **WHEN** the shop sends a magic link to an address that is not verified in SES
+- **THEN** SES accepts it

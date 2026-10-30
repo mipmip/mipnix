@@ -16,7 +16,7 @@
 
 ## 4. End-to-end on staging
 
-- [ ] 4.1 After v3's `transactional-mail` is deployed, request a magic link on `https://v3.studio-mint.shop/inloggen`; verify it arrives, the headers show `dkim=pass` for `studio-mint.shop`, and `/admin/mail` lists it as sent
+- [x] 4.1 After v3's `transactional-mail` is deployed, request a magic link on `https://v3.studio-mint.shop/inloggen`; verify it arrives, the headers show `dkim=pass` for `studio-mint.shop`, and `/admin/mail` lists it as sent
 
 ## Workflow follow-up
 
