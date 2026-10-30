@@ -16,6 +16,14 @@ let
       "--keep-hourly" "24" "--keep-daily" "7" "--keep-weekly" "5"
       "--keep-monthly" "12" "--keep-yearly" "9999"
     ];
+
+    # GitHub repositories cloned daily by hip-repo-backup. The sync is daily,
+    # so hourly snapshots would add nothing.
+    dapperehaan-repos.paths = [ "/var/lib/hip-backup/repos" ];
+    dapperehaan-repos.keep = [
+      "--keep-daily" "7" "--keep-weekly" "5"
+      "--keep-monthly" "12" "--keep-yearly" "9999"
+    ];
   };
 in
 
@@ -62,6 +70,7 @@ in
 
       syncthing-work-pool
       backup-restic-piethein
+      hip-repo-backup
 
       #desktop-virt-virtualization # for distrobox
 
