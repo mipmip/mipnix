@@ -26,6 +26,12 @@
 
     security.polkit.enable = true;
 
+    security.pam.services = {
+      hyprlock.fprintAuth = false;
+      sudo.fprintAuth = false;
+      polkit-1.fprintAuth = false;
+    };
+
     # The machine must never put itself to sleep; sleeping is a deliberate act
     # (lid close, the suspend keybind, an explicit systemctl suspend). This
     # matches the systemd default, so it changes nothing today. It is declared

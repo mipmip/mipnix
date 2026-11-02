@@ -1,12 +1,12 @@
 ## 1. PAM
 
-- [ ] 1.1 Set `security.pam.services.{hyprlock,sudo,polkit-1}.fprintAuth = false` in `modules/programs/desktop/de/hyprland.nix`
-- [ ] 1.2 Build delliebellie and check that `/etc/pam.d/hyprlock`, `sudo` and `polkit-1` in the result have no `pam_fprintd.so`, and that `gdm-fingerprint` still exists
+- [x] 1.1 Set `security.pam.services.{hyprlock,sudo,polkit-1}.fprintAuth = false` in `modules/programs/desktop/de/hyprland.nix`
+- [x] 1.2 Build delliebellie and check that `/etc/pam.d/hyprlock`, `sudo` and `polkit-1` in the result have no `pam_fprintd.so`, and that `gdm-fingerprint` still exists
 
 ## 2. hyprlock
 
-- [ ] 2.1 Add the `auth { pam { enabled = true } fingerprint { enabled = true } }` block to `modules/USERS/pim/programs/hyprland/hypr/hyprlock.conf`
-- [ ] 2.2 Change `placeholder_text` to `<i>Password or finger...</i>`
+- [x] 2.1 Add the `auth { pam { enabled = true } fingerprint { enabled = true } }` block to `modules/USERS/pim/programs/hyprland/hypr/hyprlock.conf`
+- [x] 2.2 Change `placeholder_text` to `<i>Password or finger...</i>`
 
 ## 3. Rollout and checks
 
