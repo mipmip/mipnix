@@ -64,6 +64,16 @@ in
     # holds the authoritative copy and is the only member that talks to piethein.
     mipnix.syncthing.pool.enable = true;
 
+    # Coding, building and running things, not making documents or video.
+    # The four suites below together cost around 21 GB of store, which this
+    # 216 GB disk does not have to spare next to a nix build cache. Each
+    # lever defaults to true, so no other host is affected by switching them
+    # off here.
+    mipnix.tex.full = false;
+    mipnix.desktop.authoring = false;
+    mipnix.desktop.obs = false;
+    mipnix.virtualisation.waydroid = false;
+
     # --- Extracted from /etc/nixos/configuration.nix ---
     # Review and remove what is already covered by shared modules above
 
