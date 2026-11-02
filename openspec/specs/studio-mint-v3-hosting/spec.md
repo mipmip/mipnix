@@ -65,6 +65,10 @@ durer SHALL back up the `studio_mint_v3` database as its own restic dataset `dur
 - **WHEN** the backup timer for `durer-studio-mint-v3` fires
 - **THEN** a `pg_dump` of `studio_mint_v3` is written, snapshotted to `/ResticBackups/durer-studio-mint-v3`, and removed from disk afterwards
 
+#### Scenario: Uploads are in the same snapshot
+- **WHEN** the backup timer for `durer-studio-mint-v3` fires
+- **THEN** the snapshot also contains `/var/lib/studio-mint-v3/uploads`, so images and customer photos can be restored together with the database that refers to them
+
 ### Requirement: First admin on staging gets in without a known password
 Staging SHALL NOT contain the development seed admin or its published password. The first admin account SHALL be created on durer as a user with role `ADMIN` and no password, who logs in with a magic link.
 

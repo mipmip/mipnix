@@ -10,4 +10,4 @@ v3 now stores uploaded images in `/var/lib/studio-mint-v3/uploads` (v3 change `m
 
 ## 2. Verification
 
-- [ ] 2.1 Verify the durer closure builds, deploy with `rme deploy_remote durer`, and check that `/var/lib/studio-mint-v3/uploads` exists with mode 0750, that `https://v3.studio-mint.shop/media/does-not-exist.webp` answers 404 from nginx, and that a manual run of the backup saves a snapshot that includes the uploads path
+- [x] 2.1 Verify the durer closure builds, deploy with `rme deploy_remote durer`, and check that `/var/lib/studio-mint-v3/uploads` exists with mode 0750, that `https://v3.studio-mint.shop/media/does-not-exist.webp` answers 404 from nginx, and that a manual run of the backup saves a snapshot that includes the uploads path
