@@ -1,5 +1,14 @@
 { inputs, ... }:
 {
+  lobby.services.syncthing = {
+    title = "Syncthing";
+    description = "Work pool; GUI on each member at its own localhost";
+    host = "dapperehaan";
+    url = "http://127.0.0.1:8384";
+    access = "local";
+    category = "files & sync";
+  };
+
   # The Work pool: /home/pim/Work kept identical across every member, carried
   # over the nebula mesh. A host joins by setting `mipnix.syncthing.pool.enable`
   # and contributing its device ID to `flake.syncthingDevices` (see

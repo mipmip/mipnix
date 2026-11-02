@@ -1,5 +1,14 @@
 { inputs, ... }:
 {
+  lobby.services.startaste = {
+    title = "startaste";
+    description = "startaste MCP server; runs on dapperehaan, fronted by durer";
+    host = "dapperehaan";
+    url = "https://taste.pimsnel.com";
+    access = "public";
+    category = "tools";
+  };
+
   flake.modules.nixos.dapperehaan = { config, pkgs, ... }:
   {
     imports = [ inputs.startaste.nixosModules.startaste ];

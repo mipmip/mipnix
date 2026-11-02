@@ -1,0 +1,327 @@
+{
+  "uid": "mipnix-nixos",
+  "title": "NixOS",
+  "schemaVersion": 39,
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "refresh": "15m",
+  "panels": [
+    {
+      "type": "table",
+      "title": "Hosts",
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "targets": [
+        {
+          "refId": "info",
+          "expr": "nixos_system_info",
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "refId": "switch",
+          "expr": "time() - nixos_system_switch_timestamp_seconds",
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "refId": "reboot",
+          "expr": "nixos_reboot_required",
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "refId": "generations",
+          "expr": "nixos_system_generations",
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "refId": "hm",
+          "expr": "sum by (instance) (nixos_home_manager_generations)",
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "refId": "closure",
+          "expr": "nixos_system_closure_bytes",
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "refId": "store",
+          "expr": "nix_store_size_bytes",
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "refId": "gc",
+          "expr": "(time() - node_systemd_timer_last_trigger_seconds{name=\"nix-gc.timer\"}) and node_systemd_timer_last_trigger_seconds{name=\"nix-gc.timer\"} > 0",
+          "instant": true,
+          "format": "table"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "instance",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Time 1": true,
+              "Time 2": true,
+              "Time 3": true,
+              "Time 4": true,
+              "Time 5": true,
+              "Time 6": true,
+              "Time 7": true,
+              "Time 8": true,
+              "Value #info": true,
+              "__name__": true,
+              "__name__ 1": true,
+              "__name__ 2": true,
+              "__name__ 3": true,
+              "__name__ 4": true,
+              "__name__ 5": true,
+              "__name__ 6": true,
+              "job": true,
+              "job 1": true,
+              "job 2": true,
+              "job 3": true,
+              "job 4": true,
+              "job 5": true,
+              "job 6": true,
+              "job 7": true,
+              "job 8": true,
+              "name": true,
+              "type": true
+            },
+            "indexByName": {
+              "instance": 0,
+              "revision": 1,
+              "version": 2,
+              "Value #switch": 3,
+              "Value #reboot": 4,
+              "Value #generations": 5,
+              "Value #hm": 6,
+              "Value #closure": 7,
+              "Value #store": 8,
+              "Value #gc": 9,
+              "nixpkgs": 10
+            },
+            "renameByName": {
+              "instance": "Host",
+              "revision": "mipnix revision",
+              "version": "NixOS",
+              "nixpkgs": "nixpkgs",
+              "Value #switch": "Since last switch",
+              "Value #reboot": "Reboot needed",
+              "Value #generations": "System generations",
+              "Value #hm": "HM generations",
+              "Value #closure": "Closure",
+              "Value #store": "Store",
+              "Value #gc": "Since last GC"
+            }
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Since last switch"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 1209600
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Reboot needed"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "0": {
+                        "text": "no",
+                        "color": "green",
+                        "index": 0
+                      },
+                      "1": {
+                        "text": "yes",
+                        "color": "orange",
+                        "index": 1
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Closure"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Store"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Since last GC"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "sortBy": [
+          {
+            "displayName": "Host"
+          }
+        ]
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Nix store size",
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 12
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "nix_store_size_bytes",
+          "legendFormat": "{{instance}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes",
+          "custom": {
+            "showPoints": "always",
+            "pointSize": 6,
+            "spanNulls": true
+          }
+        },
+        "overrides": []
+      },
+      "interval": "5m"
+    },
+    {
+      "type": "timeseries",
+      "title": "System generations",
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 12
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "nixos_system_generations",
+          "legendFormat": "{{instance}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "showPoints": "always",
+            "pointSize": 6,
+            "spanNulls": true
+          }
+        },
+        "overrides": []
+      },
+      "interval": "5m"
+    }
+  ]
+}

@@ -49,6 +49,51 @@ let
   };
 in
 {
+  lobby.services.tuwunel = {
+    title = "Tuwunel";
+    description = "Matrix homeserver";
+    host = "durer";
+    url = "https://nuremberg.pimsnel.com";
+    access = "public";
+    category = "chat";
+  };
+
+  lobby.services.umami = {
+    title = "umami";
+    description = "Website analytics";
+    host = "durer";
+    url = "https://umami.pimsnel.com";
+    access = "public";
+    category = "websites";
+  };
+
+  lobby.services.voorzetramenshop = {
+    title = "voorzetramenshop";
+    description = "Webshop (v1)";
+    host = "durer";
+    url = "https://v1.studio-mint.shop";
+    access = "public";
+    category = "websites";
+  };
+
+  lobby.services.studio-mint = {
+    title = "studio-mint";
+    description = "studio-mint sites: apex, v2 and v3";
+    host = "durer";
+    url = "https://studio-mint.shop";
+    access = "public";
+    category = "websites";
+  };
+
+  lobby.services.pimsnel-com = {
+    title = "pimsnel.com";
+    description = "Personal website";
+    host = "durer";
+    url = "https://pimsnel.com";
+    access = "public";
+    category = "websites";
+  };
+
   flake.resticRepos.durer = builtins.attrNames (datasetsFor { pkgs = { }; config = { }; });
 
   flake.homeConfigurations = {
@@ -212,6 +257,7 @@ in
       domain = "v3.studio-mint.shop";
       port = 3003;
       maintenanceMode = true;
+      shopInbox = "post@pimsnel.com";
       environmentFile = config.age.secrets."studio-mint-v3-env".path;
     };
 

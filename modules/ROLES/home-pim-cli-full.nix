@@ -27,6 +27,7 @@ inputs,
       pim-awscli-dir
       pim-smug-skull
       pim-hip
+      pim-lobby
       pim-beandex
       pim-pandoc
       pim-sc-im

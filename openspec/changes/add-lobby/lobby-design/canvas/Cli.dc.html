@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>lobby CLI</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 960px; height: 1000px; box-sizing: border-box; padding: 40px; background: #F4F4F1; font-family: 'IBM Plex Mono', ui-monospace, monospace">
+<div style="height: 100%; box-sizing: border-box; border-radius: 10px; background: #111315; border: 1px solid #2A2E32; display: flex; flex-direction: column; overflow: hidden">
+<div style="height: 36px; flex: 0 0 auto; display: flex; align-items: center; padding: 0 16px; border-bottom: 1px solid #2A2E32; font-size: 12px; color: #A0A6AC">pim@stinkie: ~</div>
+<pre style="margin: 0; padding: 20px 24px; font-family: inherit; font-size: 13px; line-height: 20px; color: #E8E9E6; white-space: pre; overflow: hidden"><span style="color: #7DD8BC">$</span> lobby
+<span style="color: #A0A6AC">MONITORING</span>
+  grafana           dapperehaan  <span style="color: #9BE7CF">nebula</span>   http://192.168.100.2:3000
+  prometheus        dapperehaan  <span style="color: #A0A6AC">local</span>    http://127.0.0.1:9090
+  uptime-kuma       hurry        <span style="color: #F2B266">unknown</span>  [address]:8080
+<span style="color: #A0A6AC">BACKUPS</span>
+  backrest          dapperehaan  <span style="color: #9BE7CF">nebula</span>   http://192.168.100.2:9898
+<span style="color: #A0A6AC">FILES &amp; SYNC</span>
+  samba             dapperehaan  lan      <span style="color: #A0A6AC">no web UI</span>
+  syncthing         dapperehaan  <span style="color: #A0A6AC">local</span>    http://127.0.0.1:8384
+  piethein          piethein     lan      https://192.168.2.100:5001
+<span style="color: #A0A6AC">PHOTOS</span>
+  immich            stinkie      <span style="color: #F2B266">unknown</span>  [address]:2283
+<span style="color: #A0A6AC">PASSWORDS</span>
+  vaultwarden       hurry        tunnel   https://[domain in secret]
+<span style="color: #A0A6AC">CHAT</span>
+  tuwunel           durer        public   https://nuremberg.pimsnel.com
+<span style="color: #A0A6AC">WEBSITES</span>
+  pimsnel-com       durer        public   https://pimsnel.com
+  studio-mint       durer        public   https://studio-mint.shop
+  voorzetramenshop  durer        public   https://v1.studio-mint.shop
+  umami             durer        public   https://umami.pimsnel.com
+<span style="color: #A0A6AC">TOOLS</span>
+  linny-mcp         dapperehaan  <span style="color: #9BE7CF">nebula</span>   192.168.100.2:8765
+
+<span style="color: #7DD8BC">$</span> lobby show grafana
+<span style="color: #A0A6AC">name        </span> grafana
+<span style="color: #A0A6AC">description </span> Dashboards for host health, backups, NixOS and piethein
+<span style="color: #A0A6AC">host        </span> dapperehaan
+<span style="color: #A0A6AC">access      </span> <span style="color: #9BE7CF">nebula</span>
+<span style="color: #A0A6AC">url         </span> http://192.168.100.2:3000
+<span style="color: #A0A6AC">category    </span> monitoring
+<span style="color: #A0A6AC">source      </span> modules/services/monitoring/grafana.nix:[line]
+
+<span style="color: #7DD8BC">$</span> lobby open grafan
+<span style="color: #F2B266">lobby: no service named "grafan"</span>
+did you mean: grafana
+<span style="color: #A0A6AC">exit 1</span>
+
+<span style="color: #7DD8BC">$</span> lobby open grafana
+<span style="color: #A0A6AC">opening http://192.168.100.2:3000</span>
+<span style="color: #7DD8BC">$</span> <span style="display: inline-block; width: 8px; height: 16px; background: #E8E9E6; vertical-align: -3px"></span></pre>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":960,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

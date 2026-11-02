@@ -78,6 +78,7 @@
     startaste.inputs.nixpkgs.follows = "nixpkgs";
     hip.url = "github:mipmip/hip";
     beandex.url = "github:mipmip/beandex";
+    hermes-agent.url = "github:NousResearch/hermes-agent";
 
     # The two halves of the prefix + M monitoring popup. Both were invoked as
     # `nix run github:mipmip/...` from the smug monitoring session; a popup

@@ -4,6 +4,24 @@ inputs,
 ...
 }:
 {
+  lobby.services.uptime-kuma = {
+    title = "Uptime Kuma";
+    description = "Uptime checks";
+    host = "hurry";
+    url = "http://${inputs.self.nebulaNodes.hurry}:8080";
+    access = "nebula";
+    category = "monitoring";
+  };
+
+  lobby.services.vaultwarden = {
+    title = "Vaultwarden";
+    description = "Password manager, through the cloudflared tunnel";
+    host = "hurry";
+    url = "https://vaultwarden.notnix.com";
+    access = "tunnel";
+    category = "passwords";
+  };
+
   flake.modules.nixos.hurry = { config, pkgs, ... } : {
 
     # Uptime Kuma

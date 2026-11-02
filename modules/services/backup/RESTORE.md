@@ -16,7 +16,7 @@ NAS **piethein** over SFTP. One restic repository per (host, dataset) lives unde
 On a running backup host both are already at `/run/agenix/restic-repo-pw` and
 `/run/agenix/restic-ssh-key` (root-readable).
 
-## Restore (from a LAN host — cichorei/hurry)
+## Restore (from a LAN host: hurry/dapperehaan)
 
 ```sh
 export RESTIC_PASSWORD="$(cat /path/to/repo-password)"

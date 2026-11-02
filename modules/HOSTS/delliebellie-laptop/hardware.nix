@@ -11,6 +11,10 @@ inputs,
     boot.kernelModules = [ "kvm-intel" ];
     boot.extraModulePackages = [ ];
 
+    # Emulate aarch64 so we can build/deploy the Raspberry Pi hosts (harry, hurry)
+    # from this x86_64 machine.
+    boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
     fileSystems."/" = {
       device = "/dev/disk/by-uuid/43afc13c-1390-46d8-a554-f2a0a55462f2";
       fsType = "ext4";

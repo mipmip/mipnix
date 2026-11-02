@@ -48,7 +48,7 @@ in
 
     ];
 
-    # Hourly restic backups to piethein (direct on LAN, like cichorei).
+    # Hourly restic backups to piethein (direct on LAN, like hurry).
     mipnix.backup.piethein = {
       enable = true;
       inherit datasets;

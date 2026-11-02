@@ -1,5 +1,14 @@
 { inputs, self, ... }:
 {
+  lobby.services.backrest = {
+    title = "Backrest";
+    description = "Browse and restore restic snapshots on piethein";
+    host = "dapperehaan";
+    url = "http://${inputs.self.nebulaNodes.dapperehaan}:9898";
+    access = "nebula";
+    category = "backups";
+  };
+
   # Backrest — a nebula-only web console to browse and restore restic snapshots
   # across every piethein repository. Modelled on linny-mcp.nix (nebula-bound
   # service on dapperehaan). dapperehaan shares piethein's LAN (192.168.2.22 ↔

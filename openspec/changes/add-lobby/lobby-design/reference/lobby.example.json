@@ -1,0 +1,20 @@
+{
+  "generated": { "commit": "abc1234", "date": "2026-11-02" },
+  "services": {
+    "grafana":          { "title": "Grafana",          "description": "Dashboards for host health, backups, NixOS and piethein", "host": "dapperehaan", "url": "http://192.168.100.2:3000", "access": "nebula", "category": "monitoring", "source": "modules/services/monitoring/grafana.nix:42" },
+    "prometheus":       { "title": "Prometheus",       "description": "Metrics store behind Grafana; reachable on the host only", "host": "dapperehaan", "url": "http://127.0.0.1:9090", "access": "local", "category": "monitoring", "source": "modules/services/monitoring/grafana.nix:88" },
+    "uptime-kuma":      { "title": "Uptime Kuma",      "description": "Uptime checks", "host": "hurry", "url": "http://hurry:8080", "access": "lan", "category": "monitoring", "source": "modules/HOSTS/hurry-pi/services.nix:10" },
+    "backrest":         { "title": "Backrest",         "description": "Web UI for restic backups", "host": "dapperehaan", "url": "http://192.168.100.2:9898", "access": "nebula", "category": "backups", "source": "modules/HOSTS/dapperehaan-server/backrest.nix:12" },
+    "samba":            { "title": "Samba",            "description": "File shares", "host": "dapperehaan", "url": null, "access": "lan", "category": "files & sync", "source": "modules/services/samba.nix:5" },
+    "syncthing":        { "title": "Syncthing hub",    "description": "GUI on each host at its own localhost", "host": "dapperehaan", "url": "http://127.0.0.1:8384", "access": "local", "category": "files & sync", "source": "modules/services/sync/syncthing-pool.nix:30" },
+    "piethein":         { "title": "piethein (DSM)",   "description": "Synology DSM; not a NixOS host", "host": "piethein", "url": "https://192.168.2.100:5001", "access": "lan", "category": "files & sync", "source": "modules/lobby/manual.nix:3" },
+    "immich":           { "title": "Immich",           "description": "Photo library", "host": "stinkie", "url": "http://192.168.100.4:2283", "access": "nebula", "category": "photos", "source": "modules/HOSTS/stinkie-desktop/immich.nix:8" },
+    "vaultwarden":      { "title": "Vaultwarden",      "description": "Password manager", "host": "hurry", "url": "https://vault.example.org", "access": "tunnel", "category": "passwords", "source": "modules/HOSTS/hurry-pi/services.nix:40" },
+    "tuwunel":          { "title": "Tuwunel",          "description": "Matrix homeserver", "host": "durer", "url": "https://nuremberg.pimsnel.com", "access": "public", "category": "chat", "source": "modules/HOSTS/durer-server/configuration.nix:120" },
+    "pimsnel-com":      { "title": "pimsnel.com",      "description": "Also secondbrain. and taste.", "host": "durer", "url": "https://pimsnel.com", "access": "public", "category": "websites", "source": "modules/HOSTS/durer-server/configuration.nix:60" },
+    "studio-mint":      { "title": "studio-mint",      "description": "Shop, plus v2 and v3", "host": "durer", "url": "https://studio-mint.shop", "access": "public", "category": "websites", "source": "modules/HOSTS/durer-server/configuration.nix:80" },
+    "voorzetramenshop": { "title": "voorzetramenshop", "description": "First shop version", "host": "durer", "url": "https://v1.studio-mint.shop", "access": "public", "category": "websites", "source": "modules/HOSTS/durer-server/configuration.nix:95" },
+    "umami":            { "title": "umami",            "description": "Web analytics for the sites", "host": "durer", "url": "https://umami.pimsnel.com", "access": "public", "category": "websites", "source": "modules/HOSTS/durer-server/configuration.nix:140" },
+    "linny-mcp":        { "title": "linny-mcp",        "description": "MCP server for linny", "host": "dapperehaan", "url": "http://192.168.100.2:8765", "access": "nebula", "category": "tools", "source": "modules/HOSTS/dapperehaan-server/linny-mcp.nix:15" }
+  }
+}

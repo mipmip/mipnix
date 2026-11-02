@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>lobby</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 100%; min-height: 100%; box-sizing: border-box; background: {{c.bg}}; color: {{c.ink}}; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 15px; line-height: 1.45">
+<div style="max-width: 1120px; margin: 0 auto; padding: 48px 16px 64px; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+
+<header style="display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px">
+<div style="display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap">
+<h1 style="margin: 0; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 40px; font-weight: 600; letter-spacing: -0.02em; color: {{c.ink}}">lobby</h1>
+<span style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 14px; color: {{c.muted}}">http://lobby/</span>
+</div>
+<p style="margin: 0; font-size: 13px; color: {{c.muted}}; font-family: 'IBM Plex Mono', ui-monospace, monospace">built from mipnix [commit] · [build date]</p>
+</div>
+<p style="margin: 0; max-width: 640px; font-size: 17px; color: {{c.ink}}">Where every service runs and how to reach it. 15 services on 5 hosts.</p>
+
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center">
+<label for="lobby-q" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Filter services</label>
+<input id="lobby-q" type="search" placeholder="Filter by name, host or URL" value="{{q}}" onChange="{{onQ}}" style="flex: 1 1 280px; min-width: 0; height: 44px; box-sizing: border-box; padding: 0 14px; border: 1px solid {{c.lineStrong}}; border-radius: 8px; background: {{c.surface}}; color: {{c.ink}}; font: inherit; font-size: 15px">
+<div style="display: flex; flex-wrap: wrap; gap: 6px" role="group" aria-label="Filter by host">
+<sc-for list="{{hosts}}" as="h" hint-placeholder-count="6">
+<button type="button" onClick="{{h.pick}}" aria-pressed="{{h.pressed}}" style="height: 44px; padding: 0 14px; border-radius: 8px; border: 1px solid {{h.border}}; background: {{h.bg}}; color: {{h.fg}}; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px">{{h.label}}<span style="color: {{h.countFg}}">{{h.count}}</span></button>
+</sc-for>
+</div>
+</div>
+</header>
+
+<main style="display: flex; flex-direction: column; gap: 32px">
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="5">
+<section style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; display: flex; align-items: baseline; gap: 10px; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: {{c.muted}}">{{g.name}}<span style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-weight: 400; letter-spacing: 0">{{g.count}}</span></h2>
+<div style="border: 1px solid {{c.line}}; border-radius: 10px; background: {{c.surface}}; overflow: hidden">
+<sc-for list="{{g.items}}" as="s" hint-placeholder-count="3">
+<div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 24px; padding: 16px 20px; border-top: {{s.divider}}">
+<div style="flex: 1 1 280px; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap">
+<sc-if value="{{s.href}}" hint-placeholder-val="{{ true }}">
+<a href="{{s.href}}" style="font-size: 16px; font-weight: 600; color: {{c.link}}; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px">{{s.name}}</a>
+</sc-if>
+<sc-if value="{{s.noHref}}" hint-placeholder-val="{{ false }}">
+<span style="font-size: 16px; font-weight: 600; color: {{c.ink}}">{{s.name}}</span>
+</sc-if>
+<span style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12px; color: {{c.muted}}">lobby open {{s.key}}</span>
+</div>
+<span style="font-size: 14px; color: {{c.muted}}">{{s.desc}}</span>
+<sc-if value="{{s.note}}" hint-placeholder-val="{{ false }}">
+<span style="font-size: 13px; color: {{c.warn}}; font-weight: 500">To check: {{s.note}}</span>
+</sc-if>
+</div>
+<div style="flex: 0 0 auto; display: flex; align-items: baseline; gap: 10px; min-width: 210px">
+<span style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; color: {{c.ink}}; min-width: 96px">{{s.host}}</span>
+<span style="display: inline-block; padding: 1px 9px; border-radius: 999px; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12px; line-height: 20px; background: {{s.bBg}}; color: {{s.bFg}}; border: 1px {{s.bStyle}} {{s.bLine}}">{{s.access}}</span>
+</div>
+<div style="flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+<span style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; color: {{c.ink}}; overflow-wrap: anywhere">{{s.url}}</span>
+<span style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12px; color: {{c.muted}}; overflow-wrap: anywhere">{{s.src}}</span>
+</div>
+</div>
+</sc-for>
+</div>
+</section>
+</sc-for>
+<sc-if value="{{empty}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; padding: 32px 20px; border: 1px dashed {{c.lineStrong}}; border-radius: 10px; color: {{c.muted}}">No service matches this filter.</p>
+</sc-if>
+</main>
+
+<footer style="display: flex; flex-wrap: wrap; gap: 24px 48px; padding-top: 24px; border-top: 1px solid {{c.line}}; font-size: 13px; color: {{c.muted}}">
+<div style="display: flex; flex-direction: column; gap: 8px; flex: 1 1 320px">
+<span style="font-weight: 600; color: {{c.ink}}">Access</span>
+<div style="display: flex; flex-wrap: wrap; gap: 8px 16px">
+<sc-for list="{{legend}}" as="l" hint-placeholder-count="5">
+<span style="display: flex; align-items: center; gap: 8px"><span style="display: inline-block; padding: 1px 9px; border-radius: 999px; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12px; line-height: 20px; background: {{l.bBg}}; color: {{l.bFg}}; border: 1px {{l.bStyle}} {{l.bLine}}">{{l.access}}</span>{{l.text}}</span>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px; flex: 1 1 320px">
+<span style="font-weight: 600; color: {{c.ink}}">Add a service</span>
+<span>One entry in the module that configures it: <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; color: {{c.ink}}">flake.lobby.services.&lt;name&gt;</code>. Page and CLI pick it up on the next build. In a terminal: <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; color: {{c.ink}}">lobby</code>, <code style="font-family: 'IBM Plex Mono', ui-monospace, monospace; color: {{c.ink}}">lobby open &lt;name&gt;</code>.</span>
+</div>
+</footer>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":1280,"height":2100}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { q: '', host: '' };
+  }
+  renderVals() {
+    const dark = this.props.dark ?? false;
+    const c = dark ? {
+      bg: '#111315', surface: '#191C1F', ink: '#E8E9E6', muted: '#A0A6AC',
+      line: '#2A2E32', lineStrong: '#41474D', link: '#7DD8BC', warn: '#F2B266',
+      chipOn: '#E8E9E6', chipOnFg: '#111315'
+    } : {
+      bg: '#F4F4F1', surface: '#FFFFFF', ink: '#16181A', muted: '#585D62',
+      line: '#E1E2DD', lineStrong: '#C4C6C0', link: '#16614F', warn: '#9A4A00',
+      chipOn: '#16181A', chipOnFg: '#FFFFFF'
+    };
+    const badge = dark ? {
+      nebula: { bBg: '#16352D', bFg: '#9BE7CF', bLine: '#2C6B59', bStyle: 'solid' },
+      lan: { bBg: 'transparent', bFg: '#E8E9E6', bLine: '#5A6168', bStyle: 'solid' },
+      public: { bBg: '#E8E9E6', bFg: '#111315', bLine: '#E8E9E6', bStyle: 'solid' },
+      tunnel: { bBg: 'transparent', bFg: '#E8E9E6', bLine: '#7A8188', bStyle: 'dashed' },
+      local: { bBg: '#24282C', bFg: '#A0A6AC', bLine: '#24282C', bStyle: 'solid' },
+      '?': { bBg: 'transparent', bFg: '#F2B266', bLine: '#8A6236', bStyle: 'dotted' }
+    } : {
+      nebula: { bBg: '#E2F2EC', bFg: '#11493B', bLine: '#9DCDBD', bStyle: 'solid' },
+      lan: { bBg: 'transparent', bFg: '#16181A', bLine: '#8E9399', bStyle: 'solid' },
+      public: { bBg: '#16181A', bFg: '#FFFFFF', bLine: '#16181A', bStyle: 'solid' },
+      tunnel: { bBg: 'transparent', bFg: '#16181A', bLine: '#6B7076', bStyle: 'dashed' },
+      local: { bBg: '#EDEEEA', bFg: '#4A4F54', bLine: '#EDEEEA', bStyle: 'solid' },
+      '?': { bBg: 'transparent', bFg: '#9A4A00', bLine: '#D9A273', bStyle: 'dotted' }
+    };
+    const S = [
+      { cat: 'Monitoring', key: 'grafana', name: 'Grafana', desc: 'Dashboards for host health, backups, NixOS and piethein', host: 'dapperehaan', access: 'nebula', url: 'http://192.168.100.2:3000', src: 'modules/services/monitoring/grafana.nix:[line]' },
+      { cat: 'Monitoring', key: 'prometheus', name: 'Prometheus', desc: 'Metrics store behind Grafana; reachable on the host only', host: 'dapperehaan', access: 'local', url: 'http://127.0.0.1:9090', src: 'modules/services/monitoring/grafana.nix:[line]' },
+      { cat: 'Monitoring', key: 'uptime-kuma', name: 'Uptime Kuma', desc: 'Uptime checks', host: 'hurry', access: '?', url: '[address]:8080', src: 'modules/HOSTS/hurry-pi/services.nix:[line]', note: 'listen address and access' },
+      { cat: 'Backups', key: 'backrest', name: 'Backrest', desc: 'Web UI for restic backups', host: 'dapperehaan', access: 'nebula', url: 'http://192.168.100.2:9898', src: 'modules/HOSTS/dapperehaan-server/backrest.nix:[line]' },
+      { cat: 'Files & sync', key: 'samba', name: 'Samba', desc: 'File shares', host: 'dapperehaan', access: 'lan', url: null, src: 'services-samba module:[line]' },
+      { cat: 'Files & sync', key: 'syncthing', name: 'Syncthing hub', desc: 'GUI on each host at its own localhost', host: 'dapperehaan', access: 'local', url: 'http://127.0.0.1:8384', src: 'modules/services/sync/syncthing-pool.nix:[line]' },
+      { cat: 'Files & sync', key: 'piethein', name: 'piethein (DSM)', desc: 'Synology DSM; not a NixOS host', host: 'piethein', access: 'lan', url: 'https://192.168.2.100:5001', src: 'registered by hand:[line]' },
+      { cat: 'Photos', key: 'immich', name: 'Immich', desc: 'Photo library', host: 'stinkie', access: '?', url: '[address]:2283', src: 'modules/HOSTS/stinkie-desktop/immich.nix:[line]', note: 'listen address; LAN or nebula' },
+      { cat: 'Passwords', key: 'vaultwarden', name: 'Vaultwarden', desc: 'Password manager', host: 'hurry', access: 'tunnel', url: 'https://[domain in secret]', src: 'modules/HOSTS/hurry-pi/services.nix:[line]', note: 'domain' },
+      { cat: 'Chat', key: 'tuwunel', name: 'Tuwunel', desc: 'Matrix homeserver', host: 'durer', access: 'public', url: 'https://nuremberg.pimsnel.com', src: 'modules/HOSTS/durer-server/configuration.nix:[line]' },
+      { cat: 'Websites', key: 'pimsnel-com', name: 'pimsnel.com', desc: 'Also secondbrain. and taste.', host: 'durer', access: 'public', url: 'https://pimsnel.com', src: 'modules/HOSTS/durer-server/[file]:[line]' },
+      { cat: 'Websites', key: 'studio-mint', name: 'studio-mint', desc: 'Shop, plus v2 and v3', host: 'durer', access: 'public', url: 'https://studio-mint.shop', src: 'modules/HOSTS/durer-server/configuration.nix:[line]' },
+      { cat: 'Websites', key: 'voorzetramenshop', name: 'voorzetramenshop', desc: 'First shop version', host: 'durer', access: 'public', url: 'https://v1.studio-mint.shop', src: 'modules/HOSTS/durer-server/configuration.nix:[line]' },
+      { cat: 'Websites', key: 'umami', name: 'umami', desc: 'Web analytics for the sites above', host: 'durer', access: 'public', url: 'https://umami.pimsnel.com', src: 'modules/HOSTS/durer-server/configuration.nix:[line]' },
+      { cat: 'Tools', key: 'linny-mcp', name: 'linny-mcp', desc: 'MCP server for linny', host: 'dapperehaan', access: 'nebula', url: '192.168.100.2:8765', src: 'modules/HOSTS/dapperehaan-server/linny-mcp.nix:[line]', note: 'whether it belongs in the list' }
+    ];
+    const q = (this.state.q || '').toLowerCase().trim();
+    const hostSel = this.state.host || '';
+    const hostNames = ['dapperehaan', 'durer', 'hurry', 'stinkie', 'piethein'];
+    const hosts = [{ id: '', label: 'all' }].concat(hostNames.map((h) => ({ id: h, label: h }))).map((h) => {
+      const on = h.id === hostSel;
+      const count = h.id ? S.filter((s) => s.host === h.id).length : S.length;
+      return {
+        label: h.label, count: count, pressed: on ? 'true' : 'false',
+        bg: on ? c.chipOn : c.surface, fg: on ? c.chipOnFg : c.ink,
+        border: on ? c.chipOn : c.lineStrong, countFg: on ? c.chipOnFg : c.muted,
+        pick: () => this.setState({ host: on ? '' : h.id })
+      };
+    });
+    const match = (s) => (!hostSel || s.host === hostSel) &&
+      (!q || [s.key, s.name, s.desc, s.host, s.url || '', s.access, s.cat].join(' ').toLowerCase().includes(q));
+    const groups = [];
+    S.filter(match).forEach((s) => {
+      let g = groups.find((x) => x.name === s.cat);
+      if (!g) { g = { name: s.cat, items: [] }; groups.push(g); }
+      const b = badge[s.access];
+      g.items.push(Object.assign({}, s, b, {
+        url: s.url || 'no web UI',
+        href: s.url && /^https?:\/\//.test(s.url) && s.url.indexOf('[') < 0 ? s.url : null,
+        noHref: !(s.url && /^https?:\/\//.test(s.url) && s.url.indexOf('[') < 0),
+        access: s.access === '?' ? 'unknown' : s.access,
+        note: s.note || null,
+        divider: g.items.length ? '1px solid ' + c.line : 'none'
+      }));
+    });
+    groups.forEach((g) => { g.count = g.items.length; });
+    const legendText = { nebula: 'mesh members only', lan: 'home network', public: 'internet', tunnel: 'cloudflared tunnel', local: 'on the host itself' };
+    const legend = ['nebula', 'lan', 'public', 'tunnel', 'local'].map((a) => Object.assign({ access: a, text: legendText[a] }, badge[a]));
+    return {
+      c: c, hosts: hosts, groups: groups, legend: legend, q: this.state.q,
+      empty: groups.length === 0,
+      onQ: (e) => this.setState({ q: e.target.value })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -85,6 +85,7 @@
             defaults = { pkgs, ... }: {
               _module.args.inputs = inputs;
               nixpkgs.hostPlatform = system;
+              system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
               nixpkgs.config.allowUnfree = true;
               nixpkgs.config.permittedInsecurePackages = [
                 "electron-39.8.10"

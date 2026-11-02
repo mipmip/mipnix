@@ -1,7 +1,6 @@
 let
   doornappel = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDXUaXKtaEQIvuIZ3KVh2kTbqiI3itVlnR/7qEkesXk1";
   zonnehoed = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMMk+lMbZgFFKQGOcoSj07nT4BZjDwI1c/y0PvoSZOw1";
-  cichorei = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJZU9DZpGs+Ib/aN3n7u46wY8v9V4qHLcNzs/U+9iTgc";
   pim = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEY25ZaYRuKUJuVuzqK4c8dKkSxN6Cd9yhbDTa/5Njmh";
 
   annemarie = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBvyHG+v+V+LQcbxw1H0ZCnrPkHy90lGu/08avLFa48S";
@@ -9,7 +8,6 @@ let
   lavendel = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB7SSE52Oaftqy7uqCXSIr5lQTrs7wqR7lUdf7IiVHvo";
   rodin = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIITKQnVAoVLw3gGL4c2pWW4uA6CySG6Rd/r4NIEAk6KU";
   dapperehaan = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKjWlnTNc6cEhpI2SHofjwWZW7HZU0OBD6pY7QI4gpki";
-  clawone = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMhCHXAfIfZRYct5eTrUu/MPXJ5IE+j6QYWSkDv3PbFU";
   durer = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE+jRQYvOX+EI+QeB31JT994sYo+B1j18AxTjzuprQ2F";
   hurry = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPyh9gDCDN2rzAExllvavzVVr4XkKea63Wa+B7JO8+Qz";
   harry = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOmY6Jv/y1CSyVe0t1L+65NQjocDoDUShhriPp5yg6eh";
@@ -21,7 +19,6 @@ let
   systems = [
     doornappel
     zonnehoed
-    cichorei
     hurry
     harry
     lego2
@@ -40,7 +37,6 @@ let
   ];
 
   personal_laptops = [
-    cichorei
     doornappel
     peterspav
     stinkie
@@ -169,16 +165,13 @@ in
   "startaste-env.age".publicKeys = [ pim dapperehaan ];
   "startaste-mcp-tokens.age".publicKeys = [ pim dapperehaan ];
 
-  "matrix-openclaw-password.age".publicKeys = [pim clawone];
   "voorzetramenshop-env.age".publicKeys = [ pim durer ];
   "studio-mint-v3-env.age".publicKeys = [ pim durer ];
-  "nebula-cichorei.crt.age".publicKeys = users ++ systems;
-  "nebula-cichorei.key.age".publicKeys = users ++ systems;
 
   # restic backups to piethein — shared across the backup source hosts.
   # Keep an OFFLINE copy of both: a dead host cannot decrypt its own secrets.
-  "restic-ssh-key.age".publicKeys = [ pim cichorei hurry durer zonnehoed dapperehaan stinkie ];
-  "restic-repo-pw.age".publicKeys = [ pim cichorei hurry durer zonnehoed dapperehaan stinkie ];
+  "restic-ssh-key.age".publicKeys = [ pim hurry durer zonnehoed dapperehaan stinkie peterspav ];
+  "restic-repo-pw.age".publicKeys = [ pim hurry durer zonnehoed dapperehaan stinkie peterspav ];
 
   # Backrest UI login credential: base64(bcrypt(password)). Only dapperehaan (+ pim).
   "backrest-auth.age".publicKeys = [ pim dapperehaan ];
@@ -201,9 +194,6 @@ in
   # pim. pim is kept as a recipient for the same reason the restic secrets above
   # say to keep an offline copy: a dead host cannot decrypt its own secrets, and
   # restoring the identity beats re-registering a new device ID everywhere.
-  "syncthing-cichorei.crt.age".publicKeys = [ pim cichorei ];
-  "syncthing-cichorei.key.age".publicKeys = [ pim cichorei ];
-
   "syncthing-doornappel.crt.age".publicKeys = [ pim doornappel ];
   "syncthing-doornappel.key.age".publicKeys = [ pim doornappel ];
 
@@ -229,5 +219,11 @@ in
 
   "grafana-admin-password.age".publicKeys = [ pim dapperehaan ];
   "grafana-secret-key.age".publicKeys = [ pim dapperehaan ];
+
+  "piethein-snmp.age".publicKeys = [ pim dapperehaan ];
+
+  "hermes-matrix-password.age".publicKeys = [ pim peterspav ];
+  "hermes-env.age".publicKeys = [ pim peterspav ];
+  "hermes-dashboard-token.age".publicKeys = [ pim peterspav ];
 
 }
