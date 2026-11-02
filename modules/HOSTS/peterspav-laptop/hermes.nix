@@ -39,6 +39,7 @@ in
     age.secrets = {
       hermes-env.file = ../../../secrets/hermes-env.age;
       hermes-matrix-password.file = ../../../secrets/hermes-matrix-password.age;
+      hermes-dashboard-login.file = ../../../secrets/hermes-dashboard-login.age;
       hermes-dashboard-token = {
         file = ../../../secrets/hermes-dashboard-token.age;
         owner = config.services.hermes-agent.user;
@@ -81,6 +82,7 @@ in
       environmentFiles = [
         config.age.secrets.hermes-env.path
         config.age.secrets.hermes-matrix-password.path
+        config.age.secrets.hermes-dashboard-login.path
       ];
 
       environment = {
