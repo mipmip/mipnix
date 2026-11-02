@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>lobby</title>
+<!-- Fonts: IBM Plex is in nixpkgs as `ibm-plex`. Either drop this link (page falls back to system fonts,
+     works offline on the mesh) or copy the woff2 files next to index.html and add @font-face rules. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root {
+  --bg: #F4F4F1; --surface: #FFFFFF; --ink: #16181A; --muted: #585D62;
+  --line: #E1E2DD; --line-strong: #C4C6C0; --link: #16614F;
+  --chip-on: #16181A; --chip-on-fg: #FFFFFF;
+  --nebula-bg: #E2F2EC; --nebula-fg: #11493B; --nebula-line: #9DCDBD;
+  --lan-fg: #16181A; --lan-line: #8E9399;
+  --public-bg: #16181A; --public-fg: #FFFFFF;
+  --tunnel-fg: #16181A; --tunnel-line: #6B7076;
+  --local-bg: #EDEEEA; --local-fg: #4A4F54;
+  --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --sans: 'IBM Plex Sans', system-ui, sans-serif;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111315; --surface: #191C1F; --ink: #E8E9E6; --muted: #A0A6AC;
+    --line: #2A2E32; --line-strong: #41474D; --link: #7DD8BC;
+    --chip-on: #E8E9E6; --chip-on-fg: #111315;
+    --nebula-bg: #16352D; --nebula-fg: #9BE7CF; --nebula-line: #2C6B59;
+    --lan-fg: #E8E9E6; --lan-line: #5A6168;
+    --public-bg: #E8E9E6; --public-fg: #111315;
+    --tunnel-fg: #E8E9E6; --tunnel-line: #7A8188;
+    --local-bg: #24282C; --local-fg: #A0A6AC;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.45 var(--sans); }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 48px 16px 64px; display: flex; flex-direction: column; gap: 40px; }
+.mono { font-family: var(--mono); }
+.muted { color: var(--muted); }
+header { display: flex; flex-direction: column; gap: 20px; }
+.top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; }
+.brand { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+h1 { margin: 0; font: 600 40px/1.1 var(--mono); letter-spacing: -0.02em; }
+.lead { margin: 0; max-width: 640px; font-size: 17px; }
+.controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+input[type=search] { flex: 1 1 280px; min-width: 0; height: 44px; padding: 0 14px; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--surface); color: var(--ink); font: inherit; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips button { height: 44px; padding: 0 14px; border-radius: 8px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); font: 13px var(--mono); cursor: pointer; display: flex; align-items: center; gap: 8px; }
+.chips button span { color: var(--muted); }
+.chips button[aria-pressed=true] { background: var(--chip-on); border-color: var(--chip-on); color: var(--chip-on-fg); }
+.chips button[aria-pressed=true] span { color: var(--chip-on-fg); }
+main { display: flex; flex-direction: column; gap: 32px; }
+section { display: flex; flex-direction: column; gap: 10px; }
+h2 { margin: 0; display: flex; align-items: baseline; gap: 10px; font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h2 .mono { font-weight: 400; letter-spacing: 0; }
+.list { border: 1px solid var(--line); border-radius: 10px; background: var(--surface); overflow: hidden; }
+.row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 24px; padding: 16px 20px; }
+.row + .row { border-top: 1px solid var(--line); }
+.who { flex: 1 1 280px; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.name { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.name a, .name strong { font-size: 16px; font-weight: 600; }
+a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.cmd { font: 12px var(--mono); color: var(--muted); }
+.desc { font-size: 14px; color: var(--muted); }
+.where { flex: 0 0 auto; display: flex; align-items: baseline; gap: 10px; min-width: 210px; }
+.host { font: 13px var(--mono); min-width: 96px; }
+.where2 { flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.url { font: 13px var(--mono); overflow-wrap: anywhere; }
+.src { font: 12px var(--mono); color: var(--muted); overflow-wrap: anywhere; }
+.badge { display: inline-block; padding: 1px 9px; border-radius: 999px; font: 12px/20px var(--mono); border: 1px solid transparent; }
+.badge.nebula { background: var(--nebula-bg); color: var(--nebula-fg); border-color: var(--nebula-line); }
+.badge.lan    { color: var(--lan-fg); border-color: var(--lan-line); }
+.badge.public { background: var(--public-bg); color: var(--public-fg); border-color: var(--public-bg); }
+.badge.tunnel { color: var(--tunnel-fg); border: 1px dashed var(--tunnel-line); }
+.badge.local  { background: var(--local-bg); color: var(--local-fg); border-color: var(--local-bg); }
+.empty { margin: 0; padding: 32px 20px; border: 1px dashed var(--line-strong); border-radius: 10px; color: var(--muted); }
+footer { display: flex; flex-wrap: wrap; gap: 24px 48px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+footer > div { display: flex; flex-direction: column; gap: 8px; flex: 1 1 320px; }
+footer b { color: var(--ink); }
+footer code { font-family: var(--mono); color: var(--ink); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+.legend span.item { display: flex; align-items: center; gap: 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="top">
+      <div class="brand"><h1>lobby</h1><span class="mono muted" style="font-size:14px">http://lobby/</span></div>
+      <p class="mono muted" style="margin:0;font-size:13px" id="built"></p>
+    </div>
+    <p class="lead" id="lead"></p>
+    <div class="controls">
+      <label class="sr" for="q">Filter services</label>
+      <input id="q" type="search" placeholder="Filter by name, host or URL" autocomplete="off">
+      <div class="chips" role="group" aria-label="Filter by host" id="hosts"></div>
+    </div>
+  </header>
+  <main id="main"></main>
+  <footer>
+    <div>
+      <b>Access</b>
+      <div class="legend">
+        <span class="item"><span class="badge nebula">nebula</span>mesh members only</span>
+        <span class="item"><span class="badge lan">lan</span>home network</span>
+        <span class="item"><span class="badge public">public</span>internet</span>
+        <span class="item"><span class="badge tunnel">tunnel</span>cloudflared tunnel</span>
+        <span class="item"><span class="badge local">local</span>on the host itself</span>
+      </div>
+    </div>
+    <div>
+      <b>Add a service</b>
+      <span>One entry in the module that configures it: <code>flake.lobby.services.&lt;name&gt;</code>. Page and CLI pick it up on the next build. In a terminal: <code>lobby</code>, <code>lobby open &lt;name&gt;</code>.</span>
+    </div>
+  </footer>
+</div>
+
+<!-- Nix replaces {"generated": {"commit": "abc1234", "date": "2026-11-02"}, "services": {"grafana": {"title": "Grafana", "description": "Dashboards for host health, backups, NixOS and piethein", "host": "dapperehaan", "url": "http://192.168.100.2:3000", "access": "nebula", "category": "monitoring", "source": "modules/services/monitoring/grafana.nix:42"}, "prometheus": {"title": "Prometheus", "description": "Metrics store behind Grafana; reachable on the host only", "host": "dapperehaan", "url": "http://127.0.0.1:9090", "access": "local", "category": "monitoring", "source": "modules/services/monitoring/grafana.nix:88"}, "uptime-kuma": {"title": "Uptime Kuma", "description": "Uptime checks", "host": "hurry", "url": "http://hurry:8080", "access": "lan", "category": "monitoring", "source": "modules/HOSTS/hurry-pi/services.nix:10"}, "backrest": {"title": "Backrest", "description": "Web UI for restic backups", "host": "dapperehaan", "url": "http://192.168.100.2:9898", "access": "nebula", "category": "backups", "source": "modules/HOSTS/dapperehaan-server/backrest.nix:12"}, "samba": {"title": "Samba", "description": "File shares", "host": "dapperehaan", "url": null, "access": "lan", "category": "files & sync", "source": "modules/services/samba.nix:5"}, "syncthing": {"title": "Syncthing hub", "description": "GUI on each host at its own localhost", "host": "dapperehaan", "url": "http://127.0.0.1:8384", "access": "local", "category": "files & sync", "source": "modules/services/sync/syncthing-pool.nix:30"}, "piethein": {"title": "piethein (DSM)", "description": "Synology DSM; not a NixOS host", "host": "piethein", "url": "https://192.168.2.100:5001", "access": "lan", "category": "files & sync", "source": "modules/lobby/manual.nix:3"}, "immich": {"title": "Immich", "description": "Photo library", "host": "stinkie", "url": "http://192.168.100.4:2283", "access": "nebula", "category": "photos", "source": "modules/HOSTS/stinkie-desktop/immich.nix:8"}, "vaultwarden": {"title": "Vaultwarden", "description": "Password manager", "host": "hurry", "url": "https://vault.example.org", "access": "tunnel", "category": "passwords", "source": "modules/HOSTS/hurry-pi/services.nix:40"}, "tuwunel": {"title": "Tuwunel", "description": "Matrix homeserver", "host": "durer", "url": "https://nuremberg.pimsnel.com", "access": "public", "category": "chat", "source": "modules/HOSTS/durer-server/configuration.nix:120"}, "pimsnel-com": {"title": "pimsnel.com", "description": "Also secondbrain. and taste.", "host": "durer", "url": "https://pimsnel.com", "access": "public", "category": "websites", "source": "modules/HOSTS/durer-server/configuration.nix:60"}, "studio-mint": {"title": "studio-mint", "description": "Shop, plus v2 and v3", "host": "durer", "url": "https://studio-mint.shop", "access": "public", "category": "websites", "source": "modules/HOSTS/durer-server/configuration.nix:80"}, "voorzetramenshop": {"title": "voorzetramenshop", "description": "First shop version", "host": "durer", "url": "https://v1.studio-mint.shop", "access": "public", "category": "websites", "source": "modules/HOSTS/durer-server/configuration.nix:95"}, "umami": {"title": "umami", "description": "Web analytics for the sites", "host": "durer", "url": "https://umami.pimsnel.com", "access": "public", "category": "websites", "source": "modules/HOSTS/durer-server/configuration.nix:140"}, "linny-mcp": {"title": "linny-mcp", "description": "MCP server for linny", "host": "dapperehaan", "url": "http://192.168.100.2:8765", "access": "nebula", "category": "tools", "source": "modules/HOSTS/dapperehaan-server/linny-mcp.nix:15"}}} with builtins.toJSON of the registry (see README). -->
+<script type="application/json" id="registry">{"generated": {"commit": "abc1234", "date": "2026-11-02"}, "services": {"grafana": {"title": "Grafana", "description": "Dashboards for host health, backups, NixOS and piethein", "host": "dapperehaan", "url": "http://192.168.100.2:3000", "access": "nebula", "category": "monitoring", "source": "modules/services/monitoring/grafana.nix:42"}, "prometheus": {"title": "Prometheus", "description": "Metrics store behind Grafana; reachable on the host only", "host": "dapperehaan", "url": "http://127.0.0.1:9090", "access": "local", "category": "monitoring", "source": "modules/services/monitoring/grafana.nix:88"}, "uptime-kuma": {"title": "Uptime Kuma", "description": "Uptime checks", "host": "hurry", "url": "http://hurry:8080", "access": "lan", "category": "monitoring", "source": "modules/HOSTS/hurry-pi/services.nix:10"}, "backrest": {"title": "Backrest", "description": "Web UI for restic backups", "host": "dapperehaan", "url": "http://192.168.100.2:9898", "access": "nebula", "category": "backups", "source": "modules/HOSTS/dapperehaan-server/backrest.nix:12"}, "samba": {"title": "Samba", "description": "File shares", "host": "dapperehaan", "url": null, "access": "lan", "category": "files & sync", "source": "modules/services/samba.nix:5"}, "syncthing": {"title": "Syncthing hub", "description": "GUI on each host at its own localhost", "host": "dapperehaan", "url": "http://127.0.0.1:8384", "access": "local", "category": "files & sync", "source": "modules/services/sync/syncthing-pool.nix:30"}, "piethein": {"title": "piethein (DSM)", "description": "Synology DSM; not a NixOS host", "host": "piethein", "url": "https://192.168.2.100:5001", "access": "lan", "category": "files & sync", "source": "modules/lobby/manual.nix:3"}, "immich": {"title": "Immich", "description": "Photo library", "host": "stinkie", "url": "http://192.168.100.4:2283", "access": "nebula", "category": "photos", "source": "modules/HOSTS/stinkie-desktop/immich.nix:8"}, "vaultwarden": {"title": "Vaultwarden", "description": "Password manager", "host": "hurry", "url": "https://vault.example.org", "access": "tunnel", "category": "passwords", "source": "modules/HOSTS/hurry-pi/services.nix:40"}, "tuwunel": {"title": "Tuwunel", "description": "Matrix homeserver", "host": "durer", "url": "https://nuremberg.pimsnel.com", "access": "public", "category": "chat", "source": "modules/HOSTS/durer-server/configuration.nix:120"}, "pimsnel-com": {"title": "pimsnel.com", "description": "Also secondbrain. and taste.", "host": "durer", "url": "https://pimsnel.com", "access": "public", "category": "websites", "source": "modules/HOSTS/durer-server/configuration.nix:60"}, "studio-mint": {"title": "studio-mint", "description": "Shop, plus v2 and v3", "host": "durer", "url": "https://studio-mint.shop", "access": "public", "category": "websites", "source": "modules/HOSTS/durer-server/configuration.nix:80"}, "voorzetramenshop": {"title": "voorzetramenshop", "description": "First shop version", "host": "durer", "url": "https://v1.studio-mint.shop", "access": "public", "category": "websites", "source": "modules/HOSTS/durer-server/configuration.nix:95"}, "umami": {"title": "umami", "description": "Web analytics for the sites", "host": "durer", "url": "https://umami.pimsnel.com", "access": "public", "category": "websites", "source": "modules/HOSTS/durer-server/configuration.nix:140"}, "linny-mcp": {"title": "linny-mcp", "description": "MCP server for linny", "host": "dapperehaan", "url": "http://192.168.100.2:8765", "access": "nebula", "category": "tools", "source": "modules/HOSTS/dapperehaan-server/linny-mcp.nix:15"}}}</script>
+<noscript><p style="padding:16px">This page needs JavaScript. The raw registry is at <a href="lobby.json">lobby.json</a>.</p></noscript>
+<script>
+(function () {
+  var reg = JSON.parse(document.getElementById('registry').textContent);
+  var all = Object.keys(reg.services).sort().map(function (k) {
+    var s = reg.services[k]; s.key = k; s.title = s.title || k; return s;
+  });
+  var hosts = Array.from(new Set(all.map(function (s) { return s.host; }))).sort();
+  var state = { q: '', host: '' };
+
+  function el(tag, attrs, kids) {
+    var n = document.createElement(tag);
+    for (var a in attrs || {}) { if (a === 'text') n.textContent = attrs[a]; else n.setAttribute(a, attrs[a]); }
+    (kids || []).forEach(function (k) { if (k) n.appendChild(k); });
+    return n;
+  }
+  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+  var built = reg.generated || {};
+  document.getElementById('built').textContent = 'built from mipnix ' + (built.commit || '') + ' · ' + (built.date || '');
+  document.getElementById('lead').textContent = 'Where every service runs and how to reach it. ' + all.length + ' services on ' + hosts.length + ' hosts.';
+
+  var hostBox = document.getElementById('hosts');
+  function renderHosts() {
+    hostBox.textContent = '';
+    [''].concat(hosts).forEach(function (h) {
+      var n = h ? all.filter(function (s) { return s.host === h; }).length : all.length;
+      var b = el('button', { type: 'button', 'aria-pressed': String(state.host === h) }, [document.createTextNode(h || 'all'), el('span', { text: String(n) })]);
+      b.onclick = function () { state.host = state.host === h ? '' : h; renderHosts(); render(); };
+      hostBox.appendChild(b);
+    });
+  }
+
+  function render() {
+    var q = state.q.toLowerCase().trim();
+    var list = all.filter(function (s) {
+      if (state.host && s.host !== state.host) return false;
+      if (!q) return true;
+      return [s.key, s.title, s.description, s.host, s.url || '', s.access, s.category].join(' ').toLowerCase().indexOf(q) >= 0;
+    });
+    var cats = {};
+    list.forEach(function (s) { (cats[s.category] = cats[s.category] || []).push(s); });
+    var main = document.getElementById('main');
+    main.textContent = '';
+    if (!list.length) { main.appendChild(el('p', { class: 'empty', text: 'No service matches this filter.' })); return; }
+    Object.keys(cats).sort().forEach(function (c) {
+      var box = el('div', { class: 'list' });
+      cats[c].forEach(function (s) {
+        var nameEl = s.url && /^https?:\/\//.test(s.url) ? el('a', { href: s.url, text: s.title }) : el('strong', { text: s.title });
+        box.appendChild(el('div', { class: 'row' }, [
+          el('div', { class: 'who' }, [
+            el('div', { class: 'name' }, [nameEl, el('span', { class: 'cmd', text: 'lobby open ' + s.key })]),
+            s.description ? el('span', { class: 'desc', text: s.description }) : null
+          ]),
+          el('div', { class: 'where' }, [
+            el('span', { class: 'host', text: s.host }),
+            el('span', { class: 'badge ' + s.access, text: s.access })
+          ]),
+          el('div', { class: 'where2' }, [
+            el('span', { class: 'url', text: s.url || 'no web UI' }),
+            el('span', { class: 'src', text: s.source || '' })
+          ])
+        ]));
+      });
+      main.appendChild(el('section', {}, [
+        el('h2', {}, [document.createTextNode(cap(c)), el('span', { class: 'mono', text: String(cats[c].length) })]),
+        box
+      ]));
+    });
+  }
+
+  document.getElementById('q').addEventListener('input', function (e) { state.q = e.target.value; render(); });
+  renderHosts();
+  render();
+})();
+</script>
+</body>
+</html>

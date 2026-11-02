@@ -1,0 +1,55 @@
+Expected `lobby` CLI behaviour (from the design; built from reference/lobby.example.json).
+Category headers dim, access colored like the page badges when stdout is a TTY; plain when piped.
+Columns: key, host, access, url. Sort: categories alphabetically, services by key.
+
+$ lobby
+BACKUPS
+  backrest          dapperehaan  nebula   http://192.168.100.2:9898
+CHAT
+  tuwunel           durer        public   https://nuremberg.pimsnel.com
+FILES & SYNC
+  piethein          piethein     lan      https://192.168.2.100:5001
+  samba             dapperehaan  lan      no web UI
+  syncthing         dapperehaan  local    http://127.0.0.1:8384
+MONITORING
+  grafana           dapperehaan  nebula   http://192.168.100.2:3000
+  prometheus        dapperehaan  local    http://127.0.0.1:9090
+  uptime-kuma       hurry        lan      http://hurry:8080
+PASSWORDS
+  vaultwarden       hurry        tunnel   https://vault.example.org
+PHOTOS
+  immich            stinkie      nebula   http://192.168.100.4:2283
+TOOLS
+  linny-mcp         dapperehaan  nebula   http://192.168.100.2:8765
+WEBSITES
+  pimsnel-com       durer        public   https://pimsnel.com
+  studio-mint       durer        public   https://studio-mint.shop
+  umami             durer        public   https://umami.pimsnel.com
+  voorzetramenshop  durer        public   https://v1.studio-mint.shop
+
+(On a TTY with gum available: after the list, or instead of it, `gum filter` over the
+same lines; the chosen line's URL is opened. Entries with url = null are not openable.)
+
+$ lobby show grafana
+name         grafana
+description  Dashboards for host health, backups, NixOS and piethein
+host         dapperehaan
+access       nebula
+url          http://192.168.100.2:3000
+category     monitoring
+source       modules/services/monitoring/grafana.nix:42
+
+$ lobby open grafan
+lobby: no service named "grafan"
+did you mean: grafana
+(exit 1)
+
+$ lobby open grafana
+opening http://192.168.100.2:3000
+
+$ lobby open samba
+lobby: samba has no web UI
+(exit 1)
+
+$ lobby --json
+{ ...the registry, same shape as reference/lobby.example.json... }
