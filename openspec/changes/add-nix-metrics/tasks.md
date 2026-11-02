@@ -17,11 +17,11 @@
 ## 4. Build and deploy
 
 - [x] 4.1 Build dapperehaan, durer, delliebellie and one Pi.
-- [ ] 4.2 Deploy dapperehaan, durer, harry and hurry with `rme deploy_remote`, and this laptop with `rme up_machine`.
+- [x] 4.2 Deploy dapperehaan, durer, harry and hurry with `rme deploy_remote`, and this laptop with `rme up_machine`.
 
 ## 5. Verify
 
-- [ ] 5.1 `nixos-version --json` on a deployed host reports the deployed commit.
-- [ ] 5.2 Prometheus has `nixos_system_info` and `nixos_system_generations` for every deployed host.
-- [ ] 5.3 Start the daily store job by hand on one host; `nix_store_size_bytes` appears.
-- [ ] 5.4 The NixOS dashboard lists the deployed hosts and durer's last GC.
+- [x] 5.1 `nixos-version --json` on a deployed host reports the deployed commit.
+- [x] 5.2 Prometheus has `nixos_system_info` and `nixos_system_generations` for every deployed host.
+- [x] 5.3 Start the daily store job by hand on one host; `nix_store_size_bytes` appears.
+- [x] 5.4 The NixOS dashboard lists the deployed hosts and durer's last GC.
