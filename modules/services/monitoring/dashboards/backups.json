@@ -120,7 +120,7 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "time() - node_systemd_timer_last_trigger_seconds",
+          "expr": "(time() - node_systemd_timer_last_trigger_seconds) and node_systemd_timer_last_trigger_seconds > 0",
           "instant": true,
           "format": "table"
         }
