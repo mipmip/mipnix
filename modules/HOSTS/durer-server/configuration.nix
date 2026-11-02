@@ -212,6 +212,7 @@ in
       domain = "v3.studio-mint.shop";
       port = 3003;
       maintenanceMode = true;
+      shopInbox = "post@pimsnel.com";
       environmentFile = config.age.secrets."studio-mint-v3-env".path;
     };
 
