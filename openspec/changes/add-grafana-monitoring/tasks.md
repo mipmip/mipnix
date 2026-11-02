@@ -19,14 +19,14 @@
 ## 3. Build and deploy
 
 - [x] 3.1 `git add` new files; build dapperehaan, durer and one laptop.
-- [ ] 3.2 Deploy dapperehaan and durer with `rme deploy_remote`, and this laptop with `rme up_machine`.
+- [x] 3.2 Deploy dapperehaan and durer with `rme deploy_remote`, and this laptop with `rme up_machine`.
 
 ## 4. Verify
 
-- [ ] 4.1 `curl http://durer:9100/metrics` from a mesh member succeeds; the same port on durer's public IP does not answer.
-- [ ] 4.2 Prometheus targets page lists every nebula node; deployed, running nodes are up.
-- [ ] 4.3 Grafana login works over nebula; an unauthenticated dashboard URL redirects to login.
-- [ ] 4.4 Host health dashboard shows dapperehaan's disk at about 77%.
-- [ ] 4.5 Backups dashboard lists dapperehaan's `restic-backups-dapperehaan-repos` and `hip-repo-backup` with their state.
-- [ ] 4.6 Run the `dapperehaan-grafana` restic backup once; the snapshot contains `grafana.db` and `sqlite3 grafana.db "PRAGMA integrity_check"` on a restored copy reports `ok`.
-- [ ] 4.7 Note which hosts still need a deploy before they appear as up.
+- [x] 4.1 `curl http://durer:9100/metrics` from a mesh member succeeds; the same port on durer's public IP does not answer.
+- [x] 4.2 Prometheus targets page lists every nebula node; deployed, running nodes are up.
+- [x] 4.3 Grafana login works over nebula; an unauthenticated dashboard URL redirects to login.
+- [x] 4.4 Host health dashboard shows dapperehaan's disk at about 77%.
+- [x] 4.5 Backups dashboard lists dapperehaan's `restic-backups-dapperehaan-repos` and `hip-repo-backup` with their state.
+- [x] 4.6 Run the `dapperehaan-grafana` restic backup once; the snapshot contains `grafana.db` and `sqlite3 grafana.db "PRAGMA integrity_check"` on a restored copy reports `ok`.
+- [x] 4.7 Note which hosts still need a deploy before they appear as up.
