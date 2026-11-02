@@ -26,11 +26,14 @@ the look of the page, the CLI output and the JSON contract between them.
 
 ## Decisions
 
-- **Registry option `flake.lobby.services`**, an attrset of submodules with
+- **Registry option `lobby.services`**, an attrset of submodules with
   `title` (defaults to the key), `description`, `host`, `url` (nullable),
   `access` (enum `nebula`, `lan`, `public`, `tunnel`, `local`) and
   `category`. Defined like `nebula-nodes-option.nix`, so it merges across
-  modules. Rejected: reading `services.*.enable` from every host, which
+  modules. It is a top-level flake-parts option rather than one under `flake`,
+  because `flake` is a submodule whose option definitions, and so their
+  positions, cannot be read from outside it. Only the generated JSON is
+  exported, as `flake.lobby.json`. Rejected: reading `services.*.enable` from every host, which
   misses custom units such as Backrest and cannot tell how a service is
   reached.
 - **Source location from `builtins.unsafeGetAttrPos`**, taken on the entry's

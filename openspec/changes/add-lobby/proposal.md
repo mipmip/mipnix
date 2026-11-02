@@ -9,7 +9,7 @@ Related task: [mipnix-65y7](../../../.beans/mipnix-65y7--lobby-central-services-
 
 ## What Changes
 
-- Add a flake-level registry, `flake.lobby.services`, filled with one entry
+- Add a flake-level registry, `lobby.services`, filled with one entry
   per service in the module that configures it. Each entry records the file
   and line where it is defined.
 - Generate one JSON file from the registry at build time.

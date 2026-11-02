@@ -1,5 +1,14 @@
 { inputs, ... }:
 {
+  lobby.services.immich = {
+    title = "Immich";
+    description = "Photo library";
+    host = "stinkie";
+    url = "http://${inputs.self.nebulaNodes.stinkie}:2283";
+    access = "nebula";
+    category = "photos";
+  };
+
   flake.modules.nixos.stinkie = { config, pkgs, ... }:
   let
     # immich 3.1.0, taken from the flake's already-locked `unstable` input.

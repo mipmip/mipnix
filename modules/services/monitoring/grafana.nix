@@ -1,5 +1,23 @@
 { inputs, ... }:
 {
+  lobby.services.grafana = {
+    title = "Grafana";
+    description = "Dashboards for host health, backups, NixOS and piethein";
+    host = "dapperehaan";
+    url = "http://${inputs.self.nebulaNodes.dapperehaan}:3000";
+    access = "nebula";
+    category = "monitoring";
+  };
+
+  lobby.services.prometheus = {
+    title = "Prometheus";
+    description = "Metrics store behind Grafana; reachable on the host only";
+    host = "dapperehaan";
+    url = "http://127.0.0.1:9090";
+    access = "local";
+    category = "monitoring";
+  };
+
   flake.modules.nixos.monitoring-grafana = { config, lib, pkgs, ... }:
     let
       meshIP = inputs.self.nebulaNodes.${config.networking.hostName};

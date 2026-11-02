@@ -1,5 +1,14 @@
 { inputs, ... }:
 {
+  lobby.services.linny-mcp = {
+    title = "linny-mcp";
+    description = "MCP server over the secondbrain notes; runs on dapperehaan, fronted by durer";
+    host = "dapperehaan";
+    url = "https://secondbrain.pimsnel.com";
+    access = "public";
+    category = "tools";
+  };
+
   flake.modules.nixos.dapperehaan = { config, pkgs, ... }:
   let
     corpus = "/var/lib/secondbrain";

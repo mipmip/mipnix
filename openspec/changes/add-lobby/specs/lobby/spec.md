@@ -7,7 +7,7 @@ service runs, how it is reached and where it is configured in mipnix.
 
 ### Requirement: Services are registered next to their configuration
 
-The flake SHALL provide a `flake.lobby.services` registry whose entries have
+The flake SHALL provide a `lobby.services` registry whose entries have
 a title, description, host, URL (or none), access type (`nebula`, `lan`,
 `public`, `tunnel` or `local`) and category. Entries SHALL be defined in the
 module that configures the service, and the registry SHALL be readable
@@ -15,7 +15,7 @@ without evaluating any host configuration.
 
 #### Scenario: Adding a service
 
-- **WHEN** a module adds an entry to `flake.lobby.services` and the flake is
+- **WHEN** a module adds an entry to `lobby.services` and the flake is
   rebuilt
 - **THEN** the service appears on the page and in the CLI without any other
   change

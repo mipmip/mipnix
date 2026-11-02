@@ -1,4 +1,13 @@
 { inputs, ... } : {
+  lobby.services.samba = {
+    title = "Samba";
+    description = "File shares";
+    host = "dapperehaan";
+    url = null;
+    access = "lan";
+    category = "files & sync";
+  };
+
   flake.modules.nixos.services-samba = { config, pkgs, ... }: {
 
     services = {

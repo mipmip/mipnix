@@ -34,7 +34,7 @@
       # does not force nixosConfigurations (no inputs.self recursion).
       networking.extraHosts = lib.concatStrings (
         lib.mapAttrsToList (name: ip: "${ip} ${name}\n") inputs.self.nebulaNodes
-      );
+      ) + "${inputs.self.nebulaNodes.dapperehaan} lobby\n";
 
       age = {
         secrets = {

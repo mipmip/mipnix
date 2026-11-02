@@ -82,6 +82,7 @@ in
       hip-repo-backup
       monitoring-grafana
       monitoring-piethein-snmp
+      lobby-web
 
       #desktop-virt-virtualization # for distrobox
 
