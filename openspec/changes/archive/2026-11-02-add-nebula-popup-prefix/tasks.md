@@ -24,10 +24,10 @@
 
 ## 4. Deployment
 
-- [ ] 4.1 Deploy to `peterspav`, restart its tmux server, open the popup, run
+- [x] 4.1 Deploy to `peterspav`, restart its tmux server, open the popup, run
   `t`, and verify `tmux show -g prefix2` reports `C-s` while `prefix` still
   reports `C-a`
-- [ ] 4.2 Deploy to the remaining nebula hosts and verify the same on one of
+- [x] 4.2 Deploy to the remaining nebula hosts and verify the same on one of
   them
 - [x] 4.3 Verify that a direct ssh shell or a console session does not gain
   `C-s` as `prefix2`

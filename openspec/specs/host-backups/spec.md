@@ -5,7 +5,9 @@
 Unattended, encrypted per-host backups of configured datasets to the piethein NAS
 using `restic` over SFTP, with per-dataset retention and independently recoverable
 restore credentials.
+
 ## Requirements
+
 ### Requirement: Backups run unattended to the piethein NAS over SFTP
 
 The system SHALL back up configured host paths to the piethein NAS
@@ -126,6 +128,15 @@ The system SHALL back up the following datasets with the stated retention.
   DB dump (keep hourly 24, daily 7), and `/home/pim/.ssh` (keep hourly 24, daily 7) are
   each backed up to their own repository
 
+#### Scenario: dapperehaan datasets
+
+- **WHEN** dapperehaan backups run
+- **THEN** `/home/pim/Work` (keep hourly 24, daily 7, weekly 5, monthly 12,
+  yearly unlimited), `/var/lib/hip-backup/repos` (keep daily 7, weekly 5,
+  monthly 12, yearly unlimited) and a consistent copy of Grafana's
+  `grafana.db` (keep daily 7, weekly 5, monthly 12) are each backed up to
+  their own repository
+
 ### Requirement: Datasets are enumerable as a flake-level registry
 
 The set of every host's configured `mipnix.backup.piethein.datasets` SHALL be
@@ -153,4 +164,3 @@ it appear in the registry with no separate restatement of its name or path.
 - **WHEN** a new dataset is added to a host's `mipnix.backup.piethein.datasets`
 - **THEN** the registry SHALL include it on the next evaluation with no other edit,
   and its repository name/path SHALL be derived, not restated
-
