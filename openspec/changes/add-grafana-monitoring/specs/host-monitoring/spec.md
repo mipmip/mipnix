@@ -100,3 +100,20 @@ Prometheus SHALL keep metrics for 90 days.
 
 - **WHEN** pim views disk use for dapperehaan over the last 60 days
 - **THEN** the full period is shown
+
+### Requirement: Grafana state is backed up
+
+Grafana's database SHALL be backed up to piethein as the restic dataset
+`dapperehaan-grafana`, from a consistent copy made with SQLite's backup
+command before each run. Prometheus metrics SHALL NOT be backed up.
+
+#### Scenario: Restoring Grafana
+
+- **WHEN** dapperehaan is rebuilt and `grafana.db` is restored from the
+  latest `dapperehaan-grafana` snapshot
+- **THEN** Grafana starts with the same users and preferences as before
+
+#### Scenario: Backup taken while Grafana writes
+
+- **WHEN** the backup runs while Grafana is writing to its database
+- **THEN** the backed-up copy passes `PRAGMA integrity_check`
