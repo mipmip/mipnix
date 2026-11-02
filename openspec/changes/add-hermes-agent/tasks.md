@@ -33,15 +33,15 @@
 ## 6. Build and deploy
 
 - [x] 6.1 `git add` new files; build peterspav and check the secrets are not in the closure.
-- [ ] 6.2 Rebuild peterspav (`rme up_machine` on peterspav, or `nixos-rebuild --target-host`).
+- [x] 6.2 Rebuild peterspav (`rme up_machine` on peterspav, or `nixos-rebuild --target-host`).
 
 ## 7. Verify
 
 - [ ] 7.1 After a reboot without login, the Hermes service is active.
 - [ ] 7.2 pim's direct message to `@hermes` gets a reply from the Go model; a message from another account gets none.
-- [ ] 7.3 The dashboard opens from a mesh member with the token and does not answer on peterspav's LAN address.
+- [x] 7.3 The dashboard opens from a mesh member with the token and does not answer on peterspav's LAN address.
 - [ ] 7.4 With the lid closed for ten minutes, peterspav stays reachable.
-- [ ] 7.5 The first `peterspav-hermes` snapshot exists on piethein and appears in Backrest.
+- [x] 7.5 The first `peterspav-hermes` snapshot exists on piethein and appears in Backrest.
 - [ ] 7.6 `lobby show hermes` shows the dashboard.
 - [ ] 7.7 pim runs `hermes auth add openai-codex` on peterspav; asking `@hermes` for an image returns one.
 - [ ] 7.8 A spoken reply (Edge TTS) arrives in Matrix as audio.

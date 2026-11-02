@@ -33,6 +33,9 @@ in
       inputs.self.modules.nixos.backup-restic-piethein
     ];
 
+    # Let pim push locally built, unsigned store paths. Matches dapperehaan.
+    nix.settings.trusted-users = [ "root" "pim" ];
+
     age.secrets = {
       hermes-env.file = ../../../secrets/hermes-env.age;
       hermes-matrix-password.file = ../../../secrets/hermes-matrix-password.age;
@@ -59,6 +62,20 @@ in
         };
         image_gen.provider = "openai-codex";
         tts.provider = "edge";
+
+        # Side tasks default to OpenRouter, then Nous Portal; neither exists
+        # here. Vision goes through the ChatGPT login, the rest through Go.
+        auxiliary = {
+          vision.provider = "codex";
+          web_extract.provider = "main";
+          compression.provider = "main";
+          title_generation.provider = "main";
+          session_search.provider = "main";
+          curator.provider = "main";
+          background_review.provider = "main";
+          moa_reference.provider = "main";
+          tts_audio_tags.provider = "main";
+        };
       };
 
       environmentFiles = [
@@ -70,6 +87,10 @@ in
         MATRIX_HOMESERVER = "https://nuremberg.pimsnel.com";
         MATRIX_USER_ID = "@hermes:nuremberg.pimsnel.com";
         MATRIX_ALLOWED_USERS = "@pim:nuremberg.pimsnel.com";
+        # Element encrypts direct messages by default. A fixed device ID keeps
+        # the bot's encryption identity across restarts.
+        MATRIX_E2EE_MODE = "optional";
+        MATRIX_DEVICE_ID = "HERMESPETERSPAV";
       };
 
       backend = {
