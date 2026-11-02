@@ -74,7 +74,9 @@ function VolumeSliders() {
       <With value={createBinding(wp!, "defaultSpeaker")}>
         {(speaker) => speaker && (
           <box class="VolumeRow">
-            <image iconName={createBinding(speaker, "volumeIcon")} />
+            <button class="MuteToggle" onClicked={() => { speaker.mute = !speaker.mute }}>
+              <image iconName={createBinding(speaker, "volumeIcon")} />
+            </button>
             <slider
               hexpand
               value={createBinding(speaker, "volume")}
@@ -86,7 +88,9 @@ function VolumeSliders() {
       <With value={createBinding(wp!, "defaultMicrophone")}>
         {(mic) => mic && (
           <box class="VolumeRow">
-            <image iconName={createBinding(mic, "volumeIcon")} />
+            <button class="MuteToggle" onClicked={() => { mic.mute = !mic.mute }}>
+              <image iconName={createBinding(mic, "volumeIcon")} />
+            </button>
             <slider
               hexpand
               value={createBinding(mic, "volume")}
