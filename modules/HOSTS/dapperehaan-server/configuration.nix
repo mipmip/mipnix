@@ -81,6 +81,7 @@ in
       backup-restic-piethein
       hip-repo-backup
       monitoring-grafana
+      monitoring-piethein-snmp
 
       #desktop-virt-virtualization # for distrobox
 

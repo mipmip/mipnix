@@ -230,4 +230,6 @@ in
   "grafana-admin-password.age".publicKeys = [ pim dapperehaan ];
   "grafana-secret-key.age".publicKeys = [ pim dapperehaan ];
 
+  "piethein-snmp.age".publicKeys = [ pim dapperehaan ];
+
 }
