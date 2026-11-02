@@ -12,7 +12,7 @@
 
 ## 3. Deploy and verify
 
-- [ ] 3.1 Build and deploy dapperehaan.
-- [ ] 3.2 Prometheus shows `probe_success` 1 for both sites and a certificate expiry in the future.
-- [ ] 3.3 `hrProcessorLoad` exists for piethein.
-- [ ] 3.4 Core vitals shows all six hosts, both sites and the backups tile; Host summary lists every host with its columns.
+- [x] 3.1 Build and deploy dapperehaan.
+- [x] 3.2 Prometheus shows `probe_success` 1 for both sites and a certificate expiry in the future.
+- [x] 3.3 `hrProcessorLoad` exists for piethein.
+- [x] 3.4 Core vitals shows all six hosts, both sites and the backups tile; Host summary lists every host with its columns.
