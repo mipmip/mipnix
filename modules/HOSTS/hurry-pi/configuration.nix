@@ -74,7 +74,7 @@ in
     # Enable SSH
     services.openssh.enable = true;
 
-    # Trust pim so deploy-rs can push store paths built locally on cichorei
+    # Trust pim so deploy-rs can push store paths built locally on delliebellie
     # (e.g. under aarch64 emulation) that aren't signed by cache.nixos.org.
     nix.settings.trusted-users = [ "root" "pim" ];
 

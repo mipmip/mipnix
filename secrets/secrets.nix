@@ -1,7 +1,6 @@
 let
   doornappel = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDXUaXKtaEQIvuIZ3KVh2kTbqiI3itVlnR/7qEkesXk1";
   zonnehoed = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMMk+lMbZgFFKQGOcoSj07nT4BZjDwI1c/y0PvoSZOw1";
-  cichorei = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJZU9DZpGs+Ib/aN3n7u46wY8v9V4qHLcNzs/U+9iTgc";
   pim = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEY25ZaYRuKUJuVuzqK4c8dKkSxN6Cd9yhbDTa/5Njmh";
 
   annemarie = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBvyHG+v+V+LQcbxw1H0ZCnrPkHy90lGu/08avLFa48S";
@@ -21,7 +20,6 @@ let
   systems = [
     doornappel
     zonnehoed
-    cichorei
     hurry
     harry
     lego2
@@ -40,7 +38,6 @@ let
   ];
 
   personal_laptops = [
-    cichorei
     doornappel
     peterspav
     stinkie
@@ -172,13 +169,11 @@ in
   "matrix-openclaw-password.age".publicKeys = [pim clawone];
   "voorzetramenshop-env.age".publicKeys = [ pim durer ];
   "studio-mint-v3-env.age".publicKeys = [ pim durer ];
-  "nebula-cichorei.crt.age".publicKeys = users ++ systems;
-  "nebula-cichorei.key.age".publicKeys = users ++ systems;
 
   # restic backups to piethein — shared across the backup source hosts.
   # Keep an OFFLINE copy of both: a dead host cannot decrypt its own secrets.
-  "restic-ssh-key.age".publicKeys = [ pim cichorei hurry durer zonnehoed dapperehaan stinkie ];
-  "restic-repo-pw.age".publicKeys = [ pim cichorei hurry durer zonnehoed dapperehaan stinkie ];
+  "restic-ssh-key.age".publicKeys = [ pim hurry durer zonnehoed dapperehaan stinkie ];
+  "restic-repo-pw.age".publicKeys = [ pim hurry durer zonnehoed dapperehaan stinkie ];
 
   # Backrest UI login credential: base64(bcrypt(password)). Only dapperehaan (+ pim).
   "backrest-auth.age".publicKeys = [ pim dapperehaan ];
@@ -201,9 +196,6 @@ in
   # pim. pim is kept as a recipient for the same reason the restic secrets above
   # say to keep an offline copy: a dead host cannot decrypt its own secrets, and
   # restoring the identity beats re-registering a new device ID everywhere.
-  "syncthing-cichorei.crt.age".publicKeys = [ pim cichorei ];
-  "syncthing-cichorei.key.age".publicKeys = [ pim cichorei ];
-
   "syncthing-doornappel.crt.age".publicKeys = [ pim doornappel ];
   "syncthing-doornappel.key.age".publicKeys = [ pim doornappel ];
 

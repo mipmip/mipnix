@@ -4,7 +4,7 @@
   # as the non-admin `resticbackup` user. Enable per host and list datasets;
   # each dataset becomes its own restic repository under /ResticBackups/<repo>.
   #
-  # LAN hosts (cichorei, hurry) reach piethein directly. durer is a cloud host
+  # LAN hosts (hurry, dapperehaan) reach piethein directly. durer is a cloud host
   # with no route to piethein's LAN address, so it tunnels through a relay Pi
   # over nebula (proxyJump, with failover). A relay host sets `relay = true`.
   flake.modules.nixos.backup-restic-piethein = { config, pkgs, lib, ... }:
