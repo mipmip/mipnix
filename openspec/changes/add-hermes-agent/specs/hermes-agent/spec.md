@@ -109,3 +109,25 @@ consistent copy of any live database files.
 
 - **WHEN** peterspav is reinstalled and the latest snapshot is restored
 - **THEN** Hermes starts with its previous memory and skills
+
+### Requirement: Images and speech without an API key bill
+
+Image generation SHALL use pim's ChatGPT subscription through Hermes'
+`openai-codex` provider, and speech SHALL use Edge TTS. No pay-per-use
+OpenAI API key SHALL be configured.
+
+#### Scenario: Image request
+
+- **WHEN** pim asks `@hermes` for an image after the one-time Codex login
+- **THEN** Hermes returns an image generated through the ChatGPT
+  subscription
+
+#### Scenario: Spoken reply
+
+- **WHEN** Hermes answers with speech
+- **THEN** the audio is produced by Edge TTS
+
+#### Scenario: No OpenAI key
+
+- **WHEN** the Hermes environment on peterspav is inspected
+- **THEN** `OPENAI_API_KEY` and `VOICE_TOOLS_OPENAI_KEY` are not set

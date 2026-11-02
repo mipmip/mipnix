@@ -10,7 +10,7 @@
 - [x] 2.0 `hermes-matrix-password.age` (`MATRIX_PASSWORD=...`, pim and peterspav) holds the generated bot password.
 - [x] 2.1 `hermes-env.age` (`OPENCODE_GO_API_KEY=...`, pim and peterspav); checked against `/zen/go/v1/usage` (HTTP 200).
 - [ ] 2.1a Add `hermes-dashboard-token.age` (pim, peterspav) with a random token.
-- [ ] 2.1b Build an `OPENAI_API_KEY=` environment file at activation from `openai-api-key-plain.age` for the image and TTS tools.
+- [ ] 2.1b Configure image generation with the `openai-codex` provider and TTS with `edge` in `settings`.
 - [ ] 2.2 Add peterspav to the recipients of `restic-ssh-key.age` and `restic-repo-pw.age`; pim runs `agenix -r`.
 
 ## 3. Hermes
@@ -43,3 +43,5 @@
 - [ ] 7.4 With the lid closed for ten minutes, peterspav stays reachable.
 - [ ] 7.5 The first `peterspav-hermes` snapshot exists on piethein and appears in Backrest.
 - [ ] 7.6 `lobby show hermes` shows the dashboard.
+- [ ] 7.7 pim runs `hermes auth add openai-codex` on peterspav; asking `@hermes` for an image returns one.
+- [ ] 7.8 A spoken reply (Edge TTS) arrives in Matrix as audio.

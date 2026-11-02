@@ -13,7 +13,9 @@ agent can use that instead of a separate model account.
 - Point the model at OpenCode Go: provider `custom`, base URL
   `https://opencode.ai/zen/go/v1`, default model `glm-5.2`, with the
   OpenCode Go API key from agenix as `OPENCODE_GO_API_KEY`.
-- Use the existing OpenAI key for image generation and speech.
+- Generate images through pim's ChatGPT subscription (Hermes'
+  `openai-codex` plugin, one OAuth login) and speak with Edge TTS, which is
+  free. No OpenAI API key is involved.
 - Enable the Matrix gateway as `@hermes` on Tuwunel
   (nuremberg.pimsnel.com), answering only pim.
 - Run the dashboard backend on peterspav's nebula address, behind the

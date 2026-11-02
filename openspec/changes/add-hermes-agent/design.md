@@ -61,12 +61,17 @@ nebula address `192.168.100.16`.
   token comes from `hermes-dashboard-token.age` through
   `backend.sessionTokenFile`. With the host firewall off, the bind address is
   what keeps the dashboard off the LAN.
-- **OpenAI for images and speech.** Hermes' OpenAI image plugin
-  (`plugins/image_gen/openai`) and OpenAI TTS (`tools/tts_tool_openai.py`)
-  read `OPENAI_API_KEY`. The existing `openai-api-key-plain.age` already
-  lists peterspav as a recipient; its raw key is turned into an
-  `OPENAI_API_KEY=` environment file at activation, so no second copy of the
-  key is stored.
+- **Images through the ChatGPT subscription.** Hermes' `openai-codex`
+  image plugin uses the Codex backend with ChatGPT OAuth, the route the
+  official Codex client uses, and needs no OpenAI API key. pim logs in once
+  on peterspav with `hermes auth add openai-codex` (over SSH per Hermes'
+  OAuth-over-SSH guide). The OAuth tokens refresh themselves and therefore
+  live in Hermes' state directory, not in agenix; the restic dataset covers
+  them. The OpenAI API key (`openai-api-key-plain.age`) is not used: it bills
+  per request.
+- **Speech with Edge TTS**, Hermes' default TTS provider: free and without a
+  key. Local engines (Piper, KittenTTS) remain an option if Edge's online
+  service ever becomes a problem.
 - **OpenRouter-only tools disabled** in `settings`, so a request never
   silently fails on a missing key.
 - **Server power behaviour:** logind ignores the lid switch and idle, and
