@@ -20,7 +20,7 @@ let
       cleanupCommand = "rm -f /var/backups/restic/voorzetramenshop.sql";
     };
     durer-studio-mint-v3 = {
-      paths = [ "/var/backups/restic/studio-mint-v3.sql" ];
+      paths = [ "/var/backups/restic/studio-mint-v3.sql" "/var/lib/studio-mint-v3/uploads" ];
       keep = [ "--keep-hourly" "24" "--keep-daily" "14" "--keep-monthly" "6" ];
       prepareCommand = ''
         install -d -m 0700 /var/backups/restic
