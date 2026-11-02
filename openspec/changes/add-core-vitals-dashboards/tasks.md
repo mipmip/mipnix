@@ -1,14 +1,14 @@
 ## 1. Collection
 
-- [ ] 1.1 Enable `services.prometheus.exporters.blackbox` on dapperehaan on 127.0.0.1 with an `http_2xx` module (HTTPS, follow redirects, prefer IPv4).
-- [ ] 1.2 Add a `blackbox` scrape job (60s) for `https://umami.pimsnel.com` and `https://studio-mint.shop`, relabelling `instance` to the URL.
-- [ ] 1.3 Add `hrDevice` to piethein's SNMP modules.
+- [x] 1.1 Enable `services.prometheus.exporters.blackbox` on dapperehaan on 127.0.0.1 with an `http_2xx` module (HTTPS, follow redirects, prefer IPv4).
+- [x] 1.2 Add a `blackbox` scrape job (60s) for `https://umami.pimsnel.com` and `https://studio-mint.shop`, relabelling `instance` to the URL.
+- [x] 1.3 Add `hrDevice` to piethein's SNMP modules.
 
 ## 2. Dashboards
 
-- [ ] 2.1 Write `dashboards/core-vitals.json`: host tiles (`up`, piethein with `raidStatus`), service tiles (probe success, status, duration, certificate days), backups tile (failed units, stale timers).
-- [ ] 2.2 Write `dashboards/host-summary.json`: one joined table per host (generations, disk size/free, uptime, memory, swap, cores) plus piethein from SNMP.
-- [ ] 2.3 Provision both next to the existing dashboards.
+- [x] 2.1 Write `dashboards/core-vitals.json`: host tiles (`up`, piethein with `raidStatus`), service tiles (probe success, status, duration, certificate days), backups tile (failed units, stale timers).
+- [x] 2.2 Write `dashboards/host-summary.json`: one joined table per host (generations, disk size/free, uptime, memory, swap, cores) plus piethein from SNMP.
+- [x] 2.3 Provision both next to the existing dashboards.
 
 ## 3. Deploy and verify
 

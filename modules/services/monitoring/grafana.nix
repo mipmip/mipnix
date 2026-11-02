@@ -34,6 +34,8 @@
         { name = "node-exporter-full.json"; path = nodeExporterFull; }
         { name = "backups.json"; path = ./dashboards/backups.json; }
         { name = "nixos.json"; path = ./dashboards/nixos.json; }
+        { name = "core-vitals.json"; path = ./dashboards/core-vitals.json; }
+        { name = "host-summary.json"; path = ./dashboards/host-summary.json; }
       ];
     in
     {

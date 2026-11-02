@@ -4,7 +4,7 @@
     let
       pietheinIP = "192.168.2.100";
       exporterPort = 9116;
-      modules = [ "synology" "system" "if_mib" "hrStorage" "ucd_system_stats" "ucd_memory" "ucd_la_table" ];
+      modules = [ "synology" "system" "if_mib" "hrStorage" "hrDevice" "hrSystem" "ucd_system_stats" "ucd_memory" "ucd_la_table" ];
 
       upstreamConfig = pkgs.fetchurl {
         name = "snmp_exporter-0.30.1-snmp.yml";

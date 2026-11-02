@@ -1,0 +1,228 @@
+{
+  "uid": "mipnix-host-summary",
+  "title": "Host summary",
+  "schemaVersion": 39,
+  "refresh": "5m",
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "type": "table",
+      "title": "Hosts",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 14
+      },
+      "targets": [
+        {
+          "refId": "gens",
+          "expr": "sum by (instance) (nixos_system_generations)",
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "refId": "disk",
+          "expr": "sum by (instance) (node_filesystem_size_bytes{mountpoint=\"/\"}) or sum by (instance) (hrStorageSize{hrStorageDescr=\"/volume1\"} * on (instance, hrStorageIndex) hrStorageAllocationUnits{hrStorageDescr=\"/volume1\"})",
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "refId": "free",
+          "expr": "sum by (instance) (node_filesystem_avail_bytes{mountpoint=\"/\"}) or sum by (instance) ((hrStorageSize{hrStorageDescr=\"/volume1\"} - hrStorageUsed{hrStorageDescr=\"/volume1\"}) * on (instance, hrStorageIndex) hrStorageAllocationUnits{hrStorageDescr=\"/volume1\"})",
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "refId": "uptime",
+          "expr": "sum by (instance) (time() - node_boot_time_seconds) or sum by (instance) (hrSystemUptime) / 100",
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "refId": "memused",
+          "expr": "sum by (instance) (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) or sum by (instance) ((memTotalReal - memAvailReal) * 1024)",
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "refId": "memtotal",
+          "expr": "sum by (instance) (node_memory_MemTotal_bytes) or sum by (instance) (memTotalReal * 1024)",
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "refId": "swapused",
+          "expr": "sum by (instance) (node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes) or sum by (instance) ((memTotalSwap - memAvailSwap) * 1024)",
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "refId": "swaptotal",
+          "expr": "sum by (instance) (node_memory_SwapTotal_bytes) or sum by (instance) (memTotalSwap * 1024)",
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "refId": "cores",
+          "expr": "count by (instance) (node_cpu_seconds_total{mode=\"idle\"}) or count by (instance) (hrProcessorLoad)",
+          "instant": true,
+          "format": "table"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "instance",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Time 1": true,
+              "Time 2": true,
+              "Time 3": true,
+              "Time 4": true,
+              "Time 5": true,
+              "Time 6": true,
+              "Time 7": true,
+              "Time 8": true,
+              "Time 9": true
+            },
+            "renameByName": {
+              "instance": "Host",
+              "Value #gens": "Generations",
+              "Value #disk": "Disk size",
+              "Value #free": "Disk free",
+              "Value #uptime": "Uptime",
+              "Value #memused": "Memory used",
+              "Value #memtotal": "Memory total",
+              "Value #swapused": "Swap used",
+              "Value #swaptotal": "Swap total",
+              "Value #cores": "Cores"
+            },
+            "indexByName": {
+              "instance": 0,
+              "Value #gens": 1,
+              "Value #disk": 2,
+              "Value #free": 3,
+              "Value #uptime": 4,
+              "Value #memused": 5,
+              "Value #memtotal": 6,
+              "Value #swapused": 7,
+              "Value #swaptotal": 8,
+              "Value #cores": 9
+            }
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Disk size"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Disk free"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory used"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory total"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Swap used"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Swap total"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Uptime"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "sortBy": [
+          {
+            "displayName": "Host"
+          }
+        ]
+      }
+    }
+  ]
+}
