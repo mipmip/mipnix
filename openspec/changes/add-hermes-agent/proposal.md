@@ -11,8 +11,9 @@ agent can use that instead of a separate model account.
 - Add the `hermes-agent` flake (github:NousResearch/hermes-agent) as an
   input and run its NixOS module on peterspav as an always-on service.
 - Point the model at OpenCode Go: provider `custom`, base URL
-  `https://opencode.ai/zen/go/v1`, default model `glm-5.2`, with an
-  OpenCode Go API key from agenix.
+  `https://opencode.ai/zen/go/v1`, default model `glm-5.2`, with the
+  OpenCode Go API key from agenix as `OPENCODE_GO_API_KEY`.
+- Use the existing OpenAI key for image generation and speech.
 - Enable the Matrix gateway as `@hermes` on Tuwunel
   (nuremberg.pimsnel.com), answering only pim.
 - Run the dashboard backend on peterspav's nebula address, behind the

@@ -37,14 +37,17 @@ nebula address `192.168.100.16`.
 - **Flake input without `follows`.** Hermes pins a Python lock against its
   own nixpkgs; forcing mipnix' nixpkgs risks a broken Python closure for no
   gain on a single host.
-- **Model through the `custom` provider.** `settings.model` sets provider
-  `custom`, `base_url = "https://opencode.ai/zen/go/v1"` and default model
-  `glm-5.2`, which speaks `/chat/completions`.
+- **Model through a named provider.** `settings.providers.opencode-go` sets
+  `base_url = "https://opencode.ai/zen/go/v1"`, `key_env =
+  "OPENCODE_GO_API_KEY"` and default model `glm-5.2`, which speaks
+  `/chat/completions`; `settings.model.provider` points at it. A named
+  provider with its own `key_env` (`hermes_cli/config_providers.py`) keeps
+  `OPENAI_API_KEY` free for a real OpenAI key.
   Anthropic-format models on Go (MiniMax) are out, since the custom provider
   does not speak `/v1/messages`.
 - **A Go API key, not opencode's token.** pim creates an API key in the
   OpenCode Zen console under the Go subscription. It goes into
-  `hermes-env.age` as `OPENAI_API_KEY`. The bot password is in
+  `hermes-env.age` as `OPENCODE_GO_API_KEY`. The bot password is in
   `hermes-matrix-password.age` as `MATRIX_PASSWORD`. The service reads both
   through `environmentFiles`.
 - **Matrix as `@hermes:nuremberg.pimsnel.com`.** Non-secret variables
@@ -58,6 +61,12 @@ nebula address `192.168.100.16`.
   token comes from `hermes-dashboard-token.age` through
   `backend.sessionTokenFile`. With the host firewall off, the bind address is
   what keeps the dashboard off the LAN.
+- **OpenAI for images and speech.** Hermes' OpenAI image plugin
+  (`plugins/image_gen/openai`) and OpenAI TTS (`tools/tts_tool_openai.py`)
+  read `OPENAI_API_KEY`. The existing `openai-api-key-plain.age` already
+  lists peterspav as a recipient; its raw key is turned into an
+  `OPENAI_API_KEY=` environment file at activation, so no second copy of the
+  key is stored.
 - **OpenRouter-only tools disabled** in `settings`, so a request never
   silently fails on a missing key.
 - **Server power behaviour:** logind ignores the lid switch and idle, and

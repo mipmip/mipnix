@@ -1,14 +1,16 @@
 ## 1. Prerequisites
 
 - [ ] 1.1 Archive `remove-openclaw` first.
-- [ ] 1.2 pim creates an OpenCode Go API key in the OpenCode Zen console.
+- [x] 1.2 pim creates an OpenCode Go API key in the OpenCode Zen console.
 - [x] 1.3 Create `@hermes` on Tuwunel (done with `tuwunel --maintenance --execute "users create-user ..."`); pim's Matrix ID is `@pim:nuremberg.pimsnel.com`.
 - [x] 1.4 Decide the default model: `glm-5.2`.
 
 ## 2. Secrets
 
 - [x] 2.0 `hermes-matrix-password.age` (`MATRIX_PASSWORD=...`, pim and peterspav) holds the generated bot password.
-- [ ] 2.1 Add `hermes-env.age` (`OPENAI_API_KEY=...`) and `hermes-dashboard-token.age` to `secrets/secrets.nix` for pim and peterspav; pim encrypts the values.
+- [x] 2.1 `hermes-env.age` (`OPENCODE_GO_API_KEY=...`, pim and peterspav); checked against `/zen/go/v1/usage` (HTTP 200).
+- [ ] 2.1a Add `hermes-dashboard-token.age` (pim, peterspav) with a random token.
+- [ ] 2.1b Build an `OPENAI_API_KEY=` environment file at activation from `openai-api-key-plain.age` for the image and TTS tools.
 - [ ] 2.2 Add peterspav to the recipients of `restic-ssh-key.age` and `restic-repo-pw.age`; pim runs `agenix -r`.
 
 ## 3. Hermes
