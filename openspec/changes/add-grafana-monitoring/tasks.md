@@ -14,6 +14,8 @@
 - [ ] 2.6 Write a backups dashboard JSON in the repository: unit state per host and time since last timer trigger; provision it.
 - [ ] 2.7 Import the module in dapperehaan's configuration.
 
+- [ ] 2.8 Add the `dapperehaan-grafana` restic dataset: `prepareCommand` writes `sqlite3 /var/lib/grafana/data/grafana.db ".backup /var/backups/restic/grafana.db"`, `cleanupCommand` removes it, keep daily 7, weekly 5, monthly 12.
+
 ## 3. Build and deploy
 
 - [ ] 3.1 `git add` new files; build dapperehaan, durer and one laptop.
@@ -26,4 +28,5 @@
 - [ ] 4.3 Grafana login works over nebula; an unauthenticated dashboard URL redirects to login.
 - [ ] 4.4 Host health dashboard shows dapperehaan's disk at about 77%.
 - [ ] 4.5 Backups dashboard lists dapperehaan's `restic-backups-dapperehaan-repos` and `hip-repo-backup` with their state.
-- [ ] 4.6 Note which hosts still need a deploy before they appear as up.
+- [ ] 4.6 Run the `dapperehaan-grafana` restic backup once; the snapshot contains `grafana.db` and `sqlite3 grafana.db "PRAGMA integrity_check"` on a restored copy reports `ok`.
+- [ ] 4.7 Note which hosts still need a deploy before they appear as up.

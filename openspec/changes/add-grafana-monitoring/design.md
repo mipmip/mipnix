@@ -46,6 +46,15 @@ monitoring is Uptime Kuma on hurry, which checks reachability, not health.
   of truth. Host health uses the community "Node Exporter Full" dashboard
   (grafana.com 1860) fetched by hash; the backups dashboard is a JSON file in
   the repository. Admin password from agenix; anonymous access off.
+- **Back up Grafana's database, not the metrics.** `/var/lib/grafana/data/grafana.db`
+  holds users, sessions and preferences; the dashboards and data source are
+  already in the repository. A live SQLite file can be copied mid-write, so
+  the dataset's `prepareCommand` writes a consistent copy with
+  `sqlite3 grafana.db ".backup /var/backups/restic/grafana.db"` and
+  `cleanupCommand` removes it, the same pattern as the database dumps on
+  durer. Retention: daily 7, weekly 5, monthly 12. The Prometheus TSDB is
+  left out: 90 days of metrics is cheap to lose and expensive to store
+  again on piethein.
 - **Retention 90 days.** Enough to see trends such as disk growth on
   dapperehaan; at 11 nodes and a 30 s interval the storage stays small.
 
@@ -64,4 +73,5 @@ monitoring is Uptime Kuma on hurry, which checks reachability, not health.
 
 ## Open Questions
 
-- None blocking.
+- None blocking. The `host-backups` delta builds on the dapperehaan scenario
+  that `add-github-repo-backup` adds, so that change is archived first.

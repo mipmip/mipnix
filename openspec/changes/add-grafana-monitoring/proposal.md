@@ -18,6 +18,9 @@ nearly idle, so it can also be the place where this is visible.
   systemd collector.
 - Provision Grafana declaratively: the Prometheus data source, a host
   health dashboard and a backups dashboard, all from the repository.
+- Back up Grafana's database to piethein as a new restic dataset,
+  `dapperehaan-grafana`, dumped consistently with `sqlite3 .backup` first.
+  The Prometheus metrics are not backed up.
 
 ## Capabilities
 
@@ -29,7 +32,8 @@ nearly idle, so it can also be the place where this is visible.
 
 ### Modified Capabilities
 
-None.
+- `host-backups`: the configured backup targets gain dapperehaan's
+  `dapperehaan-grafana` dataset.
 
 ## Impact
 
@@ -37,6 +41,8 @@ None.
   for Prometheus plus Grafana (imported by dapperehaan).
 - durer has its host firewall enabled, so the exporter port is opened on
   the `nebula.mesh` interface only.
+- dapperehaan's restic `datasets` gains `dapperehaan-grafana`; the
+  `flake.resticRepos` registry and Backrest pick it up.
 - New agenix secret for the Grafana admin password (pim, dapperehaan).
 - Disk on dapperehaan: Prometheus data for 11 nodes at 90 days retention,
   expected well under 5 GB.
