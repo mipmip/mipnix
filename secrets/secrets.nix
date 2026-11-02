@@ -227,4 +227,7 @@ in
 
   "hip-backup-github-token.age".publicKeys = [ pim dapperehaan ];
 
+  "grafana-admin-password.age".publicKeys = [ pim dapperehaan ];
+  "grafana-secret-key.age".publicKeys = [ pim dapperehaan ];
+
 }

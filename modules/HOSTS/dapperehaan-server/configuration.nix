@@ -24,6 +24,15 @@ let
       "--keep-daily" "7" "--keep-weekly" "5"
       "--keep-monthly" "12" "--keep-yearly" "9999"
     ];
+
+    # Grafana's users and preferences. Dashboards and the data source come
+    # from the repository, and the Prometheus metrics are not worth the space.
+    # Its prepare and cleanup commands are set in the module below, where pkgs
+    # is in scope.
+    dapperehaan-grafana.paths = [ "/var/backups/restic/grafana.db" ];
+    dapperehaan-grafana.keep = [
+      "--keep-daily" "7" "--keep-weekly" "5" "--keep-monthly" "12"
+    ];
   };
 in
 
@@ -71,6 +80,7 @@ in
       syncthing-work-pool
       backup-restic-piethein
       hip-repo-backup
+      monitoring-grafana
 
       #desktop-virt-virtualization # for distrobox
 
@@ -89,7 +99,17 @@ in
     # (192.168.2.22 to 192.168.2.100), so no relay, unlike durer.
     mipnix.backup.piethein = {
       enable = true;
-      inherit datasets;
+      datasets = datasets // {
+        # A live SQLite file can be caught mid-write, so back up a .backup copy.
+        dapperehaan-grafana = datasets.dapperehaan-grafana // {
+          prepareCommand = ''
+            install -d -m 0700 /var/backups/restic
+            ${pkgs.sqlite}/bin/sqlite3 /var/lib/grafana/data/grafana.db \
+              ".backup /var/backups/restic/grafana.db"
+          '';
+          cleanupCommand = "rm -f /var/backups/restic/grafana.db";
+        };
+      };
     };
 
     services.displayManager.gdm.enable = true;
