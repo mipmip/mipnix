@@ -15,6 +15,7 @@
       dashboards = pkgs.linkFarm "mipnix-grafana-dashboards" [
         { name = "node-exporter-full.json"; path = nodeExporterFull; }
         { name = "backups.json"; path = ./dashboards/backups.json; }
+        { name = "nixos.json"; path = ./dashboards/nixos.json; }
       ];
     in
     {
