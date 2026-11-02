@@ -619,11 +619,11 @@
         "nixpkgs": "nixpkgs_8"
       },
       "locked": {
-        "lastModified": 1793352676,
-        "narHash": "sha256-RQeRUsSTCDrYzXKZ5Oeunt8cuMXM98X50icW2rMIUH4=",
+        "lastModified": 1793658428,
+        "narHash": "sha256-d9pJT9bZD5WTTCLgs1aXMwxdwjTRCuFrrGGPEELNkqM=",
         "owner": "mipmip",
         "repo": "hip",
-        "rev": "2b7cd69ccbc62d226de5bfad28ea9f71b69ef5a6",
+        "rev": "0a823eca7b4c9da457db3165d5e4917972e907ce",
         "type": "github"
       },
       "original": {
