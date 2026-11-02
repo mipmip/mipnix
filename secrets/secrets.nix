@@ -224,4 +224,6 @@ in
 
   "piethein-snmp.age".publicKeys = [ pim dapperehaan ];
 
+  "hermes-matrix-password.age".publicKeys = [ pim peterspav ];
+
 }

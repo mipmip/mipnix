@@ -2,12 +2,13 @@
 
 - [ ] 1.1 Archive `remove-openclaw` first.
 - [ ] 1.2 pim creates an OpenCode Go API key in the OpenCode Zen console.
-- [ ] 1.3 Create `@hermes` on Tuwunel through the admin room; note pim's own Matrix ID for the allowlist.
+- [x] 1.3 Create `@hermes` on Tuwunel (done with `tuwunel --maintenance --execute "users create-user ..."`); pim's Matrix ID is `@pim:nuremberg.pimsnel.com`.
 - [x] 1.4 Decide the default model: `glm-5.2`.
 
 ## 2. Secrets
 
-- [ ] 2.1 Add `hermes-env.age` (OPENAI_API_KEY, MATRIX_PASSWORD) and `hermes-dashboard-token.age` to `secrets/secrets.nix` for pim and peterspav; pim encrypts the values.
+- [x] 2.0 `hermes-matrix-password.age` (`MATRIX_PASSWORD=...`, pim and peterspav) holds the generated bot password.
+- [ ] 2.1 Add `hermes-env.age` (`OPENAI_API_KEY=...`) and `hermes-dashboard-token.age` to `secrets/secrets.nix` for pim and peterspav; pim encrypts the values.
 - [ ] 2.2 Add peterspav to the recipients of `restic-ssh-key.age` and `restic-repo-pw.age`; pim runs `agenix -r`.
 
 ## 3. Hermes

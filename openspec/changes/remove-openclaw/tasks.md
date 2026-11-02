@@ -13,4 +13,4 @@
 
 ## 3. Outside the repository
 
-- [ ] 3.1 Deactivate the OpenClaw bot account on Tuwunel through the admin room.
+- [ ] 3.1 Deactivate `@openclaw1` and `@openclaw-janine` on Tuwunel with `users deactivate`.

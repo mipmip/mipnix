@@ -38,11 +38,11 @@ agent can use that instead of a separate model account.
 - `flake.nix` and `flake.lock`: new input `hermes-agent`.
 - `modules/HOSTS/peterspav-laptop/`: Hermes service, power settings,
   restic dataset, lobby entry.
-- `secrets/secrets.nix`: new `hermes-env.age` and
-  `hermes-dashboard-token.age` (pim, peterspav); peterspav added as a
+- `secrets/secrets.nix`: new `hermes-env.age`, `hermes-matrix-password.age`
+  and `hermes-dashboard-token.age` (pim, peterspav); peterspav added as a
   recipient of `restic-ssh-key.age` and `restic-repo-pw.age`, which needs a
   rekey by pim.
-- Tuwunel on durer: a `@hermes` account, created by hand through the admin
-  room because registration is off.
+- Tuwunel on durer: the `@hermes` account, created on 2026-11-02 with an
+  admin command because registration is off.
 - Shares the OpenCode Go quota (5-hour, weekly, monthly) with opencode.
 - Builds after `remove-openclaw`, which clears the previous Matrix bot.

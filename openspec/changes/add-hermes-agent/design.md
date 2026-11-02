@@ -44,11 +44,12 @@ nebula address `192.168.100.16`.
   does not speak `/v1/messages`.
 - **A Go API key, not opencode's token.** pim creates an API key in the
   OpenCode Zen console under the Go subscription. It goes into
-  `hermes-env.age` as `OPENAI_API_KEY`, next to `MATRIX_PASSWORD`, and the
-  service reads it through `environmentFiles`.
+  `hermes-env.age` as `OPENAI_API_KEY`. The bot password is in
+  `hermes-matrix-password.age` as `MATRIX_PASSWORD`. The service reads both
+  through `environmentFiles`.
 - **Matrix as `@hermes:nuremberg.pimsnel.com`.** Non-secret variables
-  (`MATRIX_HOMESERVER`, the user ID, `MATRIX_ALLOWED_USERS` set to pim's
-  Matrix ID) go into `environment`; the password into the secret file.
+  (`MATRIX_HOMESERVER`, the user ID, `MATRIX_ALLOWED_USERS` set to
+  `@pim:nuremberg.pimsnel.com`) go into `environment`; the password into the secret file.
   `MATRIX_ALLOW_ALL_USERS` stays off.
 - **Dashboard on the nebula address.** `backend.mode = "dashboard"`,
   `backend.host = "192.168.100.16"`, port 9119, `waitFor = "interface"` on
@@ -83,7 +84,6 @@ nebula address `192.168.100.16`.
 
 ## Open Questions
 
-- Pim's own Matrix ID on nuremberg.pimsnel.com, for the allowlist.
 - Exact settings keys for disabling the OpenRouter tools and the variable
   that carries the Matrix user ID; both are read from the Hermes source at
   implementation time.

@@ -15,7 +15,8 @@ leftovers only mislead.
   `clawone-secrets` directly. They are structurally invalid (they still
   carry delta headers such as `## ADDED Requirements`), so OpenSpec cannot
   apply a delta to them or retire them on archive.
-- Remove the OpenClaw bot account on Tuwunel, by hand.
+- Deactivate the OpenClaw bot accounts on Tuwunel (`@openclaw1` and
+  `@openclaw-janine`) with an admin command.
 
 ## Capabilities
 
