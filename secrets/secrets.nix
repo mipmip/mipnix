@@ -8,7 +8,6 @@ let
   lavendel = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB7SSE52Oaftqy7uqCXSIr5lQTrs7wqR7lUdf7IiVHvo";
   rodin = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIITKQnVAoVLw3gGL4c2pWW4uA6CySG6Rd/r4NIEAk6KU";
   dapperehaan = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKjWlnTNc6cEhpI2SHofjwWZW7HZU0OBD6pY7QI4gpki";
-  clawone = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMhCHXAfIfZRYct5eTrUu/MPXJ5IE+j6QYWSkDv3PbFU";
   durer = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE+jRQYvOX+EI+QeB31JT994sYo+B1j18AxTjzuprQ2F";
   hurry = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPyh9gDCDN2rzAExllvavzVVr4XkKea63Wa+B7JO8+Qz";
   harry = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOmY6Jv/y1CSyVe0t1L+65NQjocDoDUShhriPp5yg6eh";
@@ -166,7 +165,6 @@ in
   "startaste-env.age".publicKeys = [ pim dapperehaan ];
   "startaste-mcp-tokens.age".publicKeys = [ pim dapperehaan ];
 
-  "matrix-openclaw-password.age".publicKeys = [pim clawone];
   "voorzetramenshop-env.age".publicKeys = [ pim durer ];
   "studio-mint-v3-env.age".publicKeys = [ pim durer ];
 
