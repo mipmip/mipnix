@@ -26,12 +26,12 @@
 ## 5. Build and deploy
 
 - [x] 5.1 Build dapperehaan and this laptop; compare `lobby` output with `lobby-design/reference/cli-output.txt`.
-- [ ] 5.2 Deploy dapperehaan; rebuild this laptop.
+- [x] 5.2 Deploy dapperehaan; rebuild this laptop.
 
 ## 6. Verify
 
 - [ ] 6.1 `http://lobby/` from this laptop shows every service with source locations; filter and host buttons work.
-- [ ] 6.2 The page loads with the network tab showing no external requests.
-- [ ] 6.3 Port 80 on dapperehaan's LAN address does not serve the page.
+- [x] 6.2 The page loads with the network tab showing no external requests.
+- [x] 6.3 Port 80 on dapperehaan's LAN address does not serve the page.
 - [ ] 6.4 `lobby`, `lobby show grafana`, `lobby open grafana`, `lobby open grafan`, `lobby open samba` and `lobby | cat` behave as in the CLI reference.
-- [ ] 6.5 The page at 390px width shows stacked cards without horizontal scroll.
+- [x] 6.5 The page at 390px width shows stacked cards without horizontal scroll.
