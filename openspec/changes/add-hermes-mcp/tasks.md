@@ -18,7 +18,7 @@
 
 ## 4. Rollout
 
-- [ ] 4.1 Deploy peterspav, restart `hermes-agent`, check `/v1/health` on 127.0.0.1
-- [ ] 4.2 Deploy durer; check that a request from outside the range gets `403`
+- [x] 4.1 Deploy peterspav, restart `hermes-agent`, check `/v1/health` on 127.0.0.1
+- [x] 4.2 Deploy durer; check that a request from outside the range gets `403`
 - [ ] 4.3 User: add the custom connector `https://hermes.pimsnel.com/mcp` with header `Authorization: Bearer <token>`
 - [ ] 4.4 User: from the Claude app, give a task, follow it up in the same session, approve a command, stop a task
