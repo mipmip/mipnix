@@ -132,10 +132,8 @@ The system SHALL back up the following datasets with the stated retention.
 
 - **WHEN** dapperehaan backups run
 - **THEN** `/home/pim/Work` (keep hourly 24, daily 7, weekly 5, monthly 12,
-  yearly unlimited), `/var/lib/hip-backup/repos` (keep daily 7, weekly 5,
-  monthly 12, yearly unlimited) and a consistent copy of Grafana's
-  `grafana.db` (keep daily 7, weekly 5, monthly 12) are each backed up to
-  their own repository
+  yearly unlimited) and `/var/lib/hip-backup/repos` (keep daily 7, weekly 5,
+  monthly 12, yearly unlimited) are each backed up to their own repository
 
 ### Requirement: Datasets are enumerable as a flake-level registry
 
