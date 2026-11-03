@@ -27,7 +27,7 @@ Uncommitted work sits in several repos at once and is easy to forget. drs finds 
 ## Impact
 
 - `flake.lock`: dirty-repo-scanner 0.3.0 to 0.4.0.
-- `packages/mipbar/widget/DirtyRepos.tsx` and a pure helper `dirtyRepos.ts` with tests; `Bar.tsx`; `style.scss`.
+- `packages/mipbar/widget/DirtyRepos.tsx` and a pure helper `dirtyRepoStatus.ts` with tests; `Bar.tsx`; `style.scss`.
 - `flake.nix`: a `mipbar-dirty-repos` check.
 - Uses the drs config already managed in `modules/USERS/pim/programs/dirty-repo-scanner/`.
 - Rollout: `rme up_home`.

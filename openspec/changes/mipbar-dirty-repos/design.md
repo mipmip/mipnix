@@ -21,7 +21,7 @@ A scan of the current config takes about 1 s. Walk errors go to stderr. mipbar w
 
 ### Pure helper plus widget
 
-`widget/dirtyRepos.ts` holds `parseDrs(json)`, `totals(repos)`, `tooltipText(state)` and `displayName(path, home)`. It imports nothing from GTK or AGS, so `dirtyRepos.test.ts` runs headless as `checks.mipbar-dirty-repos`, the same as `mipbar-camera`.
+`widget/dirtyRepoStatus.ts` holds `parseDrs(json)`, `totals(repos)`, `tooltipText(state)` and `displayName(path, home)`. It imports nothing from GTK or AGS, so `dirtyRepoStatus.test.ts` runs headless as `checks.mipbar-dirty-repos`, the same as `mipbar-camera`.
 
 `widget/DirtyRepos.tsx` holds the state (`repos`, `scannedAt`, `failed`), runs `execAsync(["drs", "--json"])`, and renders:
 
