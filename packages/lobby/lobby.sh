@@ -49,6 +49,15 @@ list() {
   done < <(rows)
 }
 
+browsable() {
+  jq -r '
+    .services | to_entries
+    | map(select(.value.url != null and .value.browse != false))
+    | sort_by(.value.category, .key)
+    | .[] | [.key, .value.host, .value.access, .value.url] | @tsv
+  ' "$LOBBY_JSON" | awk -F'\t' '{ printf "%-17s %-12s %-8s %s\n", $1, $2, $3, $4 }'
+}
+
 has() {
   jq -e --arg k "$1" '.services | has($k)' "$LOBBY_JSON" > /dev/null
 }
@@ -93,7 +102,7 @@ show() {
 
 open_url() {
   if command -v xdg-open > /dev/null; then
-    xdg-open "$1" > /dev/null 2>&1 &
+    setsid -f xdg-open "$1" > /dev/null 2>&1
   else
     open "$1"
   fi
@@ -113,7 +122,7 @@ open_service() {
 
 pick() {
   local line key
-  line="$(c_dim="" c_reset="" c_nebula="" c_lan="" c_public="" c_tunnel="" c_local="" list | grep '^  ' | gum filter --placeholder "service, host or URL")" || exit 0
+  line="$(browsable | gum filter --placeholder "service, host or URL")" || exit 0
   key="$(awk '{ print $1 }' <<< "$line")"
   open_service "$key"
 }

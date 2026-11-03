@@ -56,6 +56,7 @@ in
     url = "https://nuremberg.pimsnel.com";
     access = "public";
     category = "chat";
+    browse = false;
   };
 
   lobby.services.umami = {

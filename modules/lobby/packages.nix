@@ -21,7 +21,7 @@ in
 
       packages.lobby = pkgs.writeShellApplication {
         name = "lobby";
-        runtimeInputs = [ pkgs.jq pkgs.gawk pkgs.coreutils pkgs.gnugrep pkgs.gum pkgs.xdg-utils ];
+        runtimeInputs = [ pkgs.jq pkgs.gawk pkgs.coreutils pkgs.gnugrep pkgs.gum pkgs.util-linux pkgs.xdg-utils ];
         text = builtins.replaceStrings [ "@LOBBY_JSON@" ] [ "${json}" ]
           (builtins.readFile ../../packages/lobby/lobby.sh);
       };

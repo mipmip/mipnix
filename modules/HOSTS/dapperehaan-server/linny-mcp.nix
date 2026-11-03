@@ -7,6 +7,7 @@
     url = "https://secondbrain.pimsnel.com";
     access = "public";
     category = "tools";
+    browse = false;
   };
 
   flake.modules.nixos.dapperehaan = { config, pkgs, ... }:

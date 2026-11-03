@@ -35,6 +35,10 @@
       group = "tools"; key = "H"; desc = "nebula host ssh";
       action = "popup -E -w 60% -h 60% 'nebula-ssh'"; }
 
+    { kind = "prefixed"; app = "tmux"; target = "tmux"; scopes = [ "terminal" ];
+      group = "tools"; key = "W"; desc = "lobby, open a service";
+      action = "popup -E -w 60% -h 60% 'lobby'"; }
+
     # A toggle, but not the float's kind: the session behind this popup
     # outlives the popup, so "does the session exist" cannot tell open from
     # close. What can is the session the pressing client is attached to, which

@@ -17,7 +17,7 @@ let
 
   services = lib.mapAttrs
     (name: s: {
-      inherit (s) title description host url access category;
+      inherit (s) title description host url access category browse;
       source = sourceOf name;
     })
     config.lobby.services;
@@ -32,6 +32,7 @@ in
         url = lib.mkOption { type = lib.types.nullOr lib.types.str; default = null; };
         access = lib.mkOption { type = lib.types.enum [ "nebula" "lan" "public" "tunnel" "local" ]; };
         category = lib.mkOption { type = lib.types.str; };
+        browse = lib.mkOption { type = lib.types.bool; default = true; };
       };
     }));
     default = { };
