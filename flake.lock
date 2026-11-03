@@ -338,11 +338,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1788299605,
-        "narHash": "sha256-itoMaOIpGkM18h67PXUzOD0Tnw4jSOs9XciOWBgAPVw=",
+        "lastModified": 1793727685,
+        "narHash": "sha256-ISPKZIwA0UNT5R26vPEf4Hzbdd1gw0P5e5We1t+QOvE=",
         "owner": "mipmip",
         "repo": "dirty-repo-scanner",
-        "rev": "f512420d431b072d82039018033a9c7738ef728c",
+        "rev": "602afbe0d15a4be770c608126390a135ea392cf8",
         "type": "github"
       },
       "original": {
