@@ -16,6 +16,6 @@
 
 ## 4. Rollout
 
-- [ ] 4.1 Commit and `rme up_home` on delliebellie
+- [x] 4.1 Commit and `rme up_home` on delliebellie
 - [ ] 4.2 User: `prefix + W`, pick a service, browser opens, popup closes
 - [ ] 4.3 User: `prefix + W`, Escape, popup closes

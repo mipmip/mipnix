@@ -21,6 +21,6 @@
 
 ## 4. Rollout
 
-- [ ] 4.1 Commit and `rme up_home` on delliebellie
+- [x] 4.1 Commit and `rme up_home` on delliebellie
 - [ ] 4.2 User: hover every icon, same rounded area everywhere
 - [ ] 4.3 User: keep-awake on is red, coffee sits in line
