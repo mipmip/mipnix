@@ -40,6 +40,7 @@ in
       hermes-env.file = ../../../secrets/hermes-env.age;
       hermes-matrix-password.file = ../../../secrets/hermes-matrix-password.age;
       hermes-dashboard-login.file = ../../../secrets/hermes-dashboard-login.age;
+      hermes-api-key.file = ../../../secrets/hermes-api-key.age;
       hermes-dashboard-token = {
         file = ../../../secrets/hermes-dashboard-token.age;
         owner = config.services.hermes-agent.user;
@@ -83,6 +84,7 @@ in
         config.age.secrets.hermes-env.path
         config.age.secrets.hermes-matrix-password.path
         config.age.secrets.hermes-dashboard-login.path
+        config.age.secrets.hermes-api-key.path
       ];
 
       environment = {
@@ -93,6 +95,8 @@ in
         # the bot's encryption identity across restarts.
         MATRIX_E2EE_MODE = "optional";
         MATRIX_DEVICE_ID = "HERMESPETERSPAV";
+        API_SERVER_HOST = "127.0.0.1";
+        API_SERVER_PORT = "8642";
       };
 
       backend = {

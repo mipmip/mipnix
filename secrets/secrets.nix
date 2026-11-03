@@ -226,5 +226,7 @@ in
   "hermes-env.age".publicKeys = [ pim peterspav ];
   "hermes-dashboard-token.age".publicKeys = [ pim peterspav ];
   "hermes-dashboard-login.age".publicKeys = [ pim peterspav ];
+  "hermes-api-key.age".publicKeys = [ pim peterspav ];
+  "hermes-mcp-token-hash.age".publicKeys = [ pim peterspav ];
 
 }
