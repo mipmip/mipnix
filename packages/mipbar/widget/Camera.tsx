@@ -83,6 +83,7 @@ export default function Camera() {
   return (
     <box visible={camera((c) => c.active)} class="StatusIcon Camera" tooltipText={camera(tooltipText)}>
       <button
+        class="BarIcon"
         onClicked={(self) => {
           const users = focusable(camera.get().users)
           if (users.length === 1) focus(users[0])

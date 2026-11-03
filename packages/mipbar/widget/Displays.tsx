@@ -225,7 +225,7 @@ export default function Displays() {
 
   return (
     <menubutton
-      class="StatusIcon Displays"
+      class="StatusIcon BarIcon Displays"
       tooltipText={monitors((list) =>
         list.length === 1 ? "1 display" : `${list.length} displays`,
       )}

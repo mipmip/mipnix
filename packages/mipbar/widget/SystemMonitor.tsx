@@ -79,7 +79,7 @@ function TextRow({ icon, label, value }: { icon: string; label: string; value: a
 
 export default function SystemMonitor() {
   return (
-    <menubutton class="SystemMonitor">
+    <menubutton class="BarIcon SystemMonitor">
       <label class="SystemMonitorIcon" label="󰍛" />
       <popover>
         <box orientation={Gtk.Orientation.VERTICAL} class="MonitorPopover">

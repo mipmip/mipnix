@@ -26,6 +26,9 @@ window.Bar .StatusIcon.Screenshare {
 window.Bar .StatusIcon.Camera {
   color: #ff4444;
 }
+window.Bar .StatusIcon.Caffeine.on > button > label {
+  color: #ff4444;
+}
 .ScreenPicker > contents {
   background: #18181e;
   border: 1px solid #323238;
@@ -120,6 +123,9 @@ window.Bar .StatusIcon.Screenshare {
   color: #cc0000;
 }
 window.Bar .StatusIcon.Camera {
+  color: #cc0000;
+}
+window.Bar .StatusIcon.Caffeine.on > button > label {
   color: #cc0000;
 }
 .ScreenPicker > contents {

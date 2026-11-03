@@ -71,6 +71,7 @@ export default function Caffeine() {
   return (
     <box class={state((s) => `StatusIcon Caffeine ${s}`)}>
       <button
+        class="BarIcon"
         onClicked={toggle}
         tooltipText={state((s) =>
           s === "on"

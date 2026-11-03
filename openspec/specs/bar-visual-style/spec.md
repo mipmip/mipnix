@@ -1,6 +1,10 @@
 # Bar Visual Style
 
-## ADDED Requirements
+## Purpose
+
+The look of the bar itself: transparency, button backgrounds, spacing and borders.
+
+## Requirements
 
 ### Requirement: transparent-button-backgrounds
 

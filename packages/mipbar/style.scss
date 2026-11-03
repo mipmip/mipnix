@@ -81,28 +81,15 @@ window.Bar {
     }
   }
 
+  .BarIcon > button,
+  button.BarIcon {
+    padding: 5px 10px;
+    min-height: 24px;
+    border-radius: 8px;
+  }
+
   .StatusIcon {
-    padding: 0 4px;
-    margin: 0 2px;
-
-    image {
-      margin: 0 2px;
-    }
-
-    label {
-      margin-left: 2px;
-    }
-
-    button {
-      all: unset;
-      padding: 0;
-      margin: 0;
-    }
-
-    &.Screenshare image {
-      -gtk-icon-size: 12px;
-    }
-
+    &.Screenshare image,
     &.Camera image {
       -gtk-icon-size: 16px;
     }
@@ -110,12 +97,7 @@ window.Bar {
     &.Caffeine {
       > button > label {
         font-size: 1.1em;
-      }
-
-      // Amber while awake is being held, grey when idle behaves normally, the
-      // same on/off cue the other indicators use.
-      &.on > button > label {
-        color: #eed49f;
+        margin-top: 1px;
       }
 
       &.off > button > label {
@@ -343,6 +325,15 @@ window.Bar {
   .QuickSettings {
     .StatusIcon {
       padding: 0 2px;
+      margin: 0 2px;
+
+      image {
+        margin: 0 2px;
+      }
+
+      label {
+        margin-left: 2px;
+      }
     }
   }
 }

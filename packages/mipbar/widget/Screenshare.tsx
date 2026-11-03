@@ -86,6 +86,7 @@ export default function Screenshare() {
       )}
     >
       <button
+        class="BarIcon"
         onClicked={() => {
           const pid = processPid.get()
           if (pid) {

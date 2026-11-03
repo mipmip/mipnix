@@ -71,7 +71,7 @@ export default function Minimized() {
   return (
     <menubutton
       visible={items((list) => list.length > 0)}
-      class="StatusIcon Minimized"
+      class="StatusIcon BarIcon Minimized"
       tooltipText={items((list) => `${list.length} minimized`)}
     >
       <box>

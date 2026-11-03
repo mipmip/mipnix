@@ -95,7 +95,7 @@ export default function SshKey() {
   const unload = () => runOnce("ssh-add -d ~/.ssh/id_ed25519")
 
   return (
-    <menubutton class={state((s) => `StatusIcon SshKey ${s}`)}>
+    <menubutton class={state((s) => `StatusIcon BarIcon SshKey ${s}`)}>
       <label label={state((s) => ICON[s])} />
       <popover>
         <box orientation={Gtk.Orientation.VERTICAL} class="SshKeyPopover">

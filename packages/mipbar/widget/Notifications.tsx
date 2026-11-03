@@ -25,7 +25,7 @@ export default function Notifications() {
   let popoverRef: Gtk.Popover | null = null
 
   return (
-    <menubutton class="StatusIcon Notifications" tooltipText="Notificaties">
+    <menubutton class="StatusIcon BarIcon Notifications" tooltipText="Notificaties">
       <label label="󰂚" />
       <popover
         $={(self: Gtk.Popover) => {

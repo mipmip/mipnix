@@ -101,7 +101,7 @@ export default function AllWindows() {
 
   return (
     <menubutton
-      class="StatusIcon AllWindows"
+      class="StatusIcon BarIcon AllWindows"
       tooltipText={items((list) => `${list.length} windows`)}
     >
       <label class="AllWindowsIcon" label="󱂬" />
