@@ -24,6 +24,31 @@ inputs,
     # load/unload actually work. See [[mipnix-mipbar-ssh-key-indicator]].
     services.ssh-agent.enable = true;
 
+    # An agent that is killed rather than stopped leaves its socket behind,
+    # and the next start refuses with "cannot bind to path
+    # /run/user/1000/ssh-agent: Address already in use" and stays dead until
+    # somebody removes the file by hand. The OOM killer did exactly that on
+    # 2 November 2026. HM's unit has no pre-start cleanup, so this adds one;
+    # the leading "-" lets the start carry on when there is nothing to remove.
+    systemd.user.services.ssh-agent.Service.ExecStartPre =
+      "-${pkgs.coreutils}/bin/rm -f %t/${config.services.ssh-agent.socket}";
+
+    # The key has a passphrase, so it has to be typed in once per agent.
+    # AddKeysToAgent makes the first ssh that needs it hand it to the agent,
+    # which turns that into once per boot rather than once per tool: git, jj
+    # and ssh itself stop asking each other's questions. The prompt still
+    # appears on the tty, because SSH_ASKPASS is deliberately not set
+    # session-wide (see the note at the bottom of this module).
+    #
+    # This makes HM own ~/.ssh/config, which nothing wrote before.
+    # enableDefaultConfig would add ten unrelated defaults and warn that it is
+    # going away, so the file holds only what is asked for here.
+    programs.ssh = {
+      enable = true;
+      enableDefaultConfig = false;
+      settings."*".AddKeysToAgent = "yes";
+    };
+
     # Point the whole graphical session (GUI apps + mipbar, not just login
     # shells — which is all HM's services.ssh-agent sets) at the plain agent's
     # socket, so it wins over any gcr-exported SSH_AUTH_SOCK. `%t` is
