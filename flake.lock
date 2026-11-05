@@ -166,6 +166,42 @@
         "type": "github"
       }
     },
+    "chatcms": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793739291,
+        "narHash": "sha256-cMxcxxMQj9/uDUj0kr5L/bJcUXAxyo+AFWjVpOr2vCo=",
+        "owner": "quiqr",
+        "repo": "chatcms",
+        "rev": "c5956b46864fe4fa68156e667ef48d6eb3e56ae0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "quiqr",
+        "repo": "chatcms",
+        "type": "github"
+      }
+    },
+    "chatcms-www": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793896204,
+        "narHash": "sha256-mAE/hR/42yLf8JKTKpACYjPCeqLOocz1RdngUFzLRfQ=",
+        "ref": "refs/heads/main",
+        "rev": "b51f282b4bc7713b7adfc889d6c2255c7bd02734",
+        "revCount": 2,
+        "type": "git",
+        "url": "ssh://git@github.com/quiqr/chatcms.eu.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/quiqr/chatcms.eu.git"
+      }
+    },
     "crane": {
       "locked": {
         "lastModified": 1771796463,
@@ -1902,6 +1938,8 @@
         "beandex": "beandex",
         "beans-nvim": "beans-nvim",
         "bmc": "bmc",
+        "chatcms": "chatcms",
+        "chatcms-www": "chatcms-www",
         "darwin": "darwin",
         "deploy-rs": "deploy-rs",
         "dirty-repo-scanner": "dirty-repo-scanner",

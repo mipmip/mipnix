@@ -30,6 +30,24 @@ let
       '';
       cleanupCommand = "rm -f /var/backups/restic/studio-mint-v3.sql";
     };
+    durer-chatcms = {
+      # Content is never only here: every page, picture and version of a
+      # customer's site is in their own git remote. What is worth a backup is
+      # who may reach what, which is the database. The working copies under
+      # stateDir are clones and the thumbnails are a cache, so neither is in
+      # this set; the master key is in agenix, deliberately not beside the
+      # dumps, because a copy of the database is worth nothing without it and
+      # the two should not be lost together.
+      paths = [ "/var/backups/restic/chatcms.sql" ];
+      keep = [ "--keep-hourly" "24" "--keep-daily" "14" "--keep-monthly" "6" ];
+      prepareCommand = ''
+        install -d -m 0700 /var/backups/restic
+        ${pkgs.util-linux}/bin/runuser -u postgres -- \
+          ${config.services.postgresql.package}/bin/pg_dump chatcms \
+          > /var/backups/restic/chatcms.sql
+      '';
+      cleanupCommand = "rm -f /var/backups/restic/chatcms.sql";
+    };
     durer-umami = {
       paths = [ "/var/backups/restic/umami.sql" ];
       keep = [ "--keep-hourly" "24" "--keep-daily" "7" ];
@@ -202,6 +220,74 @@ in
       globalRedirect = "studio-mint.shop";
     };
 
+    # --- Quiqr ChatCMS ---
+    # The front page and the application are two names on purpose. The
+    # application sets cookies, so keeping it on its own name means the front
+    # page shares no cookie scope with it and can be cached as hard as nginx
+    # likes. They are also replaced at different rates: the front page says of
+    # itself that the full website is on its way.
+    age.secrets."chatcms-master-key" = {
+      file = ../../../secrets/chatcms-master-key.age;
+    };
+
+    services.chatcms = {
+      enable = true;
+      baseUrl = "https://app.chatcms.eu";
+      port = 8080;
+      secretKeyFile = config.age.secrets."chatcms-master-key".path;
+
+      # Working copies, media caches and Hugo output. Root has under 7 GB
+      # free; /data has forty.
+      stateDir = "/data/chatcms";
+
+      # The first administrator is appointed at every start, which is how an
+      # installation with nobody in it gets somebody. The account has to exist
+      # first, so the service says it could not appoint anybody until it does.
+      firstAdministrator = "pim@technative.eu";
+
+      # Mail waits for the SES identity for chatcms.eu and the SMTP user that
+      # may send for it. Until then host stays unset, which sends invitation
+      # and reset links to the service log: a link in a log can still be
+      # followed, where a link handed to SES with the wrong credentials is
+      # simply lost. Fill in the user name, put the password in
+      # chatcms-smtp-password.age, and uncomment.
+      #
+      # mail = {
+      #   host = "email-smtp.eu-central-1.amazonaws.com";
+      #   port = 587;
+      #   startTLS = true;
+      #   from = "noreply@chatcms.eu";
+      #   fromName = "Quiqr ChatCMS";
+      #   username = "<the SES SMTP user>";
+      #   passwordFile = config.age.secrets."chatcms-smtp-password".path;
+      # };
+    };
+
+    services.nginx.virtualHosts."app.chatcms.eu" = {
+      enableACME = true;
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:8080";
+        proxyWebsockets = true;
+        # A picture on its way into the media library is larger than nginx
+        # allows by default, and the refusal arrives as a bare 413 that says
+        # nothing about what to do.
+        extraConfig = "client_max_body_size 64m;";
+      };
+    };
+
+    services.nginx.virtualHosts."chatcms.eu" = {
+      enableACME = true;
+      forceSSL = true;
+      root = inputs.self.packages."${pkgs.stdenv.hostPlatform.system}".chatcms-www;
+    };
+
+    services.nginx.virtualHosts."www.chatcms.eu" = {
+      enableACME = true;
+      forceSSL = true;
+      globalRedirect = "chatcms.eu";
+    };
+
     # --- Tuwunel Matrix ---
     services.matrix-tuwunel = {
       enable = true;
@@ -345,6 +431,7 @@ in
     ]) ++ [
       inputs.studio-mint-v1.nixosModules.default
       inputs.studio-mint-v3.nixosModules.default
+      inputs.chatcms.nixosModules.default
     ];
   };
 }

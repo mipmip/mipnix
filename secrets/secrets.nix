@@ -168,6 +168,13 @@ in
   "voorzetramenshop-env.age".publicKeys = [ pim durer ];
   "studio-mint-v3-env.age".publicKeys = [ pim durer ];
 
+  # Quiqr ChatCMS. The master key encrypts every project's deploy key and the
+  # session secrets at rest, so it is the one secret whose loss cannot be
+  # repaired from a database backup: keep a copy of it somewhere that is not
+  # where the database dumps go.
+  "chatcms-master-key.age".publicKeys = [ pim durer ];
+  "chatcms-smtp-password.age".publicKeys = [ pim durer ];
+
   # restic backups to piethein — shared across the backup source hosts.
   # Keep an OFFLINE copy of both: a dead host cannot decrypt its own secrets.
   "restic-ssh-key.age".publicKeys = [ pim hurry durer zonnehoed dapperehaan stinkie peterspav ];
