@@ -9,7 +9,7 @@ inputs,
       # (.beans.yml searched upward — NOT `beans check`'s exit code, which is 0
       # even with no project) and, on failure, shows the CWD + `beans check`
       # output and waits for a keypress instead of letting the -E popup silently
-      # flash-close. Happy path runs `beans tui` and closes on a clean quit.
+      # flash-close. Happy path runs `beans-tui` and closes on a clean quit.
       beans-tui-popup = pkgs.writeShellScriptBin "beans-tui-popup" ''
         echo "CWD: ''$PWD"
 
@@ -24,11 +24,11 @@ inputs,
         }
 
         if find_project; then
-          beans tui
+          beans-tui
           rc=''$?
           if [ "''$rc" -ne 0 ]; then
             echo
-            echo "beans tui exited with code ''$rc"
+            echo "beans-tui exited with code ''$rc"
             echo "---- beans check ----"
             beans check
             echo

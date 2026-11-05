@@ -62,6 +62,48 @@
         # also applies when launched from the app launcher — not just `karere`
         # from a shell. Trade-off: this turns off WebKit subprocess isolation;
         # acceptable for a trusted personal WhatsApp client.
+        beans =
+          let
+            src = inputs.beans-listmod;
+            version = "listmod-${src.shortRev}";
+            frontend = prev.stdenvNoCC.mkDerivation (finalAttrs: {
+              pname = "beans-frontend";
+              inherit src version;
+              sourceRoot = "source/frontend";
+              pnpmDeps = prev.fetchPnpmDeps {
+                inherit (finalAttrs) pname version src sourceRoot;
+                pnpm = prev.pnpm_10;
+                fetcherVersion = 2;
+                hash = "sha256-ELiNtXKf1Ud9TF/Y4ZtFV35CWrD1MsXI+3VqcWFZOZI=";
+              };
+              nativeBuildInputs = [ prev.nodejs prev.pnpm_10 prev.pnpmConfigHook ];
+              buildPhase = "pnpm build";
+              installPhase = "cp -r build $out";
+            });
+          in
+          prev.beans.overrideAttrs (old: {
+            inherit src version;
+            vendorHash = "sha256-sBTVjdkpR90UvEOWo2qCzezYDucBTebZck0t4xYulZ0=";
+            ldflags = [
+              "-s"
+              "-X github.com/hmans/beans/internal/version.Version=${version}"
+              "-X github.com/hmans/beans/internal/version.Commit=${src.rev}"
+              "-X github.com/hmans/beans/internal/version.Date=${src.lastModifiedDate}"
+            ];
+            preBuild = (old.preBuild or "") + ''
+              rm -rf internal/web/dist
+              cp -r ${frontend} internal/web/dist
+              chmod -R u+w internal/web/dist
+            '';
+            nativeCheckInputs = (old.nativeCheckInputs or [ ]) ++ [ prev.git ];
+            preCheck = (old.preCheck or "") + ''
+              export HOME=$TMPDIR
+              git config --global user.name nix
+              git config --global user.email nix@localhost
+            '';
+            meta = old.meta // { changelog = "https://github.com/speclib/beans-listmod/commits/main"; };
+          });
+
         karere = prev.karere.overrideAttrs (old: {
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ prev.makeWrapper ];
           postFixup = (old.postFixup or "") + ''

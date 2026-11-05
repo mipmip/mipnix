@@ -95,6 +95,9 @@
     beans-nvim.url = "github:mipmip/beans.nvim";
     beans-nvim.flake = false;
 
+    beans-listmod.url = "github:speclib/beans-listmod";
+    beans-listmod.flake = false;
+
     humanizer.url = "github:blader/humanizer";
     humanizer.flake = false;
 

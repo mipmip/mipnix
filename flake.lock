@@ -132,6 +132,22 @@
         "type": "github"
       }
     },
+    "beans-listmod": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793907654,
+        "narHash": "sha256-amUIBZWJEO//jDNx95LH8vmRTyBuPIxNVo5btnOOjtU=",
+        "owner": "speclib",
+        "repo": "beans-listmod",
+        "rev": "d92d8a1c8ad83f08ed13d19842fa7d28f71392c2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "speclib",
+        "repo": "beans-listmod",
+        "type": "github"
+      }
+    },
     "beans-nvim": {
       "flake": false,
       "locked": {
@@ -173,11 +189,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793739291,
-        "narHash": "sha256-cMxcxxMQj9/uDUj0kr5L/bJcUXAxyo+AFWjVpOr2vCo=",
+        "lastModified": 1793911210,
+        "narHash": "sha256-nyHCg83e+U6uPGh5DPvImpPUk573ucSH0eF3GczvyrQ=",
         "owner": "quiqr",
         "repo": "chatcms",
-        "rev": "c5956b46864fe4fa68156e667ef48d6eb3e56ae0",
+        "rev": "d32e457b32b170c91dde945f216d1f888ba53564",
         "type": "github"
       },
       "original": {
@@ -1936,6 +1952,7 @@
         "ags": "ags",
         "aoe": "aoe",
         "beandex": "beandex",
+        "beans-listmod": "beans-listmod",
         "beans-nvim": "beans-nvim",
         "bmc": "bmc",
         "chatcms": "chatcms",
