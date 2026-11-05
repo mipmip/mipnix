@@ -63,11 +63,25 @@ in
     networking.networkmanager.enable = true;
 
     services.xserver.enable = true;
+    services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
     services.displayManager.gdm.enable = true;
     services.desktopManager.gnome.enable = true;
 
     hardware.graphics.enable = true;
     services.power-profiles-daemon.enable = true;
+
+    systemd.services.delliebellie-mic = {
+      description = "Enable SoundWire microphones";
+      wantedBy = [ "sound.target" ];
+      after = [ "sound.target" ];
+      serviceConfig.Type = "oneshot";
+      script = ''
+        amixer=${pkgs.alsa-utils}/bin/amixer
+        $amixer -c sofsoundwire sset 'PGA5.0 5 Master' cap
+        $amixer -c sofsoundwire sset 'rt714 ADC 22 Mux' DMIC3
+        $amixer -c sofsoundwire sset 'rt714 ADC 23 Mux' DMIC4
+      '';
+    };
 
     console.keyMap = "nl";
 

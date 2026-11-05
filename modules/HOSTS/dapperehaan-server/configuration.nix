@@ -33,6 +33,11 @@ let
     dapperehaan-grafana.keep = [
       "--keep-daily" "7" "--keep-weekly" "5" "--keep-monthly" "12"
     ];
+
+    dapperehaan-github-stats.paths = [ "/var/backups/restic/github-stats.sql" ];
+    dapperehaan-github-stats.keep = [
+      "--keep-daily" "7" "--keep-weekly" "5" "--keep-monthly" "12"
+    ];
   };
 in
 
@@ -81,6 +86,7 @@ in
       backup-restic-piethein
       hip-repo-backup
       monitoring-grafana
+      monitoring-github-stats
       monitoring-piethein-snmp
       lobby-web
 
@@ -110,6 +116,15 @@ in
               ".backup /var/backups/restic/grafana.db"
           '';
           cleanupCommand = "rm -f /var/backups/restic/grafana.db";
+        };
+        dapperehaan-github-stats = datasets.dapperehaan-github-stats // {
+          prepareCommand = ''
+            install -d -m 0700 /var/backups/restic
+            ${pkgs.util-linux}/bin/runuser -u postgres -- \
+              ${config.services.postgresql.package}/bin/pg_dump github_stats \
+              > /var/backups/restic/github-stats.sql
+          '';
+          cleanupCommand = "rm -f /var/backups/restic/github-stats.sql";
         };
       };
     };

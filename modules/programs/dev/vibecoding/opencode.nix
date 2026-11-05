@@ -94,7 +94,6 @@
 
         plugins = [
           "@tarquinen/opencode-dcp@latest"
-          "@mohak34/opencode-notifier@latest"
           "${inputs.opencode-beans.packages.${pkgs.stdenv.hostPlatform.system}.default}/plugins/beans-stats"
           "${inputs.opencode-openspec-sidepanel.packages.${pkgs.stdenv.hostPlatform.system}.default}/plugins/openspec-stats"
           {
