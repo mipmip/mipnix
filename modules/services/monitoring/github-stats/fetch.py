@@ -242,16 +242,19 @@ def collect(github, conn, now):
 
         conn.execute("DELETE FROM stargazers WHERE repo_id = %s", (r["databaseId"],))
         if r["stargazerCount"]:
-            with conn.cursor() as cur:
-                cur.executemany(
-                    "INSERT INTO stargazers VALUES (%s, %s, %s) ON CONFLICT DO NOTHING",
-                    [
-                        (r["databaseId"], edge["node"]["login"], edge["starredAt"])
-                        for edge in github.pages(
-                            STARGAZERS, ["repository", "stargazers"], owner=login, name=r["name"]
-                        )
-                    ],
+            stars = [
+                (r["databaseId"], edge["node"]["login"], edge["starredAt"])
+                for edge in github.pages(
+                    STARGAZERS, ["repository", "stargazers"], owner=login, name=r["name"]
                 )
+            ]
+            if not stars:
+                raise RuntimeError(
+                    f"{login}/{r['name']} has {r['stargazerCount']} stars but GitHub listed none; "
+                    "the token needs the public_repo scope"
+                )
+            with conn.cursor() as cur:
+                cur.executemany("INSERT INTO stargazers VALUES (%s, %s, %s) ON CONFLICT DO NOTHING", stars)
 
     conn.execute("DELETE FROM repos WHERE NOT (id = ANY(%s))", (list(seen),))
 

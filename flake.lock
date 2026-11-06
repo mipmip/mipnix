@@ -121,13 +121,13 @@
       "locked": {
         "lastModified": 1787757891,
         "narHash": "sha256-aZWdDf7pGtSYqS/Ui515q41UIZ9/gV1w7MZcD4GL6/c=",
-        "owner": "mipmip",
+        "owner": "speclib",
         "repo": "beandex",
         "rev": "d8578b4688b8da396895020f69230ed633386c85",
         "type": "github"
       },
       "original": {
-        "owner": "mipmip",
+        "owner": "speclib",
         "repo": "beandex",
         "type": "github"
       }
@@ -151,15 +151,15 @@
     "beans-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1787181268,
-        "narHash": "sha256-2vSakTpw20yCESJyERaaDeS/si98dfQUsRMjbOXysq0=",
-        "owner": "mipmip",
+        "lastModified": 1793698941,
+        "narHash": "sha256-pzhqSNJ29p5ciutX04bkKq8dTkkqISo1FOKn1U4cXq4=",
+        "owner": "speclib",
         "repo": "beans.nvim",
-        "rev": "f12de4503d6c3446b6fca22145f68f2a88313bd7",
+        "rev": "d878b8beadf8dbf51cd28cf606dc0776c1cbff24",
         "type": "github"
       },
       "original": {
-        "owner": "mipmip",
+        "owner": "speclib",
         "repo": "beans.nvim",
         "type": "github"
       }
@@ -205,11 +205,11 @@
     "chatcms-www": {
       "flake": false,
       "locked": {
-        "lastModified": 1793896204,
-        "narHash": "sha256-mAE/hR/42yLf8JKTKpACYjPCeqLOocz1RdngUFzLRfQ=",
+        "lastModified": 1793909582,
+        "narHash": "sha256-rb3usJPB+O7YFaant7mvB38QInXZ4yCKKptH6SwPOMA=",
         "ref": "refs/heads/main",
-        "rev": "b51f282b4bc7713b7adfc889d6c2255c7bd02734",
-        "revCount": 2,
+        "rev": "63292691955725757d1870093b88cc6070a485ab",
+        "revCount": 11,
         "type": "git",
         "url": "ssh://git@github.com/quiqr/chatcms.eu.git"
       },
@@ -1764,15 +1764,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1792163758,
-        "narHash": "sha256-G/mq5C8sXm9eWqPi0b0+59+HZ9Mcjp45uvxkJ1aiQWA=",
-        "owner": "mipmip",
+        "lastModified": 1793274804,
+        "narHash": "sha256-NCza/lJ8NY7iHcQTJI2ShEA2Gg+k17BblSz4nOkNYLc=",
+        "owner": "speclib",
         "repo": "opencode-beans",
-        "rev": "cc3825597f03b80b3be48c8cdd1ad1ba664d660a",
+        "rev": "25ef9e743aac1aaaa039a9a165f921820a408c06",
         "type": "github"
       },
       "original": {
-        "owner": "mipmip",
+        "owner": "speclib",
         "repo": "opencode-beans",
         "type": "github"
       }

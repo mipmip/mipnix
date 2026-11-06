@@ -77,7 +77,7 @@
     startaste.url = "github:mipmip/startaste";
     startaste.inputs.nixpkgs.follows = "nixpkgs";
     hip.url = "github:mipmip/hip";
-    beandex.url = "github:mipmip/beandex";
+    beandex.url = "github:speclib/beandex";
     hermes-agent.url = "github:NousResearch/hermes-agent";
 
     # The two halves of the prefix + M monitoring popup. Both were invoked as
@@ -92,7 +92,7 @@
     nivis.url = "github:nivis-project/nivis";
     nivis.inputs.nixpkgs.follows = "nixpkgs";
 
-    beans-nvim.url = "github:mipmip/beans.nvim";
+    beans-nvim.url = "github:speclib/beans.nvim";
     beans-nvim.flake = false;
 
     beans-listmod.url = "github:speclib/beans-listmod";
@@ -105,7 +105,7 @@
     dutch-style-guide.flake = false;
 
     opencode-beans = {
-      url = "github:mipmip/opencode-beans";
+      url = "github:speclib/opencode-beans";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
