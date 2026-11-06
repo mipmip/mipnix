@@ -230,6 +230,8 @@ in
       file = ../../../secrets/chatcms-master-key.age;
     };
 
+    systemd.tmpfiles.rules = [ "d /data/chatcms 0750 chatcms chatcms -" ];
+
     services.chatcms = {
       enable = true;
       baseUrl = "https://app.chatcms.eu";
