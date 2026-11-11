@@ -104,6 +104,17 @@
             meta = old.meta // { changelog = "https://github.com/speclib/beans-listmod/commits/main"; };
           });
 
+        slack = prev.slack.overrideAttrs (old: {
+          postFixup = (old.postFixup or "") + ''
+            wrapProgram $out/bin/slack \
+              --add-flags "--enable-features=WebRtcPipeWireCamera"
+          '';
+        });
+
+        google-chrome = prev.google-chrome.override {
+          commandLineArgs = "--enable-features=WebRtcPipeWireCamera,WaylandWindowDecorations";
+        };
+
         karere = prev.karere.overrideAttrs (old: {
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ prev.makeWrapper ];
           postFixup = (old.postFixup or "") + ''
