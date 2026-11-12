@@ -1,10 +1,4 @@
-{makeBanner, pkgs, inputs, ...}:
-let
-  system = pkgs.stdenv.hostPlatform.system;
-  nbping = "${inputs.nping.packages.${system}.default}/bin/nbping";
-  updo = "${inputs.updo.packages.${system}.updo}/bin/updo";
-  nebulaHosts = builtins.concatStringsSep " " inputs.self.lib.nebulaHostNames;
-in
+{makeBanner, pkgs, ...}:
 {
 
   sudo = {

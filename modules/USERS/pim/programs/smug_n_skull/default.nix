@@ -50,10 +50,6 @@ inputs,
     home.packages = [
         pkgs.figlet
         pkgs.lolcat
-
-        #inputs.hip.packages."${pkgs.stdenv.hostPlatform.system}".hip
-
-
       ];
 
     programs = {

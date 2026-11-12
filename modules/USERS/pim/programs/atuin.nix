@@ -1,5 +1,10 @@
 {
-  flake.modules.homeManager.pim-atuin = { unstable, ... } : {
+  flake.modules.homeManager.pim-atuin = { unstable, lib, ... } : {
+
+    programs.fish.interactiveShellInit = lib.mkAfter ''
+      set -e ATUIN_TMUX_POPUP
+      bind ctrl-] _atuin_ai_resume
+    '';
 
     programs.atuin = {
       enable = true;
@@ -49,6 +54,7 @@
         threads = {
           capture = true;
           capture_tools = true;
+          filter_mode = "directory";
         };
       };
     };
