@@ -245,7 +245,7 @@ in
       # The first administrator is appointed at every start, which is how an
       # installation with nobody in it gets somebody. The account has to exist
       # first, so the service says it could not appoint anybody until it does.
-      firstAdministrator = "pim@technative.eu";
+      firstAdministrator = "post@pimsnel.com";
 
       # Mail waits for the SES identity for chatcms.eu and the SMTP user that
       # may send for it. Until then host stays unset, which sends invitation
