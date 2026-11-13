@@ -139,7 +139,7 @@
     # Quiqr ChatCMS: the application, and the front page that leads to it. The
     # application is public and carries its own NixOS module; the front page is
     # private, plain HTML, and arrives as a bare store path.
-    chatcms.url = "github:quiqr/chatcms";
+    chatcms.url = "github:quiqr/chatcms-app";
     chatcms.inputs.nixpkgs.follows = "nixpkgs";
 
     chatcms-www.url = "git+ssh://git@github.com/quiqr/chatcms.eu.git";

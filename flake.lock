@@ -189,16 +189,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1793911210,
-        "narHash": "sha256-nyHCg83e+U6uPGh5DPvImpPUk573ucSH0eF3GczvyrQ=",
+        "lastModified": 1794578412,
+        "narHash": "sha256-NXH7zc8kxBZtST4lZbkm85M1rypXpWo9DrCG3/Z30c0=",
         "owner": "quiqr",
-        "repo": "chatcms",
-        "rev": "d32e457b32b170c91dde945f216d1f888ba53564",
+        "repo": "chatcms-app",
+        "rev": "d6d60395999718947017a5f942e0ef9c37c6547f",
         "type": "github"
       },
       "original": {
         "owner": "quiqr",
-        "repo": "chatcms",
+        "repo": "chatcms-app",
         "type": "github"
       }
     },
