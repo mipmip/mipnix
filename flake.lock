@@ -135,11 +135,11 @@
     "beans-listmod": {
       "flake": false,
       "locked": {
-        "lastModified": 1793907654,
-        "narHash": "sha256-amUIBZWJEO//jDNx95LH8vmRTyBuPIxNVo5btnOOjtU=",
+        "lastModified": 1794582020,
+        "narHash": "sha256-6KQRC6Yu3+1MK8VM8Lk/Ix0jWkPy5x7lqjFHT0LuhCA=",
         "owner": "speclib",
         "repo": "beans-listmod",
-        "rev": "d92d8a1c8ad83f08ed13d19842fa7d28f71392c2",
+        "rev": "22123fd5e5ee9b411200af253cf485dfc453c47d",
         "type": "github"
       },
       "original": {
