@@ -205,11 +205,11 @@
     "chatcms-www": {
       "flake": false,
       "locked": {
-        "lastModified": 1793909582,
-        "narHash": "sha256-rb3usJPB+O7YFaant7mvB38QInXZ4yCKKptH6SwPOMA=",
+        "lastModified": 1794584135,
+        "narHash": "sha256-Gf3bTDAWm49d0d8/TvA9PDKs8dTmNQtyJiP8x1GY/ow=",
         "ref": "refs/heads/main",
-        "rev": "63292691955725757d1870093b88cc6070a485ab",
-        "revCount": 11,
+        "rev": "b0c690c50468886b3356b29d1d2dd18dd89988d3",
+        "revCount": 12,
         "type": "git",
         "url": "ssh://git@github.com/quiqr/chatcms.eu.git"
       },
