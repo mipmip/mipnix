@@ -230,6 +230,10 @@ in
       file = ../../../secrets/chatcms-master-key.age;
     };
 
+    age.secrets."chatcms-smtp-password" = {
+      file = ../../../secrets/chatcms-smtp-password.age;
+    };
+
     systemd.tmpfiles.rules = [ "d /data/chatcms 0750 chatcms chatcms -" ];
 
     services.chatcms = {
@@ -247,22 +251,15 @@ in
       # first, so the service says it could not appoint anybody until it does.
       firstAdministrator = "post@pimsnel.com";
 
-      # Mail waits for the SES identity for chatcms.eu and the SMTP user that
-      # may send for it. Until then host stays unset, which sends invitation
-      # and reset links to the service log: a link in a log can still be
-      # followed, where a link handed to SES with the wrong credentials is
-      # simply lost. Fill in the user name, put the password in
-      # chatcms-smtp-password.age, and uncomment.
-      #
-      # mail = {
-      #   host = "email-smtp.eu-central-1.amazonaws.com";
-      #   port = 587;
-      #   startTLS = true;
-      #   from = "noreply@chatcms.eu";
-      #   fromName = "Quiqr ChatCMS";
-      #   username = "<the SES SMTP user>";
-      #   passwordFile = config.age.secrets."chatcms-smtp-password".path;
-      # };
+      mail = {
+        host = "email-smtp.eu-central-1.amazonaws.com";
+        port = 587;
+        startTLS = true;
+        from = "noreply@chatcms.eu";
+        fromName = "Quiqr ChatCMS";
+        username = "AKIARQP4GAZ5CQ2WQI4D";
+        passwordFile = config.age.secrets."chatcms-smtp-password".path;
+      };
     };
 
     services.nginx.virtualHosts."app.chatcms.eu" = {
