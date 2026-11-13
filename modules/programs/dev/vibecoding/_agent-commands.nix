@@ -136,6 +136,18 @@
           create a flake in the spirit of add-flake-to-nodejs-project.md.
   '';
 
+  "mip:move-project" = ''
+          ---
+          argument-hint: [new name or path]
+          description: rename or move this project and keep its Claude sessions
+          ---
+          Use the `move-project` skill to move the current project directory
+          to the name or path below, taking its Claude Code sessions, memory
+          and project settings along.
+
+          $ARGUMENTS
+  '';
+
   "mip:translate" = ''
           ---
           argument-hint: [message]

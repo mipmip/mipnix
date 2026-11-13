@@ -8,12 +8,16 @@
       # executable bit, and naming `python3` in the command would make the hook
       # die silently in any shell that lacks it.
       proseLint = inputs.self.packages."${pkgs.stdenv.hostPlatform.system}".prose-lint;
+
+      # Moves a project directory together with its sessions, memory and
+      # settings. The move-project skill drives it.
+      claudeMoveProject = import ./_claude-move-project.nix { inherit pkgs; };
     in
     {
 
     # The checker is also a tool you can run yourself: `prose-lint FILE...`.
     # Same derivation the hook uses, so there is one of it, not two.
-    home.packages = [ proseLint ];
+    home.packages = [ proseLint claudeMoveProject ];
 
     programs.claude-code = {
       enable = true;
@@ -35,6 +39,7 @@
         humanizer = "${inputs.humanizer}/SKILL.md";
         writing-clearly-and-concisely-dutch =
           "${inputs.dutch-style-guide}/skills/writing-clearly-and-concisely-dutch";
+        move-project = ./_skill-move-project.md;
       };
 
       # Separate documents, one per concern: Claude Code loads every markdown

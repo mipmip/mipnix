@@ -74,7 +74,13 @@ in
       description = "Enable SoundWire microphones";
       wantedBy = [ "sound.target" ];
       after = [ "sound.target" ];
-      serviceConfig.Type = "oneshot";
+      serviceConfig = {
+        Type = "oneshot";
+        Restart = "on-failure";
+        RestartSec = 2;
+      };
+      startLimitIntervalSec = 60;
+      startLimitBurst = 20;
       script = ''
         amixer=${pkgs.alsa-utils}/bin/amixer
         $amixer -c sofsoundwire sset 'PGA5.0 5 Master' cap

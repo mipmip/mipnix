@@ -29,6 +29,7 @@ inputs,
       pim-hip
       pim-lobby
       pim-beandex
+      pim-gradient
       pim-pandoc
       pim-sc-im
       #pim-vim

@@ -78,6 +78,7 @@
     startaste.inputs.nixpkgs.follows = "nixpkgs";
     hip.url = "github:mipmip/hip";
     beandex.url = "github:speclib/beandex";
+    gradient.url = "github:wavelens/gradient/v2.0.1";
     hermes-agent.url = "github:NousResearch/hermes-agent";
 
     # The two halves of the prefix + M monitoring popup. Both were invoked as
