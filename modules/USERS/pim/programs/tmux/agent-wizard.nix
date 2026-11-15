@@ -1,3 +1,4 @@
+{ inputs, ... }:
 {
   flake.hotkeys = [
 
@@ -39,9 +40,21 @@
           hash = "sha256-Fu4Jfw4fFOedK2uWwk2EBE8/TI4RY/jpXFUiRSqAcoI=";
         };
       };
+      machines = [ "peterspav" "doornappel" "stinkie" ];
+
+      ipOf = name:
+        lib.last (lib.splitString " "
+          (lib.findFirst (h: lib.hasPrefix "${name} " h)
+            (throw "agent-wizard: ${name} is not a nebula host")
+            inputs.self.lib.nebulaHosts));
     in
     {
       home.packages = [ taw ];
+
+      xdg.configFile."tmux-agent-wizard/config.toml".text = ''
+        [machines]
+        ${lib.concatMapStringsSep "\n" (m: ''${m} = "pim@${ipOf m}"'') machines}
+      '';
 
       programs.tmux.plugins = [
         {
