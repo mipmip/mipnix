@@ -76,6 +76,8 @@
     linny-mcp.inputs.nixpkgs.follows = "nixpkgs";
     startaste.url = "github:mipmip/startaste";
     startaste.inputs.nixpkgs.follows = "nixpkgs";
+    atuin-threads-tui.url = "github:mipmip/atuin-threads-tui";
+    atuin-threads-tui.inputs.nixpkgs.follows = "nixpkgs";
     hip.url = "github:mipmip/hip";
     beandex.url = "github:speclib/beandex";
     gradient.url = "github:wavelens/gradient/v2.0.1";

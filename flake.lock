@@ -97,6 +97,26 @@
         "type": "github"
       }
     },
+    "atuin-threads-tui": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794865796,
+        "narHash": "sha256-ouWHW+cYfr5dU1tKgHOiEvrzn7BVnUIGQ07Lp5eu0ew=",
+        "owner": "mipmip",
+        "repo": "atuin-threads-tui",
+        "rev": "b9654aa3783692987d8268ea8dca3877a9266946",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mipmip",
+        "repo": "atuin-threads-tui",
+        "type": "github"
+      }
+    },
     "bdwgc-src": {
       "flake": false,
       "locked": {
@@ -2021,6 +2041,7 @@
         "agenix": "agenix",
         "ags": "ags",
         "aoe": "aoe",
+        "atuin-threads-tui": "atuin-threads-tui",
         "beandex": "beandex",
         "beans-listmod": "beans-listmod",
         "beans-nvim": "beans-nvim",

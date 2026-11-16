@@ -1,5 +1,13 @@
 {
-  flake.modules.homeManager.pim-atuin = { unstable, lib, ... } : {
+  inputs,
+  ...
+}:
+{
+  flake.modules.homeManager.pim-atuin = { unstable, lib, pkgs, ... } : {
+
+    home.packages = [
+      inputs.atuin-threads-tui.packages."${pkgs.stdenv.hostPlatform.system}".default
+    ];
 
     programs.fish.interactiveShellInit = lib.mkAfter ''
       set -e ATUIN_TMUX_POPUP
