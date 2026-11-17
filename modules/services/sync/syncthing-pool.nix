@@ -157,6 +157,8 @@
             };
           };
         };
+
+        networking.firewall.interfaces."nebula.mesh".allowedTCPPorts = [ 22000 ];
       };
     };
 }

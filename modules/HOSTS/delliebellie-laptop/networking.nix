@@ -10,7 +10,7 @@ in
   flake.modules.nixos.delliebellie = { config, pkgs, ... } : {
 
     networking.hostName = hostname;
-    networking.firewall.enable = false;
+    networking.firewall.enable = true;
 
   };
 }
