@@ -2146,11 +2146,11 @@
         "nixpkgs": "nixpkgs_21"
       },
       "locked": {
-        "lastModified": 1790156600,
-        "narHash": "sha256-gdEtHOA4ccraj8Ihhp8c05LwfiB0CKcwvJfEfDLmX+U=",
+        "lastModified": 1794944358,
+        "narHash": "sha256-rpdgZTtscdPEqlHHZZsrQHNU+As+nqfDhPQA4g5kZyE=",
         "owner": "speclib",
         "repo": "specgetty",
-        "rev": "0637c937d3f89ace046717ed906a6ddffd1b4132",
+        "rev": "2aa825b0237353f805d82aaa066029698c1e6fca",
         "type": "github"
       },
       "original": {
