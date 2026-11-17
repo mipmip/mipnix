@@ -199,8 +199,6 @@ inputs,
         # tool that is installed on no host here, so every yank failed silently.
         bind-key -T copy-mode-vi y send -X copy-pipe-and-cancel '${pkgs.wl-clipboard}/bin/wl-copy'
 
-        unbind C-a
-
         if-shell '[ -n "$NEBULA_TMUX" ]' 'set -g prefix2 C-s ; set -g @prefix_extra C-s'
 
         # Every custom binding below comes from the hotkey registry (binds.nix),
