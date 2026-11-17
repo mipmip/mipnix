@@ -2257,11 +2257,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794327503,
-        "narHash": "sha256-iPmsKD9OvD6Bs2nwldEl//ePwpjUfIGamcWh2F5ekr0=",
+        "lastModified": 1794948903,
+        "narHash": "sha256-nCD0qCpEOVpeYsfqHhf29i+uGR1ucL3qHEJA+Sv7QwQ=",
         "ref": "refs/heads/main",
-        "rev": "dbad3e9ece22b0abeab02739663fa2a30044d758",
-        "revCount": 111,
+        "rev": "e787c31ce4ceb8fced548d486ff80cd2d26b0eff",
+        "revCount": 116,
         "type": "git",
         "url": "ssh://git@github.com/mintglasinlood/v3.studio-mint.shop.git"
       },

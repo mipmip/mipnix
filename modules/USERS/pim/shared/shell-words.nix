@@ -19,7 +19,7 @@
 
     { kind = "word"; app = "Shell"; target = "fish"; scopes = [ "terminal" ];
       word = "t"; desc = "Attach to tmux, or start the standard sessions";
-      action = "tmux a || smug start lobby && smug start sudo && smug start nixos && smug start tekst"; }
+      action = "tmux a || smug start lobby && smug start nixos && smug start tekst"; }
 
     { kind = "word"; app = "Shell"; target = "fish"; scopes = [ "terminal" ];
       word = "tmxa"; desc = "Switch the tmux prefix to Ctrl+A";
@@ -36,7 +36,7 @@
 
     { kind = "word"; app = "Shell"; target = "fish"; scopes = [ "terminal" ];
       word = "smugs"; desc = "Start the standard smug sessions";
-      action = "smug && smug start sudo && smug start nixos && smug start lobby"; }
+      action = "smug && smug start nixos && smug start lobby"; }
 
     { kind = "word"; app = "Shell"; target = "fish"; scopes = [ "terminal" ];
       word = "smugs_q"; desc = "Start the quiqr smug sessions";
