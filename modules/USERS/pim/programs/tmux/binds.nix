@@ -49,6 +49,10 @@
       action = ''if -F '#{==:#{session_name},_nbmon}' detach-client "run-shell -b 'nebula-monitor open'"''; }
 
     { kind = "prefixed"; app = "tmux"; target = "tmux"; scopes = [ "terminal" ];
+      group = "tools"; key = "U"; desc = "unlock the ssh key";
+      action = "popup -E -w 60% -h 40% 'ssh-key-unlock'"; }
+
+    { kind = "prefixed"; app = "tmux"; target = "tmux"; scopes = [ "terminal" ];
       group = "tools"; key = "R"; desc = "dirty repo scanner";
       action = "popup -E -w 80% -h 80% 'drs --multiplex'"; }
 

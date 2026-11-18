@@ -21,18 +21,6 @@ import { createPoll, interval } from "ags/time"
 // ssh-add -l exit codes: 0 = has identities, 1 = agent up but empty, 2 = agent
 // unreachable (the no-agent branch). ssh-add -T: 0 = signed, non-zero/timeout =
 // cannot sign.
-const POLL_SCRIPT = `
-fp=$(ssh-keygen -lf ~/.ssh/id_ed25519.pub 2>/dev/null | awk '{print $2}')
-out=$(ssh-add -l 2>/dev/null); rc=$?
-if   [ "$rc" -eq 2 ]; then echo noagent
-elif ! printf '%s\\n' "$out" | grep -qF "$fp"; then echo unloaded
-elif timeout 4 ssh-add -T ~/.ssh/id_ed25519.pub >/dev/null 2>&1; then echo loaded
-else echo stale
-fi`
-
-// Fingerprint for the tooltip / popover; slow poll (it rarely changes).
-const FP_SCRIPT = `ssh-keygen -lf ~/.ssh/id_ed25519.pub 2>/dev/null | awk '{print $2}'`
-
 const ICON = {
   loaded: "󰿆", // open lock — key IS loaded (unlocked/available)
   unloaded: "󰌾", // closed lock — key NOT loaded (locked away)
@@ -56,10 +44,15 @@ export default function SshKey() {
   // action, which made the just-unloaded key impossible to reload from the
   // popover.
   const [state, setState] = createState<State>("noagent")
-  const fingerprint = createPoll("", 60000, ["bash", "-c", FP_SCRIPT], (s) => s.trim())
+  const fingerprint = createPoll(
+    "",
+    60000,
+    [SSH_KEY_STATE, "--fingerprint"],
+    (s) => s.trim(),
+  )
 
   const refresh = () =>
-    execAsync(["bash", "-c", POLL_SCRIPT])
+    execAsync([SSH_KEY_STATE])
       .then((out) => setState(normalizeState(out)))
       .catch(() => {})
 

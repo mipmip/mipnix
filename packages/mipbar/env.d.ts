@@ -1,5 +1,6 @@
 declare const SRC: string
 declare const ASKPASS: string
+declare const SSH_KEY_STATE: string
 
 declare module "inline:*" {
   const content: string

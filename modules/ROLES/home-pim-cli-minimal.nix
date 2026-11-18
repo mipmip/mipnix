@@ -10,6 +10,7 @@ inputs,
       pim-git
       pim-fish
       pim-fzf
+      pim-ssh
 
       pim-tmux
       pim-keyb

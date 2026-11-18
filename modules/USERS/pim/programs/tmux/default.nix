@@ -104,6 +104,24 @@ inputs,
       tmux-float = pkgs.writeShellScriptBin "tmux-float"
         (builtins.readFile ./float.sh);
 
+      tmux-status-src = ../../../../../packages/tmux-status;
+      drs = inputs.dirty-repo-scanner.packages.${pkgs.stdenv.hostPlatform.system}.dirty-repo-scanner;
+      ssh-key-state = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.ssh-key-state;
+
+      tmux-ssh-key = pkgs.writeShellScriptBin "tmux-ssh-key" (''
+        export SSH_KEY_STATE=${ssh-key-state}/bin/ssh-key-state
+      '' + builtins.readFile "${tmux-status-src}/tmux-ssh-key.sh");
+
+      tmux-dirty-repos = pkgs.writeShellScriptBin "tmux-dirty-repos" (''
+        export DRS=${drs}/bin/drs
+      '' + builtins.readFile "${tmux-status-src}/tmux-dirty-repos.sh");
+
+      ssh-key-unlock = pkgs.writeShellScriptBin "ssh-key-unlock" (''
+        export SSH_KEY_STATE=${ssh-key-state}/bin/ssh-key-state
+        export TMUX_SSH_KEY=${tmux-ssh-key}/bin/tmux-ssh-key
+        export TMUX_BIN=${pkgs.tmux}/bin/tmux
+      '' + builtins.readFile "${tmux-status-src}/ssh-key-unlock.sh");
+
       # Launcher for the `prefix + M` monitoring popup. Same shape as
       # tmux-float: the shell lives in a file, and the four things it needs
       # from Nix are prepended as plain variables rather than interpolated
@@ -145,6 +163,9 @@ inputs,
       drs-switch
       tmux-float
       nebula-monitor
+      tmux-ssh-key
+      tmux-dirty-repos
+      ssh-key-unlock
     ];
 
     programs.tmux = {
@@ -174,7 +195,7 @@ inputs,
         set -g display-panes-time 800 # slightly longer pane indicators display time
         set -g display-time 1000      # slightly longer status messages display time
 
-        set -g status-interval 300     # redraw status line in seconds
+        set -g status-interval 15     # redraw status line in seconds
 
         # ACTIVITY
         set -g monitor-activity off
@@ -232,6 +253,8 @@ inputs,
 
         if '[ -f ~/.tmux/gpakosz.cf ]' 'source ~/.tmux/gpakosz.cf'
         run 'cat ~/.tmux/gpakosz.sh | sh -s _apply_configuration'
+
+        set -ga status-right ' #(tmux-ssh-key) #(tmux-dirty-repos)'
 
         ######### THEME  ##########
         set-window-option -g window-active-style bg=${config.mip.theme.colors.bg.active}

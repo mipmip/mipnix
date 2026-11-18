@@ -242,10 +242,34 @@
             pkgs-unstable.libadwaita
             pkgs-unstable.libsoup_3
           ];
+
+          ssh-key-state = pkgs-unstable.writeShellScriptBin "ssh-key-state"
+            (builtins.readFile ./packages/ssh-key-state/ssh-key-state.sh);
         in
         {
           packages.mipvim = nixvim'.makeNixvimWithModule nixvimModule;
           checks.mipvim = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
+
+          packages.ssh-key-state = ssh-key-state;
+
+          checks.tmux-status = pkgs.runCommand "tmux-status-tests"
+            {
+              nativeBuildInputs = [
+                pkgs.bash
+                pkgs.coreutils
+                pkgs.gawk
+                pkgs.gnugrep
+              ];
+              src = ./packages/tmux-status;
+              sshKeyState = ./packages/ssh-key-state/ssh-key-state.sh;
+            }
+            ''
+              cp -r $src ./tmux-status
+              cp $sshKeyState ./ssh-key-state.sh
+              cd ./tmux-status
+              SSH_KEY_STATE_SCRIPT=$PWD/../ssh-key-state.sh bash ./test.sh
+              touch $out
+            '';
 
           # Unit tests for mipbar's pure helpers. widget/displays.ts imports
           # nothing from GTK or AGS precisely so its arithmetic (scale snapping,
@@ -357,7 +381,8 @@
 
               ags bundle app.ts $out/bin/mipbar \
                 -d "SRC='$out/share'" \
-                -d "ASKPASS='${pkgs-unstable.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass'"
+                -d "ASKPASS='${pkgs-unstable.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass'" \
+                -d "SSH_KEY_STATE='${ssh-key-state}/bin/ssh-key-state'"
 
               ln -s ${pkgs-unstable.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass $out/bin/askpass
 
