@@ -72,8 +72,10 @@
     mip.url = "github:mipmip/mip.rs";
     hypr-network-manager.url = "github:mipmip/hypr-network-manager";
     fred.url = "github:linden-project/fred";
-    linny-mcp.url = "github:linden-project/linny-mcp-server";
+    linny-mcp.url = "github:linden-project/linny-mcp-server/v0.3.0";
     linny-mcp.inputs.nixpkgs.follows = "nixpkgs";
+    linden-index.url = "github:linden-project/linden-index/v0.2.0";
+    linden-index.inputs.nixpkgs.follows = "nixpkgs";
     startaste.url = "github:mipmip/startaste";
     startaste.inputs.nixpkgs.follows = "nixpkgs";
     atuin-threads-tui.url = "github:mipmip/atuin-threads-tui";

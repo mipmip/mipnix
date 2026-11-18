@@ -19,7 +19,7 @@
     # working tree (in the module StateDirectory) so git-sync never tries to sync it.
     sshCmd = "${pkgs.openssh}/bin/ssh -i ${deployKey} -o IdentitiesOnly=yes "
       + "-o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=/var/lib/linny-mcp/known_hosts";
-    lindexer = "${config.services.linny-mcp.package}/bin/lindexer";
+    lindexer = "${inputs.linden-index.packages.${pkgs.stdenv.hostPlatform.system}.lindexer}/bin/lindexer";
     idxJson = "${stateDir}/lindenIndex";
   in
   {
