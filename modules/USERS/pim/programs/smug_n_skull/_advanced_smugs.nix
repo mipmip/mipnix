@@ -1,14 +1,6 @@
 {makeBanner, pkgs, ...}:
 {
 
-  sudo = {
-    windows = [{
-      name = "root";
-      layout = "main-vertical";
-      commands = [ (makeBanner "root") "sudo su -" ];
-    }];
-  };
-
   nixos = {
     root = "~/mipnix";
     windows = [

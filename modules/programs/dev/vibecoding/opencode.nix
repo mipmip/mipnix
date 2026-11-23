@@ -94,6 +94,7 @@
 
         plugins = [
           "@tarquinen/opencode-dcp@latest"
+          "opencode-browser@latest"
           "${inputs.opencode-beans.packages.${pkgs.stdenv.hostPlatform.system}.default}/plugins/beans-stats"
           "${inputs.opencode-openspec-sidepanel.packages.${pkgs.stdenv.hostPlatform.system}.default}/plugins/openspec-stats"
           {
@@ -101,6 +102,20 @@
             options.apiKey = "{file:{env:XDG_RUNTIME_DIR}/opencode-go-key}";
           }
         ];
+
+        # opencode-browser drives the Browser MCP server, which needs node and
+        # npm's network access to fetch @browsermcp/mcp on first start. The
+        # npx path is absolute so the server does not depend on the user's
+        # interactive PATH.
+        mcp.servers.browsermcp = {
+          type = "local";
+          command = [
+            "${pkgs.nodejs}/bin/npx"
+            "-y"
+            "@browsermcp/mcp@0.1.3"
+          ];
+          disabled = false;
+        };
         providers = {
           anthropic = {
             options = {

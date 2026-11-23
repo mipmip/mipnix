@@ -34,7 +34,7 @@ inputs,
       (lib.mkIf config.homeWith.secondbrain.enable {
 
         shared.shellAliases = {
-          t = "tmux a || smug start lobby && smug start doen && smug start sudo && smug start nixos && smug start tekst";
+          t = "tmux a || smug start lobby && smug start nixos";
           smugs = "smug start doen && smug start nixos && smug start lobby";
           nlin = "nvim -c LinnyStart $HOME/secondbrain/content/doen_werk.md";
           nvim = "nvim";
