@@ -103,16 +103,19 @@
           }
         ];
 
-        # opencode-browser drives the Browser MCP server, which needs node and
-        # npm's network access to fetch @browsermcp/mcp on first start. The
-        # npx path is absolute so the server does not depend on the user's
-        # interactive PATH.
+        # opencode starts one MCP client per open workspace. @browsermcp/mcp
+        # 0.1.x binds a fixed port and kills whatever already owns it, so a
+        # second workspace kills the first. 2.x runs a single shared daemon and
+        # clients attach to it; the installed extension (2.2.3) speaks that
+        # protocol. The npx path is absolute so the server does not depend on
+        # the user's interactive PATH, and the version is pinned because npm
+        # caches it after the first start.
         mcp.servers.browsermcp = {
           type = "local";
           command = [
             "${pkgs.nodejs}/bin/npx"
             "-y"
-            "@browsermcp/mcp@0.1.3"
+            "@browsermcp/mcp@2.5.0"
           ];
           disabled = false;
         };
