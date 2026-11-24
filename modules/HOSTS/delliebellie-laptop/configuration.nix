@@ -70,6 +70,13 @@ in
     hardware.graphics.enable = true;
     services.power-profiles-daemon.enable = true;
 
+    services.upower = {
+      percentageLow = 15;
+      percentageCritical = 5;
+      criticalPowerAction = "Hibernate";
+      allowRiskyCriticalPowerAction = true;
+    };
+
     systemd.services.delliebellie-mic = {
       description = "Enable SoundWire microphones";
       wantedBy = [ "sound.target" ];

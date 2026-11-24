@@ -29,6 +29,7 @@ inputs,
       pim-hypr-longpress
       pim-fonts
       pim-nautilus-copy-path
+      pim-battery-low-warning
       pim-satty
 
       pim-rbw

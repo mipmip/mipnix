@@ -53,11 +53,33 @@ input[type=search] { flex: 1 1 280px; min-width: 0; height: 44px; padding: 0 14p
 .chips button span { color: var(--muted); }
 .chips button[aria-pressed=true] { background: var(--chip-on); border-color: var(--chip-on); color: var(--chip-on-fg); }
 .chips button[aria-pressed=true] span { color: var(--chip-on-fg); }
+.views { display: flex; height: 44px; border: 1px solid var(--line-strong); border-radius: 8px; overflow: hidden; }
+.views button { padding: 0 14px; border: 0; background: var(--surface); color: var(--muted); font: 13px var(--mono); cursor: pointer; }
+.views button + button { border-left: 1px solid var(--line-strong); }
+.views button[aria-pressed=true] { background: var(--chip-on); color: var(--chip-on-fg); }
 main { display: flex; flex-direction: column; gap: 32px; }
 section { display: flex; flex-direction: column; gap: 10px; }
 h2 { margin: 0; display: flex; align-items: baseline; gap: 10px; font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 h2 .mono { font-weight: 400; letter-spacing: 0; }
 .list { border: 1px solid var(--line); border-radius: 10px; background: var(--surface); overflow: hidden; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 8px 4px; }
+.grid h2 { grid-column: 1 / -1; margin: 20px 0 2px; }
+.grid h2:first-child { margin-top: 0; }
+.tile { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px 8px 14px; border: 1px solid transparent; border-radius: 14px; color: inherit; text-align: center; text-decoration: none; }
+.tile:hover, .tile:focus-visible { background: var(--surface); border-color: var(--line); }
+.tile.no-url { cursor: default; }
+.tile.no-url:hover { background: transparent; border-color: transparent; }
+.glyph { display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 16px; border: 2px solid transparent; background: hsl(var(--h) 42% 89%); color: hsl(var(--h) 45% 26%); font: 600 20px var(--mono); letter-spacing: -0.01em; }
+@media (prefers-color-scheme: dark) {
+  .glyph { background: hsl(var(--h) 32% 17%); color: hsl(var(--h) 70% 76%); }
+}
+.glyph.nebula { border-color: var(--nebula-line); }
+.glyph.lan { border-color: var(--lan-line); }
+.glyph.public { border-color: var(--public-bg); }
+.glyph.tunnel { border-style: dashed; border-color: var(--tunnel-line); }
+.glyph.local { border-color: var(--line-strong); }
+.tile .label { max-width: 100%; font-size: 13px; font-weight: 500; line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.tile .sub { font: 11px var(--mono); color: var(--muted); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 24px; padding: 16px 20px; }
 .row + .row { border-top: 1px solid var(--line); }
 .who { flex: 1 1 280px; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
@@ -98,6 +120,10 @@ footer code { font-family: var(--mono); color: var(--ink); }
       <label class="sr" for="q">Filter services</label>
       <input id="q" type="search" placeholder="Filter by name, host or URL" autocomplete="off">
       <div class="chips" role="group" aria-label="Filter by host" id="hosts"></div>
+      <div class="views" role="group" aria-label="View">
+        <button type="button" id="view-grid" aria-pressed="true">grid</button>
+        <button type="button" id="view-list" aria-pressed="false">list</button>
+      </div>
     </div>
   </header>
   <main id="main"></main>
@@ -129,7 +155,11 @@ footer code { font-family: var(--mono); color: var(--ink); }
     var s = reg.services[k]; s.key = k; s.title = s.title || k; return s;
   });
   var hosts = Array.from(new Set(all.map(function (s) { return s.host; }))).sort();
-  var state = { q: '', host: '' };
+  var state = { q: '', host: '', view: 'grid' };
+  try {
+    var saved = localStorage.getItem('lobby.view');
+    if (saved === 'grid' || saved === 'list') state.view = saved;
+  } catch (e) {}
 
   function el(tag, attrs, kids) {
     var n = document.createElement(tag);
@@ -138,6 +168,29 @@ footer code { font-family: var(--mono); color: var(--ink); }
     return n;
   }
   function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  function initials(s) {
+    return (s.title || s.key).split(/[\s._-]+/)
+      .map(function (w) { return (w.match(/[a-z0-9]/i) || [''])[0]; })
+      .filter(Boolean).slice(0, 2).join('').toUpperCase();
+  }
+  function hue(s) {
+    var h = 0;
+    for (var i = 0; i < s.key.length; i++) h = (h * 31 + s.key.charCodeAt(i)) % 360;
+    return h;
+  }
+  function tile(s) {
+    var linked = s.url && /^https?:\/\//.test(s.url);
+    var n = el(linked ? 'a' : 'div', {
+      class: 'tile' + (linked ? '' : ' no-url'),
+      title: s.title + ' · ' + s.host + ' · ' + s.access + (s.url ? ' · ' + s.url : '')
+    }, [
+      el('span', { class: 'glyph ' + s.access, style: '--h: ' + hue(s), text: initials(s) }),
+      el('span', { class: 'label', text: s.title }),
+      el('span', { class: 'sub', text: s.host })
+    ]);
+    if (linked) n.setAttribute('href', s.url);
+    return n;
+  }
 
   var built = reg.generated || {};
   document.getElementById('built').textContent = 'built from mipnix ' + (built.commit || '') + ' · ' + (built.date || '');
@@ -166,6 +219,15 @@ footer code { font-family: var(--mono); color: var(--ink); }
     var main = document.getElementById('main');
     main.textContent = '';
     if (!list.length) { main.appendChild(el('p', { class: 'empty', text: 'No service matches this filter.' })); return; }
+    if (state.view === 'grid') {
+      var grid = el('div', { class: 'grid' });
+      Object.keys(cats).sort().forEach(function (c) {
+        grid.appendChild(el('h2', {}, [document.createTextNode(cap(c)), el('span', { class: 'mono', text: String(cats[c].length) })]));
+        cats[c].forEach(function (s) { grid.appendChild(tile(s)); });
+      });
+      main.appendChild(grid);
+      return;
+    }
     Object.keys(cats).sort().forEach(function (c) {
       var box = el('div', { class: 'list' });
       cats[c].forEach(function (s) {
@@ -192,9 +254,19 @@ footer code { font-family: var(--mono); color: var(--ink); }
     });
   }
 
+  function setView(v) {
+    state.view = v;
+    try { localStorage.setItem('lobby.view', v); } catch (e) {}
+    document.getElementById('view-grid').setAttribute('aria-pressed', String(v === 'grid'));
+    document.getElementById('view-list').setAttribute('aria-pressed', String(v === 'list'));
+    render();
+  }
+
   document.getElementById('q').addEventListener('input', function (e) { state.q = e.target.value; render(); });
+  document.getElementById('view-grid').addEventListener('click', function () { setView('grid'); });
+  document.getElementById('view-list').addEventListener('click', function () { setView('list'); });
   renderHosts();
-  render();
+  setView(state.view);
 })();
 </script>
 </body>
