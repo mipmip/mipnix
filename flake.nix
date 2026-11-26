@@ -119,6 +119,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    opencode-vim-navigation = {
+      url = "github:Raaghav-Arya/opencode-vim-navigation";
+      flake = false;
+    };
+
     # REMOVE
     aoe.url = "github:njbrake/agent-of-empires";
 

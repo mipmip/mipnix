@@ -1909,6 +1909,22 @@
         "type": "github"
       }
     },
+    "opencode-vim-navigation": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1795453772,
+        "narHash": "sha256-IXuVqdeWbwknxlzB71UkNORNNQWVgbt+fYlrV34eMxc=",
+        "owner": "Raaghav-Arya",
+        "repo": "opencode-vim-navigation",
+        "rev": "343ea56f7f3f32ae7f4f7f8b06bc80748905e649",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Raaghav-Arya",
+        "repo": "opencode-vim-navigation",
+        "type": "github"
+      }
+    },
     "pre-commit-hooks": {
       "inputs": {
         "flake-compat": "flake-compat_2",
@@ -2111,6 +2127,7 @@
         "nping": "nping",
         "opencode-beans": "opencode-beans",
         "opencode-openspec-sidepanel": "opencode-openspec-sidepanel",
+        "opencode-vim-navigation": "opencode-vim-navigation",
         "pre-commit-hooks": "pre-commit-hooks",
         "race": "race",
         "ragenx": "ragenx",

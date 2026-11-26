@@ -135,6 +135,9 @@
       };
       themes = {};
     };
+
+    xdg.configFile."opencode/plugins/opencode-vim-navigation".source =
+      inputs.opencode-vim-navigation;
   };
 
 }
