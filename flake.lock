@@ -425,11 +425,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1793727685,
-        "narHash": "sha256-ISPKZIwA0UNT5R26vPEf4Hzbdd1gw0P5e5We1t+QOvE=",
+        "lastModified": 1795707301,
+        "narHash": "sha256-/XKTQ0EPrAsNsLUKAUbbH2hzotTzUj6fCvABuAFmclQ=",
         "owner": "mipmip",
         "repo": "dirty-repo-scanner",
-        "rev": "602afbe0d15a4be770c608126390a135ea392cf8",
+        "rev": "eb07b70f5fede0d64140b52beefc7bd48b5b6e27",
         "type": "github"
       },
       "original": {

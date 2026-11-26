@@ -17,6 +17,7 @@ scandirs:
     - $GOPATH/pkg
     - .terraform
     - $HOME/tcAdevinta
+    - .chatcms-state*
 
 # which files to ignore inside a git repo
 # any .gitignore file in your repo will be adhered to, the config
