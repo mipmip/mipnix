@@ -41,6 +41,7 @@ in
       role-devbox
       role-desktop-pim
       role-nebula-node
+      nebula-luwopi
       system-trusted-pim
       secrets-honeybadger
       nix-github-token
@@ -56,6 +57,8 @@ in
     # members over nebula. This host does NOT back the folder up; dapperehaan
     # holds the authoritative copy and is the only member that talks to piethein.
     mipnix.syncthing.pool.enable = true;
+
+    mipnix.nebula.luwopi.enable = true;
 
     boot.loader.systemd-boot.enable = true;
     boot.loader.efi.canTouchEfiVariables = true;

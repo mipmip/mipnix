@@ -192,6 +192,14 @@ in
   "nebula-peterspav.crt.age".publicKeys = users ++ systems;
   "nebula-peterspav.key.age".publicKeys = users ++ systems;
 
+  # LUWOPI group nebula (external CA, see nebula-luwopi.nix). Only pim and the
+  # member hosts can read these; the group's CA key never enters this repo.
+  "nebula-luwopi-ca.crt.age".publicKeys = [ pim delliebellie peterspav ];
+  "nebula-luwopi-delliebellie.crt.age".publicKeys = [ pim delliebellie peterspav ];
+  "nebula-luwopi-delliebellie.key.age".publicKeys = [ pim delliebellie peterspav ];
+  "nebula-luwopi-peterspav.crt.age".publicKeys = [ pim delliebellie peterspav ];
+  "nebula-luwopi-peterspav.key.age".publicKeys = [ pim delliebellie peterspav ];
+
   # Syncthing device identities for the Work pool. A device ID is a hash of the
   # certificate, so these files ARE the pool membership: lose one and that host
   # becomes a different device that every other member has to be told about.
